@@ -17,6 +17,7 @@ use App\Http\Controllers\Api\v1\ProveedoresController;
 use App\Http\Controllers\Api\v1\ProductosController;
 use App\Http\Controllers\Api\v1\RecaudosController;
 use App\Http\Controllers\Api\v1\TipoClientesController;
+use App\Http\Controllers\Api\v1\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -62,5 +63,9 @@ Route::group(['prefix' => 'v1'], function () {
     Route::apiResource('tipo-clientes', TipoClientesController::class);
     Route::apiResource('detalles', DetallesController::class);
     Route::apiResource('recaudos', RecaudosController::class);
+
+    Route::prefix('usuarios')->group( function() {
+        Route::post('/get-admin', [UserController::class, 'getAdmin']);
+    });
 
 })->middleware(['auth:sanctum', 'verified']);

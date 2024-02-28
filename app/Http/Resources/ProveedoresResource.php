@@ -20,6 +20,8 @@ class ProveedoresResource extends JsonResource
         
         return [
             'id' => $this->id,
+            'tipo_doc' => $this->tipo_doc,
+            'tipo_doc_label' => $this->tipo_doc_label,
             'documento' => $this->documento,
             'ciudad' => $this->ciudad,
             'nombre' => $this->nombre,

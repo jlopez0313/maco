@@ -29,6 +29,7 @@ class ProveedoresController extends Controller
                     'ciudad.departamento'
                 )->paginate()
             ),
+            'tipos_doc' => config('constants.tipo_doc')
         ]);
     }
 

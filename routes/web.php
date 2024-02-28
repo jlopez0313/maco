@@ -32,9 +32,8 @@ use App\Http\Controllers\InventarioController;
 Route::get('/', function () {
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
+        'canRegister' => false,
+        'laravelVersion' => '1.0.0',
     ]);
 });
 

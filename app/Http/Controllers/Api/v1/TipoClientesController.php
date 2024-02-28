@@ -44,7 +44,7 @@ class TipoClientesController extends Controller
      */
     public function destroy(TiposClientes $tipo_cliente)
     {
-        $tipo->delete();
-        return new TiposClientesResource( $tipo );
+        $tipo_cliente->delete();
+        return new TiposClientesResource( $tipo_cliente );
     }
 }

@@ -19,7 +19,7 @@ class GastosCollection extends ResourceCollection
         }
         
         return $this->collection->map->only(
-            'id', 'cliente', 'concepto', 'valor', 'origen', 'created_at'
+            'id', 'cliente', 'concepto', 'valor', 'origen', 'origen_label', 'created_at'
         );
     }
 }

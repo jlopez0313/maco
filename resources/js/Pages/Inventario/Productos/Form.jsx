@@ -119,7 +119,7 @@ export const Form = ({ id, inventario, colores, medidas, setIsOpen, onReload }) 
 
                             <TextInput
                                 id="referencia"
-                                type="number"
+                                type="text"
                                 name="referencia"
                                 value={data.referencia}
                                 className="mt-1 block w-full"

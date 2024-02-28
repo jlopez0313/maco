@@ -10,25 +10,24 @@ import Table from "@/Components/Table/Table";
 import PrimaryButton from "@/Components/Buttons/PrimaryButton";
 import Modal from "@/Components/Modal";
 import { Form } from "./Productos/Form";
+import { AdminModal } from "@/Components/AdminModal";
 
 export default ({ auth, inventario, contacts, colores, medidas }) => {
 
-    const [show, setShow] = useState(false);
-    const [list, setList] = useState([]);
-
+    
     const {
         data,
         meta: { links },
     } = contacts;
-
+    
     const {
         data: coloresLst,
     } = colores;
-
+    
     const {
         data: medidasLst,
     } = medidas;
-
+    
     const titles = [
         "Artículo",
         "Referencia",
@@ -37,8 +36,34 @@ export default ({ auth, inventario, contacts, colores, medidas }) => {
         "Cantidad",
         "Precio Costo",
     ];
-
+    
+    const [action, setAction] = useState( '' );
+    const [adminModal, setAdminModal] = useState( false );
     const [id, setId] = useState(null);
+    const [show, setShow] = useState(false);
+    const [list, setList] = useState([]);
+
+    const onSetAdminModal = (_id, action) => {
+        setId(_id)
+        setAdminModal(true)
+        setAction( action )
+    }
+
+    const onConfirm = async ({ data }) => {
+        if ( action == 'edit' ) {
+            setAdminModal( false )
+            onToggleModal( true )
+        } else {
+            onTrash(data)
+        }
+    }
+
+    const onTrash = async (data) => {
+        if ( data ) {
+            await axios.delete(`/api/v1/productos/${id}`);
+            onReload()
+        }
+    }
 
     const onToggleModal = (isShown) => {
         if ( !isShown ) {
@@ -68,11 +93,6 @@ export default ({ auth, inventario, contacts, colores, medidas }) => {
 
         setList(_list);
     };
-
-    const onSetItem = (_id) => {
-        setId(_id)
-        onToggleModal(true)
-    }
 
     useEffect(() => {
         onSetList();
@@ -104,7 +124,8 @@ export default ({ auth, inventario, contacts, colores, medidas }) => {
                         <Table
                             data={list}
                             links={links}
-                            onEdit={ onSetItem }
+                            onEdit={ (evt) => onSetAdminModal(evt, 'edit') }
+                            onTrash={ (evt) => onSetAdminModal(evt, 'trash') }
                             titles={titles}
                             actions={["edit", "trash"]}
                         />
@@ -123,6 +144,9 @@ export default ({ auth, inventario, contacts, colores, medidas }) => {
                     id={id}
                 />
             </Modal>
+
+            <AdminModal show={adminModal} setIsOpen={setAdminModal} onConfirm={onConfirm}></AdminModal>
+
         </AuthenticatedLayout>
     );
 };

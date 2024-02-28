@@ -10,6 +10,7 @@ import Table from "@/Components/Table/Table";
 import PrimaryButton from "@/Components/Buttons/PrimaryButton";
 import Modal from "@/Components/Modal";
 import { Form } from "./Form";
+import { AdminModal } from "@/Components/AdminModal";
 
 export default ({ auth, tipoClientes, contacts, departments, payments }) => {
 
@@ -29,6 +30,8 @@ export default ({ auth, tipoClientes, contacts, departments, payments }) => {
         'Forma de Pago'
     ]
 
+    const [action, setAction] = useState( '' );
+    const [adminModal, setAdminModal] = useState( false );
     const [id, setId] = useState(null);
     const [list, setList] = useState([]);
     const [show, setShow] = useState(false);
@@ -47,6 +50,28 @@ export default ({ auth, tipoClientes, contacts, departments, payments }) => {
         setList( _list );
     }
 
+    const onSetAdminModal = (_id, action) => {
+        setId(_id)
+        setAdminModal(true)
+        setAction( action )
+    }
+
+    const onConfirm = async ({ data }) => {
+        if ( action == 'edit' ) {
+            setAdminModal( false )
+            onSearch( id )
+        } else {
+            onTrash(data)
+        }
+    }
+
+    const onTrash = async (data) => {
+        if ( data ) {
+            await axios.delete(`/api/v1/facturas/${id}`);
+            onReload()
+        }
+    }
+
     const onToggleModal = (isShown) => {
         if ( !isShown ) {
             setId(null)
@@ -60,7 +85,7 @@ export default ({ auth, tipoClientes, contacts, departments, payments }) => {
         router.visit(window.location.pathname);
     }
 
-    const onEdit = (id) => {
+    const onSearch = (id) => {
         router.get( `remisiones/edit/${ id }` )
     }
 
@@ -94,9 +119,10 @@ export default ({ auth, tipoClientes, contacts, departments, payments }) => {
                         <Table 
                             data={list}
                             links={links}
-                            onEdit={ onEdit }
+                            onSearch={ (evt) => onSearch(evt) }
+                            onTrash={ (evt) => onSetAdminModal(evt, 'trash') }
                             titles={titles}
-                            actions={["edit", "trash"]}
+                            actions={["search", "trash"]}
                         />
                     </div>
 
@@ -112,10 +138,13 @@ export default ({ auth, tipoClientes, contacts, departments, payments }) => {
                     tipoClientes={tipoClientes}
                     payments={payments}
                     setIsOpen={onToggleModal}        
-                    onReload={onReload}
+                    onSearch={onSearch}
                     id={id}
                 />
             </Modal>
+
+            <AdminModal show={adminModal} setIsOpen={setAdminModal} onConfirm={onConfirm}></AdminModal>
+
         </AuthenticatedLayout>
     );
 }

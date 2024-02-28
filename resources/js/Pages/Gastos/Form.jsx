@@ -45,7 +45,10 @@ export const Form = ({ id, clientes, conceptos, origenes, setIsOpen, onReload })
 
         setData(
             {                
-                color: item.color,
+                clientes_id: item.cliente?.id,
+                conceptos_id: item.concepto?.id,
+                valor: item.valor,
+                origen: item.origen,
             }
         )
     }

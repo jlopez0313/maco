@@ -10,8 +10,9 @@ import Table from "@/Components/Table/Table";
 import PrimaryButton from "@/Components/Buttons/PrimaryButton";
 import Modal from "@/Components/Modal";
 import { Form } from "./Form";
+import { AdminModal } from "@/Components/AdminModal";
 
-export default ({ auth, contacts, tipoClientes, departamentos }) => {
+export default ({ auth, tipos_doc, contacts, tipoClientes, departamentos }) => {
 
     const {
         data,
@@ -19,6 +20,7 @@ export default ({ auth, contacts, tipoClientes, departamentos }) => {
     } = contacts;
 
     const titles = [
+        "Tipo Documento",
         "Documento",
         "Nombre",
         "Departamento",
@@ -28,6 +30,8 @@ export default ({ auth, contacts, tipoClientes, departamentos }) => {
         "Tipo",
     ];
 
+    const [action, setAction] = useState( '' );
+    const [adminModal, setAdminModal] = useState( false );
     const [id, setId] = useState(null);
     const [list, setList] = useState([]);
     const [show, setShow] = useState(false);
@@ -36,6 +40,7 @@ export default ({ auth, contacts, tipoClientes, departamentos }) => {
         const _list = data.map((item) => {
             return {
                 id: item.id,
+                tipo_doc: item.tipo_doc_label,
                 documento: item.documento,
                 nombre: item.nombre,
                 departamento: item.ciudad?.departamento?.departamento || "",
@@ -49,9 +54,26 @@ export default ({ auth, contacts, tipoClientes, departamentos }) => {
         setList(_list);
     };
 
-    const onSetItem = (_id) => {
+    const onSetAdminModal = (_id, action) => {
         setId(_id)
-        onToggleModal(true)
+        setAdminModal(true)
+        setAction( action )
+    }
+
+    const onConfirm = async ({ data }) => {
+        if ( action == 'edit' ) {
+            setAdminModal( false )
+            onToggleModal( true )
+        } else {
+            onTrash(data)
+        }
+    }
+
+    const onTrash = async (data) => {
+        if ( data ) {
+            await axios.delete(`/api/v1/clientes/${id}`);
+            onReload()
+        }
     }
 
     const onToggleModal = (isShown) => {
@@ -97,7 +119,8 @@ export default ({ auth, contacts, tipoClientes, departamentos }) => {
                         <Table
                             data={list}
                             links={links}
-                            onEdit={ onSetItem }
+                            onEdit={ (evt) => onSetAdminModal(evt, 'edit') }
+                            onTrash={ (evt) => onSetAdminModal(evt, 'trash') }
                             titles={titles}
                             actions={["edit", "trash"]}
                         />
@@ -109,6 +132,7 @@ export default ({ auth, contacts, tipoClientes, departamentos }) => {
 
             <Modal show={show} closeable={true} title="Crear Cliente">
                 <Form
+                    tipos_doc={tipos_doc}
                     departamentos={departamentos}
                     tipoClientes={tipoClientes}
                     setIsOpen={onToggleModal}        
@@ -116,6 +140,9 @@ export default ({ auth, contacts, tipoClientes, departamentos }) => {
                     id={id}
                 />
             </Modal>
+
+            <AdminModal show={adminModal} setIsOpen={setAdminModal} onConfirm={onConfirm}></AdminModal>
+
         </AuthenticatedLayout>
     );
 };

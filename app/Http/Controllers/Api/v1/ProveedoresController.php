@@ -53,6 +53,6 @@ class ProveedoresController extends Controller
     public function destroy(Proveedores $proveedore)
     {
         $proveedore->delete();
-        return new ColoresResource( $proveedore );
+        return new ProveedoresResource( $proveedore );
     }
 }

@@ -1,6 +1,18 @@
 <?php
 
 return [
+    
+    'tipo_doc' => [
+        [
+            'key' => '1',
+            'valor' => 'Cedula'
+        ],
+        [
+            'key' => '2',
+            'valor' => 'NIT'
+        ],
+    ],
+
     'origenes' => [
         [
             'key' => 'N',

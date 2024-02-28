@@ -17,4 +17,13 @@ class Proveedores extends Model
     public function ciudad() {
         return $this->hasOne(Ciudades::class, 'id', 'ciudad_id');
     }
+
+    public function getTipoDocLabelAttribute() {
+        $lista = config('constants.tipo_doc');
+        $origenObj = \Arr::first($lista, function($val, $key) {
+            return $val['key'] == $this->tipo_doc;
+        });
+        
+        return $origenObj['valor'] ?? 'N/A';
+    }
 }

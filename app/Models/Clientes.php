@@ -21,4 +21,13 @@ class Clientes extends Model
     public function tipo() {
         return $this->hasOne(TiposClientes::class, 'id', 'tipo_id');
     }
+
+    public function getTipoDocLabelAttribute() {
+        $lista = config('constants.tipo_doc');
+        $origenObj = \Arr::first($lista, function($val, $key) {
+            return $val['key'] == $this->tipo_doc;
+        });
+        
+        return $origenObj['valor'] ?? 'N/A';
+    }
 }

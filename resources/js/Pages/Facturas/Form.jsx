@@ -8,7 +8,7 @@ import { useForm } from "@inertiajs/react";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-export const Form = ({ id, payments, tipoClientes, departamentos, setIsOpen, onReload }) => {
+export const Form = ({ id, payments, tipoClientes, departamentos, setIsOpen, onSearch }) => {
 
     const [ciudades, setCiudades] = useState([]);
 
@@ -32,12 +32,15 @@ export const Form = ({ id, payments, tipoClientes, departamentos, setIsOpen, onR
     const submit = async (e) => {
         e.preventDefault();
 
+        let resp = {};
+
         if ( id ) {
             await axios.put(`/api/v1/facturas/${id}`, data);
         } else {
-            await axios.post(`/api/v1/facturas`, data);
+            resp = await axios.post(`/api/v1/facturas`, data);
         }
-        onReload();
+
+        onSearch( id || resp.data?.data?.id);
     };
 
     const onGetItem = async () => {
@@ -141,6 +144,7 @@ export const Form = ({ id, payments, tipoClientes, departamentos, setIsOpen, onR
                                 value={data.nombre}
                                 className="mt-1 block w-full"
                                 autoComplete="nombre"
+                                readOnly
                                 onChange={(e) =>
                                     setData("nombre", e.target.value)
                                 }
@@ -151,7 +155,7 @@ export const Form = ({ id, payments, tipoClientes, departamentos, setIsOpen, onR
                                 className="mt-2"
                             />
                         </div>
-                        
+                        {/*
                         <div>
                             <InputLabel htmlFor="departamento" value="Departamento" />
 
@@ -268,6 +272,7 @@ export const Form = ({ id, payments, tipoClientes, departamentos, setIsOpen, onR
                                 className="mt-2"
                             />
                         </div>
+                        */}
 
                         <div>
                             <InputLabel

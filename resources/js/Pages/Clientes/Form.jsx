@@ -8,12 +8,13 @@ import { useForm } from "@inertiajs/react";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-export const Form = ({ id, tipoClientes, departamentos, setIsOpen, onReload }) => {
+export const Form = ({ id, tipos_doc, tipoClientes, departamentos, setIsOpen, onReload }) => {
 
     const [ciudades, setCiudades] = useState([]);
 
 
     const { data, setData, processing, errors, reset } = useForm({
+        tipo_doc: '',
         documento: '',
         nombre: '',
         tipo: '',
@@ -50,10 +51,11 @@ export const Form = ({ id, tipoClientes, departamentos, setIsOpen, onReload }) =
         await onGetCities( item.ciudad.departamento.id );
 
         setData(
-            {                
+            {
+                tipo_doc: item.tipo_doc,
                 documento: item.documento,
                 nombre: item.nombre,
-                tipo: item.tipo.id,
+                tipo: item.tipo?.id,
                 depto: item.ciudad.departamento.id,
                 ciudad: item.ciudad.id,
                 direccion: item.direccion,
@@ -82,6 +84,34 @@ export const Form = ({ id, tipoClientes, departamentos, setIsOpen, onReload }) =
             <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <form onSubmit={submit}>
                     <div className="grid grid-cols-2 gap-4">
+                        <div>
+                            <InputLabel
+                                htmlFor="tipo_doc"
+                                value="Tipo de Documento"
+                            />
+
+                            <Select
+                                id="tipo_doc"
+                                name="tipo_doc"
+                                className="mt-1 block w-full"
+                                value={data.tipo_doc}
+                                onChange={ (e) => 
+                                    setData("tipo_doc", e.target.value)
+                                }
+                            >
+                                {
+                                    tipos_doc.map( (tipo, key) => {
+                                        return <option value={ tipo.key } key={key}> { tipo.valor} </option>
+                                    })
+                                }
+                            </Select>
+
+                            <InputError
+                                message={errors.tipo_doc}
+                                className="mt-2"
+                            />
+                        </div>
+
                         <div>
                             <InputLabel htmlFor="documento" value="Documento" />
 

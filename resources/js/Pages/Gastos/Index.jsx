@@ -10,6 +10,7 @@ import Table from "@/Components/Table/Table";
 import PrimaryButton from "@/Components/Buttons/PrimaryButton";
 import Modal from "@/Components/Modal";
 import { Form } from "./Form";
+import { AdminModal } from "@/Components/AdminModal";
 
 export default ({ auth, contacts, clientes, conceptos, origenes }) => {
 
@@ -22,10 +23,13 @@ export default ({ auth, contacts, clientes, conceptos, origenes }) => {
         'Fecha',
         'Recibo',
         'Cliente',
+        'Origen',
         'Concepto',
         'Valor',
     ]
 
+    const [action, setAction] = useState( '' );
+    const [adminModal, setAdminModal] = useState( false );
     const [list, setList] = useState([]);
     const [id, setId] = useState(null);
     const [show, setShow] = useState(false);
@@ -37,6 +41,7 @@ export default ({ auth, contacts, clientes, conceptos, origenes }) => {
                 'fecha': item.created_at,
                 'recibo': item.id,
                 'cliente': item.cliente?.nombre || '',
+                'origen': item.origen_label,
                 'concepto': item.concepto?.concepto || '',
                 'valor': item.valor || '',
             }
@@ -45,9 +50,27 @@ export default ({ auth, contacts, clientes, conceptos, origenes }) => {
         setList( _list );
     }
 
-    const onSetItem = (_id) => {
+
+    const onSetAdminModal = (_id, action) => {
         setId(_id)
-        onToggleModal(true)
+        setAdminModal(true)
+        setAction( action )
+    }
+
+    const onConfirm = async ({ data }) => {
+        if ( action == 'edit' ) {
+            setAdminModal( false )
+            onToggleModal( true )
+        } else {
+            onTrash(data)
+        }
+    }
+
+    const onTrash = async (data) => {
+        if ( data ) {
+            await axios.delete(`/api/v1/gastos/${id}`);
+            onReload()
+        }
     }
 
     const onToggleModal = (isShown) => {
@@ -92,7 +115,8 @@ export default ({ auth, contacts, clientes, conceptos, origenes }) => {
                         <Table 
                             data={list}
                             links={links}
-                            onEdit={ onSetItem }
+                            onEdit={ (evt) => onSetAdminModal(evt, 'edit') }
+                            onTrash={ (evt) => onSetAdminModal(evt, 'trash') }
                             titles={titles}
                             actions={['edit', 'trash']}
                         />
@@ -111,6 +135,9 @@ export default ({ auth, contacts, clientes, conceptos, origenes }) => {
                     id={id}
                 />
             </Modal>
+
+            <AdminModal show={adminModal} setIsOpen={setAdminModal} onConfirm={onConfirm}></AdminModal>
+
         </AuthenticatedLayout>
     );
 }

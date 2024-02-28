@@ -12,12 +12,10 @@ import Modal from "@/Components/Modal";
 import { Form } from "./Detalle/Form";
 import InputLabel from "@/Components/Form/InputLabel";
 import TextInput from "@/Components/Form/TextInput";
+import { AdminModal } from "@/Components/AdminModal";
 
 export default ({ auth, factura }) => {
 
-    const [show, setShow] = useState(false);
-    const [list, setList] = useState([]);
-    const [sum, setSum] = useState(0);
 
     const data = factura.detalles;
 
@@ -30,7 +28,34 @@ export default ({ auth, factura }) => {
         "Precio Venta",
     ];
 
+    const [action, setAction] = useState( '' );
+    const [adminModal, setAdminModal] = useState( false );
     const [id, setId] = useState(null);
+    const [show, setShow] = useState(false);
+    const [list, setList] = useState([]);
+    const [sum, setSum] = useState(0);
+
+    const onSetAdminModal = (_id, action) => {
+        setId(_id)
+        setAdminModal(true)
+        setAction( action )
+    }
+
+    const onConfirm = async ({ data }) => {
+        if ( action == 'edit' ) {
+            setAdminModal( false )
+            onToggleModal( true )
+        } else {
+            onTrash(data)
+        }
+    }
+
+    const onTrash = async (data) => {
+        if ( data ) {
+            await axios.delete(`/api/v1/detalles/${id}`);
+            onReload()
+        }
+    }
 
     const onToggleModal = (isShown) => {
         if ( !isShown ) {
@@ -67,11 +92,6 @@ export default ({ auth, factura }) => {
         }, 0);
 
         setSum( sum )
-    }
-
-    const onSetItem = (_id) => {
-        setId(_id)
-        onToggleModal(true)
     }
 
     useEffect(() => {
@@ -159,7 +179,8 @@ export default ({ auth, factura }) => {
                         <Table
                             data={list}
                             links={[]}
-                            onEdit={ onSetItem }
+                            onEdit={ (evt) => onSetAdminModal(evt, 'edit') }
+                            onTrash={ (evt) => onSetAdminModal(evt, 'trash') }
                             titles={titles}
                             actions={[]}
                         />
@@ -176,6 +197,9 @@ export default ({ auth, factura }) => {
                     id={id}
                 />
             </Modal>
+
+            <AdminModal show={adminModal} setIsOpen={setAdminModal} onConfirm={onConfirm}></AdminModal>
+
         </AuthenticatedLayout>
     );
 };

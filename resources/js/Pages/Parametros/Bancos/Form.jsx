@@ -11,7 +11,7 @@ export const Form = ({ id, setIsOpen, onReload }) => {
 
     const { data, setData, processing, errors, reset } = useForm({
         banco: '',
-        valor: ''
+        valor: 0
     });
 
     const submit = async (e) => {
@@ -48,7 +48,7 @@ export const Form = ({ id, setIsOpen, onReload }) => {
         <div className="pb-12 pt-6">
             <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                 <form onSubmit={submit}>
-                    <div className="grid grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 gap-4">
                         <div>
                             <InputLabel htmlFor="banco" value="Banco" />
 
@@ -70,6 +70,7 @@ export const Form = ({ id, setIsOpen, onReload }) => {
                                 className="mt-2"
                             />
                         </div>
+                        {/* 
                         <div>
                             <InputLabel htmlFor="valor" value="Valor" />
 
@@ -84,12 +85,12 @@ export const Form = ({ id, setIsOpen, onReload }) => {
                                     setData("valor", e.target.value)
                                 }
                             />
-
                             <InputError
                                 message={errors.valor}
                                 className="mt-2"
                             />
                         </div>
+                        */}
                     </div>
 
                     <div className="flex items-center justify-end mt-4">

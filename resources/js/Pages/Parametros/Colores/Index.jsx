@@ -10,6 +10,8 @@ import Table from "@/Components/Table/Table";
 import PrimaryButton from "@/Components/Buttons/PrimaryButton";
 import Modal from "@/Components/Modal";
 import { Form } from "./Form";
+import SecondaryButton from "@/Components/Buttons/SecondaryButton";
+import { AdminModal } from "@/Components/AdminModal";
 
 export default ({ auth, contacts }) => {
     const {
@@ -21,6 +23,8 @@ export default ({ auth, contacts }) => {
         'Color'
     ]
 
+    const [action, setAction] = useState( '' );
+    const [adminModal, setAdminModal] = useState( false );
     const [list, setList] = useState([]);
     const [id, setId] = useState(null);
     const [show, setShow] = useState(false);
@@ -36,9 +40,26 @@ export default ({ auth, contacts }) => {
         setList( _list );
     }
 
-    const onSetItem = (_id) => {
+    const onSetAdminModal = (_id, action) => {
         setId(_id)
-        onToggleModal(true)
+        setAdminModal(true)
+        setAction( action )
+    }
+
+    const onConfirm = async ({ data }) => {
+        if ( action == 'edit' ) {
+            setAdminModal( false )
+            onToggleModal( true )
+        } else {
+            onTrash(data)
+        }
+    }
+
+    const onTrash = async (data) => {
+        if ( data ) {
+            await axios.delete(`/api/v1/colores/${id}`);
+            onReload()
+        }
     }
 
     const onToggleModal = (isShown) => {
@@ -50,7 +71,13 @@ export default ({ auth, contacts }) => {
 
     const onReload = () => {
         onToggleModal(false);
+        setAdminModal(false)
+
         router.visit(window.location.pathname);
+    }
+
+    const onBack = () => {
+        history.back();
     }
 
     useEffect(()=> {
@@ -71,6 +98,14 @@ export default ({ auth, contacts }) => {
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="flex items-center justify-end mt-4 mb-4">
+                        <SecondaryButton
+                            className="ms-4"
+                            onClick={() => onBack()}
+                        >
+                            Atras
+                        </SecondaryButton>
+                        
+                        
                         <PrimaryButton
                             className="ms-4"
                             onClick={() => onToggleModal(true)}
@@ -83,7 +118,8 @@ export default ({ auth, contacts }) => {
                         <Table 
                             data={list}
                             links={links}
-                            onEdit={ onSetItem }
+                            onEdit={ (evt) => onSetAdminModal(evt, 'edit') }
+                            onTrash={ (evt) => onSetAdminModal(evt, 'trash') }
                             titles={titles}
                             actions={['edit', 'trash']}
                         />
@@ -99,6 +135,9 @@ export default ({ auth, contacts }) => {
                     id={id}
                 />
             </Modal>
+
+            <AdminModal show={adminModal} setIsOpen={setAdminModal} onConfirm={onConfirm}></AdminModal>
+
         </AuthenticatedLayout>
     );
 }

@@ -10,6 +10,7 @@ import Table from "@/Components/Table/Table";
 import PrimaryButton from "@/Components/Buttons/PrimaryButton";
 import Modal from "@/Components/Modal";
 import { Form } from "./Form";
+import { AdminModal } from "@/Components/AdminModal";
 
 export default ({ auth, contacts, origenes, departamentos }) => {
 
@@ -24,6 +25,8 @@ export default ({ auth, contacts, origenes, departamentos }) => {
         "Cantidad",
     ];
 
+    const [action, setAction] = useState( '' );
+    const [adminModal, setAdminModal] = useState( false );
     const [id, setId] = useState(null);
     const [list, setList] = useState([]);
     const [show, setShow] = useState(false);
@@ -40,6 +43,28 @@ export default ({ auth, contacts, origenes, departamentos }) => {
 
         setList(_list);
     };
+
+    const onSetAdminModal = (_id, action) => {
+        setId(_id)
+        setAdminModal(true)
+        setAction( action )
+    }
+
+    const onConfirm = async ({ data }) => {
+        if ( action == 'edit' ) {
+            setAdminModal( false )
+            onEdit( id )
+        } else {
+            onTrash(data)
+        }
+    }
+
+    const onTrash = async (data) => {
+        if ( data ) {
+            await axios.delete(`/api/v1/inventarios/${id}`);
+            onReload()
+        }
+    }
 
     const onToggleModal = (isShown) => {
         if ( !isShown ) {
@@ -88,7 +113,8 @@ export default ({ auth, contacts, origenes, departamentos }) => {
                         <Table
                             data={list}
                             links={links}
-                            onEdit={ onEdit }
+                            onEdit={ (evt) => onEdit(evt) }
+                            onTrash={ (evt) => onSetAdminModal(evt, 'trash') }
                             titles={titles}
                             actions={["edit", "trash"]}
                         />
@@ -98,15 +124,18 @@ export default ({ auth, contacts, origenes, departamentos }) => {
                 </div>
             </div>
 
-            <Modal show={show} closeable={true} title="Crear Cliente">
+            <Modal show={show} closeable={true} title="Registrar Inventario">
                 <Form
                     departamentos={[]}
                     origenes={origenes}
                     setIsOpen={onToggleModal}        
-                    onReload={onReload}
+                    onEdit={onEdit}
                     id={id}
                 />
             </Modal>
+
+            <AdminModal show={adminModal} setIsOpen={setAdminModal} onConfirm={onConfirm}></AdminModal>
+
         </AuthenticatedLayout>
     );
 };

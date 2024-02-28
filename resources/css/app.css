@@ -1,3 +1,15 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.w-50 {
+    width: 12.5rem;
+}
+
+.w-70 {
+    width: 17.5rem;
+}
+
+.h-30 {
+    width: 7.5rem;
+}

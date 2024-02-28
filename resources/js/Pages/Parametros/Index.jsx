@@ -13,31 +13,31 @@ export default function Dashboard({ auth }) {
         {
             id: 1,
             parametro: 'Tipos de Cliente',   
-            descripcion: 'Gestionar Tipos de Cliente',
+            descripcion: 'Gestionar el tipo de cliente que se desea manejar',
             ruta: 'parametros/tipos_clientes'
         },
         {
             id: 2,
             parametro: 'Conceptos',   
-            descripcion: 'Gestionar Conceptos',
+            descripcion: 'Acción / Gasto a registrar en la sección de Gastos',
             ruta: 'parametros/conceptos'
         },
         {
             id: 3,
             parametro: 'Bancos',   
-            descripcion: 'Gestionar Bancos',
+            descripcion: 'Gestionar los Bancos que se utilizan',
             ruta: 'parametros/bancos'
         },
         {
             id: 4,
             parametro: 'Medidas',   
-            descripcion: 'Gestionar Medidas',
+            descripcion: 'Gestionar Tallas, Mililitros, entre otros, que tienen los productos que se manejan. ',
             ruta: 'parametros/medidas'
         },
         {
             id: 5,
             parametro: 'Colores',   
-            descripcion: 'Gestionar Colores',
+            descripcion: 'Gestionar los diferentes colores que se manejan',
             ruta: 'parametros/colores'
         },
     ]
