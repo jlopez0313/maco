@@ -74,16 +74,17 @@ export default ({ auth, factura }) => {
         const _list = data.map((item) => {
             return {
                 id: item.id,
-                articulo: item.producto.inventario.articulo,
-                referenia: item.producto.referencia,
-                color: item.producto.color.color,
-                medida: item.producto.medida.medida,
+                articulo: item.producto?.inventario?.articulo || '',
+                referenia: item.producto?.referencia || '',
+                color: item.producto?.color?.color || '',
+                medida: item.producto?.medida?.medida || '',
                 cantidad: item.cantidad,
                 precio: item.precio_venta,
             };
         });
 
         setList(_list);
+        setShow( _list.length == 0 )
     };
 
     const onSetSum = () => {

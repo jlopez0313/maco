@@ -41,8 +41,8 @@ export const Form = ({ id, factura, setIsOpen, onReload }) => {
             {                
                 facturas_id: factura.id, 
                 referencia: item.referencia,
-                medidas_id: item.medida.id,
-                colores_id: item.color.id,
+                medidas_id: item.medida?.id || '',
+                colores_id: item.color?.id || '',
                 cantidad: item.cantidad,
                 precio: item.precio,
             }
@@ -249,7 +249,7 @@ export const Form = ({ id, factura, setIsOpen, onReload }) => {
                             disabled={processing || !producto.id}
                         >
                             {" "}
-                            Guardar{" "}
+                            Registrar{" "}
                         </PrimaryButton>
 
                         <SecondaryButton

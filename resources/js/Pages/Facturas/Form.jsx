@@ -76,11 +76,11 @@ export const Form = ({ id, payments, tipoClientes, departamentos, setIsOpen, onS
                         ...data,
                         clientes_id: cliente.id,
                         nombre: cliente.nombre,
-                        departamento: cliente.ciudad.departamento.id,
-                        ciudad: cliente.ciudad.id,
+                        departamento: cliente.ciudad?.departamento?.id || '',
+                        ciudad: cliente.ciudad?.id || '',
                         direccion: cliente.direccion,
                         celular: cliente.celular,
-                        tipo: cliente.tipo.id,
+                        tipo: cliente.tipo?.id || '',
                     }
                 )
             } else {

@@ -37,10 +37,10 @@ export const Form = ({ id, inventario, colores, medidas, setIsOpen, onReload }) 
 
         setData(
             {                
-                inventarios_id: inventario.id, 
-                referencia: item.referencia,
-                medidas_id: item.medida.id,
-                colores_id: item.color.id,
+                inventarios_id: inventario?.id || '', 
+                referencia: item.referencia || '',
+                medidas_id: item.medida?.id || '',
+                colores_id: item.color?.id || '',
                 cantidad: item.cantidad,
                 precio: item.precio,
             }

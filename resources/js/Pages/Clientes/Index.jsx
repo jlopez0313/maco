@@ -47,7 +47,7 @@ export default ({ auth, tipos_doc, contacts, tipoClientes, departamentos }) => {
                 ciudad: item.ciudad?.ciudad || "",
                 direccion: item.direccion,
                 celular: item.celular,
-                tipo: item.tipo?.tipo,
+                tipo: item.tipo?.tipo || '',
             };
         });
 

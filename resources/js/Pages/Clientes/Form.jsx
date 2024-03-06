@@ -55,9 +55,9 @@ export const Form = ({ id, tipos_doc, tipoClientes, departamentos, setIsOpen, on
                 tipo_doc: item.tipo_doc,
                 documento: item.documento,
                 nombre: item.nombre,
-                tipo: item.tipo?.id,
-                depto: item.ciudad.departamento.id,
-                ciudad: item.ciudad.id,
+                tipo: item.tipo?.id || '',
+                depto: item.ciudad?.departamento?.id || '',
+                ciudad: item.ciudad?.id || '',
                 direccion: item.direccion,
                 celular: item.celular,
             }

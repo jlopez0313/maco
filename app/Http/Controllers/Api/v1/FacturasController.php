@@ -20,6 +20,7 @@ class FacturasController extends Controller
         $data['clientes_id'] = $request->clientes_id;
         $data['tipo_pago'] = $request->tipo_pago;
         $data['updated_by'] = \Auth::user()->id;
+        $data['valor'] = 0;
 
         $factura = Facturas::create( $data );
         return new FacturasResource( $factura );

@@ -82,16 +82,17 @@ export default ({ auth, inventario, contacts, colores, medidas }) => {
         const _list = data.map((item) => {
             return {
                 id: item.id,
-                articulo: item.inventario.articulo,
+                articulo: item.inventario?.articulo || '',
                 referenia: item.referencia,
-                color: item.color.color,
-                medida: item.medida.medida,
+                color: item.color?.color || '',
+                medida: item.medida?.medida || '',
                 cantidad: item.cantidad,
                 precio: item.precio,
             };
         });
 
         setList(_list);
+        setShow( _list.length == 0 )
     };
 
     useEffect(() => {
@@ -134,7 +135,7 @@ export default ({ auth, inventario, contacts, colores, medidas }) => {
             </div>
             
 
-            <Modal show={show} closeable={true} title="Crear Producto">
+            <Modal show={show} closeable={true} title="Crear Referencia">
                 <Form
                     inventario={inventario}
                     colores={coloresLst}

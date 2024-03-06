@@ -39,11 +39,11 @@ export default ({ auth, tipoClientes, contacts, departments, payments }) => {
     const onSetList = () => {
         const _list = data.map( item => {
             return {
-                'id': item.id,
-                'fecha': item.created_at,
-                'codigo': item.id,
-                'cliente': item.cliente?.nombre || '',
-                'payment': item.forma_pago || ''
+                id: item.id,
+                fecha: item.created_at,
+                codigo: item.id,
+                cliente: item.cliente?.nombre || '',
+                payment: item.forma_pago || ''
             }
         })
 
