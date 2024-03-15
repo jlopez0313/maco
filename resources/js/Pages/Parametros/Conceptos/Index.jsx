@@ -135,7 +135,7 @@ export default ({ auth, contacts }) => {
                 />
             </Modal>
 
-            <AdminModal show={adminModal} setIsOpen={setAdminModal} onConfirm={onConfirm}></AdminModal>
+            <AdminModal title={ action } show={adminModal} setIsOpen={setAdminModal} onConfirm={onConfirm}></AdminModal>
 
         </AuthenticatedLayout>
     );

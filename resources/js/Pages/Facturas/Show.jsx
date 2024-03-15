@@ -105,11 +105,11 @@ export default ({ auth, factura }) => {
             user={auth.user}
             header={
                 <h2 className="font-semibold text-xl text-gray-800 leading-tight">
-                    Editar Órden de Compra
+                    Detalle Órden de Compra
                 </h2>
             }
         >
-            <Head title="Órden de Compra" />
+            <Head title="Detalle Órden de Compra" />
 
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -166,22 +166,10 @@ export default ({ auth, factura }) => {
                 </div>
 
 
-
-                    <div className="flex items-center justify-end mt-4 mb-4">
-                        <PrimaryButton
-                            className="ms-4"
-                            onClick={() => onToggleModal(true)}
-                        >
-                            Agregar
-                        </PrimaryButton>
-                    </div>
-
                     <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                         <Table
                             data={list}
                             links={[]}
-                            onEdit={ (evt) => onSetAdminModal(evt, 'edit') }
-                            onTrash={ (evt) => onSetAdminModal(evt, 'trash') }
                             titles={titles}
                             actions={[]}
                         />
@@ -189,19 +177,6 @@ export default ({ auth, factura }) => {
                 </div>
             </div>
             
-
-            <Modal show={show} closeable={true} title="Agregar Producto">
-                <Form
-                    auth={auth}
-                    factura={factura}
-                    setIsOpen={onToggleModal}        
-                    onReload={onReload}
-                    id={id}
-                />
-            </Modal>
-
-            <AdminModal title={ action } show={adminModal} setIsOpen={setAdminModal} onConfirm={onConfirm}></AdminModal>
-
         </AuthenticatedLayout>
     );
 };

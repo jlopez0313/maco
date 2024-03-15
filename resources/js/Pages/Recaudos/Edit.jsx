@@ -182,6 +182,7 @@ export default ({ auth, factura }) => {
 
             <Modal show={show} closeable={true} title="Agregar Recaudo">
                 <Form
+                    auth={auth}
                     factura={factura}
                     setIsOpen={onToggleModal}
                     onReload={onReload}

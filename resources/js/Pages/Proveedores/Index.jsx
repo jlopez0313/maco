@@ -128,8 +128,9 @@ export default ({ auth, tipos_doc, contacts, tipoClientes, departamentos }) => {
                 </div>
             </div>
 
-            <Modal show={show} closeable={true} title="Crear Cliente">
+            <Modal show={show} closeable={true} title="Crear Proveedor">
                 <Form
+                    auth={auth}
                     tipos_doc={tipos_doc}
                     departamentos={departamentos}
                     tipoClientes={tipoClientes}
@@ -139,7 +140,7 @@ export default ({ auth, tipos_doc, contacts, tipoClientes, departamentos }) => {
                 />
             </Modal>
 
-            <AdminModal show={adminModal} setIsOpen={setAdminModal} onConfirm={onConfirm}></AdminModal>
+            <AdminModal title={ action } show={adminModal} setIsOpen={setAdminModal} onConfirm={onConfirm}></AdminModal>
 
         </AuthenticatedLayout>
     );

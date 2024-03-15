@@ -26,6 +26,7 @@ class RecaudosController extends Controller
                 )
                 ->withSum('detalles as valor', 'precio_venta')
                 ->withSum('recaudos as cobros', 'valor')
+                ->whereHas('detalles')
                 ->where('tipo_pago', 'CR')
                 ->paginate()
             ),

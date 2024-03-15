@@ -19,8 +19,6 @@ class RecaudosController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
-        $data['updated_by'] = \Auth::user()->id;
-
         $recaudo = Recaudos::create( $data );
         return new RecaudosResource( $recaudo );
     }
@@ -39,8 +37,6 @@ class RecaudosController extends Controller
     public function update(Request $request, Recaudos $recaudo)
     {
         $data = $request->all();
-        $data['updated_by'] = \Auth::user()->id;
-
         $recaudo->update( $data );
         return new RecaudosResource( $recaudo );
     }

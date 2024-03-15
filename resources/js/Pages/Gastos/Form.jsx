@@ -8,9 +8,10 @@ import React, { useEffect } from "react";
 import axios from "axios";
 import Select from "@/Components/Form/Select";
 
-export const Form = ({ id, clientes, conceptos, origenes, setIsOpen, onReload }) => {
+export const Form = ({ id, auth, clientes, conceptos, origenes, setIsOpen, onReload }) => {
 
     const { data, setData, processing, errors, reset } = useForm({
+        updated_by: auth.user.id,
         clientes_id: '',
         conceptos_id: '',
         valor: '',
@@ -44,7 +45,8 @@ export const Form = ({ id, clientes, conceptos, origenes, setIsOpen, onReload })
         const item = { ...data.data }
 
         setData(
-            {                
+            {
+                updated_by: auth.user.id,
                 clientes_id: item.cliente?.id || '',
                 conceptos_id: item.concepto?.id || '',
                 valor: item.valor,

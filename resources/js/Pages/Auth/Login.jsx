@@ -51,7 +51,7 @@ export default function Login({ status, canResetPassword }) {
                 </div>
 
                 <div className="mt-4">
-                    <InputLabel htmlFor="password" value="Password" />
+                    <InputLabel htmlFor="password" value="Contrtaseña" />
 
                     <TextInput
                         id="password"
@@ -83,7 +83,7 @@ export default function Login({ status, canResetPassword }) {
                             href={route('password.request')}
                             className="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                         >
-                            Olvidaste tu password?
+                            Olvidaste tu contraseña?
                         </Link>
                     )}
 

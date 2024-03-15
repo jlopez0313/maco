@@ -8,12 +8,13 @@ import { useForm } from "@inertiajs/react";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-export const Form = ({ id, origenes, setIsOpen, onEdit }) => {
+export const Form = ({ id, auth, origenes, setIsOpen, onEdit }) => {
 
     const [ciudades, setCiudades] = useState([]);
 
 
     const { data, setData, processing, errors, reset } = useForm({
+        updated_by: auth.user.ud,
         articulo: '',
         origen: '',
     });
@@ -38,7 +39,7 @@ export const Form = ({ id, origenes, setIsOpen, onEdit }) => {
         const item = { ...data.data }
 
         setData(
-            {                
+            {
                 articulo: item.articulo,
                 origen: item.origen,
             }

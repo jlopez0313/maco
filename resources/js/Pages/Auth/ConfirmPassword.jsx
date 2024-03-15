@@ -28,12 +28,12 @@ export default function ConfirmPassword() {
             <Head title="Confirm Password" />
 
             <div className="mb-4 text-sm text-gray-600">
-                This is a secure area of the application. Please confirm your password before continuing.
+                Esta es un area segura de la aplicación. Por favr confirma tu contraseña antes de continuar.
             </div>
 
             <form onSubmit={submit}>
                 <div className="mt-4">
-                    <InputLabel htmlFor="password" value="Password" />
+                    <InputLabel htmlFor="password" value="Contraseña" />
 
                     <TextInput
                         id="password"

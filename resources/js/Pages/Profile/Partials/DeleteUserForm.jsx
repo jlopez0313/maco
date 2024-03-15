@@ -64,11 +64,11 @@ export default function DeleteUserForm({ className = '' }) {
 
                     <p className="mt-1 text-sm text-gray-600">
                         Una vez tu cuenta ha sido eliminada, toda tu información relacionada será eliminada. Por favor
-                        ingresa tu password actual para eliminar tu cuenta.
+                        ingresa tu contraseña actual para eliminar tu cuenta.
                     </p>
 
                     <div className="mt-6">
-                        <InputLabel htmlFor="password" value="Password" className="sr-only" />
+                        <InputLabel htmlFor="password" value="Contraseña" className="sr-only" />
 
                         <TextInput
                             id="password"

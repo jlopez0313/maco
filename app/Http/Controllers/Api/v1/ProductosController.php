@@ -18,8 +18,6 @@ class ProductosController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
-        $data['updated_by'] = \Auth::user()->id;
-
         $producto = Productos::create( $data );
         return new ProductosResource( $producto );
     }
@@ -37,7 +35,6 @@ class ProductosController extends Controller
      */
     public function update(Request $request, Productos $producto)
     {
-        $producto->updated_by = \Auth::user()->id;
         $producto->update( $request->all() );
         return new ProductosResource( $producto );
     }

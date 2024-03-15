@@ -39,7 +39,7 @@ export default function UpdatePasswordForm({ className = '' }) {
     return (
         <section className={className}>
             <header>
-                <h2 className="text-lg font-medium text-gray-900">Actualizar Password</h2>
+                <h2 className="text-lg font-medium text-gray-900">Actualizar Contraseña</h2>
 
                 <p className="mt-1 text-sm text-gray-600">
                     Asegurate de que tu cuenta esté usando una contraseña segura.
@@ -48,7 +48,7 @@ export default function UpdatePasswordForm({ className = '' }) {
 
             <form onSubmit={updatePassword} className="mt-6 space-y-6">
                 <div>
-                    <InputLabel htmlFor="current_password" value="Password Actual" />
+                    <InputLabel htmlFor="current_password" value="Contraseña Actual" />
 
                     <TextInput
                         id="current_password"
@@ -64,7 +64,7 @@ export default function UpdatePasswordForm({ className = '' }) {
                 </div>
 
                 <div>
-                    <InputLabel htmlFor="password" value="Nueva Password" />
+                    <InputLabel htmlFor="password" value="Nueva Contraseña" />
 
                     <TextInput
                         id="password"
@@ -80,7 +80,7 @@ export default function UpdatePasswordForm({ className = '' }) {
                 </div>
 
                 <div>
-                    <InputLabel htmlFor="password_confirmation" value="Confirmar Nueva Password" />
+                    <InputLabel htmlFor="password_confirmation" value="Confirmar Nueva Contraseña" />
 
                     <TextInput
                         id="password_confirmation"

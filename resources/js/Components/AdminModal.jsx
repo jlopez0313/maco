@@ -5,13 +5,15 @@ import InputLabel from "@/Components/Form/InputLabel";
 import TextInput from "@/Components/Form/TextInput";
 import Modal from "@/Components/Modal";
 import { useForm } from "@inertiajs/react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
-export const AdminModal = ({ show, setIsOpen, onConfirm }) => {
+export const AdminModal = ({ title, show, setIsOpen, onConfirm }) => {
 
     const { data, setData, processing, errors, reset } = useForm({
         password: '',
     });
+
+    const [action, setAction] = useState('');
 
     const submit = async (e) => {
         e.preventDefault();
@@ -24,8 +26,23 @@ export const AdminModal = ({ show, setIsOpen, onConfirm }) => {
         setIsOpen(false)
     }
 
+    const onSetAction = () => {
+        switch( title ) {
+            case 'edit':
+                setAction('Modificar')
+            break;
+            case 'trash':
+                setAction('Eliminar')
+            break;
+        }
+    }
+
+    useEffect( () => {
+        onSetAction()
+    })
+
     return (
-        <Modal show={show} closeable={true} title="Admin Password">
+        <Modal show={show} closeable={true} title={`${action} registro`}>
             <div className="pb-12 pt-6">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <form onSubmit={submit}>

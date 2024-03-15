@@ -8,7 +8,7 @@ import { useForm } from "@inertiajs/react";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-export const Form = ({ id, payments, tipoClientes, departamentos, setIsOpen, onSearch }) => {
+export const Form = ({ id, auth, payments, tipoClientes, departamentos, setIsOpen, onSearch }) => {
 
     const [ciudades, setCiudades] = useState([]);
 
@@ -18,6 +18,7 @@ export const Form = ({ id, payments, tipoClientes, departamentos, setIsOpen, onS
 
 
     const { data, setData, processing, errors, reset } = useForm({
+        updated_by: auth.user.id,
         clientes_id: '',
         documento: '',
         nombre: '',

@@ -135,7 +135,7 @@ export default ({ auth, medidas }) => {
                 />
             </Modal>
 
-            <AdminModal show={adminModal} setIsOpen={setAdminModal} onConfirm={onConfirm}></AdminModal>
+            <AdminModal title={ action } show={adminModal} setIsOpen={setAdminModal} onConfirm={onConfirm}></AdminModal>
 
         </AuthenticatedLayout>
     );

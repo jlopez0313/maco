@@ -83,6 +83,7 @@ Route::prefix('proveedores')->group( function() {
 
 Route::prefix('remisiones')->group( function() {
     Route::get('/', [FacturasController::class, 'index'])->name('remisiones');
+    Route::get('/show/{id}', [FacturasController::class, 'show'])->name('remisiones.show');
     Route::get('/edit/{id}', [FacturasController::class, 'edit'])->name('remisiones.edit');
     
 })->middleware(['auth', 'verified']);

@@ -59,7 +59,7 @@ export default ({ auth, tipoClientes, contacts, departments, payments }) => {
     const onConfirm = async ({ data }) => {
         if ( action == 'edit' ) {
             setAdminModal( false )
-            onSearch( id )
+            onEdit( id )
         } else {
             onTrash(data)
         }
@@ -85,8 +85,12 @@ export default ({ auth, tipoClientes, contacts, departments, payments }) => {
         router.visit(window.location.pathname);
     }
 
-    const onSearch = (id) => {
+    const onEdit = (id) => {
         router.get( `remisiones/edit/${ id }` )
+    }
+
+    const onSearch = (id) => {
+        router.get( `remisiones/show/${ id }` )
     }
 
     useEffect(()=> {
@@ -120,9 +124,10 @@ export default ({ auth, tipoClientes, contacts, departments, payments }) => {
                             data={list}
                             links={links}
                             onSearch={ (evt) => onSearch(evt) }
+                            onEdit={ (evt) => onSetAdminModal(evt, 'edit') }
                             onTrash={ (evt) => onSetAdminModal(evt, 'trash') }
                             titles={titles}
-                            actions={["search", "trash"]}
+                            actions={["search", "edit", "trash"]}
                         />
                     </div>
 
@@ -132,6 +137,7 @@ export default ({ auth, tipoClientes, contacts, departments, payments }) => {
 
             <Modal show={show} closeable={true} title="Registrar Órden">
                 <Form
+                    auth={auth}
                     departamentos={departamentos}
                     medidas={[]}
                     origenes={[]}
@@ -143,7 +149,7 @@ export default ({ auth, tipoClientes, contacts, departments, payments }) => {
                 />
             </Modal>
 
-            <AdminModal show={adminModal} setIsOpen={setAdminModal} onConfirm={onConfirm}></AdminModal>
+            <AdminModal title={ action } show={adminModal} setIsOpen={setAdminModal} onConfirm={onConfirm}></AdminModal>
 
         </AuthenticatedLayout>
     );

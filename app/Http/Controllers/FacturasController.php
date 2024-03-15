@@ -60,7 +60,10 @@ class FacturasController extends Controller
      */
     public function show(string $id)
     {
-        //
+        return Inertia::render('Facturas/Show', [
+            'factura' => Facturas::with('detalles.producto.inventario', 'detalles.producto.color', 'detalles.producto.medida', 'cliente')
+                ->find( $id )
+        ]);
     }
 
     /**

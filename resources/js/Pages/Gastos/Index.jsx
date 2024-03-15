@@ -127,6 +127,7 @@ export default ({ auth, contacts, clientes, conceptos, origenes }) => {
             </div>
             <Modal show={show} closeable={true} title="Crear Gastos">
                 <Form
+                    auth={auth}
                     clientes={clientes}
                     conceptos={conceptos}
                     origenes={origenes}
@@ -136,7 +137,7 @@ export default ({ auth, contacts, clientes, conceptos, origenes }) => {
                 />
             </Modal>
 
-            <AdminModal show={adminModal} setIsOpen={setAdminModal} onConfirm={onConfirm}></AdminModal>
+            <AdminModal title={ action } show={adminModal} setIsOpen={setAdminModal} onConfirm={onConfirm}></AdminModal>
 
         </AuthenticatedLayout>
     );

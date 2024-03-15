@@ -18,8 +18,6 @@ class InventariosController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
-        $data['updated_by'] = \Auth::user()->id;
-
         $inventario = Inventarios::create( $data );
         return new InventariosResource( $inventario );
     }
@@ -37,7 +35,6 @@ class InventariosController extends Controller
      */
     public function update(Request $request, Inventarios $inventario)
     {
-        $inventario->updated_by = \Auth::user()->id;
         $inventario->update( $request->all() );
         return new InventariosResource( $inventario );
     }

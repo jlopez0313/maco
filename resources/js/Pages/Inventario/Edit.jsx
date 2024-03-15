@@ -14,7 +14,6 @@ import { AdminModal } from "@/Components/AdminModal";
 
 export default ({ auth, inventario, contacts, colores, medidas }) => {
 
-    
     const {
         data,
         meta: { links },
@@ -137,6 +136,7 @@ export default ({ auth, inventario, contacts, colores, medidas }) => {
 
             <Modal show={show} closeable={true} title="Crear Referencia">
                 <Form
+                    auth={auth}
                     inventario={inventario}
                     colores={coloresLst}
                     medidas={medidasLst}
@@ -146,7 +146,7 @@ export default ({ auth, inventario, contacts, colores, medidas }) => {
                 />
             </Modal>
 
-            <AdminModal show={adminModal} setIsOpen={setAdminModal} onConfirm={onConfirm}></AdminModal>
+            <AdminModal title={ action } show={adminModal} setIsOpen={setAdminModal} onConfirm={onConfirm}></AdminModal>
 
         </AuthenticatedLayout>
     );

@@ -126,6 +126,7 @@ export default ({ auth, contacts, origenes, departamentos }) => {
 
             <Modal show={show} closeable={true} title="Registrar Inventario">
                 <Form
+                    auth={auth}
                     departamentos={[]}
                     origenes={origenes}
                     setIsOpen={onToggleModal}        
@@ -134,7 +135,7 @@ export default ({ auth, contacts, origenes, departamentos }) => {
                 />
             </Modal>
 
-            <AdminModal show={adminModal} setIsOpen={setAdminModal} onConfirm={onConfirm}></AdminModal>
+            <AdminModal title={ action } show={adminModal} setIsOpen={setAdminModal} onConfirm={onConfirm}></AdminModal>
 
         </AuthenticatedLayout>
     );

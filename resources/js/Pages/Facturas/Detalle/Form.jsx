@@ -9,7 +9,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Icon from "@/Components/Icon";
 
-export const Form = ({ id, factura, setIsOpen, onReload }) => {
+export const Form = ({ id, auth, factura, setIsOpen, onReload }) => {
 
     const { data, setData, processing, errors, reset } = useForm({
         facturas_id: factura.id, 
@@ -98,7 +98,7 @@ export const Form = ({ id, factura, setIsOpen, onReload }) => {
                             <div className="grid grid-cols-12 gap-4">
                                 <TextInput
                                     id="referencia"
-                                    type="number"
+                                    type="text"
                                     name="referencia"
                                     value={data.referencia}
                                     className="mt-1 block w-full col-start-1 col-span-10"

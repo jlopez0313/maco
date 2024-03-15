@@ -18,8 +18,6 @@ class GastosController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
-        $data['updated_by'] = \Auth::user()->id;
-
         $gasto = Gastos::create( $data );
         return new GastosResource( $gasto );
     }
@@ -37,7 +35,6 @@ class GastosController extends Controller
      */
     public function update(Request $request, Gastos $gasto)
     {
-        $gasto->updated_by = \Auth::user()->id;
         $gasto->update( $request->all() );
         return new GastosResource( $gasto );
     }

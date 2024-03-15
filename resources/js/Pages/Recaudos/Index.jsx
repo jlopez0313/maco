@@ -29,7 +29,7 @@ export default ({ auth, contacts }) => {
             return {
                 'id': item.id,
                 'Ord. Compra': item.id,
-                'valor': item.valor,
+                'valor': item.valor || 0,
                 'saldo': item.valor - item.cobros,
                 'fecha': item.created_at,
             }

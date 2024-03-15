@@ -18,7 +18,6 @@ class ClientesController extends Controller
     public function store(Request $request)
     {
         $data = $request->except(['depto', 'tipo', 'ciudad']);
-        $data['updated_by'] = \Auth::user()->id;
         $data['tipo_id'] = $request->tipo;
         $data['ciudad_id'] = $request->ciudad;
 
@@ -41,7 +40,6 @@ class ClientesController extends Controller
     public function update(Request $request, Clientes $cliente)
     {
         $data = $request->except(['depto', 'tipo', 'ciudad']);
-        $data['updated_by'] = \Auth::user()->id;
         $data['tipo_id'] = $request->tipo;
         $data['ciudad_id'] = $request->ciudad;
 

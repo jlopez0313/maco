@@ -9,9 +9,10 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Icon from "@/Components/Icon";
 
-export const Form = ({ id, factura, setIsOpen, onReload }) => {
+export const Form = ({ id, auth, factura, setIsOpen, onReload }) => {
 
     const { data, setData, processing, errors, reset } = useForm({
+        updated_by: auth.user.id,
         facturas_id: factura.id, 
         valor: '',
         descripcion: '',
