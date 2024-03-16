@@ -14,7 +14,7 @@ export const Form = ({ id, auth, origenes, setIsOpen, onEdit }) => {
 
 
     const { data, setData, processing, errors, reset } = useForm({
-        updated_by: auth.user.ud,
+        updated_by: auth.user.id,
         articulo: '',
         origen: '',
     });
@@ -40,6 +40,7 @@ export const Form = ({ id, auth, origenes, setIsOpen, onEdit }) => {
 
         setData(
             {
+                updated_by: auth.user.id,
                 articulo: item.articulo,
                 origen: item.origen,
             }

@@ -17,6 +17,7 @@ class FacturasController extends Controller
      */
     public function store(Request $request)
     {
+        $data['updated_by'] = $request->updated_by;
         $data['clientes_id'] = $request->clientes_id;
         $data['tipo_pago'] = $request->tipo_pago;
         $data['valor'] = 0;
