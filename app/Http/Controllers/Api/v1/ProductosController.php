@@ -49,8 +49,7 @@ class ProductosController extends Controller
     }
 
     public function byReferencia( $referencia ) {
-        $producto = Productos::with('inventario')
-        ->where('referencia', $referencia)
+        $producto = Productos::where('referencia', 'LIKE', $referencia.'%' )
         ->first();
 
         return new ProductosResource(

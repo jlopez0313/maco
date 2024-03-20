@@ -14,6 +14,10 @@ class Facturas extends Model
     protected $table = 'facturas';
     protected $guarded = [];
 
+    protected $casts = [
+        'created_at' => 'datetime:Y-m-d H:i A',
+    ];
+    
     public function cliente() {
         return $this->hasOne(Clientes::class, 'id', 'clientes_id');
     }
@@ -36,8 +40,11 @@ class Facturas extends Model
     }
 
     public function getCreatedAtAttribute( $date ) {
-        return $date;
-        // return \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $date)->format('Y-m-d H:i:s');
+        return \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $date)->format('Y-m-d H:i:s');
+    }
+
+    protected function serializeDate($date): string {
+        return $date->format('Y-m-d H:i:s');
     }
     
 }

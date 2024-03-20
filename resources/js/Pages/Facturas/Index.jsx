@@ -144,7 +144,7 @@ export default ({ auth, tipoClientes, contacts, departments, payments }) => {
                     tipoClientes={tipoClientes}
                     payments={payments}
                     setIsOpen={onToggleModal}        
-                    onSearch={onSearch}
+                    onEdit={onEdit}
                     id={id}
                 />
             </Modal>

@@ -8,7 +8,7 @@ import { useForm } from "@inertiajs/react";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-export const Form = ({ id, auth, payments, tipoClientes, departamentos, setIsOpen, onSearch }) => {
+export const Form = ({ id, auth, payments, tipoClientes, departamentos, setIsOpen, onEdit }) => {
 
     const [ciudades, setCiudades] = useState([]);
 
@@ -41,7 +41,7 @@ export const Form = ({ id, auth, payments, tipoClientes, departamentos, setIsOpe
             resp = await axios.post(`/api/v1/facturas`, data);
         }
 
-        onSearch( id || resp.data?.data?.id);
+        onEdit( id || resp.data?.data?.id);
     };
 
     const onGetItem = async () => {

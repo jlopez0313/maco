@@ -20,11 +20,11 @@ class Productos extends Model
     }
 
     public function color() {
-        return $this->hasOne(Colores::class, 'id', 'medidas_id');
+        return $this->hasOne(Colores::class, 'id', 'colores_id');
     }
 
     public function medida() {
-        return $this->hasOne(Medidas::class, 'id', 'colores_id');
+        return $this->hasOne(Medidas::class, 'id', 'medidas_id');
     }
 
     public function detalles() {
