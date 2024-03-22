@@ -152,6 +152,7 @@ export const Form = ({ id, auth, clientes, conceptos, origenes, setIsOpen, onRel
                             <InputLabel htmlFor="valor" value="Valor" />
 
                             <TextInput
+                               placeholder="Escriba aquí"
                                 id="valor"
                                 type="number"
                                 name="valor"

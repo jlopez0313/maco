@@ -34,47 +34,65 @@ export const Form = ({ id, auth, factura, setIsOpen, onReload }) => {
 
     const onGetItem = async () => {
 
-        const { data } = await axios.get(`/api/v1/productos/${id}`);
-        const item = { ...data.data }
+        const { data: info } = await axios.get(`/api/v1/detalles/${id}`);
+        const item = { ...info.data }
 
-        setData(
-            {                
+        await setData(
+            {
                 facturas_id: factura.id, 
-                referencia: item.referencia,
-                medidas_id: item.medida?.id || '',
-                colores_id: item.color?.id || '',
+                referencia: item.producto?.referencia,
+                productos_id: item.producto?.id || '',
                 cantidad: item.cantidad,
-                precio: item.precio,
+                precio_venta: item.precio_venta,
             }
         )
+
+        console.log( 'data1', data, item );
+
+        onSearch( item.producto?.referencia, false )
     }
 
-    const onSearch = async () => {
-        const { data: producto } = await axios.get(`/api/v1/productos/referencia/${data.referencia}`);
-        const item = { ...producto.data }
+    const onSearch = async ( ref, set = true ) => {
+        if ( ref )  {
+            const { data: producto } = await axios.get(`/api/v1/productos/referencia/${ref}`);
+            const item = { ...producto.data }
 
-        setProducto(
-            {                
-                id: item.id || '', 
-                articulo: item.inventario?.articulo || '', 
-                origen: item.inventario?.origenLabel || '', 
-                cantidad: item.cantidad || '', 
-                medida: item.medida?.medida || '', 
-                color: item.color?.color || '', 
-            }
-        )
+            if ( item )  {
 
-        setData(
-            {                
-                ...data,
-                productos_id: item.id || '',
+                const vendidos = factura.detalles.filter( prod => prod.producto?.id === item.id)
+
+                const suma = vendidos.reduce( (suma, prod) => {
+                    return suma  + prod.cantidad
+                }, 0)
+
+                setProducto(
+                    {                
+                        id: item.id || '', 
+                        articulo: item.inventario?.articulo || '', 
+                        origen: item.inventario?.origenLabel || '', 
+                        cantidad: (item.cantidad - suma) || 0, 
+                        medida: item.medida?.medida || '', 
+                        color: item.color?.color || '', 
+                    }
+                )
+
+                set && setData(
+                    {                
+                        ...data,
+                        productos_id: item.id || '',
+                    }
+                )
+            } else {
+                reset()
             }
-        )
+        } else {
+            reset()
+        }
     }
 
     const onCheckCantidad = (e) => {
         if (e.target.value > producto.cantidad)  {
-            alert('cantidad no disonible')
+            alert('cantidad no disponible')
         } else {
             setData("cantidad", e.target.value);
         }
@@ -82,7 +100,7 @@ export const Form = ({ id, auth, factura, setIsOpen, onReload }) => {
     }
 
     useEffect( () => {
-        id && onGetItem()
+        id && onGetItem();
     }, [])
 
     return (
@@ -97,6 +115,7 @@ export const Form = ({ id, auth, factura, setIsOpen, onReload }) => {
 
                             <div className="grid grid-cols-12 gap-4">
                                 <TextInput
+                                    placeholder="Escriba aquí"
                                     id="referencia"
                                     type="text"
                                     name="referencia"
@@ -106,13 +125,12 @@ export const Form = ({ id, auth, factura, setIsOpen, onReload }) => {
                                     onChange={(e) =>
                                         setData("referencia", e.target.value)
                                     }
+                                    onBlur={(e) => onSearch(e.target.value)}
                                 />
                                 
                                 <Icon
                                     name="search"
-                                    role="button"
                                     className="self-center col-start-11 col-span-2 block w-6 h-6 "
-                                    onClick={onSearch}
                                 />
                             </div>
 
@@ -201,6 +219,7 @@ export const Form = ({ id, auth, factura, setIsOpen, onReload }) => {
                             <InputLabel htmlFor="cantidad" value="Cantidad a Vender" />
 
                             <TextInput
+                                placeholder="Escriba aquí"
                                 id="cantidad"
                                 type="number"
                                 name="cantidad"
@@ -223,6 +242,7 @@ export const Form = ({ id, auth, factura, setIsOpen, onReload }) => {
                             <InputLabel htmlFor="precio_venta" value="Precio de Venta" />
 
                             <TextInput
+                                placeholder="Escriba aquí"
                                 id="precio_venta"
                                 type="number"
                                 name="precio_venta"
@@ -262,6 +282,7 @@ export const Form = ({ id, auth, factura, setIsOpen, onReload }) => {
                     </div>
 
                     <TextInput
+                               placeholder="Escriba aquí"
                         id="facturas_id"
                         type="hidden"
                         name="facturas_id"

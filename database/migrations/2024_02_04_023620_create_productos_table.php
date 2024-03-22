@@ -25,7 +25,7 @@ return new class extends Migration
             $table->unsignedBigInteger('medidas_id')->nullable();
             $table->foreign('medidas_id')->references('id')->on('medidas');
 
-            $table->string('referencia');
+            $table->string('referencia')->unique();
             $table->integer('cantidad');
             $table->integer('precio');
 

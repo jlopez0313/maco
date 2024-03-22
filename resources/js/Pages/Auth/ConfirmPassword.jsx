@@ -36,6 +36,7 @@ export default function ConfirmPassword() {
                     <InputLabel htmlFor="password" value="Contraseña" />
 
                     <TextInput
+                               placeholder="Escriba aquí"
                         id="password"
                         type="password"
                         name="password"

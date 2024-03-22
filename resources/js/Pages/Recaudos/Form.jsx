@@ -9,7 +9,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Icon from "@/Components/Icon";
 
-export const Form = ({ id, auth, factura, setIsOpen, onReload }) => {
+export const Form = ({ id, auth, factura, sum, saldo, setIsOpen, onReload }) => {
 
     const { data, setData, processing, errors, reset } = useForm({
         updated_by: auth.user.id,
@@ -32,12 +32,11 @@ export const Form = ({ id, auth, factura, setIsOpen, onReload }) => {
     };
 
     const onCheckCantidad = (e) => {
-        if (e.target.value > producto.cantidad)  {
-            alert('cantidad no disonible')
+        if (e.target.value > saldo)  {
+            alert('Saldo debe ser menor a ' + saldo)
         } else {
-            setData("cantidad", e.target.value);
+            setData("valor", e.target.value)
         }
-
     }
 
     useEffect( () => {
@@ -55,15 +54,14 @@ export const Form = ({ id, auth, factura, setIsOpen, onReload }) => {
                             <InputLabel htmlFor="valor" value="Valor" />
 
                             <TextInput
+                               placeholder="Escriba aquí"
                                 id="valor"
                                 type="number"
                                 name="valor"
                                 value={data.valor}
                                 className="mt-1 block w-full col-start-1 col-span-10"
                                 autoComplete="valor"
-                                onChange={(e) =>
-                                    setData("valor", e.target.value)
-                                }
+                                onChange={onCheckCantidad}
                             />
 
                             <InputError
@@ -76,6 +74,7 @@ export const Form = ({ id, auth, factura, setIsOpen, onReload }) => {
                             <InputLabel htmlFor="descripcion" value="Descripción" />
 
                             <TextInput
+                               placeholder="Escriba aquí"
                                 id="descripcion"
                                 type="text"
                                 name="descripcion"
@@ -114,6 +113,7 @@ export const Form = ({ id, auth, factura, setIsOpen, onReload }) => {
                     </div>
 
                     <TextInput
+                               placeholder="Escriba aquí"
                         id="facturas_id"
                         type="hidden"
                         name="facturas_id"

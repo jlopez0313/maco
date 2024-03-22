@@ -35,6 +35,7 @@ export default function ResetPassword({ token, email }) {
                     <InputLabel htmlFor="email" value="Email" />
 
                     <TextInput
+                               placeholder="Escriba aquí"
                         id="email"
                         type="email"
                         name="email"
@@ -51,6 +52,7 @@ export default function ResetPassword({ token, email }) {
                     <InputLabel htmlFor="password" value="Contraseña" />
 
                     <TextInput
+                               placeholder="Escriba aquí"
                         id="password"
                         type="password"
                         name="password"
@@ -68,6 +70,7 @@ export default function ResetPassword({ token, email }) {
                     <InputLabel htmlFor="password_confirmation" value="Confirmar Contraseña" />
 
                     <TextInput
+                               placeholder="Escriba aquí"
                         type="password"
                         name="password_confirmation"
                         value={data.password_confirmation}

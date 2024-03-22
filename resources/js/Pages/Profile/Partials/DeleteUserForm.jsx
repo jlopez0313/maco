@@ -71,6 +71,7 @@ export default function DeleteUserForm({ className = '' }) {
                         <InputLabel htmlFor="password" value="Contraseña" className="sr-only" />
 
                         <TextInput
+                               placeholder="Escriba aquí"
                             id="password"
                             type="password"
                             name="password"

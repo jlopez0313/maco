@@ -28,6 +28,7 @@ class DetallesController extends Controller
      */
     public function show(Detalles $detalle)
     {
+        $detalle->load('producto.color', 'producto.medida');
         return new DetallesResource( $detalle );
     }
 

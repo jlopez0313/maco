@@ -51,6 +51,7 @@ export default function UpdatePasswordForm({ className = '' }) {
                     <InputLabel htmlFor="current_password" value="Contraseña Actual" />
 
                     <TextInput
+                               placeholder="Escriba aquí"
                         id="current_password"
                         ref={currentPasswordInput}
                         value={data.current_password}
@@ -67,6 +68,7 @@ export default function UpdatePasswordForm({ className = '' }) {
                     <InputLabel htmlFor="password" value="Nueva Contraseña" />
 
                     <TextInput
+                               placeholder="Escriba aquí"
                         id="password"
                         ref={passwordInput}
                         value={data.password}
@@ -83,6 +85,7 @@ export default function UpdatePasswordForm({ className = '' }) {
                     <InputLabel htmlFor="password_confirmation" value="Confirmar Nueva Contraseña" />
 
                     <TextInput
+                               placeholder="Escriba aquí"
                         id="password_confirmation"
                         value={data.password_confirmation}
                         onChange={(e) => setData('password_confirmation', e.target.value)}

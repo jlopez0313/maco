@@ -28,7 +28,8 @@ export default ({ data = [], routes = {}, titles = [], actions = [], onTrash, on
                             Object.keys( item ).map((key, idx) => {
                                 if ( 
                                     key == 'id' ||
-                                    key == 'ruta'
+                                    key == 'ruta' ||
+                                    key == 'estado' 
                                 ) return;
                                 return <td className="border-t" key={ key }>
                                     <a
@@ -53,7 +54,7 @@ export default ({ data = [], routes = {}, titles = [], actions = [], onTrash, on
                                 actions.map( (action, key) => {
                                     if (action === 'trash') {
                                         return <ActionsTable key={key} action={action} onClick={() => onTrash(item.id)}/>
-                                    } else if( action === 'edit' ) {
+                                    } else if( action === 'edit' && (!item.estado || item.estado != 'C' ) ) {
                                         return <ActionsTable key={key} action={action} onClick={() => onEdit(item.id)}/>                                    
                                     } else if( action === 'search' ) {
                                         return <ActionsTable key={key} action={action} onClick={() => onSearch(item.id)}/>                                    

@@ -46,5 +46,18 @@ class Facturas extends Model
     protected function serializeDate($date): string {
         return $date->format('Y-m-d H:i:s');
     }
+
+    public function getEstadoLabelAttribute() {
+
+        // if ( isset($this->attributes['estado']) && $this->attributes['estado'] ) {
+            $lista = config('constants.estados-facturas');
+            $origenObj = \Arr::first($lista, function($val, $key) {
+                return $val['key'] == $this->estado;
+            });
+            
+            return $origenObj['valor'] ?? 'N/A';
+        // }
+        
+    }
     
 }

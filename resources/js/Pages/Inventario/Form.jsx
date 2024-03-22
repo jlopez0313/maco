@@ -60,6 +60,7 @@ export const Form = ({ id, auth, origenes, setIsOpen, onEdit }) => {
                             <InputLabel htmlFor="articulo" value="Artículo" />
 
                             <TextInput
+placeholder="Escriba aquí"
                                 id="articulo"
                                 type="text"
                                 name="articulo"

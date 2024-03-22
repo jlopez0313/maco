@@ -22,6 +22,8 @@ return new class extends Migration
 
             $table->bigInteger('valor');
             $table->char('tipo_pago', 2);
+            
+            $table->char('estado', 1);
 
             $table->timestamps();
             $table->softDeletes();

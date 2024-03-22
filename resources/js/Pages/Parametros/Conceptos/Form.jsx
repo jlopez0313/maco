@@ -51,6 +51,7 @@ export const Form = ({ id, setIsOpen, onReload }) => {
                             <InputLabel htmlFor="concepto" value="Concepto" />
 
                             <TextInput
+placeholder="Escriba aquí"
                                 id="concepto"
                                 type="text"
                                 name="concepto"

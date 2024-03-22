@@ -35,6 +35,7 @@ export default function Register() {
                     <InputLabel htmlFor="name" value="Name" />
 
                     <TextInput
+                               placeholder="Escriba aquí"
                         id="name"
                         name="name"
                         value={data.name}
@@ -52,6 +53,7 @@ export default function Register() {
                     <InputLabel htmlFor="email" value="Email" />
 
                     <TextInput
+                               placeholder="Escriba aquí"
                         id="email"
                         type="email"
                         name="email"
@@ -69,6 +71,7 @@ export default function Register() {
                     <InputLabel htmlFor="password" value="Password" />
 
                     <TextInput
+                               placeholder="Escriba aquí"
                         id="password"
                         type="password"
                         name="password"
@@ -86,6 +89,7 @@ export default function Register() {
                     <InputLabel htmlFor="password_confirmation" value="Confirm Password" />
 
                     <TextInput
+                               placeholder="Escriba aquí"
                         id="password_confirmation"
                         type="password"
                         name="password_confirmation"

@@ -120,6 +120,7 @@ export const Form = ({ auth, id, inventario, colores, medidas, setIsOpen, onRelo
                             <InputLabel htmlFor="referencia" value="Referencia" />
 
                             <TextInput
+placeholder="Escriba aquí"
                                 id="referencia"
                                 type="text"
                                 name="referencia"
@@ -141,6 +142,7 @@ export const Form = ({ auth, id, inventario, colores, medidas, setIsOpen, onRelo
                             <InputLabel htmlFor="cantidad" value="Cantidad" />
 
                             <TextInput
+placeholder="Escriba aquí"
                                 id="cantidad"
                                 type="number"
                                 name="cantidad"
@@ -162,6 +164,7 @@ export const Form = ({ auth, id, inventario, colores, medidas, setIsOpen, onRelo
                             <InputLabel htmlFor="precio" value="Precio de Costo" />
 
                             <TextInput
+placeholder="Escriba aquí"
                                 id="precio"
                                 type="number"
                                 name="precio"
@@ -200,6 +203,7 @@ export const Form = ({ auth, id, inventario, colores, medidas, setIsOpen, onRelo
                     </div>
 
                     <TextInput
+placeholder="Escriba aquí"
                         id="inventarios_id"
                         type="hidden"
                         name="inventarios_id"

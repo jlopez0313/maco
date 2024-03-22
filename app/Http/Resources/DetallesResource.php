@@ -21,7 +21,7 @@ class DetallesResource extends JsonResource
         return [
             'id' => $this->id,
             'facturas_id' => $this->facturas_id,
-            'productos_id' => $this->productos_id,
+            'producto' => $this->producto,
             'precio_venta' => $this->precio_venta,
             'cantidad' => $this->cantidad,
         ];

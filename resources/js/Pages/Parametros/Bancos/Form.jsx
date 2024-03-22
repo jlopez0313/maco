@@ -53,6 +53,7 @@ export const Form = ({ id, setIsOpen, onReload }) => {
                             <InputLabel htmlFor="banco" value="Banco" />
 
                             <TextInput
+placeholder="Escriba aquí"
                                 id="banco"
                                 type="text"
                                 name="banco"
@@ -75,6 +76,7 @@ export const Form = ({ id, setIsOpen, onReload }) => {
                             <InputLabel htmlFor="valor" value="Valor" />
 
                             <TextInput
+placeholder="Escriba aquí"
                                 id="valor"
                                 type="number"
                                 name="valor"

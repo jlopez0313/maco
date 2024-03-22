@@ -70,6 +70,37 @@ export default ({ auth, factura }) => {
         router.visit(window.location.pathname);
     }
 
+    const goToPDF = () => {
+        window.location.href = '/remisiones/pdf/' + factura.id;
+    }
+
+    const goToQR = () => {
+        const dualScreenLeft = window.screenLeft !==  undefined ? window.screenLeft : window.screenX;
+        const dualScreenTop = window.screenTop !==  undefined   ? window.screenTop  : window.screenY;
+
+        const width = window.innerWidth ? window.innerWidth : document.documentElement.clientWidth ? document.documentElement.clientWidth : screen.width;
+        const height = window.innerHeight ? window.innerHeight : document.documentElement.clientHeight ? document.documentElement.clientHeight : screen.height;
+
+        const systemZoom = width / window.screen.availWidth;
+        const left = (width - 700) / 2 / systemZoom + dualScreenLeft
+        const top = (height - 500) / 2 / systemZoom + dualScreenTop
+
+        window.open(
+            '/remisiones/qr/' + factura.id,
+            "ModalPopUp",
+            "toolbar=no," +
+            "scrollbars=no," +
+            "location=yes," +
+            "statusbar=no," +
+            "menubar=no," +
+            "resizable=0," +
+            "width=750," +
+            "height=750," +
+            "left=" + left + "," +
+            "top=" + top + ""    
+        );
+    }
+
     const onSetList = () => {
         const _list = data.map((item) => {
             return {
@@ -174,6 +205,24 @@ export default ({ auth, factura }) => {
                             actions={[]}
                         />
                     </div>
+                    
+                    <div className="flex items-center justify-end mt-4 mb-4">
+                        <PrimaryButton
+                            className="ms-4 me-3"
+                            onClick={goToPDF}
+                        >
+                            PDF
+                        </PrimaryButton>
+
+                        <PrimaryButton
+                            className="ms-4"
+                            onClick={goToQR}
+                        >
+                            QR
+                        </PrimaryButton>
+
+                    </div>
+
                 </div>
             </div>
             

@@ -166,24 +166,29 @@ export default ({ auth, factura }) => {
                 </div>
 
 
+                {
+                    factura.estado != 'C' && 
+                        <div className="flex items-center justify-end mt-4 mb-4">
+                            <PrimaryButton
+                                className="ms-4"
+                                onClick={() => onToggleModal(true)}
+                            >
+                                Agregar
+                            </PrimaryButton>
+                        </div>
+                }
 
-                    <div className="flex items-center justify-end mt-4 mb-4">
-                        <PrimaryButton
-                            className="ms-4"
-                            onClick={() => onToggleModal(true)}
-                        >
-                            Agregar
-                        </PrimaryButton>
-                    </div>
-
-                    <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                    <div className="bg-white overflow-auto shadow-sm sm:rounded-lg">
                         <Table
                             data={list}
                             links={[]}
                             onEdit={ (evt) => onSetAdminModal(evt, 'edit') }
                             onTrash={ (evt) => onSetAdminModal(evt, 'trash') }
                             titles={titles}
-                            actions={[]}
+                            actions={[
+                                factura.estado != 'C' ? 'edit' : '',
+                                factura.estado != 'C' ? 'trash' : '',
+                            ]}
                         />
                     </div>
                 </div>

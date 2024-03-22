@@ -118,6 +118,7 @@ export const Form = ({ id, auth, tipos_doc, tipoClientes, departamentos, setIsOp
                             <InputLabel htmlFor="documento" value="Documento" />
 
                             <TextInput
+                                placeholder="Escriba aquí"
                                 id="documento"
                                 type="number"
                                 name="documento"
@@ -140,6 +141,7 @@ export const Form = ({ id, auth, tipos_doc, tipoClientes, departamentos, setIsOp
                             <InputLabel htmlFor="nombre" value="Nombre" />
 
                             <TextInput
+                               placeholder="Escriba aquí"
                                 id="nombre"
                                 type="text"
                                 name="nombre"
@@ -240,6 +242,7 @@ export const Form = ({ id, auth, tipos_doc, tipoClientes, departamentos, setIsOp
                             <InputLabel htmlFor="direccion" value="Dirección" />
 
                             <TextInput
+                               placeholder="Escriba aquí"
                                 id="direccion"
                                 type="text"
                                 name="direccion"
@@ -261,6 +264,7 @@ export const Form = ({ id, auth, tipos_doc, tipoClientes, departamentos, setIsOp
                             <InputLabel htmlFor="celular" value="Celular" />
 
                             <TextInput
+                               placeholder="Escriba aquí"
                                 id="celular"
                                 type="number"
                                 name="celular"

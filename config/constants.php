@@ -34,4 +34,16 @@ return [
             'valor' => 'Contado'
         ],
     ],
+
+    'estados-facturas' => [
+        [
+            'key' => 'A',
+            'valor' => 'Abierta'
+        ],
+        
+        [
+            'key' => 'C',
+            'valor' => 'Cerrada'
+        ],
+    ]
 ];

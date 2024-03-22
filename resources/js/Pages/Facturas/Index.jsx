@@ -27,7 +27,8 @@ export default ({ auth, tipoClientes, contacts, departments, payments }) => {
         'Fecha de Creación',
         'Código',
         'Cliente',
-        'Forma de Pago'
+        'Forma de Pago',
+        'Estado'
     ]
 
     const [action, setAction] = useState( '' );
@@ -43,7 +44,9 @@ export default ({ auth, tipoClientes, contacts, departments, payments }) => {
                 fecha: item.created_at,
                 codigo: item.id,
                 cliente: item.cliente?.nombre || '',
-                payment: item.forma_pago || ''
+                payment: item.forma_pago || '',
+                estado_label: item.estado_label || '',
+                estado: item.estado || ''
             }
         })
 
@@ -119,7 +122,7 @@ export default ({ auth, tipoClientes, contacts, departments, payments }) => {
                         </PrimaryButton>
                     </div>
 
-                    <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                    <div className="bg-white overflow-auto shadow-sm sm:rounded-lg">
                         <Table 
                             data={list}
                             links={links}
@@ -127,7 +130,11 @@ export default ({ auth, tipoClientes, contacts, departments, payments }) => {
                             onEdit={ (evt) => onSetAdminModal(evt, 'edit') }
                             onTrash={ (evt) => onSetAdminModal(evt, 'trash') }
                             titles={titles}
-                            actions={["search", "edit", "trash"]}
+                            actions={[
+                                "search",
+                                "edit",
+                                "trash"
+                            ]}
                         />
                     </div>
 

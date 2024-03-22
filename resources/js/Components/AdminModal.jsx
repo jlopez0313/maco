@@ -51,6 +51,7 @@ export const AdminModal = ({ title, show, setIsOpen, onConfirm }) => {
                                 <InputLabel htmlFor="tipo" value="Admin Password" />
 
                                 <TextInput
+placeholder="Escriba aquí"
                                     id="tipo"
                                     type="password"
                                     name="tipo"

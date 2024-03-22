@@ -37,6 +37,7 @@ export default function Login({ status, canResetPassword }) {
                     <InputLabel htmlFor="email" value="Email" />
 
                     <TextInput
+                               placeholder="Escriba aquí"
                         id="email"
                         type="email"
                         name="email"
@@ -54,6 +55,7 @@ export default function Login({ status, canResetPassword }) {
                     <InputLabel htmlFor="password" value="Contrtaseña" />
 
                     <TextInput
+                               placeholder="Escriba aquí"
                         id="password"
                         type="password"
                         name="password"

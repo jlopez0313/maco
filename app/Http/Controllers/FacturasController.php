@@ -15,6 +15,8 @@ use App\Models\Departamentos;
 use App\Models\TiposClientes;
 use Inertia\Inertia;
 
+use Barryvdh\DomPDF\Facade\Pdf;
+
 class FacturasController extends Controller
 {
     /**
@@ -91,5 +93,23 @@ class FacturasController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function pdf(string $id)
+    {
+
+        $factura = Facturas::find( $id );
+
+        $data = [
+            'factura' => $factura
+        ];
+
+        $pdf = \PDF::loadView('pdf', $data);
+    
+        return $pdf->download($factura->id . '.pdf');
+    }
+
+    public function qr( string $id) {
+        echo \QrCode::size(700)->generate( url('/remisiones/pdf/' .  $id ) );
     }
 }

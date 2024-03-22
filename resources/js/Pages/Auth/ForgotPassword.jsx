@@ -28,6 +28,7 @@ export default function ForgotPassword({ status }) {
 
             <form onSubmit={submit}>
                 <TextInput
+                               placeholder="Escriba aquí"
                     id="email"
                     type="email"
                     name="email"

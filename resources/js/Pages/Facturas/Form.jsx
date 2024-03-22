@@ -7,6 +7,7 @@ import Select from "@/Components/Form/Select";
 import { useForm } from "@inertiajs/react";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import Icon from "@/Components/Icon";
 
 export const Form = ({ id, auth, payments, tipoClientes, departamentos, setIsOpen, onEdit }) => {
 
@@ -116,18 +117,26 @@ export const Form = ({ id, auth, payments, tipoClientes, departamentos, setIsOpe
                         <div>
                             <InputLabel htmlFor="documento" value="Documento" />
 
-                            <TextInput
-                                id="documento"
-                                type="text"
-                                name="documento"
-                                value={data.documento}
-                                className="mt-1 block w-full"
-                                autoComplete="documento"
-                                onChange={(e) =>
-                                    onCheckDoc( e.target.value )
-                                }
-                                onBlur={onSearchCliente}
-                            />
+                            <div className="grid grid-cols-12 gap-4">
+                                <TextInput
+                                    placeholder="Escriba aquí"
+                                    id="documento"
+                                    type="text"
+                                    name="documento"
+                                    value={data.documento}
+                                    className="mt-1 block w-full col-start-1 col-span-10"
+                                    autoComplete="documento"
+                                    onChange={(e) =>
+                                        onCheckDoc( e.target.value )
+                                    }
+                                    onBlur={onSearchCliente}
+                                />
+                                
+                                <Icon
+                                    name="search"
+                                    className="self-center col-start-11 col-span-2 block w-6 h-6 "
+                                />
+                            </div>
 
                             <InputError
                                 message={errors.documento}
@@ -211,6 +220,7 @@ export const Form = ({ id, auth, payments, tipoClientes, departamentos, setIsOpe
                             <InputLabel htmlFor="articulo" value="Dirección" />
 
                             <TextInput
+                               placeholder="Escriba aquí"
                                 id="direccion"
                                 type="text"
                                 name="direccion"
@@ -232,6 +242,7 @@ export const Form = ({ id, auth, payments, tipoClientes, departamentos, setIsOpe
                             <InputLabel htmlFor="celular" value="Celular" />
 
                             <TextInput
+                               placeholder="Escriba aquí"
                                 id="celular"
                                 type="text"
                                 name="celular"
@@ -324,6 +335,7 @@ export const Form = ({ id, auth, payments, tipoClientes, departamentos, setIsOpe
                     </div>
 
                     <TextInput
+                               placeholder="Escriba aquí"
                         id="clientes_id"
                         type="hidden"
                         name="clientes_id"
