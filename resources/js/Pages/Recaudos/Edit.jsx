@@ -12,6 +12,7 @@ import Modal from "@/Components/Modal";
 import { Form } from "./Form";
 import InputLabel from "@/Components/Form/InputLabel";
 import TextInput from "@/Components/Form/TextInput";
+import SecondaryButton from "@/Components/Buttons/SecondaryButton";
 
 export default ({ auth, factura }) => {
 
@@ -59,7 +60,7 @@ export default ({ auth, factura }) => {
 
     const onSetSum = () => {
         const sum = data.reduce( (sum, item) => {
-            return sum + item.precio_venta;
+            return sum + (item.precio_venta * item.cantidad);
         }, 0);
 
         const saldo = recaudos.reduce( (sum, item) => {
@@ -73,6 +74,10 @@ export default ({ auth, factura }) => {
     const onSetItem = (_id) => {
         setId(_id)
         onToggleModal(true)
+    }
+
+    const onBack = () => {
+        history.back();
     }
 
     useEffect(() => {
@@ -159,6 +164,13 @@ export default ({ auth, factura }) => {
 
 
                     <div className="flex items-center justify-end mt-4 mb-4">
+                        <SecondaryButton
+                            className="ms-4"
+                            onClick={() => onBack()}
+                        >
+                            Atras
+                        </SecondaryButton>
+
                         <PrimaryButton
                             className="ms-4"
                             onClick={() => onToggleModal(true)}

@@ -13,6 +13,7 @@ import { Form } from "./Detalle/Form";
 import InputLabel from "@/Components/Form/InputLabel";
 import TextInput from "@/Components/Form/TextInput";
 import { AdminModal } from "@/Components/AdminModal";
+import SecondaryButton from "@/Components/Buttons/SecondaryButton";
 
 export default ({ auth, factura }) => {
 
@@ -70,6 +71,16 @@ export default ({ auth, factura }) => {
         router.visit(window.location.pathname);
     }
 
+    const onRegistrar = async () => {
+        const data = {
+            updated_by: auth.user.id
+        }
+        await axios.post(`/api/v1/facturas/registrar/${factura.id}`, data);
+        onReload()
+
+        router.visit('/remisiones/show/' + factura.id);
+    }
+
     const onSetList = () => {
         const _list = data.map((item) => {
             return {
@@ -89,10 +100,14 @@ export default ({ auth, factura }) => {
 
     const onSetSum = () => {
         const sum = data.reduce( (sum, item) => {
-            return sum + item.precio_venta;
+            return sum + (item.precio_venta * item.cantidad);
         }, 0);
 
         setSum( sum )
+    }
+
+    const onBack = () => {
+        history.back();
     }
 
     useEffect(() => {
@@ -114,69 +129,74 @@ export default ({ auth, factura }) => {
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
 
-                <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
-                    <form>
-                        <div className="grid grid-cols-2 gap-4">
-                            <div>
-                                <InputLabel value="Documento" />
+                    <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
+                        <form>
+                            <div className="grid grid-cols-2 gap-4">
+                                <div>
+                                    <InputLabel value="Documento" />
 
-                                <TextInput
-                                    type="text"
-                                    value={factura.id}
-                                    className="mt-1 block w-full"
-                                    readOnly={true}
-                                />
-                            </div>
-                            
-                            <div>
-                                <InputLabel value="Cliente" />
-
-                                <TextInput
-                                    type="text"
-                                    value={factura.cliente.nombre}
-                                    className="mt-1 block w-full"
-                                    readOnly={true}
-                                />
-                            </div>
-                            
-                            <div>
-                                <InputLabel htmlFor="fecha" value="Fecha" />
-
-                                <TextInput
-                                    type="text"
-                                    value={factura.created_at}
-                                    className="mt-1 block w-full"
-                                    readOnly={true}
-                                />
-                            </div>
-                            
-                            <div>
-                                <InputLabel htmlFor="ciudad" value="Valor Total" />
+                                    <TextInput
+                                        type="text"
+                                        value={factura.id}
+                                        className="mt-1 block w-full"
+                                        readOnly={true}
+                                    />
+                                </div>
                                 
-                                <TextInput
-                                    type="text"
-                                    value={sum}
-                                    className="mt-1 block w-full"
-                                    readOnly={true}
-                                />
+                                <div>
+                                    <InputLabel value="Cliente" />
+
+                                    <TextInput
+                                        type="text"
+                                        value={factura.cliente.nombre}
+                                        className="mt-1 block w-full"
+                                        readOnly={true}
+                                    />
+                                </div>
+                                
+                                <div>
+                                    <InputLabel htmlFor="fecha" value="Fecha" />
+
+                                    <TextInput
+                                        type="text"
+                                        value={factura.created_at}
+                                        className="mt-1 block w-full"
+                                        readOnly={true}
+                                    />
+                                </div>
+                                
+                                <div>
+                                    <InputLabel htmlFor="ciudad" value="Valor Total" />
+                                    
+                                    <TextInput
+                                        type="text"
+                                        value={sum}
+                                        className="mt-1 block w-full"
+                                        readOnly={true}
+                                    />
+                                </div>
+                                
                             </div>
-                            
-                        </div>
-                    </form>
-                </div>
+                        </form>
+                    </div>
 
-
-                {
-                    factura.estado != 'C' && 
-                        <div className="flex items-center justify-end mt-4 mb-4">
-                            <PrimaryButton
-                                className="ms-4"
-                                onClick={() => onToggleModal(true)}
-                            >
-                                Agregar
-                            </PrimaryButton>
-                        </div>
-                }
+                    <div className="flex items-center justify-end mt-4 mb-4">
+                        <SecondaryButton
+                            className="ms-4"
+                            onClick={() => onBack()}
+                        >
+                            Atras
+                        </SecondaryButton>
+                        {
+                            factura.estado != 'C' && 
+                                    <PrimaryButton
+                                        className="ms-4"
+                                        onClick={() => onToggleModal(true)}
+                                    >
+                                        Agregar
+                                    </PrimaryButton>
+                        }
+                    </div>
 
                     <div className="bg-white overflow-auto shadow-sm sm:rounded-lg">
                         <Table
@@ -191,6 +211,19 @@ export default ({ auth, factura }) => {
                             ]}
                         />
                     </div>
+
+                    <div className="flex items-center justify-end mt-4 mb-4">
+                        {
+                            factura.estado != 'C' && 
+                                    <PrimaryButton
+                                        className="ms-4"
+                                        onClick={() => onRegistrar(true)}
+                                    >
+                                        Registrar
+                                    </PrimaryButton>
+                        }
+                    </div>
+
                 </div>
             </div>
             

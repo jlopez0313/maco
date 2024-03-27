@@ -5,11 +5,39 @@ return [
     'tipo_doc' => [
         [
             'key' => '1',
-            'valor' => 'Cedula'
+            'valor' => 'Cédula de Ciudadanía'
         ],
         [
             'key' => '2',
-            'valor' => 'NIT'
+            'valor' => 'Pasaporte'
+        ],
+        [
+            'key' => '3',
+            'valor' => 'Cédula de extranjería'
+        ],
+        [
+            'key' => '4',
+            'valor' => 'Nit'
+        ],
+        [
+            'key' => '5',
+            'valor' => 'Numero Único de Identificación'
+        ],
+        [
+            'key' => '6',
+            'valor' => 'Permiso Especial de Permanencia'
+        ],
+        [
+            'key' => '7',
+            'valor' => 'Registro Civil'
+        ],
+        [
+            'key' => '8',
+            'valor' => 'Salvo Conducto'
+        ],
+        [
+            'key' => '9',
+            'valor' => 'Permiso de Protección Temporal'
         ],
     ],
 

@@ -52,4 +52,13 @@ class FacturasController extends Controller
         $factura->delete();
         return new FacturasResource( $factura );
     }
+
+    public function registrar(Request $request, String $id)
+    {
+        $factura = Facturas::find( $id );
+        $factura->estado = 'C';
+        $factura->updated_by = $request->updated_by;
+        $factura->save();
+        return new FacturasResource( $factura );
+    }
 }

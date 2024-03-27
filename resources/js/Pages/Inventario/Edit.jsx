@@ -11,6 +11,7 @@ import PrimaryButton from "@/Components/Buttons/PrimaryButton";
 import Modal from "@/Components/Modal";
 import { Form } from "./Productos/Form";
 import { AdminModal } from "@/Components/AdminModal";
+import SecondaryButton from "@/Components/Buttons/SecondaryButton";
 
 export default ({ auth, inventario, contacts, colores, medidas }) => {
 
@@ -77,6 +78,10 @@ export default ({ auth, inventario, contacts, colores, medidas }) => {
         router.visit(window.location.pathname);
     }
 
+    const onBack = () => {
+        history.back();
+    }
+
     const onSetList = () => {
         const _list = data.map((item) => {
             return {
@@ -112,6 +117,13 @@ export default ({ auth, inventario, contacts, colores, medidas }) => {
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="flex items-center justify-end mt-4 mb-4">
+                        <SecondaryButton
+                            className="ms-4"
+                            onClick={() => onBack()}
+                        >
+                            Atras
+                        </SecondaryButton>
+
                         <PrimaryButton
                             className="ms-4"
                             onClick={() => onToggleModal(true)}

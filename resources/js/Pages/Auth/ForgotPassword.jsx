@@ -3,6 +3,7 @@ import InputError from '@/Components/Form/InputError';
 import PrimaryButton from "@/Components/Buttons/PrimaryButton";
 import TextInput from '@/Components/Form/TextInput';
 import { Head, useForm } from '@inertiajs/react';
+import SecondaryButton from '@/Components/Buttons/SecondaryButton';
 
 export default function ForgotPassword({ status }) {
     const { data, setData, post, processing, errors } = useForm({
@@ -14,6 +15,10 @@ export default function ForgotPassword({ status }) {
 
         post(route('password.email'));
     };
+
+    const onBack = () => {
+        history.back();
+    }
 
     return (
         <GuestLayout>
@@ -41,6 +46,13 @@ export default function ForgotPassword({ status }) {
                 <InputError message={errors.email} className="mt-2" />
 
                 <div className="flex items-center justify-end mt-4">
+                    <SecondaryButton
+                        className="ms-4"
+                        onClick={() => onBack()}
+                    >
+                        Atras
+                    </SecondaryButton>
+                    
                     <PrimaryButton className="ms-4" disabled={processing}>
                         Enviar Correo
                     </PrimaryButton>

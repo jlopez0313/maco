@@ -49,7 +49,11 @@ Route::group(['prefix' => 'v1'], function () {
     });
     Route::apiResource('clientes', ClientesController::class);
 
+    Route::prefix('facturas')->group( function() {
+        Route::post('registrar/{id}', [FacturasController::class, 'registrar']);
+    });
     Route::apiResource('facturas', FacturasController::class);
+    
     Route::apiResource('gastos', GastosController::class);
     Route::apiResource('inventarios', InventariosController::class);
     Route::apiResource('medidas', MedidasController::class);

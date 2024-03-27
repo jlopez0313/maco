@@ -25,12 +25,15 @@ return new class extends Migration
             $table->unsignedBigInteger('medidas_id')->nullable();
             $table->foreign('medidas_id')->references('id')->on('medidas');
 
-            $table->string('referencia')->unique();
+            $table->string('referencia');
             $table->integer('cantidad');
             $table->integer('precio');
 
             $table->timestamps();
             $table->softDeletes();
+
+            $table->unique(array('referencia', 'deleted_at'));
+
         });
     }
 
