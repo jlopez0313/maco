@@ -14,6 +14,7 @@ import InputLabel from "@/Components/Form/InputLabel";
 import TextInput from "@/Components/Form/TextInput";
 import { AdminModal } from "@/Components/AdminModal";
 import SecondaryButton from "@/Components/Buttons/SecondaryButton";
+import { toCurrency } from "@/Helpers/Numbers";
 
 export default ({ auth, factura }) => {
 
@@ -111,7 +112,7 @@ export default ({ auth, factura }) => {
                 color: item.producto?.color?.color || '',
                 medida: item.producto?.medida?.medida || '',
                 cantidad: item.cantidad,
-                precio: item.precio_venta,
+                precio: toCurrency( item.precio_venta || 0 ),
             };
         });
 
@@ -124,7 +125,7 @@ export default ({ auth, factura }) => {
             return sum + (item.precio_venta * item.cantidad);
         }, 0);
 
-        setSum( sum )
+        setSum( toCurrency( sum ) )
     }
 
     const onBack = () => {

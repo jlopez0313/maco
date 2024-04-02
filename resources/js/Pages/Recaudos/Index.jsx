@@ -8,6 +8,7 @@ import { Head, Link, router } from "@inertiajs/react";
 import Pagination from "@/Components/Table/Pagination";
 import Table from "@/Components/Table/Table";
 import PrimaryButton from "@/Components/Buttons/PrimaryButton";
+import { toCurrency } from "@/Helpers/Numbers";
 
 export default ({ auth, contacts }) => {
     const {
@@ -25,12 +26,22 @@ export default ({ auth, contacts }) => {
     const [list, setList] = useState([]);
     
     const onSetList = () => {
-        const _list = data.map( item => {
+
+        const valor = data.map( item => {
+            return item.detalles.reduce( (sum, det) => sum + ( det.precio_venta * det.cantidad ), 0 ) || 0 
+        })
+        
+        const cobros = data.map( item => {
+            console.log( item );
+            return item.recaudos.reduce( (sum, det) => sum + ( det.valor ), 0 ) || 0 
+        })
+
+        const _list = data.map( (item, idx) => {
             return {
                 'id': item.id,
                 'Ord. Compra': item.id,
-                'valor': item.valor || 0,
-                'saldo': item.valor - item.cobros,
+                'valor': toCurrency( valor[idx] || 0 ),
+                'saldo': toCurrency( (valor[idx] || 0) - (cobros[idx] || 0) ),
                 'fecha': item.created_at,
             }
         })

@@ -11,6 +11,7 @@ import PrimaryButton from "@/Components/Buttons/PrimaryButton";
 import Modal from "@/Components/Modal";
 import { Form } from "./Form";
 import { AdminModal } from "@/Components/AdminModal";
+import { toCurrency } from "@/Helpers/Numbers";
 
 export default ({ auth, contacts, clientes, conceptos, origenes }) => {
 
@@ -43,7 +44,7 @@ export default ({ auth, contacts, clientes, conceptos, origenes }) => {
                 'cliente': item.cliente?.nombre || '',
                 'origen': item.origen_label,
                 'concepto': item.concepto?.concepto || '',
-                'valor': item.valor || '',
+                'valor': toCurrency( item.valor || 0) ,
             }
         })
 

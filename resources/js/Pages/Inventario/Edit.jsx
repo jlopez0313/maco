@@ -12,6 +12,7 @@ import Modal from "@/Components/Modal";
 import { Form } from "./Productos/Form";
 import { AdminModal } from "@/Components/AdminModal";
 import SecondaryButton from "@/Components/Buttons/SecondaryButton";
+import { toCurrency } from "@/Helpers/Numbers";
 
 export default ({ auth, inventario, contacts, colores, medidas }) => {
 
@@ -91,7 +92,7 @@ export default ({ auth, inventario, contacts, colores, medidas }) => {
                 color: item.color?.color || '',
                 medida: item.medida?.medida || '',
                 cantidad: item.cantidad,
-                precio: item.precio,
+                precio: toCurrency( item.precio || 0) ,
             };
         });
 

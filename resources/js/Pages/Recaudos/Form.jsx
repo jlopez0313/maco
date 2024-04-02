@@ -8,6 +8,7 @@ import { useForm } from "@inertiajs/react";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Icon from "@/Components/Icon";
+import { toCurrency } from "@/Helpers/Numbers";
 
 export const Form = ({ id, auth, factura, sum, saldo, setIsOpen, onReload }) => {
 
@@ -33,7 +34,7 @@ export const Form = ({ id, auth, factura, sum, saldo, setIsOpen, onReload }) => 
 
     const onCheckCantidad = (e) => {
         if (e.target.value > saldo)  {
-            alert('Saldo debe ser menor a ' + saldo)
+            alert('Saldo debe ser menor a ' + toCurrency( saldo ))
         } else {
             setData("valor", e.target.value)
         }

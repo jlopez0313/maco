@@ -11,6 +11,7 @@ import PrimaryButton from "@/Components/Buttons/PrimaryButton";
 import Modal from "@/Components/Modal";
 import { Form } from "./Form";
 import { AdminModal } from "@/Components/AdminModal";
+import { toCurrency } from "@/Helpers/Numbers";
 
 export default ({ auth, tipoClientes, contacts, departments, payments }) => {
 
@@ -28,6 +29,7 @@ export default ({ auth, tipoClientes, contacts, departments, payments }) => {
         'Código',
         'Cliente',
         'Forma de Pago',
+        'Valor Total',
         'Estado'
     ]
 
@@ -38,13 +40,19 @@ export default ({ auth, tipoClientes, contacts, departments, payments }) => {
     const [show, setShow] = useState(false);
     
     const onSetList = () => {
-        const _list = data.map( item => {
+        
+        const sum = data.map( item => {
+            return item.detalles.reduce( (sum, det) => sum + ( det.precio_venta * det.cantidad ), 0 ) || 0 
+        })
+
+        const _list = data.map( (item, idx) => {
             return {
                 id: item.id,
                 fecha: item.created_at,
                 codigo: item.id,
                 cliente: item.cliente?.nombre || '',
                 payment: item.forma_pago || '',
+                valor_total: toCurrency(sum[idx] || 0),
                 estado_label: item.estado_label || '',
                 estado: item.estado || ''
             }

@@ -13,6 +13,7 @@ import { Form } from "./Form";
 import InputLabel from "@/Components/Form/InputLabel";
 import TextInput from "@/Components/Form/TextInput";
 import SecondaryButton from "@/Components/Buttons/SecondaryButton";
+import { toCurrency } from "@/Helpers/Numbers";
 
 export default ({ auth, factura }) => {
 
@@ -50,7 +51,7 @@ export default ({ auth, factura }) => {
             return {
                 id: item.id,
                 codigo: item.id,
-                valor: item.valor,
+                valor: toCurrency( item.valor ),
                 descripcion: item.descripcion,
             };
         });
@@ -140,7 +141,7 @@ export default ({ auth, factura }) => {
                                 
                                 <TextInput
                                     type="text"
-                                    value={sum}
+                                    value={ toCurrency( sum ) }
                                     className="mt-1 block w-full"
                                     readOnly={true}
                                 />
@@ -151,7 +152,7 @@ export default ({ auth, factura }) => {
                                 
                                 <TextInput
                                     type="text"
-                                    value={saldo}
+                                    value={ toCurrency( saldo ) }
                                     className="mt-1 block w-full"
                                     readOnly={true}
                                 />

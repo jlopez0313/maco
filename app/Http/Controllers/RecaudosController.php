@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Request as Peticion;
 use App\Http\Resources\FacturasCollection;
 use App\Http\Resources\RecaudosCollection;
 use App\Models\Facturas;
+use App\Models\Detalles;
 use App\Models\Recaudos;
 use Inertia\Inertia;
 
@@ -22,11 +23,9 @@ class RecaudosController extends Controller
             'filters' => Peticion::all('search', 'trashed'),
             'contacts' => new FacturasCollection(
                 Facturas::with(
-                    'cliente', 'detalles'
+                    'cliente', 'detalles', 'recaudos'
                 )
-                ->withSum('detalles as valor', 'precio_venta')
-                ->withSum('recaudos as cobros', 'valor')
-                ->whereHas('detalles')
+                ->has('detalles')
                 ->where('tipo_pago', 'CR')
                 ->paginate()
             ),
