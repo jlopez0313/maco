@@ -56,20 +56,23 @@
 <body>
     <table class="header"> 
         <tr>
-            <td style="width: 400px" rowspan="3">
-            <img src="{{ public_path() . '/img/logo.svg' }}" width="300px" width="300px" />
-
+            <td style="width: 400px">
+                <img src="{{ public_path() . '/img/logo.svg' }}" width="300px" width="300px" />
             </td>
-            <th style="width: 120px">Fecha: </th>
-            <td style=""> {{ \Carbon\Carbon::parse($factura->created_at)->format('Y-m-d') }} </td>
-        </tr>
-        <tr>
-            <th style="width: 120px">Hora: </th>
-            <td style=""> {{ \Carbon\Carbon::parse($factura->created_at)->format('H:i a') }} </td>
-        </tr>
-        <tr>
-            <th style="width: 120px">No. Factura: </th>
-            <td style=""> {{ $factura->id }} </td>
+            <table class="header">
+                <tr>
+                    <th style="width: 120px">Fecha: </th>
+                    <td style=""> {{ \Carbon\Carbon::parse($factura->created_at)->format('Y-m-d') }} </td>
+                </tr>
+                <tr>
+                    <th style="width: 120px">Hora: </th>
+                    <td style=""> {{ \Carbon\Carbon::parse($factura->created_at)->format('H:i a') }} </td>
+                </tr>
+                <tr>
+                    <th style="width: 120px">No. Factura: </th>
+                    <td style=""> {{ $factura->id }} </td>
+                </tr>
+            </table>
         </tr>
     </table>
 
