@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Requests\facturasRequest;
 use App\Http\Resources\facturasResource;
+use App\Models\Productos;
 use App\Models\Facturas;
 use Inertia\Inertia;
 
@@ -59,6 +60,13 @@ class FacturasController extends Controller
         $factura->estado = 'C';
         $factura->updated_by = $request->updated_by;
         $factura->save();
+
+        foreach( $factura->detalles as $detalle) {
+            $producto = Productos::find( $detalle->productos_id );
+            $producto->cantidad -= $detalle->cantidad;
+            $producto->save();
+        }
+
         return new FacturasResource( $factura );
     }
 }
