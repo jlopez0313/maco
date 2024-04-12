@@ -13,22 +13,18 @@ import { Form } from "./Productos/Form";
 import { AdminModal } from "@/Components/AdminModal";
 import SecondaryButton from "@/Components/Buttons/SecondaryButton";
 import { toCurrency } from "@/Helpers/Numbers";
+import TextInput from "@/Components/Form/TextInput";
 
-export default ({ auth, inventario, contacts, colores, medidas }) => {
-
+export default ({ auth, q, inventario, contacts, colores, medidas }) => {
     const {
         data,
         meta: { links },
     } = contacts;
-    
-    const {
-        data: coloresLst,
-    } = colores;
-    
-    const {
-        data: medidasLst,
-    } = medidas;
-    
+
+    const { data: coloresLst } = colores;
+
+    const { data: medidasLst } = medidas;
+
     const titles = [
         "Artículo",
         "Referencia",
@@ -37,38 +33,39 @@ export default ({ auth, inventario, contacts, colores, medidas }) => {
         "Cantidad",
         "Precio Costo",
     ];
-    
-    const [action, setAction] = useState( '' );
-    const [adminModal, setAdminModal] = useState( false );
+
+    const [search, setSearch] = useState(q);
+    const [action, setAction] = useState("");
+    const [adminModal, setAdminModal] = useState(false);
     const [id, setId] = useState(null);
     const [show, setShow] = useState(false);
     const [list, setList] = useState([]);
 
     const onSetAdminModal = (_id, action) => {
-        setId(_id)
-        setAdminModal(true)
-        setAction( action )
-    }
+        setId(_id);
+        setAdminModal(true);
+        setAction(action);
+    };
 
     const onConfirm = async ({ data }) => {
-        if ( action == 'edit' ) {
-            setAdminModal( false )
-            onToggleModal( true )
+        if (action == "edit") {
+            setAdminModal(false);
+            onToggleModal(true);
         } else {
-            onTrash(data)
+            onTrash(data);
         }
-    }
+    };
 
     const onTrash = async (data) => {
-        if ( data ) {
+        if (data) {
             await axios.delete(`/api/v1/productos/${id}`);
-            onReload()
+            onReload();
         }
-    }
+    };
 
     const onToggleModal = (isShown) => {
-        if ( !isShown ) {
-            setId(null)
+        if (!isShown) {
+            setId(null);
         }
         setShow(isShown);
     };
@@ -77,27 +74,33 @@ export default ({ auth, inventario, contacts, colores, medidas }) => {
         onToggleModal(false);
 
         router.visit(window.location.pathname);
-    }
+    };
+
+    const onSearch = () => {
+        onToggleModal(false);
+
+        router.visit(window.location.pathname + "?q=" + search);
+    };
 
     const onBack = () => {
-        history.back();
-    }
+        router.visit('/inventario');
+    };
 
     const onSetList = () => {
         const _list = data.map((item) => {
             return {
                 id: item.id,
-                articulo: item.inventario?.articulo || '',
+                articulo: item.inventario?.articulo || "",
                 referenia: item.referencia,
-                color: item.color?.color || '',
-                medida: item.medida?.medida || '',
+                color: item.color?.color || "",
+                medida: item.medida?.medida || "",
                 cantidad: item.cantidad,
-                precio: toCurrency( item.precio || 0) ,
+                precio: toCurrency(item.precio || 0),
             };
         });
 
         setList(_list);
-        setShow( _list.length == 0 )
+        setShow(!q && _list.length == 0);
     };
 
     useEffect(() => {
@@ -117,35 +120,56 @@ export default ({ auth, inventario, contacts, colores, medidas }) => {
 
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    <div className="flex items-center justify-end mt-4 mb-4">
-                        <SecondaryButton
-                            className="ms-4"
-                            onClick={() => onBack()}
-                        >
-                            Atras
-                        </SecondaryButton>
+                    <div className="flex items-center justify-between mt-4 mb-6">
+                        <div className="flex items-center">
+                            <TextInput
+                                placeholder="Buscar..."
+                                id="nombre"
+                                type="text"
+                                name="nombre"
+                                className="mt-1 block w-full"
+                                autoComplete="nombre"
+                                value={search}
+                                onChange={(e) => setSearch(e.target.value)}
+                            />
 
-                        <PrimaryButton
-                            className="ms-4"
-                            onClick={() => onToggleModal(true)}
-                        >
-                            Agregar
-                        </PrimaryButton>
+                            <PrimaryButton
+                                className="ms-4"
+                                onClick={() => onSearch()}
+                            >
+                                Buscar
+                            </PrimaryButton>
+                        </div>
+
+                        <div className="flex items-center">
+                            <SecondaryButton
+                                className="ms-4"
+                                onClick={() => onBack()}
+                            >
+                                Atras
+                            </SecondaryButton>
+
+                            <PrimaryButton
+                                className="ms-4"
+                                onClick={() => onToggleModal(true)}
+                            >
+                                Agregar
+                            </PrimaryButton>
+                        </div>
                     </div>
 
                     <div className="bg-white overflow-auto shadow-sm sm:rounded-lg">
                         <Table
                             data={list}
                             links={links}
-                            onEdit={ (evt) => onSetAdminModal(evt, 'edit') }
-                            onTrash={ (evt) => onSetAdminModal(evt, 'trash') }
+                            onEdit={(evt) => onSetAdminModal(evt, "edit")}
+                            onTrash={(evt) => onSetAdminModal(evt, "trash")}
                             titles={titles}
                             actions={["edit", "trash"]}
                         />
                     </div>
                 </div>
             </div>
-            
 
             <Modal show={show} closeable={true} title="Crear Referencia">
                 <Form
@@ -153,14 +177,18 @@ export default ({ auth, inventario, contacts, colores, medidas }) => {
                     inventario={inventario}
                     colores={coloresLst}
                     medidas={medidasLst}
-                    setIsOpen={onToggleModal}        
+                    setIsOpen={onToggleModal}
                     onReload={onReload}
                     id={id}
                 />
             </Modal>
 
-            <AdminModal title={ action } show={adminModal} setIsOpen={setAdminModal} onConfirm={onConfirm}></AdminModal>
-
+            <AdminModal
+                title={action}
+                show={adminModal}
+                setIsOpen={setAdminModal}
+                onConfirm={onConfirm}
+            ></AdminModal>
         </AuthenticatedLayout>
     );
 };

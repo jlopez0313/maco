@@ -18,6 +18,7 @@ use App\Http\Controllers\Api\v1\ProductosController;
 use App\Http\Controllers\Api\v1\RecaudosController;
 use App\Http\Controllers\Api\v1\TipoClientesController;
 use App\Http\Controllers\Api\v1\UserController;
+use App\Http\Controllers\Api\v1\ReportesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -70,6 +71,33 @@ Route::group(['prefix' => 'v1'], function () {
 
     Route::prefix('usuarios')->group( function() {
         Route::post('/get-admin', [UserController::class, 'getAdmin']);
+    });
+
+    Route::prefix('reportes')->group( function() {
+        Route::prefix('inventario')->group( function() {
+            Route::post('/', [ReportesController::class, 'inventario']);
+        });
+        Route::prefix('existencia_articulo')->group( function() {
+            Route::post('/', [ReportesController::class, 'existencia_articulo']);
+        });
+        Route::prefix('articulos_vendidos')->group( function() {
+            Route::post('/', [ReportesController::class, 'articulos_vendidos']);
+        });
+        Route::prefix('compras')->group( function() {
+            Route::post('/', [ReportesController::class, 'compras']);
+        });
+        Route::prefix('gastos')->group( function() {
+            Route::post('/', [ReportesController::class, 'gastos']);
+        });
+        Route::prefix('estado_cuenta_general')->group( function() {
+            Route::post('/', [ReportesController::class, 'estado_cuenta_general']);
+        });
+        Route::prefix('estado_cuenta_cliente')->group( function() {
+            Route::post('/', [ReportesController::class, 'estado_cuenta_cliente']);
+        });
+        Route::prefix('utilidad')->group( function() {
+            Route::post('/', [ReportesController::class, 'utilidad']);
+        });
     });
 
 })->middleware(['auth:sanctum', 'verified']);

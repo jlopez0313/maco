@@ -11,8 +11,9 @@ import PrimaryButton from "@/Components/Buttons/PrimaryButton";
 import Modal from "@/Components/Modal";
 import { Form } from "./Form";
 import { AdminModal } from "@/Components/AdminModal";
+import TextInput from "@/Components/Form/TextInput";
 
-export default ({ auth, contacts, origenes, departamentos }) => {
+export default ({ auth, q, contacts, origenes, departamentos }) => {
 
     const {
         data,
@@ -25,6 +26,7 @@ export default ({ auth, contacts, origenes, departamentos }) => {
         "Cantidad",
     ];
 
+    const [search, setSearch] = useState(q);
     const [action, setAction] = useState( '' );
     const [adminModal, setAdminModal] = useState( false );
     const [id, setId] = useState(null);
@@ -79,6 +81,12 @@ export default ({ auth, contacts, origenes, departamentos }) => {
         router.visit(window.location.pathname);
     }
 
+    const onSearch = () => {
+        onToggleModal(false);
+
+        router.visit(window.location.pathname + "?q=" + search);
+    };
+
     const onEdit = (id) => {
         router.get( `inventario/edit/${ id }` )
     }
@@ -100,9 +108,28 @@ export default ({ auth, contacts, origenes, departamentos }) => {
 
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    <div className="flex items-center justify-end mt-4 mb-4">
+                    <div className="flex items-center justify-between mt-4 mb-6">
+                        <div className="flex items-center">
+                            <TextInput
+                                placeholder="Buscar..."
+                                id="nombre"
+                                type="text"
+                                name="nombre"
+                                className="mt-1 block w-full"
+                                autoComplete="nombre"
+                                value={search}
+                                onChange={(e) => setSearch(e.target.value)}
+                            />
+
+                            <PrimaryButton
+                                className="ms-4"
+                                onClick={() => onSearch()}
+                            >
+                                Buscar
+                            </PrimaryButton>
+                        </div>
+
                         <PrimaryButton
-                            className="ms-4"
                             onClick={() => onToggleModal(true)}
                         >
                             Agregar

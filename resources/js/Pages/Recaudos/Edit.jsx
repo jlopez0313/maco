@@ -29,6 +29,7 @@ export default ({ auth, factura }) => {
         "Código",
         "Valor",
         "Descripción",
+        "Fecha",
     ];
 
     const [id, setId] = useState(null);
@@ -53,6 +54,7 @@ export default ({ auth, factura }) => {
                 codigo: item.id,
                 valor: toCurrency( item.valor ),
                 descripcion: item.descripcion,
+                fecha: item.created_at,
             };
         });
 
@@ -78,7 +80,7 @@ export default ({ auth, factura }) => {
     }
 
     const onBack = () => {
-        history.back();
+        router.visit('/recaudos');
     }
 
     useEffect(() => {

@@ -9,8 +9,9 @@ import Pagination from "@/Components/Table/Pagination";
 import Table from "@/Components/Table/Table";
 import PrimaryButton from "@/Components/Buttons/PrimaryButton";
 import { toCurrency } from "@/Helpers/Numbers";
+import TextInput from "@/Components/Form/TextInput";
 
-export default ({ auth, contacts }) => {
+export default ({ auth, q, contacts }) => {
     const {
         data,
         meta: { links },
@@ -18,11 +19,13 @@ export default ({ auth, contacts }) => {
 
     const titles= [
         'Ord. Compra',
+        'Cliente',
         'Valor Total',
         'Saldo',
         'Fecha de Creación',
     ]
 
+    const [search, setSearch] = useState(q);
     const [list, setList] = useState([]);
     
     const onSetList = () => {
@@ -32,7 +35,6 @@ export default ({ auth, contacts }) => {
         })
         
         const cobros = data.map( item => {
-            console.log( item );
             return item.recaudos.reduce( (sum, det) => sum + ( det.valor ), 0 ) || 0 
         })
 
@@ -40,6 +42,7 @@ export default ({ auth, contacts }) => {
             return {
                 'id': item.id,
                 'Ord. Compra': item.id,
+                'cliente': item.cliente?.nombre,
                 'valor': toCurrency( valor[idx] || 0 ),
                 'saldo': toCurrency( (valor[idx] || 0) - (cobros[idx] || 0) ),
                 'fecha': item.created_at,
@@ -52,6 +55,10 @@ export default ({ auth, contacts }) => {
     const onSearch = (id) => {
         router.get( `recaudos/edit/${ id }` )
     }
+
+    const onFilter = () => {
+        router.visit(window.location.pathname + "?q=" + search);
+    };
 
     useEffect(()=> {
         onSetList()
@@ -70,11 +77,34 @@ export default ({ auth, contacts }) => {
 
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                <div className="flex items-center justify-between mt-4 mb-6">
+                        <div className="flex items-center">
+                            <TextInput
+                                placeholder="Buscar..."
+                                id="nombre"
+                                type="text"
+                                name="nombre"
+                                className="mt-1 block w-full"
+                                autoComplete="nombre"
+                                value={search}
+                                onChange={(e) => setSearch(e.target.value)}
+                            />
+
+                            <PrimaryButton
+                                className="ms-4"
+                                onClick={() => onFilter()}
+                            >
+                                Buscar
+                            </PrimaryButton>
+                        </div>
+                    </div>
+
                     <div className="bg-white overflow-auto shadow-sm sm:rounded-lg">
                         <Table 
                             data={list}
                             links={links}
                             onSearch={onSearch}
+                            onEdit={() => {}}
                             actions={["search"]}
                             titles={titles} />
                     </div>

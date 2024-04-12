@@ -22,15 +22,30 @@ class FacturasController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        $query = Facturas::with(
+            'cliente'
+        );
+        
+        if( $request->q ) {
+            $query->where('id', 'LIKE', '%' . $request->q . '%')
+            ->orWhere('created_at', 'LIKE', '%' . $request->q . '%')
+            ->orWhereHas( 'cliente', function($q) use ($request) {
+                    $q->where('nombre', 'LIKE', '%' . $request->q . '%')
+                    ->orWhere('direccion', 'LIKE', '%' . $request->q . '%')
+                    ->orWhere('celular', 'LIKE', '%' . $request->q . '%')
+                ;
+            })
+            ;
+        }
+
         return Inertia::render('Facturas/Index', [
             'filters' => Peticion::all('search', 'trashed'),
             'contacts' => new FacturasCollection(
-                Facturas::with(
-                    'cliente'
-                )->paginate()
+                $query->paginate()->appends(request()->query())
             ),
+            'q' => $request->q ?? '',
             'tipoClientes' => new TiposClientesCollection(
                 TiposClientes::orderBy('tipo')->get()
             ),

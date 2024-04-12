@@ -20,8 +20,22 @@ class ClientesController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        $query = Clientes::with(
+            'tipo', 
+            'ciudad',
+            'ciudad.departamento'
+        );
+        
+        if( $request->q ) {
+            $query->where('documento', 'LIKE', '%' . $request->q . '%')
+            ->orWhere('nombre', 'LIKE', '%' . $request->q . '%')
+            ->orWhere('direccion', 'LIKE', '%' . $request->q . '%')
+            ->orWhere('celular', 'LIKE', '%' . $request->q . '%')
+            ;
+        }
+
         return Inertia::render('Clientes/Index', [
             'filters' => Peticion::all('search', 'trashed'),
             'departamentos' => new DepartamentosCollection(
@@ -31,12 +45,9 @@ class ClientesController extends Controller
                 TiposClientes::orderBy('tipo')->get()
             ),
             'contacts' => new ClientesCollection(
-                Clientes::with(
-                    'tipo', 
-                    'ciudad',
-                    'ciudad.departamento'
-                )->paginate()
+                $query->paginate()->appends(request()->query())
             ),
+            'q' => $request->q ?? '',
             'tipos_doc' => config('constants.tipo_doc')
         ]);
     }

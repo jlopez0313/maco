@@ -20,14 +20,21 @@ class InventarioController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        $query = Inventarios::orderBy('articulo');
+
+        if( $request->q ) {
+            $query->where('articulo', 'LIKE', '%' . $request->q . '%')
+            ;
+        }
+        
         return Inertia::render('Inventario/Index', [
             'filters' => Peticion::all('search', 'trashed'),
             'contacts' => new InventariosCollection(
-                Inventarios::orderBy('articulo')
-                ->paginate()
+                $query->paginate()->appends(request()->query())
             ),
+            'q' => $request->q ?? '',
             'origenes' => config('constants.origenes')
         ]);
     }
@@ -59,15 +66,25 @@ class InventarioController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Request $request, string $id)
     {
+        $query = Productos::with('inventario', 'color', 'medida')
+        ->where('inventarios_id', $id);
+        
+        if( $request->q ) {
+            $query->where('referencia', 'LIKE', '%' . $request->q . '%')
+            ->orWhereHas('color', function($q) use ($request) {
+                $q->where('color', 'LIKE', '%' . $request->q . '%');
+            })
+            ;
+        }
+
         return Inertia::render('Inventario/Edit', [
             'inventario' => Inventarios::find( $id ),
             'contacts' => new ProductosCollection(
-                Productos::with('inventario', 'color', 'medida')
-                ->where('inventarios_id', $id)
-                ->paginate()
+                $query->paginate()->appends(request()->query())
             ),
+            'q' => $request->q ?? '',
             'colores' => new ColoresCollection(
                 Colores::orderBy('color')
                 ->get()

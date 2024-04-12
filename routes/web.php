@@ -16,6 +16,7 @@ use App\Http\Controllers\ColoresController;
 use App\Http\Controllers\FacturasController;
 use App\Http\Controllers\GastosController;
 use App\Http\Controllers\InventarioController;
+use App\Http\Controllers\ReportesController;
 
 
 /*
@@ -37,9 +38,11 @@ Route::get('/', function () {
     ]);
 });
 
+
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
 
 Route::prefix('parametros')->group( function() {
     
@@ -101,18 +104,49 @@ Route::prefix('/gastos')->group( function() {
     Route::get('/', [GastosController::class, 'index'])->name('gastos');
 })->middleware(['auth', 'verified']);
 
+
 Route::get('/creditos', function () {
     return Inertia::render('Creditos');
 })->middleware(['auth', 'verified'])->name('creditos');
+
 
 Route::prefix('/recaudos')->group( function() {
     Route::get('/', [RecaudosController::class, 'index'])->name('recaudos');
     Route::get('/edit/{id}', [RecaudosController::class, 'edit'])->name('recaudos.edit');
 })->middleware(['auth', 'verified']);
 
-Route::get('/reportes', function () {
-    return Inertia::render('Reportes');
-})->middleware(['auth', 'verified'])->name('reportes');
+
+Route::prefix('reportes')->group( function() {
+    Route::get('/', function () {
+        return Inertia::render('Reportes/Index');
+    })->name('reportes');
+
+    Route::prefix('inventario')->group( function() {
+        Route::get('/', [ReportesController::class, 'inventario'])->name('reportes.inventario');
+    });
+    Route::prefix('existencia_articulo')->group( function() {
+        Route::get('/', [ReportesController::class, 'existencia_articulo'])->name('reportes.existencia_articulo');
+    });
+    Route::prefix('articulos_vendidos')->group( function() {
+        Route::get('/', [ReportesController::class, 'articulos_vendidos'])->name('reportes.articulos_vendidos');
+    });
+    Route::prefix('compras')->group( function() {
+        Route::get('/', [ReportesController::class, 'compras'])->name('reportes.compras');
+    });
+    Route::prefix('gastos')->group( function() {
+        Route::get('/', [ReportesController::class, 'gastos'])->name('reportes.gastos');
+    });
+    Route::prefix('estado_cuenta_general')->group( function() {
+        Route::get('/', [ReportesController::class, 'estado_cuenta_general'])->name('reportes.estado_cuenta_general');
+    });
+    Route::prefix('estado_cuenta_cliente')->group( function() {
+        Route::get('/', [ReportesController::class, 'estado_cuenta_cliente'])->name('reportes.estado_cuenta_cliente');
+    });
+    Route::prefix('utilidad')->group( function() {
+        Route::get('/', [ReportesController::class, 'utilidad'])->name('reportes.utilidad');
+    });
+})->middleware(['auth', 'verified']);
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

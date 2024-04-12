@@ -21,11 +21,14 @@ class FacturasResource extends JsonResource
         return [
             'id' => $this->id,
             'detalles' => $this->detalles,
-            'clientes_id' => $this->cliente,
+            'cliente' => $this->cliente,
+            'recaudos' => $this->recaudos,
             'tipo_pago' => $this->tipo_pago,
+            'forma_pago' => $this->forma_pago,
             'valor' => $this->valor,
             'estado' => $this->estado,
             'estado_label' => $this->estado_label,
+            'created_at' => $this->created_at,
         ];
     }
 }

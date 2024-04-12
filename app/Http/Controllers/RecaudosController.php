@@ -17,18 +17,32 @@ class RecaudosController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        $query = Facturas::with(
+            'cliente', 'detalles', 'recaudos'
+        )
+        ->has('detalles')
+        ->where('tipo_pago', 'CR');
+        
+        if( $request->q ) {
+            $query->where('id', 'LIKE', '%' . $request->q . '%')
+            ->orWhere('created_at', 'LIKE', '%' . $request->q . '%')
+            ->orWhereHas( 'cliente', function($q) use ($request) {
+                    $q->where('nombre', 'LIKE', '%' . $request->q . '%')
+                    ->orWhere('direccion', 'LIKE', '%' . $request->q . '%')
+                    ->orWhere('celular', 'LIKE', '%' . $request->q . '%')
+                ;
+            })
+            ;
+        }
+
         return Inertia::render('Recaudos/Index', [
             'filters' => Peticion::all('search', 'trashed'),
             'contacts' => new FacturasCollection(
-                Facturas::with(
-                    'cliente', 'detalles', 'recaudos'
-                )
-                ->has('detalles')
-                ->where('tipo_pago', 'CR')
-                ->paginate()
+                $query->paginate()->appends(request()->query())
             ),
+            'q' => $request->q ?? '',
         ]);
     }
 

@@ -108,7 +108,7 @@ export default ({ auth, factura }) => {
     }
 
     const onBack = () => {
-        history.back();
+        router.visit('/remisiones');
     }
 
     useEffect(() => {

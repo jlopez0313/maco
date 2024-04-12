@@ -18,16 +18,35 @@ class GastosController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        $query = Gastos::with(
+            'concepto',
+            'cliente'
+        );
+        
+        if( $request->q ) {
+            $query->where('id', 'LIKE', '%' . $request->q . '%')
+            ->orWhere('created_at', 'LIKE', '%' . $request->q . '%')
+            ->orWhereHas( 'concepto', function($q) use ($request) {
+                    $q->where('concepto', 'LIKE', '%' . $request->q . '%')
+                ;
+            })
+            ->orWhereHas( 'cliente', function($q) use ($request) {
+                    $q->where('nombre', 'LIKE', '%' . $request->q . '%')
+                    ->orWhere('direccion', 'LIKE', '%' . $request->q . '%')
+                    ->orWhere('celular', 'LIKE', '%' . $request->q . '%')
+                ;
+            })
+            ;
+        }
+
         return Inertia::render('Gastos/Index', [
             'filters' => Peticion::all('search', 'trashed'),
             'contacts' => new GastosCollection(
-                Gastos::with(
-                    'concepto',
-                    'cliente'
-                )->paginate()
+                $query->paginate()->appends(request()->query())
             ),
+            'q' => $request->q ?? '',
             'clientes' => new ClientesCollection(
                 Clientes::orderBy('nombre')->get()
             ),

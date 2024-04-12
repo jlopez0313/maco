@@ -12,80 +12,83 @@ import Modal from "@/Components/Modal";
 import { Form } from "./Form";
 import { AdminModal } from "@/Components/AdminModal";
 import { toCurrency } from "@/Helpers/Numbers";
+import TextInput from "@/Components/Form/TextInput";
 
-export default ({ auth, tipoClientes, contacts, departments, payments }) => {
+export default ({ auth, q, tipoClientes, contacts, departments, payments }) => {
+    const { data: departamentos } = departments;
 
-    const {
-        data: departamentos,
-    } = departments;
-    
     const {
         data,
         meta: { links },
     } = contacts;
 
-    const titles= [
-        'Fecha de Creación',
-        'Código',
-        'Cliente',
-        'Forma de Pago',
-        'Valor Total',
-        'Estado'
-    ]
+    const titles = [
+        "Fecha de Creación",
+        "Código",
+        "Cliente",
+        "Forma de Pago",
+        "Valor Total",
+        "Estado",
+    ];
 
-    const [action, setAction] = useState( '' );
-    const [adminModal, setAdminModal] = useState( false );
+    const [search, setSearch] = useState(q);
+    const [action, setAction] = useState("");
+    const [adminModal, setAdminModal] = useState(false);
     const [id, setId] = useState(null);
     const [list, setList] = useState([]);
     const [show, setShow] = useState(false);
-    
-    const onSetList = () => {
-        
-        const sum = data.map( item => {
-            return item.detalles.reduce( (sum, det) => sum + ( det.precio_venta * det.cantidad ), 0 ) || 0 
-        })
 
-        const _list = data.map( (item, idx) => {
+    const onSetList = () => {
+        const sum = data.map((item) => {
+            return (
+                item.detalles.reduce(
+                    (sum, det) => sum + det.precio_venta * det.cantidad,
+                    0
+                ) || 0
+            );
+        });
+
+        const _list = data.map((item, idx) => {
             return {
                 id: item.id,
                 fecha: item.created_at,
                 codigo: item.id,
-                cliente: item.cliente?.nombre || '',
-                payment: item.forma_pago || '',
+                cliente: item.cliente?.nombre || "",
+                payment: item.forma_pago || "",
                 valor_total: toCurrency(sum[idx] || 0),
-                estado_label: item.estado_label || '',
-                estado: item.estado || ''
-            }
-        })
+                estado_label: item.estado_label || "",
+                estado: item.estado || "",
+            };
+        });
 
-        setList( _list );
-    }
+        setList(_list);
+    };
 
     const onSetAdminModal = (_id, action) => {
-        setId(_id)
-        setAdminModal(true)
-        setAction( action )
-    }
+        setId(_id);
+        setAdminModal(true);
+        setAction(action);
+    };
 
     const onConfirm = async ({ data }) => {
-        if ( action == 'edit' ) {
-            setAdminModal( false )
-            onEdit( id )
+        if (action == "edit") {
+            setAdminModal(false);
+            onEdit(id);
         } else {
-            onTrash(data)
+            onTrash(data);
         }
-    }
+    };
 
     const onTrash = async (data) => {
-        if ( data ) {
+        if (data) {
             await axios.delete(`/api/v1/facturas/${id}`);
-            onReload()
+            onReload();
         }
-    }
+    };
 
     const onToggleModal = (isShown) => {
-        if ( !isShown ) {
-            setId(null)
+        if (!isShown) {
+            setId(null);
         }
         setShow(isShown);
     };
@@ -94,19 +97,25 @@ export default ({ auth, tipoClientes, contacts, departments, payments }) => {
         onToggleModal(false);
 
         router.visit(window.location.pathname);
-    }
+    };
+
+    const onFilter = () => {
+        onToggleModal(false);
+
+        router.visit(window.location.pathname + "?q=" + search);
+    };
 
     const onEdit = (id) => {
-        router.get( `remisiones/edit/${ id }` )
-    }
+        router.get(`remisiones/edit/${id}`);
+    };
 
     const onSearch = (id) => {
-        router.get( `remisiones/show/${ id }` )
-    }
+        router.get(`remisiones/show/${id}`);
+    };
 
-    useEffect(()=> {
-        onSetList()
-    }, [])
+    useEffect(() => {
+        onSetList();
+    }, []);
 
     return (
         <AuthenticatedLayout
@@ -121,28 +130,41 @@ export default ({ auth, tipoClientes, contacts, departments, payments }) => {
 
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    <div className="flex items-center justify-end mt-4 mb-4">
-                        <PrimaryButton
-                            className="ms-4"
-                            onClick={() => onToggleModal(true)}
-                        >
+                    <div className="flex items-center justify-between mt-4 mb-6">
+                        <div className="flex items-center">
+                            <TextInput
+                                placeholder="Buscar..."
+                                id="nombre"
+                                type="text"
+                                name="nombre"
+                                className="mt-1 block w-full"
+                                autoComplete="nombre"
+                                value={search}
+                                onChange={(e) => setSearch(e.target.value)}
+                            />
+
+                            <PrimaryButton
+                                className="ms-4"
+                                onClick={() => onFilter()}
+                            >
+                                Buscar
+                            </PrimaryButton>
+                        </div>
+
+                        <PrimaryButton onClick={() => onToggleModal(true)}>
                             Agregar
                         </PrimaryButton>
                     </div>
 
                     <div className="bg-white overflow-auto shadow-sm sm:rounded-lg">
-                        <Table 
+                        <Table
                             data={list}
                             links={links}
-                            onSearch={ (evt) => onSearch(evt) }
-                            onEdit={ (evt) => onSetAdminModal(evt, 'edit') }
-                            onTrash={ (evt) => onSetAdminModal(evt, 'trash') }
+                            onSearch={(evt) => onSearch(evt)}
+                            onEdit={(evt) => onSetAdminModal(evt, "edit")}
+                            onTrash={(evt) => onSetAdminModal(evt, "trash")}
                             titles={titles}
-                            actions={[
-                                "search",
-                                "edit",
-                                "trash"
-                            ]}
+                            actions={["search", "edit", "trash"]}
                         />
                     </div>
 
@@ -158,14 +180,18 @@ export default ({ auth, tipoClientes, contacts, departments, payments }) => {
                     origenes={[]}
                     tipoClientes={tipoClientes}
                     payments={payments}
-                    setIsOpen={onToggleModal}        
+                    setIsOpen={onToggleModal}
                     onEdit={onEdit}
                     id={id}
                 />
             </Modal>
 
-            <AdminModal title={ action } show={adminModal} setIsOpen={setAdminModal} onConfirm={onConfirm}></AdminModal>
-
+            <AdminModal
+                title={action}
+                show={adminModal}
+                setIsOpen={setAdminModal}
+                onConfirm={onConfirm}
+            ></AdminModal>
         </AuthenticatedLayout>
     );
-}
+};

@@ -12,71 +12,71 @@ import Modal from "@/Components/Modal";
 import { Form } from "./Form";
 import { AdminModal } from "@/Components/AdminModal";
 import { toCurrency } from "@/Helpers/Numbers";
+import TextInput from "@/Components/Form/TextInput";
 
-export default ({ auth, contacts, clientes, conceptos, origenes }) => {
-
+export default ({ auth, q, contacts, clientes, conceptos, origenes }) => {
     const {
         data,
         meta: { links },
     } = contacts;
 
-    const titles= [
-        'Fecha',
-        'Recibo',
-        'Cliente',
-        'Origen',
-        'Concepto',
-        'Valor',
-    ]
+    const titles = [
+        "Fecha",
+        "Recibo",
+        "Cliente",
+        "Origen",
+        "Concepto",
+        "Valor",
+    ];
 
-    const [action, setAction] = useState( '' );
-    const [adminModal, setAdminModal] = useState( false );
+    const [search, setSearch] = useState(q);
+    const [action, setAction] = useState("");
+    const [adminModal, setAdminModal] = useState(false);
     const [list, setList] = useState([]);
     const [id, setId] = useState(null);
     const [show, setShow] = useState(false);
-    
+
     const onSetList = () => {
-        const _list = data.map( item => {
+        const _list = data.map((item) => {
             return {
-                'id': item.id,
-                'fecha': item.created_at,
-                'recibo': item.id,
-                'cliente': item.cliente?.nombre || '',
-                'origen': item.origen_label,
-                'concepto': item.concepto?.concepto || '',
-                'valor': toCurrency( item.valor || 0) ,
-            }
-        })
+                id: item.id,
+                fecha: item.created_at,
+                recibo: item.id,
+                cliente: item.cliente?.nombre || "",
+                origen: item.origen_label,
+                concepto: item.concepto?.concepto || "",
+                valor: toCurrency(item.valor || 0),
+            };
+        });
 
-        setList( _list );
-    }
-
+        setList(_list);
+    };
 
     const onSetAdminModal = (_id, action) => {
-        setId(_id)
-        setAdminModal(true)
-        setAction( action )
-    }
+        setId(_id);
+        setAdminModal(true);
+        setAction(action);
+    };
 
     const onConfirm = async ({ data }) => {
-        if ( action == 'edit' ) {
-            setAdminModal( false )
-            onToggleModal( true )
+        if (action == "edit") {
+            setAdminModal(false);
+            onToggleModal(true);
         } else {
-            onTrash(data)
+            onTrash(data);
         }
-    }
+    };
 
     const onTrash = async (data) => {
-        if ( data ) {
+        if (data) {
             await axios.delete(`/api/v1/gastos/${id}`);
-            onReload()
+            onReload();
         }
-    }
+    };
 
     const onToggleModal = (isShown) => {
-        if ( !isShown ) {
-            setId(null)
+        if (!isShown) {
+            setId(null);
         }
         setShow(isShown);
     };
@@ -84,11 +84,17 @@ export default ({ auth, contacts, clientes, conceptos, origenes }) => {
     const onReload = () => {
         onToggleModal(false);
         router.visit(window.location.pathname);
-    }
+    };
 
-    useEffect(()=> {
-        onSetList()
-    }, [])
+    const onSearch = () => {
+        onToggleModal(false);
+
+        router.visit(window.location.pathname + "?q=" + search);
+    };
+
+    useEffect(() => {
+        onSetList();
+    }, []);
 
     return (
         <AuthenticatedLayout
@@ -103,7 +109,27 @@ export default ({ auth, contacts, clientes, conceptos, origenes }) => {
 
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    <div className="flex items-center justify-end mt-4 mb-4">
+                    <div className="flex items-center justify-between mt-4 mb-6">
+                        <div className="flex items-center">
+                            <TextInput
+                                placeholder="Buscar..."
+                                id="nombre"
+                                type="text"
+                                name="nombre"
+                                className="mt-1 block w-full"
+                                autoComplete="nombre"
+                                value={search}
+                                onChange={(e) => setSearch(e.target.value)}
+                            />
+
+                            <PrimaryButton
+                                className="ms-4"
+                                onClick={() => onSearch()}
+                            >
+                                Buscar
+                            </PrimaryButton>
+                        </div>
+
                         <PrimaryButton
                             className="ms-4"
                             onClick={() => onToggleModal(true)}
@@ -113,13 +139,13 @@ export default ({ auth, contacts, clientes, conceptos, origenes }) => {
                     </div>
 
                     <div className="bg-white overflow-auto shadow-sm sm:rounded-lg">
-                        <Table 
+                        <Table
                             data={list}
                             links={links}
-                            onEdit={ (evt) => onSetAdminModal(evt, 'edit') }
-                            onTrash={ (evt) => onSetAdminModal(evt, 'trash') }
+                            onEdit={(evt) => onSetAdminModal(evt, "edit")}
+                            onTrash={(evt) => onSetAdminModal(evt, "trash")}
                             titles={titles}
-                            actions={['edit', 'trash']}
+                            actions={["edit", "trash"]}
                         />
                     </div>
 
@@ -132,14 +158,18 @@ export default ({ auth, contacts, clientes, conceptos, origenes }) => {
                     clientes={clientes}
                     conceptos={conceptos}
                     origenes={origenes}
-                    setIsOpen={onToggleModal}        
+                    setIsOpen={onToggleModal}
                     onReload={onReload}
                     id={id}
                 />
             </Modal>
 
-            <AdminModal title={ action } show={adminModal} setIsOpen={setAdminModal} onConfirm={onConfirm}></AdminModal>
-
+            <AdminModal
+                title={action}
+                show={adminModal}
+                setIsOpen={setAdminModal}
+                onConfirm={onConfirm}
+            ></AdminModal>
         </AuthenticatedLayout>
     );
-}
+};

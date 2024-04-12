@@ -24,6 +24,7 @@ class GastosResource extends JsonResource
             'concepto' => $this->concepto,
             'valor' => $this->valor,
             'origen' => $this->origen,
+            'origen_label' => $this->origen_label,
             'created_at' => $this->created_at,
         ];
     }

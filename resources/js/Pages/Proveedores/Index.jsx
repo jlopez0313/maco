@@ -11,9 +11,16 @@ import PrimaryButton from "@/Components/Buttons/PrimaryButton";
 import Modal from "@/Components/Modal";
 import { Form } from "./Form";
 import { AdminModal } from "@/Components/AdminModal";
+import TextInput from "@/Components/Form/TextInput";
 
-export default ({ auth, tipos_doc, contacts, tipoClientes, departamentos }) => {
-
+export default ({
+    auth,
+    q,
+    tipos_doc,
+    contacts,
+    tipoClientes,
+    departamentos,
+}) => {
     const {
         data,
         meta: { links },
@@ -29,8 +36,9 @@ export default ({ auth, tipos_doc, contacts, tipoClientes, departamentos }) => {
         "Celular",
     ];
 
-    const [action, setAction] = useState( '' );
-    const [adminModal, setAdminModal] = useState( false );
+    const [search, setSearch] = useState(q);
+    const [action, setAction] = useState("");
+    const [adminModal, setAdminModal] = useState(false);
     const [id, setId] = useState(null);
     const [list, setList] = useState([]);
     const [show, setShow] = useState(false);
@@ -53,30 +61,30 @@ export default ({ auth, tipos_doc, contacts, tipoClientes, departamentos }) => {
     };
 
     const onSetAdminModal = (_id, action) => {
-        setId(_id)
-        setAdminModal(true)
-        setAction( action )
-    }
+        setId(_id);
+        setAdminModal(true);
+        setAction(action);
+    };
 
     const onConfirm = async ({ data }) => {
-        if ( action == 'edit' ) {
-            setAdminModal( false )
-            onToggleModal( true )
+        if (action == "edit") {
+            setAdminModal(false);
+            onToggleModal(true);
         } else {
-            onTrash(data)
+            onTrash(data);
         }
-    }
+    };
 
     const onTrash = async (data) => {
-        if ( data ) {
+        if (data) {
             await axios.delete(`/api/v1/proveedores/${id}`);
-            onReload()
+            onReload();
         }
-    }
+    };
 
     const onToggleModal = (isShown) => {
-        if ( !isShown ) {
-            setId(null)
+        if (!isShown) {
+            setId(null);
         }
         setShow(isShown);
     };
@@ -85,7 +93,13 @@ export default ({ auth, tipos_doc, contacts, tipoClientes, departamentos }) => {
         onToggleModal(false);
 
         router.visit(window.location.pathname);
-    }
+    };
+
+    const onSearch = () => {
+        onToggleModal(false);
+
+        router.visit(window.location.pathname + "?q=" + search);
+    };
 
     useEffect(() => {
         onSetList();
@@ -104,11 +118,28 @@ export default ({ auth, tipos_doc, contacts, tipoClientes, departamentos }) => {
 
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    <div className="flex items-center justify-end mt-4 mb-4">
-                        <PrimaryButton
-                            className="ms-4"
-                            onClick={() => onToggleModal(true)}
-                        >
+                    <div className="flex items-center justify-between mt-4 mb-6">
+                        <div className="flex items-center">
+                            <TextInput
+                                placeholder="Buscar..."
+                                id="nombre"
+                                type="text"
+                                name="nombre"
+                                className="mt-1 block w-full"
+                                autoComplete="nombre"
+                                value={search}
+                                onChange={(e) => setSearch(e.target.value)}
+                            />
+
+                            <PrimaryButton
+                                className="ms-4"
+                                onClick={() => onSearch()}
+                            >
+                                Buscar
+                            </PrimaryButton>
+                        </div>
+
+                        <PrimaryButton onClick={() => onToggleModal(true)}>
                             Agregar
                         </PrimaryButton>
                     </div>
@@ -117,8 +148,8 @@ export default ({ auth, tipos_doc, contacts, tipoClientes, departamentos }) => {
                         <Table
                             data={list}
                             links={links}
-                            onEdit={ (evt) => onSetAdminModal(evt, 'edit') }
-                            onTrash={ (evt) => onSetAdminModal(evt, 'trash') }
+                            onEdit={(evt) => onSetAdminModal(evt, "edit")}
+                            onTrash={(evt) => onSetAdminModal(evt, "trash")}
                             titles={titles}
                             actions={["edit", "trash"]}
                         />
@@ -134,14 +165,18 @@ export default ({ auth, tipos_doc, contacts, tipoClientes, departamentos }) => {
                     tipos_doc={tipos_doc}
                     departamentos={departamentos}
                     tipoClientes={tipoClientes}
-                    setIsOpen={onToggleModal}        
+                    setIsOpen={onToggleModal}
                     onReload={onReload}
                     id={id}
                 />
             </Modal>
 
-            <AdminModal title={ action } show={adminModal} setIsOpen={setAdminModal} onConfirm={onConfirm}></AdminModal>
-
+            <AdminModal
+                title={action}
+                show={adminModal}
+                setIsOpen={setAdminModal}
+                onConfirm={onConfirm}
+            ></AdminModal>
         </AuthenticatedLayout>
     );
 };
