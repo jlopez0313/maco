@@ -29,15 +29,9 @@ export default function Reportes({ auth, facturas, recaudos, gastos, productos }
         );
 
         const nacional = listaGastos.filter( detalle => detalle.origen == 'N' ) || []
-        .reduce(
-            (sum, det) => sum + det.valor,
-            0
-        )
 
         const importado = listaGastos.filter( detalle => detalle.origen == 'I' ) || []
         
-
-        console.log(nacional, importado );
 
         return {
             total,
@@ -47,7 +41,7 @@ export default function Reportes({ auth, facturas, recaudos, gastos, productos }
     }
     
     const onSetCompraCredito = () => {
-        const lista = listaFacturas.filter((item) => item.tipos_id == "1");
+        const lista = listaFacturas.filter((item) => item.forma_pago?.id == "1");
         const total = lista.map((item) => {
             return (
                 item.detalles.reduce(
@@ -57,45 +51,34 @@ export default function Reportes({ auth, facturas, recaudos, gastos, productos }
             );
         });
 
-        const nacional = []
-        lista.forEach( item => { 
-            const nacionales = item.detalles?.filter( detalle => detalle.producto?.inventario?.origen == 'N' ) || []
-            nacional.push(...nacionales);
-        })
-
-        const importado = []
-        lista.forEach( item => { 
-            const importados = item.detalles?.filter( detalle => detalle.producto?.inventario?.origen == 'I' ) || []
-            importado.push(...importados);
-
-        })
-
-        return {
-            total,
-            nacional: nacional.reduce( (sum, item) => { return sum += (item.cantidad * item.precio_venta) }, 0 ),
-            importado: importado.reduce( (sum, item) => { return sum += (item.cantidad * item.precio_venta) }, 0 ),
-        }
-    }
-
-    const onSetCompraContado = () => {
-        const lista = listaFacturas.filter((item) => item.tipos_id == "2");
-        const total = lista.map((item) => {
-            return (
-                item.detalles.reduce(
-                    (sum, det) => sum + det.precio_venta * det.cantidad,
-                    0
-                ) || 0
-            );
-        });
-
-        
         const nacional = lista.map( item => { return item.detalles?.filter( detalle => detalle.producto?.inventario?.origen == 'N' ) || [] })
         const importado = lista.map( item => { return item.detalles?.filter( detalle => detalle.producto?.inventario?.origen == 'I' ) || []})
 
         return {
-            total,
-            nacional: nacional.reduce( (item, sum) => { return sum += (item.cantidad * item.precio_venta) }, 0 ),
-            importado: importado.reduce( (item, sum) => { return sum += (item.cantidad * item.precio_venta) }, 0 ),
+            total: total.reduce( (item, sum) => { return sum += item }, 0),
+            nacional: nacional.flat(1).reduce( (sum, item) => { return sum += (item.cantidad * item.precio_venta) }, 0 ),
+            importado: importado.flat(1).reduce( (sum, item) => { return sum += (item.cantidad * item.precio_venta) }, 0 ),
+        }
+    }
+
+    const onSetCompraContado = () => {
+        const lista = listaFacturas.filter((item) => item.forma_pago?.id == "2");
+        const total = lista.map((item) => {
+            return (
+                item.detalles.reduce(
+                    (sum, det) => sum + det.precio_venta * det.cantidad,
+                    0
+                ) || 0
+            );
+        });
+       
+        const nacional = lista.map( item => { return item.detalles?.filter( detalle => detalle.producto?.inventario?.origen == 'N' ) || [] })
+        const importado = lista.map( item => { return item.detalles?.filter( detalle => detalle.producto?.inventario?.origen == 'I' ) || []})
+
+        return {
+            total: total.reduce( (item, sum) => { return sum += item }, 0),
+            nacional: nacional.flat(1).reduce( (item, sum) => { return sum += (item.cantidad * item.precio_venta) }, 0 ),
+            importado: importado.flat(1).reduce( (item, sum) => { return sum += (item.cantidad * item.precio_venta) }, 0 ),
         }
     }
 
@@ -124,6 +107,7 @@ export default function Reportes({ auth, facturas, recaudos, gastos, productos }
         const totalInventario = inventario;
         const totalNacional = compraContado.nacional + compraCredito.nacional - gastos.nacional;
         const totalImportado = compraContado.importado + compraCredito.importado - gastos.importado;
+
 
         _list.push(
             ['Inventario', toCurrency(inventario || 0), ''],
@@ -211,6 +195,20 @@ export default function Reportes({ auth, facturas, recaudos, gastos, productos }
                             </tbody>
                         </table>
                     </div>
+
+                    {
+                        list.length ? 
+                            <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                                <div className="flex items-center justify-end mt-4 mb-4">
+                                    <a
+                                        className="border border-gray-300 rounded-md bg-white hover:bg-white-700 text-gray py-2 px-4 rounded text-xs uppercase shadow-sm font-semibold text-gray-700"
+                                        href={`/reportes/utilidad/excel`}
+                                    >
+                                        Excel
+                                    </a>
+                                </div>
+                            </div> : null
+                    }
                 </div>
             </div>
         </AuthenticatedLayout>

@@ -28,7 +28,7 @@ class ReportesController extends Controller
         $data = $request->all();
         
         $query = Facturas::with('detalles.producto.inventario')
-            ->whereBetween('created_at', [ $data['fecha_inicial'] . ' 00:00:00', $data['fecha_final'] . ' 23:00:00' ])
+            ->whereBetween('created_at', [ $data['fecha_inicial'] . ' 00:00:00', $data['fecha_final'] . ' 23:59:59' ])
             ->get()
         ;
 
@@ -40,7 +40,7 @@ class ReportesController extends Controller
         $data = $request->all();
         
         $query = Facturas::with('detalles', 'cliente')
-            ->whereBetween('created_at', [ $data['fecha_inicial'] . ' 00:00:00', $data['fecha_final'] . ' 23:00:00' ])
+            ->whereBetween('created_at', [ $data['fecha_inicial'] . ' 00:00:00', $data['fecha_final'] . ' 23:59:59' ])
             ->get()
         ;
 
@@ -52,7 +52,7 @@ class ReportesController extends Controller
         $data = $request->all();
         
         $query = Gastos::with('concepto', 'cliente')
-            ->whereBetween('created_at', [ $data['fecha_inicial'] . ' 00:00:00', $data['fecha_final'] . ' 23:00:00' ])
+            ->whereBetween('created_at', [ $data['fecha_inicial'] . ' 00:00:00', $data['fecha_final'] . ' 23:59:59' ])
             ->get()
         ;
 
@@ -68,7 +68,7 @@ class ReportesController extends Controller
             )
             ->has('detalles')
             ->where('tipos_id', '1')
-            ->whereBetween('created_at', [ $data['fecha_inicial'] . ' 00:00:00', $data['fecha_final'] . ' 23:00:00' ])
+            ->whereBetween('created_at', [ $data['fecha_inicial'] . ' 00:00:00', $data['fecha_final'] . ' 23:59:59' ])
             ->get()
         ;
 
@@ -85,7 +85,7 @@ class ReportesController extends Controller
             ->has('detalles')
             ->where('tipos_id', '1')
             ->where('clientes_id', $data['clientes_id'])
-            ->whereBetween('created_at', [ $data['fecha_inicial'] . ' 00:00:00', $data['fecha_final'] . ' 23:00:00' ])
+            ->whereBetween('created_at', [ $data['fecha_inicial'] . ' 00:00:00', $data['fecha_final'] . ' 23:59:59' ])
             ->get()
         ;
 

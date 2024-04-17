@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
+
 use App\Http\Resources\ClientesCollection;
 use App\Http\Resources\FacturasCollection;
 use App\Http\Resources\GastosCollection;
@@ -15,6 +17,15 @@ use App\Models\Productos;
 use App\Models\Recaudos;
 
 use Inertia\Inertia;
+
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\ArticulosVendidosExport;
+use App\Exports\ComprasExport;
+use App\Exports\GastosExport;
+use App\Exports\EstadoCuentaGeneralExport;
+use App\Exports\EstadoCuentaClienteExport;
+use App\Exports\UtilidadExport;
+
 
 class ReportesController extends Controller
 {
@@ -33,14 +44,29 @@ class ReportesController extends Controller
         return Inertia::render('Reportes/ArticulosVendidos');
     }
 
+    public function articulos_vendidos_export(Request $request) 
+    {
+        return Excel::download(new ArticulosVendidosExport( $request->all() ), 'ArticulosVendidos.xlsx');
+    }
+
 
     public function compras() {
         return Inertia::render('Reportes/Compras');
+    }
+
+    public function compras_export(Request $request) 
+    {
+        return Excel::download(new ComprasExport( $request->all() ), 'Compras.xlsx');
     }
     
     
     public function gastos() {
         return Inertia::render('Reportes/Gastos');
+    }
+
+    public function gastos_export(Request $request) 
+    {
+        return Excel::download(new GastosExport( $request->all() ), 'Gastos.xlsx');
     }
     
     
@@ -48,13 +74,23 @@ class ReportesController extends Controller
         return Inertia::render('Reportes/EstadoCuentaGeneral');
     }
     
+    public function estado_cuenta_general_export(Request $request) 
+    {
+        return Excel::download(new EstadoCuentaGeneralExport( $request->all() ), 'EstadoCuentaGeneral.xlsx');
+    }
     
+
     public function estado_cuenta_cliente() {
         return Inertia::render('Reportes/EstadoCuentaCliente', [
             'clientes' => new ClientesCollection(
                 Clientes::orderBy('nombre')->get()
             ),
         ]);
+    }
+
+    public function estado_cuenta_cliente_export(Request $request) 
+    {
+        return Excel::download(new EstadoCuentaClienteExport( $request->all() ), 'EstadoCuentaCliente.xlsx');
     }
 
 
@@ -78,6 +114,11 @@ class ReportesController extends Controller
                 Productos::get()
             )
         ]);
+    }
+
+    public function utilidad_export(Request $request) 
+    {
+        return Excel::download(new UtilidadExport( $request->all() ), 'Utilidad.xlsx');
     }
 
 
