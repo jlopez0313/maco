@@ -12,8 +12,8 @@ export default function Dashboard({ auth }) {
     const list = [
         {
             id: 1,
-            parametro: 'Tipos de Cliente',   
-            descripcion: 'Gestionar el tipo de cliente que se desea manejar',
+            parametro: 'Formas de Pago',   
+            descripcion: 'Gestionar las Formas de Pago que se desea manejar',
             ruta: 'parametros/tipos_clientes'
         },
         {
@@ -50,13 +50,13 @@ export default function Dashboard({ auth }) {
     return (
         <AuthenticatedLayout
             user={auth.user}
-            header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Parámetros</h2>}
+            header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Configuración</h2>}
         >
-            <Head title="Parámetros" />
+            <Head title="Configuración" />
 
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    <div className="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                    <div className="bg-white overflow-auto shadow-sm sm:rounded-lg">
                         <Table data={list} titles={titles} actions={['chevron-right']} onEdit={ onNavigate } />
                     </div>
                 </div>

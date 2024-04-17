@@ -15,7 +15,7 @@ export const Form = ({ id, auth, payments, tipoClientes, departamentos, setIsOpe
 
     const {
         data: tipos,
-    } = tipoClientes;
+    } = payments;
 
 
     const { data, setData, processing, errors, reset } = useForm({
@@ -27,6 +27,7 @@ export const Form = ({ id, auth, payments, tipoClientes, departamentos, setIsOpe
         ciudad: '',
         direccion: '',
         celular: '',
+        correo: '',
         tipo: '',
         tipo_pago: '',
     });
@@ -80,8 +81,9 @@ export const Form = ({ id, auth, payments, tipoClientes, departamentos, setIsOpe
                         nombre: cliente.nombre,
                         departamento: cliente.ciudad?.departamento?.id || '',
                         ciudad: cliente.ciudad?.id || '',
-                        direccion: cliente.direccion,
-                        celular: cliente.celular,
+                        direccion: cliente.direccion || '',
+                        celular: cliente.celular || '',
+                        correo: cliente.correo || '',
                         tipo: cliente.tipo?.id || '',
                     }
                 )
@@ -165,32 +167,29 @@ export const Form = ({ id, auth, payments, tipoClientes, departamentos, setIsOpe
                                 className="mt-2"
                             />
                         </div>
-                        {/*
+                        
                         <div>
-                            <InputLabel htmlFor="departamento" value="Departamento" />
+                            <InputLabel htmlFor="correo" value="Correo" />
 
-                            <Select
-                                id="departamento"
-                                name="departamento"
+                            <TextInput
+                                placeholder="Escriba aquí"
+                                id="correo"
+                                type="text"
+                                name="correo"
+                                value={data.correo}
                                 className="mt-1 block w-full"
-                                value={data.departamento}
+                                autoComplete="correo"
                                 onChange={(e) =>
-                                    onGetCities(e.target.value)
+                                    setData("correo", e.target.value)
                                 }
-                            >
-                                {
-                                    departamentos.map( (tipo, key) => {
-                                        return <option value={ tipo.id } key={key}> { tipo.departamento } </option>
-                                    })
-                                }
-                            </Select>
+                            />
 
                             <InputError
-                                message={errors.departamento}
+                                message={errors.correo}
                                 className="mt-2"
                             />
                         </div>
-                        
+                        {/*
                         <div>
                             <InputLabel htmlFor="ciudad" value="Ciudad" />
 
@@ -302,8 +301,8 @@ export const Form = ({ id, auth, payments, tipoClientes, departamentos, setIsOpe
                                 }
                             >
                                 {
-                                    payments.map( (tipo, key) => {
-                                        return <option value={ tipo.key } key={key}> { tipo.valor } </option>
+                                    tipos.map( (tipo, key) => {
+                                        return <option value={ tipo.key } key={key}> { tipo.tipo } </option>
                                     })
                                 }
                             </Select>

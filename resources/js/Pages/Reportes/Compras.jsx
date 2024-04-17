@@ -1,4 +1,5 @@
 import PrimaryButton from '@/Components/Buttons/PrimaryButton';
+import SecondaryButton from '@/Components/Buttons/SecondaryButton';
 import InputLabel from '@/Components/Form/InputLabel';
 import TextInput from '@/Components/Form/TextInput';
 import Table from '@/Components/Table/Table';
@@ -52,6 +53,11 @@ export default function Reportes({ auth }) {
         setList(_list);
     };
 
+    
+    const onBack = () => {
+        history.back();
+    }
+
     return (
         <AuthenticatedLayout
             user={auth.user}
@@ -64,6 +70,16 @@ export default function Reportes({ auth }) {
             <Head title="Reporte de Ordenes de Compra" />
 
             <div className="py-12">
+                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                    <div className="flex items-center justify-end mt-4 mb-4">
+                        <SecondaryButton
+                            className="ms-4"
+                            onClick={() => onBack()}
+                        >
+                            Atras
+                        </SecondaryButton>
+                    </div>
+                </div>
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="flex items-center justify-between mt-4 mb-6">
                         

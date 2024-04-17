@@ -52,17 +52,6 @@ return [
         ],
     ],
 
-    'payments' => [
-        [
-            'key' => 'CR',
-            'valor' => 'Crédito'
-        ],
-        [
-            'key' => 'CO',
-            'valor' => 'Contado'
-        ],
-    ],
-
     'estados-facturas' => [
         [
             'key' => 'A',

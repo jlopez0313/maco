@@ -20,8 +20,10 @@ return new class extends Migration
             $table->unsignedBigInteger('clientes_id');
             $table->foreign('clientes_id')->references('id')->on('clientes');
 
+            $table->unsignedBigInteger('tipos_id');
+            $table->foreign('tipos_id')->references('id')->on('tipos_clientes');
+
             $table->bigInteger('valor');
-            $table->char('tipo_pago', 2);
             
             $table->char('estado', 1);
 

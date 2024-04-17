@@ -30,13 +30,9 @@ class Facturas extends Model
         return $this->hasMany(Recaudos::class, 'facturas_id');
     }
 
-    public function getFormaPagoAttribute() {
-        $lista = config('constants.payments');
-        $origenObj = \Arr::first($lista, function($val, $key) {
-            return $val['key'] == $this->tipo_pago;
-        });
-        
-        return $origenObj['valor'] ?? 'N/A';
+    public function forma_pago() {
+        return $this->hasOne(TiposClientes::class, 'id', 'tipos_id');
+
     }
 
     public function getCreatedAtAttribute( $date ) {

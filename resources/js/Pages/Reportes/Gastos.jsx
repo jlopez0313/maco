@@ -1,35 +1,29 @@
-import PrimaryButton from '@/Components/Buttons/PrimaryButton';
-import InputLabel from '@/Components/Form/InputLabel';
-import TextInput from '@/Components/Form/TextInput';
-import Table from '@/Components/Table/Table';
-import { toCurrency } from '@/Helpers/Numbers';
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head, router } from '@inertiajs/react';
+import PrimaryButton from "@/Components/Buttons/PrimaryButton";
+import SecondaryButton from "@/Components/Buttons/SecondaryButton";
+import InputLabel from "@/Components/Form/InputLabel";
+import TextInput from "@/Components/Form/TextInput";
+import Table from "@/Components/Table/Table";
+import { toCurrency } from "@/Helpers/Numbers";
+import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
+import { Head, router } from "@inertiajs/react";
 import { useForm } from "@inertiajs/react";
-import { useState } from 'react';
+import { useState } from "react";
 
 export default function Reportes({ auth }) {
-
     const { data, setData, processing, errors, reset } = useForm({
-        fecha_inicial: '',
-        fecha_final: '',
+        fecha_inicial: "",
+        fecha_final: "",
     });
 
-    const titles = [
-        "Código",
-        "Fecha",
-        "Cliente",
-        "Origen",
-        "Valor"
-    ];
+    const titles = ["Código", "Fecha", "Cliente", "Origen", "Valor"];
 
     const [list, setList] = useState([]);
 
+    const onSearch = async () => {
+        const {
+            data: { data: lista },
+        } = await axios.post(`/api/v1/reportes/gastos/`, data);
 
-    
-    const onSearch = async() => {
-        const {data: {data: lista}} = await axios.post(`/api/v1/reportes/gastos/`, data);
-        
         const _list = lista.map((item, idx) => {
             return {
                 codigo: item.id,
@@ -42,6 +36,11 @@ export default function Reportes({ auth }) {
 
         setList(_list);
     };
+
+    
+    const onBack = () => {
+        history.back();
+    }
 
     return (
         <AuthenticatedLayout
@@ -56,10 +55,23 @@ export default function Reportes({ auth }) {
 
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                    <div className="flex items-center justify-end mt-4 mb-4">
+                        <SecondaryButton
+                            className="ms-4"
+                            onClick={() => onBack()}
+                        >
+                            Atras
+                        </SecondaryButton>
+                    </div>
+                </div>
+
+                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="flex items-center justify-between mt-4 mb-6">
-                        
-                        <div className='w-full m-2'>
-                            <InputLabel htmlFor="nombre" value="Fecha Inicial" />
+                        <div className="w-full m-2">
+                            <InputLabel
+                                htmlFor="nombre"
+                                value="Fecha Inicial"
+                            />
                             <TextInput
                                 placeholder="Fecha Inicial..."
                                 id="nombre"
@@ -68,13 +80,13 @@ export default function Reportes({ auth }) {
                                 className="mt-1 block w-full me-4"
                                 autoComplete="nombre"
                                 value={data.fecha_inicial}
-                                onChange={ (e) => 
+                                onChange={(e) =>
                                     setData("fecha_inicial", e.target.value)
                                 }
                             />
                         </div>
 
-                        <div className='w-full m-2'>
+                        <div className="w-full m-2">
                             <InputLabel htmlFor="nombre" value="Fecha Final" />
                             <TextInput
                                 placeholder="Fecha Final..."
@@ -85,18 +97,18 @@ export default function Reportes({ auth }) {
                                 className="mt-1 block w-full me-4"
                                 autoComplete="nombre"
                                 value={data.fecha_final}
-                                onChange={ (e) => 
+                                onChange={(e) =>
                                     setData("fecha_final", e.target.value)
                                 }
                             />
                         </div>
 
-                            <PrimaryButton
-                                className="ms-4"
-                                onClick={() => onSearch()}
-                            >
-                                Buscar
-                            </PrimaryButton>
+                        <PrimaryButton
+                            className="ms-4"
+                            onClick={() => onSearch()}
+                        >
+                            Buscar
+                        </PrimaryButton>
                     </div>
 
                     <div className="bg-white overflow-auto shadow-sm sm:rounded-lg">
@@ -109,10 +121,8 @@ export default function Reportes({ auth }) {
                             actions={[]}
                         />
                     </div>
-
                 </div>
             </div>
-
         </AuthenticatedLayout>
     );
 }

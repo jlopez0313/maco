@@ -48,7 +48,7 @@ export const Form = ({ id, setIsOpen, onReload }) => {
                 <form onSubmit={submit}>
                     <div className="grid grid-cols-1 gap-4">
                         <div>
-                            <InputLabel htmlFor="tipo" value="Tipo de Cliente" />
+                            <InputLabel htmlFor="tipo" value="Forma de pago" />
 
                             <TextInput
 placeholder="Escriba aquí"

@@ -24,9 +24,11 @@ return new class extends Migration
             $table->foreign('ciudad_id')->references('id')->on('ciudades');
             
             $table->bigInteger('documento');
+            $table->string('codigo');
             $table->string('nombre');
             $table->string('direccion');
             $table->string('celular');
+            $table->string('correo')->nullable();
             
             $table->timestamps();
             $table->softDeletes();

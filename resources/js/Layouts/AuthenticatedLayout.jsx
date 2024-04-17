@@ -28,7 +28,7 @@ export default function Authenticated({ user, header, children }) {
 
                             <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                                 <NavLink href={route('parametros')} active={route().current('parametros')}>
-                                    Parámetros
+                                    Configuración
                                 </NavLink>
                             </div>
 
@@ -156,6 +156,30 @@ export default function Authenticated({ user, header, children }) {
                         <ResponsiveNavLink href={route('dashboard')} active={route().current('dashboard')}>
                             Dashboard
                         </ResponsiveNavLink>
+                        <ResponsiveNavLink href={route('parametros')} active={route().current('parametros')}>
+                            Parametros
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink href={route('clientes')} active={route().current('clientes')}>
+                            Clientes
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink href={route('inventario')} active={route().current('inventario')}>
+                            Inventario
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink href={route('remisiones')} active={route().current('remisiones')}>
+                            Ord. de Compra
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink href={route('gastos')} active={route().current('gastos')}>
+                            Gastos
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink href={route('recaudos')} active={route().current('recaudos')}>
+                            Recaudos
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink href={route('proveedores')} active={route().current('proveedores')}>
+                            Proveedores
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink href={route('reportes')} active={route().current('reportes')}>
+                            Reportes
+                        </ResponsiveNavLink>
                     </div>
 
                     <div className="pt-4 pb-1 border-t border-gray-200">
@@ -163,11 +187,12 @@ export default function Authenticated({ user, header, children }) {
                             <div className="font-medium text-base text-gray-800">{user.name}</div>
                             <div className="font-medium text-sm text-gray-500">{user.email}</div>
                         </div>
-
+                        
+                        
                         <div className="mt-3 space-y-1">
-                            <ResponsiveNavLink href={route('profile.edit')}>Profile</ResponsiveNavLink>
+                            {/*  <ResponsiveNavLink href={route('profile.edit')}>Profile</ResponsiveNavLink> */}
                             <ResponsiveNavLink method="post" href={route('logout')} as="button">
-                                Log Out
+                                Salir
                             </ResponsiveNavLink>
                         </div>
                     </div>

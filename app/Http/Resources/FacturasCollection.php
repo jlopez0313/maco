@@ -19,7 +19,7 @@ class FacturasCollection extends ResourceCollection
         }
         
         return $this->collection->map->only(
-            'id', 'cliente', 'tipo_pago', 'forma_pago', 'valor', 'created_at', 'detalles', 'recaudos', 'cobros', 'estado', 'estado_label'
+            'id', 'cliente', 'forma_pago', 'valor', 'created_at', 'detalles', 'recaudos', 'cobros', 'estado', 'estado_label'
         );
     }
 }

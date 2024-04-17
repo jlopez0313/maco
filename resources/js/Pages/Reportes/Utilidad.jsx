@@ -1,4 +1,5 @@
 import PrimaryButton from "@/Components/Buttons/PrimaryButton";
+import SecondaryButton from "@/Components/Buttons/SecondaryButton";
 import InputLabel from "@/Components/Form/InputLabel";
 import TextInput from "@/Components/Form/TextInput";
 import Table from "@/Components/Table/Table";
@@ -46,7 +47,7 @@ export default function Reportes({ auth, facturas, recaudos, gastos, productos }
     }
     
     const onSetCompraCredito = () => {
-        const lista = listaFacturas.filter((item) => item.tipo_pago == "CR");
+        const lista = listaFacturas.filter((item) => item.tipos_id == "1");
         const total = lista.map((item) => {
             return (
                 item.detalles.reduce(
@@ -77,7 +78,7 @@ export default function Reportes({ auth, facturas, recaudos, gastos, productos }
     }
 
     const onSetCompraContado = () => {
-        const lista = listaFacturas.filter((item) => item.tipo_pago == "CO");
+        const lista = listaFacturas.filter((item) => item.tipos_id == "2");
         const total = lista.map((item) => {
             return (
                 item.detalles.reduce(
@@ -152,6 +153,10 @@ export default function Reportes({ auth, facturas, recaudos, gastos, productos }
 
     };
 
+    const onBack = () => {
+        history.back();
+    }
+
     useEffect(() => {
         onSearch();
     }, []);
@@ -168,6 +173,16 @@ export default function Reportes({ auth, facturas, recaudos, gastos, productos }
             <Head title="Reporte de Utilidad" />
 
             <div className="py-12">
+                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                    <div className="flex items-center justify-end mt-4 mb-4">
+                        <SecondaryButton
+                            className="ms-4"
+                            onClick={() => onBack()}
+                        >
+                            Atras
+                        </SecondaryButton>
+                    </div>
+                </div>
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white overflow-auto shadow-sm sm:rounded-lg">
                         <table className="w-full whitespace-nowrap">

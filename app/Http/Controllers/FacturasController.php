@@ -25,7 +25,7 @@ class FacturasController extends Controller
     public function index(Request $request)
     {
         $query = Facturas::with(
-            'cliente'
+            'cliente', 'forma_pago'
         );
         
         if( $request->q ) {
@@ -46,13 +46,12 @@ class FacturasController extends Controller
                 $query->paginate()->appends(request()->query())
             ),
             'q' => $request->q ?? '',
-            'tipoClientes' => new TiposClientesCollection(
+            'payments' => new TiposClientesCollection(
                 TiposClientes::orderBy('tipo')->get()
             ),
             'departments' => new DepartamentosCollection(
                 Departamentos::orderBy('departamento')->get()
             ),
-            'payments' => config('constants.payments')
         ]);
     }
 

@@ -23,7 +23,7 @@ class RecaudosController extends Controller
             'cliente', 'detalles', 'recaudos'
         )
         ->has('detalles')
-        ->where('tipo_pago', 'CR');
+        ->where('tipos_id', '1');
         
         if( $request->q ) {
             $query->where('id', 'LIKE', '%' . $request->q . '%')

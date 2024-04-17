@@ -54,7 +54,7 @@ export default ({ auth, q, tipoClientes, contacts, departments, payments }) => {
                 fecha: item.created_at,
                 codigo: item.id,
                 cliente: item.cliente?.nombre || "",
-                payment: item.forma_pago || "",
+                payment: item.forma_pago?.tipo || "",
                 valor_total: toCurrency(sum[idx] || 0),
                 estado_label: item.estado_label || "",
                 estado: item.estado || "",

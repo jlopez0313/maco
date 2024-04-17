@@ -79,7 +79,7 @@
     <table class="cliente">
         <tr>
             <th style="">Tipo de Venta: </th>
-            <td style="width: 265px"> {{ $factura->forma_pago }} </td>
+            <td style="width: 265px"> {{ $factura->forma_pago->tipo }} </td>
             <th style="">Dirección: </th>
             <td style="width: 265px"> {{ $factura->cliente->direccion }} </td>
         </tr>
@@ -92,8 +92,8 @@
         <tr>
             <th>Nombre: </th>
             <td> {{ $factura->cliente->nombre }} </td>
-            <th></th>
-            <td></td>
+            <th>Correo: </th>
+            <td> {{ $factura->cliente->correo }} </td>
         </tr>
     </table>
 
