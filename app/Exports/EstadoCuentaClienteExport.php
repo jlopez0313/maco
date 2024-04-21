@@ -27,7 +27,7 @@ class EstadoCuentaClienteExport implements FromView
         ->get()
     ;
 
-        return view('exports.estado_cuenta_general', [
+        return view('exports.estado_cuenta_cliente', [
             'invoices' => $query
         ]);
     }

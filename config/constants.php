@@ -39,6 +39,10 @@ return [
             'key' => '9',
             'valor' => 'Permiso de Protección Temporal'
         ],
+        [
+            'key' => '10',
+            'valor' => 'Código'
+        ],
     ],
 
     'origenes' => [

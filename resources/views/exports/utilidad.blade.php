@@ -1,3 +1,32 @@
+<style>
+    @font-face {
+        font-family: "source_sans_proregular";           
+        src: local("Source Sans Pro"), url("fonts/sourcesans/sourcesanspro-regular-webfont.ttf") format("truetype");
+        font-weight: normal;
+        font-style: normal;
+    }
+
+    body {
+        font-family: "source_sans_proregular", Calibri,Candara,Segoe,Segoe UI,Optima,Arial,sans-serif;
+    }
+   
+    .page-break {
+        page-break-after: always;
+    }
+
+    .reporte {
+        font-size: 12px;
+        margin-top: 20px;
+    }
+
+    .reporte th {
+        text-align: left;
+        margin-left: 10px;    
+    }
+
+    @page { margin: 20px 30px 40px 50px; }
+
+</style>
 
 @php
                     
@@ -10,7 +39,7 @@
         ['Orden de Compra Contado', '', number_format($compraContado['total'] ?? 0, 0, '.', ',')],
         ['', 'Nacional', number_format($compraContado['nacional'] ?? 0, 0, '.', ',')],
         ['', 'Importado', number_format($compraContado['importado'] ?? 0, 0, '.', ',')],
-        [' ', ' ', ' '],
+        [' ', ' ', ' '],
         ['Orden de Compra Crédito', '', number_format($compraCredito['total'] ?? 0, 0, '.', ',')],
         ['', 'Nacional', number_format($compraCredito['nacional'] ?? 0, 0, '.', ',')],
         ['', 'Importado', number_format($compraCredito['importado'] ?? 0, 0, '.', ',')],
@@ -28,12 +57,12 @@
         ['Caja Importado', '', number_format($totalImportado ?? 0, 0, '.', ',')],
     ]
 @endphp
-<table>
+<table border="1" class="reporte">
     <thead>
         <tr>
-            <th> Concepto </th>
-            <th> Inventario </th>
-            <th> Orden de Compra </th>
+            <th style="width:220px"> Concepto </th>
+            <th style="width:220px"> Inventario </th>
+            <th style="width:220px"> Orden de Compra </th>
         </tr>
     </thead>
     <tbody>

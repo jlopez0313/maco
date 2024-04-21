@@ -23,7 +23,6 @@ export default ({ auth, q, tipos_doc, contacts, tipoClientes, departamentos }) =
     const titles = [
         "Tipo Documento",
         "Documento",
-        "Codigo",
         "Nombre",
         "Departamento",
         "Ciudad",
@@ -46,7 +45,6 @@ export default ({ auth, q, tipos_doc, contacts, tipoClientes, departamentos }) =
                 id: item.id,
                 tipo_doc: item.tipo_doc_label,
                 documento: item.documento,
-                codigo: item.codigo,
                 nombre: item.nombre,
                 departamento: item.ciudad?.departamento?.departamento || "",
                 ciudad: item.ciudad?.ciudad || "",

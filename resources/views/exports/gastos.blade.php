@@ -1,11 +1,41 @@
-<table>
+<style>
+    @font-face {
+        font-family: "source_sans_proregular";           
+        src: local("Source Sans Pro"), url("fonts/sourcesans/sourcesanspro-regular-webfont.ttf") format("truetype");
+        font-weight: normal;
+        font-style: normal;
+    }
+
+    body {
+        font-family: "source_sans_proregular", Calibri,Candara,Segoe,Segoe UI,Optima,Arial,sans-serif;
+    }
+   
+    .page-break {
+        page-break-after: always;
+    }
+
+    .reporte {
+        font-size: 12px;
+        margin-top: 20px;
+    }
+
+    .reporte th {
+        text-align: left;
+        margin-left: 10px;    
+    }
+
+    @page { margin: 20px 30px 40px 50px; }
+
+</style>
+
+<table border="1" class="reporte">
     <thead>
         <tr>
-            <th> Código </th>
-            <th> Fecha </th>
-            <th> Cliente </th>
-            <th> Origen </th>
-            <th> Valor </th>
+            <th style="width: 130px"> Código </th>
+            <th style="width: 130px"> Fecha </th>
+            <th style="width: 130px"> Cliente </th>
+            <th style="width: 130px"> Origen </th>
+            <th style="width: 130px"> Valor </th>
         </tr>
     </thead>
     <tbody>

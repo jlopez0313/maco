@@ -15,6 +15,7 @@ import TextInput from "@/Components/Form/TextInput";
 import { AdminModal } from "@/Components/AdminModal";
 import SecondaryButton from "@/Components/Buttons/SecondaryButton";
 import { toCurrency } from "@/Helpers/Numbers";
+import { goToQR } from "@/Helpers/Modals";
 
 export default ({ auth, factura }) => {
 
@@ -74,33 +75,6 @@ export default ({ auth, factura }) => {
 
     const goToPDF = () => {
         window.location.href = '/remisiones/pdf/' + factura.id;
-    }
-
-    const goToQR = () => {
-        const dualScreenLeft = window.screenLeft !==  undefined ? window.screenLeft : window.screenX;
-        const dualScreenTop = window.screenTop !==  undefined   ? window.screenTop  : window.screenY;
-
-        const width = window.innerWidth ? window.innerWidth : document.documentElement.clientWidth ? document.documentElement.clientWidth : screen.width;
-        const height = window.innerHeight ? window.innerHeight : document.documentElement.clientHeight ? document.documentElement.clientHeight : screen.height;
-
-        const systemZoom = width / window.screen.availWidth;
-        const left = (width - 700) / 2 / systemZoom + dualScreenLeft
-        const top = (height - 500) / 2 / systemZoom + dualScreenTop
-
-        window.open(
-            '/remisiones/qr/' + factura.id,
-            "ModalPopUp",
-            "toolbar=no," +
-            "scrollbars=no," +
-            "location=yes," +
-            "statusbar=no," +
-            "menubar=no," +
-            "resizable=0," +
-            "width=750," +
-            "height=750," +
-            "left=" + left + "," +
-            "top=" + top + ""    
-        );
     }
 
     const onSetList = () => {
@@ -230,7 +204,7 @@ export default ({ auth, factura }) => {
 
                         <PrimaryButton
                             className="ms-4"
-                            onClick={goToQR}
+                            onClick={() => goToQR('/remisiones/qr/' + factura.id) }
                         >
                             QR
                         </PrimaryButton>

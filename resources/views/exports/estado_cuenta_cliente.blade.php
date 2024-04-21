@@ -1,3 +1,33 @@
+<style>
+    @font-face {
+        font-family: "source_sans_proregular";           
+        src: local("Source Sans Pro"), url("fonts/sourcesans/sourcesanspro-regular-webfont.ttf") format("truetype");
+        font-weight: normal;
+        font-style: normal;
+    }
+
+    body {
+        font-family: "source_sans_proregular", Calibri,Candara,Segoe,Segoe UI,Optima,Arial,sans-serif;
+    }
+   
+    .page-break {
+        page-break-after: always;
+    }
+
+    .reporte {
+        font-size: 12px;
+        margin-top: 20px;
+    }
+
+    .reporte th {
+        text-align: left;
+        margin-left: 10px;    
+    }
+
+    @page { margin: 20px 30px 40px 50px; }
+
+</style>
+
 @php
     $valor = $invoices->map( function ($item) {
             return (
@@ -20,13 +50,13 @@
         });
 @endphp
 
-<table>
+<table border="1" class="reporte">
     <thead>
         <tr>
-            <th> Fecha </th>
-            <th> Cliente </th>
-            <th> Valor Total </th>
-            <th> Saldo </th>
+            <th style="width: 150px"> Fecha </th>
+            <th style="width: 150px"> Cliente </th>
+            <th style="width: 150px"> Valor Total </th>
+            <th style="width: 150px"> Saldo </th>
         </tr>
     </thead>
     <tbody>

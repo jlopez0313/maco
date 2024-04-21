@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 use App\Http\Resources\ClientesCollection;
 use App\Http\Resources\FacturasCollection;
@@ -49,6 +50,26 @@ class ReportesController extends Controller
         return Excel::download(new ArticulosVendidosExport( $request->all() ), 'ArticulosVendidos.xlsx');
     }
 
+    public function articulos_vendidos_pdf(Request $request) 
+    {
+        $query = Facturas::with('detalles.producto.inventario')
+            ->whereBetween('created_at', [ $request['fecha_inicial'] . ' 00:00:00', $request['fecha_final'] . ' 23:59:59' ])
+            ->get()
+        ;
+
+        $data = [
+            'invoices' => $query
+        ];
+
+        $pdf = \PDF::loadView('exports.articulos_vendidos', $data);
+    
+        return $pdf->download('articulos_vendidos.pdf');
+    }
+
+    public function articulos_vendidos_qr(Request $request) {
+        echo \QrCode::size(700)->generate( url('/reportes/articulos_vendidos/pdf?fecha_inicial=' . $request['fecha_inicial'] . ' 00:00:00' . '&fecha_final=' . $request['fecha_final'] . ' 23:59:59') );
+    }
+
 
     public function compras() {
         return Inertia::render('Reportes/Compras');
@@ -57,6 +78,26 @@ class ReportesController extends Controller
     public function compras_export(Request $request) 
     {
         return Excel::download(new ComprasExport( $request->all() ), 'Compras.xlsx');
+    }
+
+    public function compras_pdf(Request $request) 
+    {
+        $query = Facturas::with('detalles', 'cliente')
+            ->whereBetween('created_at', [ $request['fecha_inicial'] . ' 00:00:00', $request['fecha_final'] . ' 23:59:59' ])
+            ->get()
+        ;
+
+        $data = [
+            'invoices' => $query
+        ];
+
+        $pdf = \PDF::loadView('exports.compras', $data);
+    
+        return $pdf->download('compras.pdf');
+    }
+
+    public function compras_qr(Request $request) {
+        echo \QrCode::size(700)->generate( url('/reportes/compras/pdf?fecha_inicial=' . $request['fecha_inicial'] . ' 00:00:00' . '&fecha_final=' . $request['fecha_final'] . ' 23:59:59') );
     }
     
     
@@ -68,6 +109,26 @@ class ReportesController extends Controller
     {
         return Excel::download(new GastosExport( $request->all() ), 'Gastos.xlsx');
     }
+
+    public function gastos_pdf(Request $request) 
+    {
+        $query = Gastos::with('concepto', 'cliente')
+            ->whereBetween('created_at', [ $request['fecha_inicial'] . ' 00:00:00', $request['fecha_final'] . ' 23:59:59' ])
+            ->get()
+        ;
+
+        $data = [
+            'invoices' => $query
+        ];
+
+        $pdf = \PDF::loadView('exports.gastos', $data);
+    
+        return $pdf->download('gastos.pdf');
+    }
+
+    public function gastos_qr(Request $request) {
+        echo \QrCode::size(700)->generate( url('/reportes/gastos/pdf?fecha_inicial=' . $request['fecha_inicial'] . ' 00:00:00' . '&fecha_final=' . $request['fecha_final'] . ' 23:59:59') );
+    }
     
     
     public function estado_cuenta_general() {
@@ -77,6 +138,30 @@ class ReportesController extends Controller
     public function estado_cuenta_general_export(Request $request) 
     {
         return Excel::download(new EstadoCuentaGeneralExport( $request->all() ), 'EstadoCuentaGeneral.xlsx');
+    }
+
+    public function estado_cuenta_general_pdf(Request $request) 
+    {
+        $query = Facturas::with(
+                'cliente', 'detalles', 'recaudos'
+            )
+            ->has('detalles')
+            ->where('tipos_id', '1')
+            ->whereBetween('created_at', [ $request['fecha_inicial'] . ' 00:00:00', $request['fecha_final'] . ' 23:59:59' ])
+            ->get()
+        ;
+
+        $data = [
+            'invoices' => $query
+        ];
+
+        $pdf = \PDF::loadView('exports.estado_cuenta_general', $data);
+    
+        return $pdf->download('estado_cuenta_general.pdf');
+    }
+
+    public function estado_cuenta_general_qr(Request $request) {
+        echo \QrCode::size(700)->generate( url('/reportes/estado_cuenta_general/pdf?fecha_inicial=' . $request['fecha_inicial'] . ' 00:00:00' . '&fecha_final=' . $request['fecha_final'] . ' 23:59:59') );
     }
     
 
@@ -91,6 +176,31 @@ class ReportesController extends Controller
     public function estado_cuenta_cliente_export(Request $request) 
     {
         return Excel::download(new EstadoCuentaClienteExport( $request->all() ), 'EstadoCuentaCliente.xlsx');
+    }
+
+    public function estado_cuenta_cliente_pdf(Request $request) 
+    {
+        $query = Facturas::with(
+                'cliente', 'detalles', 'recaudos'
+            )
+            ->has('detalles')
+            ->where('tipos_id', '1')
+            ->where('clientes_id', $request['clientes_id'])
+            ->whereBetween('created_at', [ $request['fecha_inicial'] . ' 00:00:00', $request['fecha_final'] . ' 23:59:59' ])
+            ->get()
+        ;
+
+        $data = [
+            'invoices' => $query
+        ];
+
+        $pdf = \PDF::loadView('exports.estado_cuenta_cliente', $data);
+    
+        return $pdf->download('estado_cuenta_cliente.pdf');
+    }
+
+    public function estado_cuenta_cliente_qr(Request $request) {
+        echo \QrCode::size(700)->generate( url('/reportes/estado_cuenta_cliente/pdf?fecha_inicial=' . $request['fecha_inicial'] . ' 00:00:00' . '&fecha_final=' . $request['fecha_final'] . ' 23:59:59' . '&clientes_id=' . $request['clientes_id']) );
     }
 
 
@@ -121,5 +231,113 @@ class ReportesController extends Controller
         return Excel::download(new UtilidadExport( $request->all() ), 'Utilidad.xlsx');
     }
 
+    public function utilidad_pdf(Request $request) 
+    {
+        $facturas = Facturas::with(
+            'cliente', 'detalles.producto.inventario',
+        )->get();
+
+        $data = [
+            'facturas' => $facturas,
+            'inventario' => $this->onSetProductos( Productos::get() ),
+            'compraCredito' => $this->onSetCompraCredito($facturas),
+            'compraContado' => $this->onSetCompraContado($facturas),
+            'recaudos' => $this->onSetRecaudos( Recaudos::get() ),
+            'gastos' => $this->onSetGastos( Gastos::get() ),
+        ];
+
+        $pdf = \PDF::loadView('exports.utilidad', $data);
+    
+        return $pdf->download('utilidad.pdf');
+    }
+
+    public function utilidad_qr(Request $request) {
+        echo \QrCode::size(700)->generate( url('/reportes/utilidad/pdf') );
+    }
+
+    public function onSetProductos($productos) {
+        return $productos->reduce( function ($sum, $prod ) {
+            return $sum + ($prod->cantidad * $prod->precio );
+        }, 0) ;
+    }
+
+    public function onSetCompraCredito($facturas) {
+        $lista = $facturas->filter( 
+            function ($item) { 
+                return $item->forma_pago?->id == "1" ;
+        });
+
+        $total = $lista->map( function ($item) {
+            return (
+                $item->detalles->reduce(
+                    function ($sum, $det) { 
+                        return $sum + ($det->precio_venta * $det->cantidad) ;
+                    },
+                    0
+                ) ?? 0
+            );
+        });
+
+        $nacional = $lista->map( function($item) { return $item->detalles?->filter( function ($detalle) { return $detalle->producto?->inventario?->origen == 'N' ;} ) ?? []; }) ;
+        $importado = $lista->map( function($item) { return $item->detalles?->filter( function ($detalle) { return $detalle->producto?->inventario?->origen == 'I' ;} ) ?? []; }) ;
+
+        return [
+            'total' => $total->reduce( function ($item, $sum) { return $sum + $item ; }, 0),
+            'nacional' => $nacional->flatten(1)->reduce( function ($sum, $item) { return $sum + ( ($item['cantidad'] ?? 0) * ($item['precio_venta'] ?? 0) ) ;}, 0),
+            'importado' => $importado->flatten(1)->reduce( function ($sum, $item) { return $sum + ( ($item['cantidad'] ?? 0) * ($item['precio_venta'] ?? 0) ) ;}, 0),
+        ] ;
+    }
+
+    public function onSetCompraContado($facturas) {
+        $lista = $facturas->filter( 
+            function ($item) { 
+                return $item->forma_pago?->id == "2" ;
+        });
+
+        $total = $lista->map( function ($item) {
+            return (
+                $item->$detalles->reduce(
+                    function ($sum, $det) { 
+                        return $sum + ($det->precio_venta * $det->cantidad) ;
+                    },
+                    0
+                ) ?? 0
+            );
+        });
+
+        $nacional = $lista->map( function($item) { return $item->detalles?->filter( function ($detalle) { return $detalle->producto?->inventario?->origen == 'N' ;} ) ?? []; }) ;
+        $importado = $lista->map( function($item) { return $item->detalles?->filter( function ($detalle) { return $detalle->producto?->inventario?->origen == 'I' ;} ) ?? []; }) ;
+
+        return [
+            'total' => $total->reduce( function ($item, $sum) { return $sum + $item ; }, 0),
+            'nacional' => $nacional->flatten(1)->reduce( function ($sum, $item) { return $sum + ( ($item['cantidad'] ?? 0) * ($item['precio_venta'] ?? 0) ) ;}, 0),
+            'importado' => $importado->flatten(1)->reduce( function ($sum, $item) { return $sum + ( ($item['cantidad'] ?? 0) * ($item['precio_venta'] ?? 0) ) ;}, 0),
+        ] ;
+    }
+
+    public function onSetRecaudos($recaudos) {
+        return $recaudos->reduce( function ($sum, $prod ) {
+            return $sum + $prod->valor;
+        }, 0);
+    }
+
+    public function onSetGastos($gastos) {
+        $total = $gastos->reduce (
+            function ($sum, $det) {
+                return $sum + $det->valor;
+            }, 
+            0
+        );
+
+        $nacional = $gastos->filter( function ($detalle) { return $detalle->origen == 'N' ; }  ) ?? [];
+
+        $importado = $gastos->filter( function ($detalle) { return $detalle->origen == 'I' ; } ) ?? [] ;
+        
+        return [
+            'total' => $total,
+            'nacional' =>  $nacional->flatten(1)->reduce( function ($sum, $det) { return $sum + $det->valor ;}, 0),
+            'importado' =>  $importado->flatten(1)->reduce( function ($sum, $det) { return $sum + $det->valor ;}, 0),
+        ] ;
+    }
 
 }

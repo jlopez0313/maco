@@ -130,26 +130,38 @@ Route::prefix('reportes')->group( function() {
     Route::prefix('articulos_vendidos')->group( function() {
         Route::get('/', [ReportesController::class, 'articulos_vendidos'])->name('reportes.articulos_vendidos');
         Route::get('/excel', [ReportesController::class, 'articulos_vendidos_export'])->name('reportes.articulos_vendidos_export');
+        Route::get('/pdf', [ReportesController::class, 'articulos_vendidos_pdf'])->name('reportes.articulos_vendidos_pdf');
+        Route::get('/qr', [ReportesController::class, 'articulos_vendidos_qr'])->name('reportes.articulos_vendidos_qr');
     });
     Route::prefix('compras')->group( function() {
         Route::get('/', [ReportesController::class, 'compras'])->name('reportes.compras');
         Route::get('/excel', [ReportesController::class, 'compras_export'])->name('reportes.compras_export');
+        Route::get('/pdf', [ReportesController::class, 'compras_pdf'])->name('reportes.compras_pdf');
+        Route::get('/qr', [ReportesController::class, 'compras_qr'])->name('reportes.compras_qr');
     });
     Route::prefix('gastos')->group( function() {
         Route::get('/', [ReportesController::class, 'gastos'])->name('reportes.gastos');
         Route::get('/excel', [ReportesController::class, 'gastos_export'])->name('reportes.gastos_export');
+        Route::get('/pdf', [ReportesController::class, 'gastos_pdf'])->name('reportes.gastos_pdf');
+        Route::get('/qr', [ReportesController::class, 'gastos_qr'])->name('reportes.gastos_qr');
     });
     Route::prefix('estado_cuenta_general')->group( function() {
         Route::get('/', [ReportesController::class, 'estado_cuenta_general'])->name('reportes.estado_cuenta_general');
         Route::get('/excel', [ReportesController::class, 'estado_cuenta_general_export'])->name('reportes.estado_cuenta_general_export');
+        Route::get('/pdf', [ReportesController::class, 'estado_cuenta_general_pdf'])->name('reportes.estado_cuenta_general_pdf');
+        Route::get('/qr', [ReportesController::class, 'estado_cuenta_general_qr'])->name('reportes.estado_cuenta_general_qr');
     });
     Route::prefix('estado_cuenta_cliente')->group( function() {
         Route::get('/', [ReportesController::class, 'estado_cuenta_cliente'])->name('reportes.estado_cuenta_cliente');
         Route::get('/excel', [ReportesController::class, 'estado_cuenta_cliente_export'])->name('reportes.estado_cuenta_cliente_export');
+        Route::get('/pdf', [ReportesController::class, 'estado_cuenta_cliente_pdf'])->name('reportes.estado_cuenta_cliente_pdf');
+        Route::get('/qr', [ReportesController::class, 'estado_cuenta_cliente_qr'])->name('reportes.estado_cuenta_cliente_qr');
     });
     Route::prefix('utilidad')->group( function() {
         Route::get('/', [ReportesController::class, 'utilidad'])->name('reportes.utilidad');
         Route::get('/excel', [ReportesController::class, 'utilidad_export'])->name('reportes.utilidad_export');
+        Route::get('/pdf', [ReportesController::class, 'utilidad_pdf'])->name('reportes.utilidad_pdf');
+        Route::get('/qr', [ReportesController::class, 'utilidad_qr'])->name('reportes.utilidad_qr');
     });
 })->middleware(['auth', 'verified']);
 

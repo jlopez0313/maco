@@ -17,7 +17,6 @@ export const Form = ({ id, auth, tipos_doc, tipoClientes, departamentos, setIsOp
         updated_by: auth.user.id,
         tipo_doc: '',
         documento: '',
-        codigo: '',
         nombre: '',
         tipo: '',
         depto: '',
@@ -58,7 +57,6 @@ export const Form = ({ id, auth, tipos_doc, tipoClientes, departamentos, setIsOp
                 updated_by: auth.user.id,
                 tipo_doc: item.tipo_doc|| '',
                 documento: item.documento|| '',
-                codigo: item.codigo|| '',
                 nombre: item.nombre|| '',
                 tipo: item.tipo?.id || '',
                 depto: item.ciudad?.departamento?.id || '',
@@ -137,28 +135,6 @@ export const Form = ({ id, auth, tipos_doc, tipoClientes, departamentos, setIsOp
 
                             <InputError
                                 message={errors.documento}
-                                className="mt-2"
-                            />
-                        </div>
-
-                        <div>
-                            <InputLabel htmlFor="codigo" value="Codigo" />
-
-                            <TextInput
-                                placeholder="Escriba aquí"
-                                id="codigo"
-                                name="codigo"
-                                value={data.codigo}
-                                className="mt-1 block w-full"
-                                autoComplete="codigo"
-                                isFocused={true}
-                                onChange={(e) =>
-                                    setData("codigo", e.target.value)
-                                }
-                            />
-
-                            <InputError
-                                message={errors.codigo}
                                 className="mt-2"
                             />
                         </div>

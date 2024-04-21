@@ -3,6 +3,7 @@ import SecondaryButton from "@/Components/Buttons/SecondaryButton";
 import InputLabel from "@/Components/Form/InputLabel";
 import TextInput from "@/Components/Form/TextInput";
 import Table from "@/Components/Table/Table";
+import { goToQR } from "@/Helpers/Modals";
 import { toCurrency } from "@/Helpers/Numbers";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, router } from "@inertiajs/react";
@@ -132,6 +133,20 @@ export default function Reportes({ auth }) {
                                     >
                                         Excel
                                     </a>
+
+                                    <a
+                                        className="border border-gray-300 ms-3 rounded-md bg-white hover:bg-white-700 text-gray py-2 px-4 rounded text-xs uppercase shadow-sm font-semibold text-gray-700"
+                                        href={`/reportes/gastos/pdf?fecha_inicial=${data.fecha_inicial}&fecha_final=${data.fecha_final}`}
+                                    >
+                                        Imprimir
+                                    </a>
+
+                                    <SecondaryButton
+                                        className="ms-4"
+                                        onClick={() => goToQR(`/reportes/gastos/qr?fecha_inicial=${data.fecha_inicial}&fecha_final=${data.fecha_final}`) }
+                                    >
+                                        QR
+                                    </SecondaryButton>
                                 </div>
                             </div> : null
                     }
