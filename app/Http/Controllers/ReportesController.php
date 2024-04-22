@@ -14,6 +14,7 @@ use App\Http\Resources\RecaudosCollection;
 use App\Models\Clientes;
 use App\Models\Facturas;
 use App\Models\Gastos;
+use App\Models\Inventarios;
 use App\Models\Productos;
 use App\Models\Recaudos;
 
@@ -23,8 +24,10 @@ use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\ArticulosVendidosExport;
 use App\Exports\ComprasExport;
 use App\Exports\GastosExport;
+use App\Exports\InventarioExport;
 use App\Exports\EstadoCuentaGeneralExport;
 use App\Exports\EstadoCuentaClienteExport;
+use App\Exports\ExistenciaArticuloExport;
 use App\Exports\UtilidadExport;
 
 
@@ -32,12 +35,64 @@ class ReportesController extends Controller
 {
 
     public function inventario() {
-        return Inertia::render('Reportes/Inventario');
+        $query = Inventarios::with('productos.color', 'productos.medida')
+            ->get()
+        ;
+        return Inertia::render('Reportes/Inventario', [ 'facturas' => $query ]);
+    }
+
+    public function inventario_export(Request $request) 
+    {
+        return Excel::download(new InventarioExport( $request->all() ), 'Inventario.xlsx');
+    }
+
+    public function inventario_pdf(Request $request) 
+    {
+        $query = Inventarios::with('productos')
+            ->get()
+        ;
+
+        $data = [
+            'invoices' => $query
+        ];
+
+        $pdf = \PDF::loadView('exports.inventario', $data);
+    
+        return $pdf->download('inventario.pdf');
+    }
+
+    public function inventario_qr(Request $request) {
+        echo \QrCode::size(700)->generate( url('/reportes/inventario/pdf') );
     }
 
 
     public function existencia_articulo() {
-        return Inertia::render('Reportes/ExistenciaArticulo');
+        $query = Inventarios::get();
+        return Inertia::render('Reportes/ExistenciaArticulo', ['inventarios' => $query]);
+    }
+
+    public function existencia_articulo_export(Request $request) 
+    {
+        return Excel::download(new ExistenciaArticuloExport( $request->all() ), 'Existencia_Articulo.xlsx');
+    }
+
+    public function existencia_articulo_pdf(Request $request) 
+    {
+        $query = Inventarios::with('productos.color', 'productos.medida')
+            ->find( $request['inventario'] )
+        ;
+
+        $data = [
+            'invoices' => $query
+        ];
+
+        $pdf = \PDF::loadView('exports.existencia_articulo', $data);
+    
+        return $pdf->download('existencia_articulo.pdf');
+    }
+
+    public function existencia_articulo_qr(Request $request) {
+        echo \QrCode::size(700)->generate( url('/reportes/existencia_articulo/pdf?inventario=' . $request['inventario']) );
     }
 
 

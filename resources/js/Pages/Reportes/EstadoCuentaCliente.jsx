@@ -184,13 +184,6 @@ export default function Reportes({ auth, clientes }) {
                                         Imprimir
                                     </a>
 
-                                    <a
-                                        className="border border-gray-300 ms-3 rounded-md bg-white hover:bg-white-700 text-gray py-2 px-4 rounded text-xs uppercase shadow-sm font-semibold text-gray-700"
-                                        href={`/reportes/estado_cuenta_cliente/qr?fecha_inicial=${data.fecha_inicial}&fecha_final=${data.fecha_final}&clientes_id=${data.clientes_id}`}
-                                    >
-                                        QR
-                                    </a>
-                                    
                                     <SecondaryButton
                                         className="ms-4"
                                         onClick={() => goToQR(`/reportes/estado_cuenta_cliente/qr?fecha_inicial=${data.fecha_inicial}&fecha_final=${data.fecha_final}&clientes_id=${data.clientes_id}`) }

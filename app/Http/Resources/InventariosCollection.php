@@ -19,7 +19,7 @@ class InventariosCollection extends ResourceCollection
         }
         
         return $this->collection->map->only(
-            'id', 'articulo', 'origen', 'origen_label', 'cantidad',
+            'id', 'articulo', 'origen', 'origen_label', 'cantidad', 'productos',
         );
     }
 }

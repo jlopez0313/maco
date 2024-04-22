@@ -24,6 +24,7 @@ class InventariosResource extends JsonResource
             'origen' => $this->origen,
             'origen_label' => $this->origen_label,
             'cantidad' => $this->cantidad,
+            'productos' => $this->productos,
         ];
     }
 }

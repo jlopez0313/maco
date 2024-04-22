@@ -123,9 +123,15 @@ Route::prefix('reportes')->group( function() {
 
     Route::prefix('inventario')->group( function() {
         Route::get('/', [ReportesController::class, 'inventario'])->name('reportes.inventario');
+        Route::get('/excel', [ReportesController::class, 'inventario_export'])->name('reportes.inventario_export');
+        Route::get('/pdf', [ReportesController::class, 'inventario_pdf'])->name('reportes.inventario_pdf');
+        Route::get('/qr', [ReportesController::class, 'inventario_qr'])->name('reportes.inventario_qr');
     });
     Route::prefix('existencia_articulo')->group( function() {
         Route::get('/', [ReportesController::class, 'existencia_articulo'])->name('reportes.existencia_articulo');
+        Route::get('/excel', [ReportesController::class, 'existencia_articulo_export'])->name('reportes.existencia_articulo_export');
+        Route::get('/pdf', [ReportesController::class, 'existencia_articulo_pdf'])->name('reportes.existencia_articulo_pdf');
+        Route::get('/qr', [ReportesController::class, 'existencia_articulo_qr'])->name('reportes.existencia_articulo_qr');
     });
     Route::prefix('articulos_vendidos')->group( function() {
         Route::get('/', [ReportesController::class, 'articulos_vendidos'])->name('reportes.articulos_vendidos');

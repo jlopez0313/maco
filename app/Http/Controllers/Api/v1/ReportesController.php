@@ -7,9 +7,13 @@ use Illuminate\Http\Request;
 
 use App\Http\Resources\FacturasResource;
 use App\Http\Resources\GastosResource;
+use App\Http\Resources\InventariosResource;
+use App\Http\Resources\ProductosResource;
 
 use App\Models\Facturas;
 use App\Models\Gastos;
+use App\Models\Inventarios;
+use App\Models\Productos;
 
 class ReportesController extends Controller
 {
@@ -20,7 +24,13 @@ class ReportesController extends Controller
     
     
     public function existencia_articulo(Request $request) {
+        $data = $request->all();
         
+        $query = Inventarios::with('productos.color', 'productos.medida')
+            ->find( $request['inventario'] )
+        ;
+
+        return new InventariosResource($query);
     }
     
     

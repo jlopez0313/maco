@@ -12,20 +12,20 @@ export default function Reportes({ auth }) {
     const list = [
         {
             id: 1,
-            parametro: '--Información de Inventario--',
-            descripcion: '',
+            parametro: 'Información de Inventario',
+            descripcion: 'Reporte de inventario de artículos.',
             ruta: 'reportes/inventario'
         },
         {
             id: 2,
-            parametro: '--Existencia por Articulo--',
-            descripcion: '',
+            parametro: 'Existencia por Articulo',
+            descripcion: 'Reporte de inventario de un artículo específico',
             ruta: 'reportes/existencia_articulo'
         },
         {
             id: 3,
             parametro: 'Artículos Vendidos',   
-            descripcion: 'Reporte Unitario de venta por articulo.',
+            descripcion: 'Reporte Unitario de venta por artículo.',
             ruta: 'reportes/articulos_vendidos'
         },
         {
