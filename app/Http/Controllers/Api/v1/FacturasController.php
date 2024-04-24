@@ -8,6 +8,8 @@ use App\Http\Requests\facturasRequest;
 use App\Http\Resources\facturasResource;
 use App\Models\Productos;
 use App\Models\Facturas;
+use App\Models\Clientes;
+
 use Inertia\Inertia;
 
 

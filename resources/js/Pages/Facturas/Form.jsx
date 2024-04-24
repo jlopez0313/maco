@@ -302,7 +302,7 @@ export const Form = ({ id, auth, payments, tipoClientes, departamentos, setIsOpe
                             >
                                 {
                                     tipos.map( (tipo, key) => {
-                                        return <option value={ tipo.key } key={key}> { tipo.tipo } </option>
+                                        return <option value={ tipo.id } key={key}> { tipo.tipo } </option>
                                     })
                                 }
                             </Select>
