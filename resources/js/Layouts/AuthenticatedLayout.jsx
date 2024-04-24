@@ -20,37 +20,37 @@ export default function Authenticated({ user, header, children }) {
                                 </Link>
                             </div>
 
-                            <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                            <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex no-print">
                                 <NavLink href={route('dashboard')} active={route().current('dashboard')}>
                                     Inicio
                                 </NavLink>
                             </div>
 
-                            <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                            <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex no-print">
                                 <NavLink href={route('parametros')} active={route().current('parametros')}>
                                     Configuración
                                 </NavLink>
                             </div>
 
-                            <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                            <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex no-print">
                                 <NavLink href={route('clientes')} active={route().current('clientes')}>
                                     Clientes
                                 </NavLink>
                             </div>
 
-                            <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                            <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex no-print">
                                 <NavLink href={route('inventario')} active={route().current('inventario')}>
                                     Inventario
                                 </NavLink>
                             </div>
 
-                            <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                            <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex no-print">
                                 <NavLink href={route('remisiones')} active={route().current('remisiones')}>
                                     Ord. de Compra
                                 </NavLink>
                             </div>
 
-                            <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                            <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex no-print">
                                 <NavLink href={route('gastos')} active={route().current('gastos')}>
                                     Gastos
                                 </NavLink>
@@ -66,26 +66,26 @@ export default function Authenticated({ user, header, children }) {
                             
                             */}
                             
-                            <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                            <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex no-print">
                                 <NavLink href={route('recaudos')} active={route().current('recaudos')}>
                                     Recaudos
                                 </NavLink>
                             </div>
 
-                            <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                            <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex no-print">
                                 <NavLink href={route('proveedores')} active={route().current('proveedores')}>
                                     Proveedores
                                 </NavLink>
                             </div>
 
-                            <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                            <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex no-print">
                                 <NavLink href={route('reportes')} active={route().current('reportes')}>
                                     Reportes
                                 </NavLink>
                             </div>
                         </div>
 
-                        <div className="hidden sm:flex sm:items-center sm:ms-6">
+                        <div className="hidden sm:flex sm:items-center sm:ms-6 no-print">
                             <div className="ms-3 relative">
                                 <Dropdown>
                                     <Dropdown.Trigger>

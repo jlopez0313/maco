@@ -31,6 +31,10 @@ export default function Reportes({ auth, inventarios }) {
         history.back();
     };
 
+    const onPrint = () => {
+        window.print();
+    }
+
     return (
         <AuthenticatedLayout
             user={auth.user}
@@ -43,7 +47,7 @@ export default function Reportes({ auth, inventarios }) {
             <Head title="Reporte de existencias por artículo" />
 
             <div className="py-12">
-                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 no-print">
                     <div className="flex items-center justify-end mt-4 mb-4">
                         <SecondaryButton
                             className="ms-4"
@@ -55,7 +59,7 @@ export default function Reportes({ auth, inventarios }) {
                 </div>
 
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    <div className="flex items-center justify-between mt-4 mb-6">
+                    <div className="flex items-center justify-between mt-4 mb-6 no-print">
                         <div className="w-full m-2">
                             <InputLabel
                                 htmlFor="inventario"
@@ -101,7 +105,7 @@ export default function Reportes({ auth, inventarios }) {
                                     className="hover:bg-gray-100 focus-within:bg-gray-100"
                                 >
                                     <td colSpan={2} className="px-6 py-2 border-t"> { list.articulo } </td>
-                                    <td colSpan={2} className="px-6 py-2 border-t"> { list.origenLabel } </td>
+                                    <td colSpan={2} className="px-6 py-2 border-t"> { list.origen_label } </td>
                                     <td colSpan={2} className="px-6 py-2 border-t"> { list.productos?.reduce( (sum, item) => sum += item.cantidad, 0) } </td>
                                 </tr>
                                 <tr className="font-bold text-left">
@@ -133,7 +137,7 @@ export default function Reportes({ auth, inventarios }) {
 
                     {
                         list.productos ?
-                            <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                            <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 no-print">
                                 <div className="flex items-center justify-end mt-4 mb-4">
                                     <a
                                         className="border border-gray-300 rounded-md bg-white hover:bg-white-700 text-gray py-2 px-4 rounded text-xs uppercase shadow-sm font-semibold text-gray-700"
@@ -142,13 +146,21 @@ export default function Reportes({ auth, inventarios }) {
                                         Excel
                                     </a>
 
+                                    <SecondaryButton
+                                        className="ms-4"
+                                        onClick={onPrint}
+                                    >
+                                        Imprimir
+                                    </SecondaryButton>
+
+{/*
                                     <a
                                         className="border border-gray-300 ms-3 rounded-md bg-white hover:bg-white-700 text-gray py-2 px-4 rounded text-xs uppercase shadow-sm font-semibold text-gray-700"
                                         href={`/reportes/existencia_articulo/pdf?inventario=${data.inventario}`}
                                     >
                                         Imprimir
                                     </a>
-
+*/}
                                     <SecondaryButton
                                         className="ms-4"
                                         onClick={() => goToQR(`/reportes/existencia_articulo/qr?inventario=${data.inventario}`) }

@@ -43,6 +43,10 @@ export default function Reportes({ auth }) {
         history.back();
     }
 
+    const onPrint = () => {
+        window.print();
+    }
+
     return (
         <AuthenticatedLayout
             user={auth.user}
@@ -55,7 +59,7 @@ export default function Reportes({ auth }) {
             <Head title="Reporte de Gastos" />
 
             <div className="py-12">
-                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 no-print">
                     <div className="flex items-center justify-end mt-4 mb-4">
                         <SecondaryButton
                             className="ms-4"
@@ -67,7 +71,7 @@ export default function Reportes({ auth }) {
                 </div>
 
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    <div className="flex items-center justify-between mt-4 mb-6">
+                    <div className="flex items-center justify-between mt-4 mb-6 no-print">
                         <div className="w-full m-2">
                             <InputLabel
                                 htmlFor="nombre"
@@ -125,7 +129,7 @@ export default function Reportes({ auth }) {
 
                     {
                         list.length ? 
-                            <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                            <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 no-print">
                                 <div className="flex items-center justify-end mt-4 mb-4">
                                     <a
                                         className="border border-gray-300 rounded-md bg-white hover:bg-white-700 text-gray py-2 px-4 rounded text-xs uppercase shadow-sm font-semibold text-gray-700"
@@ -134,13 +138,21 @@ export default function Reportes({ auth }) {
                                         Excel
                                     </a>
 
+                                    <SecondaryButton
+                                        className="ms-4"
+                                        onClick={onPrint}
+                                    >
+                                        Imprimir
+                                    </SecondaryButton>
+
+{/*
                                     <a
                                         className="border border-gray-300 ms-3 rounded-md bg-white hover:bg-white-700 text-gray py-2 px-4 rounded text-xs uppercase shadow-sm font-semibold text-gray-700"
                                         href={`/reportes/gastos/pdf?fecha_inicial=${data.fecha_inicial}&fecha_final=${data.fecha_final}`}
                                     >
                                         Imprimir
                                     </a>
-
+                    */}
                                     <SecondaryButton
                                         className="ms-4"
                                         onClick={() => goToQR(`/reportes/gastos/qr?fecha_inicial=${data.fecha_inicial}&fecha_final=${data.fecha_final}`) }

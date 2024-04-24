@@ -1,4 +1,8 @@
-@media print {    
+@media print {
+    /*@page {
+      size: landscape;
+    }*/
+
     .no-print{
       display: none !important;
     }
