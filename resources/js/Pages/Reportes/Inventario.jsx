@@ -47,17 +47,15 @@ export default function Inventario({ auth, facturas }) {
                     <div className="bg-white overflow-auto shadow-sm sm:rounded-lg">
                        
                         <table className="w-full whitespace-nowrap">
-                            <thead>
-                                <tr className="font-bold text-left">
-                                    <th colSpan={2} className="px-6 pt-5 pb-4"> Artículo </th>
-                                    <th colSpan={2} className="px-6 pt-5 pb-4"> Orígen </th>
-                                    <th colSpan={2} className="px-6 pt-5 pb-4"> Cantidad </th>
-                                </tr>
-                            </thead>
                             <tbody>
                                 {
                                     facturas.map( (item, key) => {
                                         return  <>
+                                            <tr className="font-bold text-left">
+                                                <th colSpan={2} className="px-6 pt-5 pb-4 border-t"> Artículo </th>
+                                                <th colSpan={2} className="px-6 pt-5 pb-4 border-t"> Orígen </th>
+                                                <th colSpan={2} className="px-6 pt-5 pb-4 border-t"> Cantidad </th>
+                                            </tr>
                                             <tr
                                                 key={key}
                                                 className="hover:bg-gray-100 focus-within:bg-gray-100"

@@ -1,7 +1,14 @@
 @php
-    $sum = 0;
     $break = 0;
-    $total = 0;
+    
+    $sum = $factura->detalles->reduce( function ($sum, $item) {
+            return $sum + ($item->precio_venta * $item->cantidad);
+        }, 0);
+
+    $saldo = $factura->recaudos->reduce( function ($sum, $item) {
+        return $sum + ($item->valor);
+    }, 0);
+
 @endphp
 
 
@@ -95,34 +102,34 @@
             <th>Correo: </th>
             <td> {{ $factura->cliente->correo }} </td>
         </tr>
+        <tr>
+            <th>Valor Total: </th>
+            <td> {{ number_format($sum, 0, ',', '.') }} </td>
+            <th>Saldo: </th>
+            <td> {{ number_format($sum - $saldo, 0, ',', '.') }} </td>
+        </tr>
     </table>
 
-    <table border="1" class="detalle">
+    <table border="1" class="detalle"  cellpadding="3" cellspacing="0">
         <tr class="font-12">
-            <th style="width: 170px">Artículo</th>
-            <th style="width: 140px">Referencia</th>
-            <th style="width: 80px">Color</th>
-            <th style="width: 60px">Medida</th>
-            <th style="width: 55px">Cantidad</th>
-            <th style="width: 80px">Precio Venta</th>
-            <th style="width: 80px">Total</th>
+            <th style="width: 150px">Código</th>
+            <th style="width: 150px">Valor</th>
+            <th style="width: 210px">Descripción</th>
+            <th style="width: 150px">Fecha</th>
         </tr>
         
-        @foreach ($factura->detalles as $index => $item)
+        @foreach ($factura->recaudos as $index => $item)
             <tr>
-                <td style="width: 170px">{{ $item->producto->inventario->articulo ?? '' }}</td>
-                <td style="width: 140px">{{ $item->producto->referencia ?? '' }}</td>
-                <td style="width: 80px">{{ $item->producto->color->color ?? '' }}</td>
-                <td style="width: 60px">{{ $item->producto->medida->medida ?? '' }}</td>
-                <td style="width: 55px">{{ $item->cantidad }}</td>
-                <td style="width: 80px">{{ number_format($item->precio_venta, 0, ',', '.') }}</td>
-                <td style="width: 80px">{{ number_format($item->precio_venta * $item->cantidad, 0, ',', '.') }}</td>
+                <td style="width: 150px">{{ $item->id ?? '' }}</td>
+                <td style="width: 150px">{{ number_format($item->valor, 0, ',', '.') }}</td>
+                <td style="width: 210px">{{ $item->descripcion ?? '' }}</td>
+                <td style="width: 150px">{{ $item->created_at ?? '' }}</td>
             </tr>
             
             @if( $index == 25 || $break == 50 )
                 </table>
                     <div class="page-break"></div>
-                <table border="1" class="detalle">
+                <table border="1" class="detalle"  cellpadding="3" cellspacing="0">
                 @php
                     $break = 0;
                 @endphp
@@ -130,16 +137,12 @@
             
             @php
                 $break ++;
-                $total += ( $item->precio_venta * $item->cantidad )
             @endphp
 
         @endforeach
-    </table>
-
-    <table border="1" class="total">
         <tr>
-            <th style="width: 615px"> Total: </th>
-            <td style="width: 80px"> {{ number_format($total, 0, ',', '.') }} </td>
+            <th style="width: 150px"> Total: </th>
+            <td style="width: 150px" colspan="3"> {{ number_format($saldo, 0, ',', '.') }} </td>
         </tr>
     </table>
 

@@ -12,6 +12,8 @@ use App\Models\Detalles;
 use App\Models\Recaudos;
 use Inertia\Inertia;
 
+use Barryvdh\DomPDF\Facade\Pdf;
+
 class RecaudosController extends Controller
 {
     /**
@@ -95,5 +97,24 @@ class RecaudosController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function qr( string $id) {
+        echo \QrCode::size(700)->generate( url('/recaudos/pdf/' .  $id ) );
+    }
+
+    public function pdf(string $id)
+    {
+
+        $factura = Facturas::with('detalles.producto.inventario', 'detalles.producto.color', 'detalles.producto.medida', 'recaudos', 'cliente')
+        ->find( $id );
+
+        $data = [
+            'factura' => $factura
+        ];
+
+        $pdf = \PDF::loadView('recaudo', $data);
+    
+        return $pdf->download($factura->id . '.pdf');
     }
 }

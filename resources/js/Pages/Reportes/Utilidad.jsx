@@ -56,7 +56,7 @@ export default function Reportes({ auth, facturas, recaudos, gastos, productos }
         const importado = lista.map( item => { return item.detalles?.filter( detalle => detalle.producto?.inventario?.origen == 'I' ) || []})
 
         return {
-            total: total.reduce( (item, sum) => { return sum += item }, 0),
+            total: total.reduce( (sum, item) => { return sum += item }, 0),
             nacional: nacional.flat(1).reduce( (sum, item) => { return sum += (item.cantidad * item.precio_venta) }, 0 ),
             importado: importado.flat(1).reduce( (sum, item) => { return sum += (item.cantidad * item.precio_venta) }, 0 ),
         }
@@ -64,6 +64,7 @@ export default function Reportes({ auth, facturas, recaudos, gastos, productos }
 
     const onSetCompraContado = () => {
         const lista = listaFacturas.filter((item) => item.forma_pago?.id == "2");
+
         const total = lista.map((item) => {
             return (
                 item.detalles.reduce(
@@ -72,14 +73,15 @@ export default function Reportes({ auth, facturas, recaudos, gastos, productos }
                 ) || 0
             );
         });
-       
+
+        
         const nacional = lista.map( item => { return item.detalles?.filter( detalle => detalle.producto?.inventario?.origen == 'N' ) || [] })
         const importado = lista.map( item => { return item.detalles?.filter( detalle => detalle.producto?.inventario?.origen == 'I' ) || []})
 
         return {
-            total: total.reduce( (item, sum) => { return sum += item }, 0),
-            nacional: nacional.flat(1).reduce( (item, sum) => { return sum += (item.cantidad * item.precio_venta) }, 0 ),
-            importado: importado.flat(1).reduce( (item, sum) => { return sum += (item.cantidad * item.precio_venta) }, 0 ),
+            total: total.reduce( (sum, item) => { return sum += item }, 0),
+            nacional: nacional.flat(1).reduce( (sum, item) => { return sum += (item.cantidad * item.precio_venta) }, 0 ),
+            importado: importado.flat(1).reduce( (sum, item) => { return sum += (item.cantidad * item.precio_venta) }, 0 ),
         }
     }
 

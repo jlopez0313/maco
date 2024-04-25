@@ -106,6 +106,10 @@ export default ({ auth, factura }) => {
         router.visit('/remisiones');
     }
 
+    const onPrint = () => {
+        window.print();
+    }
+
     useEffect(() => {
         onSetList();
         onSetSum();
@@ -124,7 +128,7 @@ export default ({ auth, factura }) => {
 
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div className="flex items-center justify-end mt-4 mb-4">
+                    <div className="flex items-center justify-end mt-4 mb-4 no-print">
                         <SecondaryButton
                             className="ms-4"
                             onClick={() => onBack()}
@@ -194,20 +198,27 @@ export default ({ auth, factura }) => {
                         />
                     </div>
                     
-                    <div className="flex items-center justify-end mt-4 mb-4">
+                    <div className="flex items-center justify-end mt-4 mb-4 no-print">
+                        <SecondaryButton
+                            className="ms-4"
+                            onClick={onPrint}
+                        >
+                            Imprimir
+                        </SecondaryButton>
+{/*
                         <PrimaryButton
                             className="ms-4 me-3"
                             onClick={goToPDF}
                         >
                             PDF
                         </PrimaryButton>
-
-                        <PrimaryButton
+*/}
+                        <SecondaryButton
                             className="ms-4"
                             onClick={() => goToQR('/remisiones/qr/' + factura.id) }
                         >
                             QR
-                        </PrimaryButton>
+                        </SecondaryButton>
 
                     </div>
 

@@ -14,6 +14,7 @@ import InputLabel from "@/Components/Form/InputLabel";
 import TextInput from "@/Components/Form/TextInput";
 import SecondaryButton from "@/Components/Buttons/SecondaryButton";
 import { toCurrency } from "@/Helpers/Numbers";
+import { goToQR } from "@/Helpers/Modals";
 
 export default ({ auth, factura }) => {
 
@@ -81,6 +82,14 @@ export default ({ auth, factura }) => {
 
     const onBack = () => {
         router.visit('/recaudos');
+    }
+
+    const onPrint = () => {
+        window.print();
+    }
+
+    const goToPDF = () => {
+        window.location.href = '/recaudos/pdf/' + factura.id;
     }
 
     useEffect(() => {
@@ -166,7 +175,7 @@ export default ({ auth, factura }) => {
 
 
 
-                    <div className="flex items-center justify-end mt-4 mb-4">
+                    <div className="flex items-center justify-end mt-4 mb-4  no-print">
                         <SecondaryButton
                             className="ms-4"
                             onClick={() => onBack()}
@@ -186,11 +195,37 @@ export default ({ auth, factura }) => {
                         <Table
                             data={list}
                             links={[]}
-                            onEdit={ onSetItem }
+                            onEdit={ () => {} }
                             titles={titles}
                             actions={[]}
                         />
                     </div>
+
+                    <div className="flex items-center justify-end mt-4 mb-4 no-print">
+
+                        <SecondaryButton
+                            className="ms-4"
+                            onClick={onPrint}
+                        >
+                            Imprimir
+                        </SecondaryButton>
+
+                        <SecondaryButton
+                            className="ms-4"
+                            onClick={() => goToQR('/recaudos/qr/' + factura.id) }
+                        >
+                            QR
+                        </SecondaryButton>
+{/*
+                        <PrimaryButton
+                            className="ms-4 me-3"
+                            onClick={goToPDF}
+                        >
+                            PDF
+                        </PrimaryButton>
+*/}
+                    </div>
+
                 </div>
             </div>
             

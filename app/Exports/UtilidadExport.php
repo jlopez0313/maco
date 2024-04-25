@@ -60,7 +60,7 @@ class UtilidadExport implements FromView
         $importado = $lista->map( function($item) { return $item->detalles?->filter( function ($detalle) { return $detalle->producto?->inventario?->origen == 'I' ;} ) ?? []; }) ;
 
         return [
-            'total' => $total->reduce( function ($item, $sum) { return $sum + $item ; }, 0),
+            'total' => $total->reduce( function ($sum, $item) { return $sum + $item ; }, 0),
             'nacional' => $nacional->flatten(1)->reduce( function ($sum, $item) { return $sum + ( ($item['cantidad'] ?? 0) * ($item['precio_venta'] ?? 0) ) ;}, 0),
             'importado' => $importado->flatten(1)->reduce( function ($sum, $item) { return $sum + ( ($item['cantidad'] ?? 0) * ($item['precio_venta'] ?? 0) ) ;}, 0),
         ] ;
@@ -87,7 +87,7 @@ class UtilidadExport implements FromView
         $importado = $lista->map( function($item) { return $item->detalles?->filter( function ($detalle) { return $detalle->producto?->inventario?->origen == 'I' ;} ) ?? []; }) ;
 
         return [
-            'total' => $total->reduce( function ($item, $sum) { return $sum + $item ; }, 0),
+            'total' => $total->reduce( function ($sum, $item) { return $sum + $item ; }, 0),
             'nacional' => $nacional->flatten(1)->reduce( function ($sum, $item) { return $sum + ( ($item['cantidad'] ?? 0) * ($item['precio_venta'] ?? 0) ) ;}, 0),
             'importado' => $importado->flatten(1)->reduce( function ($sum, $item) { return $sum + ( ($item['cantidad'] ?? 0) * ($item['precio_venta'] ?? 0) ) ;}, 0),
         ] ;

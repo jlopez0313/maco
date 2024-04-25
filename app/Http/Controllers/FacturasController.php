@@ -118,7 +118,7 @@ class FacturasController extends Controller
             'factura' => $factura
         ];
 
-        $pdf = \PDF::loadView('pdf', $data);
+        $pdf = \PDF::loadView('factura', $data);
     
         return $pdf->download($factura->id . '.pdf');
     }

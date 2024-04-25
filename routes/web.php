@@ -113,6 +113,9 @@ Route::get('/creditos', function () {
 Route::prefix('/recaudos')->group( function() {
     Route::get('/', [RecaudosController::class, 'index'])->name('recaudos');
     Route::get('/edit/{id}', [RecaudosController::class, 'edit'])->name('recaudos.edit');
+    Route::get('/qr/{id}', [RecaudosController::class, 'qr'])->name('recaudos.qr');
+    Route::get('/pdf/{id}', [RecaudosController::class, 'pdf'])->name('recaudos.pdf');
+
 })->middleware(['auth', 'verified']);
 
 
