@@ -19,6 +19,7 @@ export default function Reportes({ auth }) {
     const titles = ["Código", "Fecha", "Cliente", "Origen", "Valor"];
 
     const [list, setList] = useState([]);
+    const [ currentDate, setCurrentDate ] = useState( new Date() );
 
     const onSearch = async () => {
         const {
@@ -59,6 +60,10 @@ export default function Reportes({ auth }) {
             <Head title="Reporte de Gastos" />
 
             <div className="py-12">
+                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 text-xs">
+                    Fecha: { currentDate.toLocaleString() }
+                </div>
+
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 no-print">
                     <div className="flex items-center justify-end mt-4 mb-4">
                         <SecondaryButton

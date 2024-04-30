@@ -25,7 +25,7 @@ export default function Reportes({ auth }) {
     ];
 
     const [list, setList] = useState([]);
-
+    const [ currentDate, setCurrentDate ] = useState( new Date() );
 
     
     const onSearch = async() => {
@@ -72,6 +72,10 @@ export default function Reportes({ auth }) {
             <Head title="Reporte de Estado de Cuentas" />
 
             <div className="py-12">
+                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 text-xs">
+                    Fecha: { currentDate.toLocaleString() }
+                </div>
+
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 no-print">
                     <div className="flex items-center justify-end mt-4 mb-4">
                         <SecondaryButton

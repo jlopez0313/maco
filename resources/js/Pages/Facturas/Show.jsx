@@ -205,14 +205,14 @@ export default ({ auth, factura }) => {
                         >
                             Imprimir
                         </SecondaryButton>
-{/*
+
                         <PrimaryButton
                             className="ms-4 me-3"
                             onClick={goToPDF}
                         >
                             PDF
                         </PrimaryButton>
-*/}
+
                         <SecondaryButton
                             className="ms-4"
                             onClick={() => goToQR('/remisiones/qr/' + factura.id) }

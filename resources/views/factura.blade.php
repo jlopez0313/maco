@@ -136,7 +136,7 @@
         @endforeach
 
         <tr>
-            <th style="width: 615px"> Total: </th>
+            <th colspan="6"> Total: </th>
             <td style="width: 80px"> {{ number_format($total, 0, ',', '.') }} </td>
         </tr>
 
