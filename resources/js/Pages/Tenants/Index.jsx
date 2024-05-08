@@ -18,7 +18,8 @@ export default ({ auth, tenants }) => {
 
     const titles= [
         'Tenant',
-        'Dominio'
+        'Dominio',
+        'Fecha de Creación'
     ]
 
     const [action, setAction] = useState( '' );
@@ -33,6 +34,7 @@ export default ({ auth, tenants }) => {
                 'id': item.id,
                 'tenant': item.id,
                 'domain': item.domain.domain,
+                'fecha': item.created_at,
                 
             }
         })

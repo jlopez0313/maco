@@ -19,7 +19,7 @@ class TenantsCollection extends ResourceCollection
         }
         
         return $this->collection->map->only(
-            'id', 'data', 'domain'
+            'id', 'data', 'domain', 'created_at'
         );
     }
 }
