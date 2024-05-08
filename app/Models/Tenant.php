@@ -12,6 +12,6 @@ class Tenant extends BaseTenant implements TenantWithDatabase
     use HasDatabase, HasDomains;
 
     public function domain() {
-        return $this->domains();
+        return $this->hasOne(Domain::class, 'tenant_id', 'id');
     }
 }
