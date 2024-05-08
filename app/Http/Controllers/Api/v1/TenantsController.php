@@ -18,9 +18,9 @@ class TenantsController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
-        $tenant = str_replace(' ', '_', $data['tenant']);
-        $tenant = Tenant::create(['id' => $tenant ]);
-        $tenant->domains()->create(['domain' => $tenant . '.' . env('APP_DOMAIN') ]);
+        $name = str_replace(' ', '_', $data['tenant']);
+        $tenant = Tenant::create(['id' => $name ]);
+        $tenant->domains()->create(['domain' => $name . '.' . env('APP_DOMAIN') ]);
 
         return new TenantsResource( $tenant );
     }

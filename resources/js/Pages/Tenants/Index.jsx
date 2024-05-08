@@ -17,7 +17,8 @@ export default ({ auth, tenants }) => {
     } = tenants;
 
     const titles= [
-        'Tenant'
+        'Tenant',
+        'Dominio'
     ]
 
     const [action, setAction] = useState( '' );
@@ -30,7 +31,9 @@ export default ({ auth, tenants }) => {
         const _list = data.map( item => {
             return {
                 'id': item.id,
-                'tenant': item.id
+                'tenant': item.id,
+                'domain': item.domain.domain,
+                
             }
         })
 
