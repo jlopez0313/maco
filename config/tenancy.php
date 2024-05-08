@@ -103,7 +103,7 @@ return [
         'suffix_base' => 'tenant_',
         'disks' => [
             'local',
-            // 'public',
+            'public',
             // 's3',
         ],
 
@@ -115,7 +115,7 @@ return [
         'root_override' => [
             // Disks whose roots should be overridden after storage_path() is suffixed.
             'local' => '%storage_path%/app/',
-            // 'public' => '%storage_path%/app/public/',
+            'public' => '%storage_path%/app/public/',
         ],
 
         /**
