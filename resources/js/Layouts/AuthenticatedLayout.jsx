@@ -21,37 +21,37 @@ export default function Authenticated({ user, header, children }) {
                             </div>
 
                             <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex no-print">
-                                <NavLink href={route('dashboard')} active={route().current('dashboard')}>
+                                <NavLink href={tenant_route('dashboard')} active={tenant_route().current('dashboard')}>
                                     Inicio
                                 </NavLink>
                             </div>
-{/* 
+
                             <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex no-print">
-                                <NavLink href={route('parametros')} active={route().current('parametros')}>
+                                <NavLink href={tenant_route('parametros')} active={tenant_route().current('parametros')}>
                                     Configuración
                                 </NavLink>
                             </div>
-*/}
+
                             <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex no-print">
-                                <NavLink href={route('clientes')} active={route().current('clientes')}>
+                                <NavLink href={tenant_route('clientes')} active={tenant_route().current('clientes')}>
                                     Clientes
                                 </NavLink>
                             </div>
 
                             <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex no-print">
-                                <NavLink href={route('inventario')} active={route().current('inventario')}>
+                                <NavLink href={tenant_route('inventario')} active={tenant_route().current('inventario')}>
                                     Inventario
                                 </NavLink>
                             </div>
 
                             <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex no-print">
-                                <NavLink href={route('remisiones')} active={route().current('remisiones')}>
+                                <NavLink href={tenant_route('remisiones')} active={tenant_route().current('remisiones')}>
                                     Ord. de Compra
                                 </NavLink>
                             </div>
 
                             <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex no-print">
-                                <NavLink href={route('gastos')} active={route().current('gastos')}>
+                                <NavLink href={tenant_route('gastos')} active={tenant_route().current('gastos')}>
                                     Gastos
                                 </NavLink>
                             </div>
@@ -59,7 +59,7 @@ export default function Authenticated({ user, header, children }) {
                             {/*
 
                             <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                                <NavLink href={route('creditos')} active={route().current('creditos')}>
+                                <NavLink href={tenant_route('creditos')} active={tenant_route().current('creditos')}>
                                     Créditos
                                 </NavLink>
                             </div>
@@ -67,19 +67,19 @@ export default function Authenticated({ user, header, children }) {
                             */}
                             
                             <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex no-print">
-                                <NavLink href={route('recaudos')} active={route().current('recaudos')}>
+                                <NavLink href={tenant_route('recaudos')} active={tenant_route().current('recaudos')}>
                                     Recaudos
                                 </NavLink>
                             </div>
 
                             <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex no-print">
-                                <NavLink href={route('proveedores')} active={route().current('proveedores')}>
+                                <NavLink href={tenant_route('proveedores')} active={tenant_route().current('proveedores')}>
                                     Proveedores
                                 </NavLink>
                             </div>
 
                             <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex no-print">
-                                <NavLink href={route('reportes')} active={route().current('reportes')}>
+                                <NavLink href={tenant_route('reportes')} active={tenant_route().current('reportes')}>
                                     Reportes
                                 </NavLink>
                             </div>
@@ -114,10 +114,10 @@ export default function Authenticated({ user, header, children }) {
 
                                     <Dropdown.Content>
                                         {/*
-                                            <Dropdown.Link href={route('profile.edit')}>Perfil</Dropdown.Link>
+                                            <Dropdown.Link href={tenant_route('profile.edit')}>Perfil</Dropdown.Link>
                                         */}
 
-                                        <Dropdown.Link href={route('logout')} method="post" as="button">
+                                        <Dropdown.Link href={tenant_route('logout')} method="post" as="button">
                                             Salir
                                         </Dropdown.Link>
                                     </Dropdown.Content>
@@ -153,33 +153,31 @@ export default function Authenticated({ user, header, children }) {
 
                 <div className={(showingNavigationDropdown ? 'block' : 'hidden') + ' sm:hidden'}>
                     <div className="pt-2 pb-3 space-y-1">
-                        <ResponsiveNavLink href={route('dashboard')} active={route().current('dashboard')}>
+                        <ResponsiveNavLink href={tenant_route('dashboard')} active={tenant_route().current('dashboard')}>
                             Inicio
                         </ResponsiveNavLink>
-                    {/*
-                        <ResponsiveNavLink href={route('parametros')} active={route().current('parametros')}>
+                        <ResponsiveNavLink href={tenant_route('parametros')} active={tenant_route().current('parametros')}>
                             Configuración
                         </ResponsiveNavLink>
-                    */}
-                        <ResponsiveNavLink href={route('clientes')} active={route().current('clientes')}>
+                        <ResponsiveNavLink href={tenant_route('clientes')} active={tenant_route().current('clientes')}>
                             Clientes
                         </ResponsiveNavLink>
-                        <ResponsiveNavLink href={route('inventario')} active={route().current('inventario')}>
+                        <ResponsiveNavLink href={tenant_route('inventario')} active={tenant_route().current('inventario')}>
                             Inventario
                         </ResponsiveNavLink>
-                        <ResponsiveNavLink href={route('remisiones')} active={route().current('remisiones')}>
+                        <ResponsiveNavLink href={tenant_route('remisiones')} active={tenant_route().current('remisiones')}>
                             Ord. de Compra
                         </ResponsiveNavLink>
-                        <ResponsiveNavLink href={route('gastos')} active={route().current('gastos')}>
+                        <ResponsiveNavLink href={tenant_route('gastos')} active={tenant_route().current('gastos')}>
                             Gastos
                         </ResponsiveNavLink>
-                        <ResponsiveNavLink href={route('recaudos')} active={route().current('recaudos')}>
+                        <ResponsiveNavLink href={tenant_route('recaudos')} active={tenant_route().current('recaudos')}>
                             Recaudos
                         </ResponsiveNavLink>
-                        <ResponsiveNavLink href={route('proveedores')} active={route().current('proveedores')}>
+                        <ResponsiveNavLink href={tenant_route('proveedores')} active={tenant_route().current('proveedores')}>
                             Proveedores
                         </ResponsiveNavLink>
-                        <ResponsiveNavLink href={route('reportes')} active={route().current('reportes')}>
+                        <ResponsiveNavLink href={tenant_route('reportes')} active={tenant_route().current('reportes')}>
                             Reportes
                         </ResponsiveNavLink>
                     </div>
@@ -192,8 +190,8 @@ export default function Authenticated({ user, header, children }) {
                         
                         
                         <div className="mt-3 space-y-1">
-                            {/*  <ResponsiveNavLink href={route('profile.edit')}>Profile</ResponsiveNavLink> */}
-                            <ResponsiveNavLink method="post" href={route('logout')} as="button">
+                            {/*  <ResponsiveNavLink href={tenant_route('profile.edit')}>Profile</ResponsiveNavLink> */}
+                            <ResponsiveNavLink method="post" href={tenant_route('logout')} as="button">
                                 Salir
                             </ResponsiveNavLink>
                         </div>
