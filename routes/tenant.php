@@ -10,7 +10,7 @@ use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 
 
-
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ClientesController;
 use App\Http\Controllers\ProveedoresController;
 use App\Http\Controllers\RecaudosController;
