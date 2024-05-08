@@ -76,6 +76,8 @@ Route::group(['prefix' => 'v1'], function () {
     Route::prefix('usuarios')->group( function() {
         Route::post('/get-admin', [UserController::class, 'getAdmin']);
     });
+    Route::apiResource('usuarios', UserController::class);
+
 
     Route::prefix('reportes')->group( function() {
         Route::prefix('inventario')->group( function() {

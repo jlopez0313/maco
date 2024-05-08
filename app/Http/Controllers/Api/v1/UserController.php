@@ -20,6 +20,45 @@ class UserController extends Controller {
         } else {
             return null;
         }
-
     }
+
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+        $data = $request->all();
+        $usuario = User::create( $data );
+        return new UserResource( $usuario );
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(User $usuario)
+    {
+        return new UserResource( $usuario );
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, User $usuario)
+    {
+        $data = $request->password ? $request->all() : $request->except(['password']);
+        $usuario->update( $data );
+        return new UserResource( $usuario );
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(User $usuario)
+    {
+        $usuario->delete();
+        return new UserResource( $usuario );
+    }
+
+
 }

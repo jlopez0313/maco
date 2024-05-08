@@ -7,7 +7,6 @@ use Inertia\Inertia;
 
 
 use App\Http\Controllers\TenantsController;
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -31,7 +30,6 @@ foreach (config('tenancy.central_domains') as $domain) {
 
         Route::get('/dashboard', [TenantsController::class, 'index'])
         ->middleware(['auth', 'verified'])->name('dashboard');
-        
     });
 }
 

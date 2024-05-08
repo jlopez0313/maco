@@ -19,6 +19,7 @@ use App\Http\Controllers\FacturasController;
 use App\Http\Controllers\GastosController;
 use App\Http\Controllers\InventarioController;
 use App\Http\Controllers\ReportesController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -60,6 +61,10 @@ Route::middleware([
         Route::get('/', function () {
             return Inertia::render('Parametros/Index');
         })->name('parametros');
+
+        Route::prefix('usuarios')->group( function() {
+            Route::get('/', [UserController::class, 'index'])->name('parametros.usuarios');
+        });
     
         Route::prefix('tipos_clientes')->group( function() {
             Route::get('/', [TiposClientesController::class, 'index'])->name('parametros.tipos');

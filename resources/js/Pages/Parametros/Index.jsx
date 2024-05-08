@@ -12,30 +12,36 @@ export default function Dashboard({ auth }) {
     const list = [
         {
             id: 1,
+            parametro: 'Usuarios',   
+            descripcion: 'Gestionar los Usuarios de la plataforma',
+            ruta: 'parametros/usuarios'
+        },
+        {
+            id: 2,
             parametro: 'Formas de Pago',   
             descripcion: 'Gestionar las Formas de Pago que se desea manejar',
             ruta: 'parametros/tipos_clientes'
         },
         {
-            id: 2,
+            id: 3,
             parametro: 'Conceptos',   
             descripcion: 'Acción / Gasto a registrar en la sección de Gastos',
             ruta: 'parametros/conceptos'
         },
         {
-            id: 3,
+            id: 4,
             parametro: 'Bancos',   
             descripcion: 'Gestionar los Bancos que se utilizan',
             ruta: 'parametros/bancos'
         },
         {
-            id: 4,
+            id: 5,
             parametro: 'Medidas',   
             descripcion: 'Gestionar Tallas, Mililitros, entre otros, que tienen los productos que se manejan. ',
             ruta: 'parametros/medidas'
         },
         {
-            id: 5,
+            id: 6,
             parametro: 'Colores',   
             descripcion: 'Gestionar los diferentes colores que se manejan',
             ruta: 'parametros/colores'
