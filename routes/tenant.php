@@ -45,7 +45,7 @@ Route::middleware([
     Route::get('/', function () {
         return 'This is your multi-tenant application. The id of the current tenant is ' . tenant('id');
     });
-/*
+
     Route::get('/', function () {
         return Inertia::render('Welcome', [
             'canLogin' => Route::has('login'),
@@ -53,7 +53,7 @@ Route::middleware([
             'laravelVersion' => '1.0.0',
         ]);
     });
-*/  
+    
     
     Route::get('/dashboard', function () {
         return Inertia::render('Dashboard');
