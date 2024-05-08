@@ -19,6 +19,7 @@ use App\Http\Controllers\Api\v1\RecaudosController;
 use App\Http\Controllers\Api\v1\TipoClientesController;
 use App\Http\Controllers\Api\v1\UserController;
 use App\Http\Controllers\Api\v1\ReportesController;
+use App\Http\Controllers\Api\v1\TenantsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,6 +37,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::group(['prefix' => 'v1'], function () {
+
+    Route::apiResource('tenants', TenantsController::class);
+
 
     Route::prefix('ciudades')->group( function() {
         Route::get('/{depto}', [CiudadesController::class, 'byDepto']);
