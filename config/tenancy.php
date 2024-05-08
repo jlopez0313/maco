@@ -103,7 +103,7 @@ return [
         'suffix_base' => 'tenant_',
         'disks' => [
             'local',
-            'public',
+            // 'public',
             // 's3',
         ],
 
