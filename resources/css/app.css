@@ -13,3 +13,14 @@
 .h-30 {
     width: 7.5rem;
 }
+
+@media (min-width: 320px) {
+    .sm\:w-full {
+        width: 100%;
+    }
+
+    .sm\:px-6 {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+}

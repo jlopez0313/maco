@@ -34,7 +34,7 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
                     <InputLabel htmlFor="name" value="Nombre" />
 
                     <TextInput
-                               placeholder="Escriba aquí"
+                        placeholder="Escriba aquí"
                         id="name"
                         className="mt-1 block w-full"
                         value={data.name}
@@ -51,10 +51,11 @@ export default function UpdateProfileInformation({ mustVerifyEmail, status, clas
                     <InputLabel htmlFor="email" value="Email" />
 
                     <TextInput
-                               placeholder="Escriba aquí"
+                        placeholder="Escriba aquí"
                         id="email"
                         type="email"
                         className="mt-1 block w-full"
+                        eradOnly={true}
                         value={data.email}
                         onChange={(e) => setData('email', e.target.value)}
                         required

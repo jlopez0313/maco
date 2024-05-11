@@ -6,6 +6,7 @@ use Inertia\Inertia;
 
 
 use App\Http\Controllers\TenantsController;
+use App\Http\Controllers\ProfileController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -29,6 +30,16 @@ foreach (config('tenancy.central_domains') as $domain) {
 
         Route::get('/dashboard', [TenantsController::class, 'index'])
         ->middleware(['auth', 'verified'])->name('dashboard');
+
+        Route::get('/profile', [ProfileController::class, 'edit'])
+        ->middleware(['auth', 'verified'])->name('profile.edit');
+
+        Route::patch('/profile', [ProfileController::class, 'update'])
+        ->middleware(['auth', 'verified'])->name('profile.update');
+
+        Route::delete('/profile', [ProfileController::class, 'destroy'])
+        ->middleware(['auth', 'verified'])->name('profile.destroy');
+        
     });
 }
 

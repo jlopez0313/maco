@@ -21,37 +21,37 @@ export default function Authenticated({ user, header, children }) {
                             </div>
 
                             <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex no-print">
-                                <NavLink href={'dashboard'} active={route().current('dashboard')}>
+                                <NavLink href={'/dashboard'} active={route().current('dashboard')}>
                                     Inicio
                                 </NavLink>
                             </div>
 
                             <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex no-print">
-                                <NavLink href={'parametros'} active={route().current('parametros')}>
+                                <NavLink href={'/parametros'} active={route().current('parametros')}>
                                     Configuración
                                 </NavLink>
                             </div>
 
                             <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex no-print">
-                                <NavLink href={'clientes'} active={route().current('clientes')}>
+                                <NavLink href={'/clientes'} active={route().current('clientes')}>
                                     Clientes
                                 </NavLink>
                             </div>
 
                             <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex no-print">
-                                <NavLink href={'inventario'} active={route().current('inventario')}>
+                                <NavLink href={'/inventario'} active={route().current('inventario')}>
                                     Inventario
                                 </NavLink>
                             </div>
 
                             <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex no-print">
-                                <NavLink href={'remisiones'} active={route().current('remisiones')}>
+                                <NavLink href={'/remisiones'} active={route().current('remisiones')}>
                                     Ord. de Compra
                                 </NavLink>
                             </div>
 
                             <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex no-print">
-                                <NavLink href={'gastos'} active={route().current('gastos')}>
+                                <NavLink href={'/gastos'} active={route().current('gastos')}>
                                     Gastos
                                 </NavLink>
                             </div>
@@ -67,19 +67,19 @@ export default function Authenticated({ user, header, children }) {
                             */}
                             
                             <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex no-print">
-                                <NavLink href={'recaudos'} active={route().current('recaudos')}>
+                                <NavLink href={'/recaudos'} active={route().current('recaudos')}>
                                     Recaudos
                                 </NavLink>
                             </div>
 
                             <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex no-print">
-                                <NavLink href={'proveedores'} active={route().current('proveedores')}>
+                                <NavLink href={'/proveedores'} active={route().current('proveedores')}>
                                     Proveedores
                                 </NavLink>
                             </div>
 
                             <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex no-print">
-                                <NavLink href={'reportes'} active={route().current('reportes')}>
+                                <NavLink href={'/reportes'} active={route().current('reportes')}>
                                     Reportes
                                 </NavLink>
                             </div>
@@ -117,7 +117,7 @@ export default function Authenticated({ user, header, children }) {
                                             <Dropdown.Link href={route('profile.edit')}>Perfil</Dropdown.Link>
                                         */}
 
-                                        <Dropdown.Link href={'logout'} method="post" as="button">
+                                        <Dropdown.Link href={'/logout'} method="post" as="button">
                                             Salir
                                         </Dropdown.Link>
                                     </Dropdown.Content>
@@ -153,31 +153,31 @@ export default function Authenticated({ user, header, children }) {
 
                 <div className={(showingNavigationDropdown ? 'block' : 'hidden') + ' sm:hidden'}>
                     <div className="pt-2 pb-3 space-y-1">
-                        <ResponsiveNavLink href={'dashboard'} active={route().current('dashboard')}>
+                        <ResponsiveNavLink href={'/dashboard'} active={route().current('dashboard')}>
                             Inicio
                         </ResponsiveNavLink>
-                        <ResponsiveNavLink href={'parametros'} active={route().current('parametros')}>
+                        <ResponsiveNavLink href={'/parametros'} active={route().current('parametros')}>
                             Configuración
                         </ResponsiveNavLink>
-                        <ResponsiveNavLink href={'clientes'} active={route().current('clientes')}>
+                        <ResponsiveNavLink href={'/clientes'} active={route().current('clientes')}>
                             Clientes
                         </ResponsiveNavLink>
-                        <ResponsiveNavLink href={'inventario'} active={route().current('inventario')}>
+                        <ResponsiveNavLink href={'/inventario'} active={route().current('inventario')}>
                             Inventario
                         </ResponsiveNavLink>
-                        <ResponsiveNavLink href={'remisiones'} active={route().current('remisiones')}>
+                        <ResponsiveNavLink href={'/remisiones'} active={route().current('remisiones')}>
                             Ord. de Compra
                         </ResponsiveNavLink>
-                        <ResponsiveNavLink href={'gastos'} active={route().current('gastos')}>
+                        <ResponsiveNavLink href={'/gastos'} active={route().current('gastos')}>
                             Gastos
                         </ResponsiveNavLink>
-                        <ResponsiveNavLink href={'recaudos'} active={route().current('recaudos')}>
+                        <ResponsiveNavLink href={'/recaudos'} active={route().current('recaudos')}>
                             Recaudos
                         </ResponsiveNavLink>
-                        <ResponsiveNavLink href={'proveedores'} active={route().current('proveedores')}>
+                        <ResponsiveNavLink href={'/proveedores'} active={route().current('proveedores')}>
                             Proveedores
                         </ResponsiveNavLink>
-                        <ResponsiveNavLink href={'reportes'} active={route().current('reportes')}>
+                        <ResponsiveNavLink href={'/reportes'} active={route().current('reportes')}>
                             Reportes
                         </ResponsiveNavLink>
                     </div>
@@ -191,7 +191,7 @@ export default function Authenticated({ user, header, children }) {
                         
                         <div className="mt-3 space-y-1">
                             {/*  <ResponsiveNavLink href={route('profile.edit')}>Profile</ResponsiveNavLink> */}
-                            <ResponsiveNavLink method="post" href={'logout'} as="button">
+                            <ResponsiveNavLink method="post" href={'/logout'} as="button">
                                 Salir
                             </ResponsiveNavLink>
                         </div>
