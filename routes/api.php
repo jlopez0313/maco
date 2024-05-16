@@ -32,7 +32,7 @@ Route::middleware([
     InitializeTenancyByDomain::class,
     PreventAccessFromCentralDomains::class,
 ])
-->prefix('api/v1')->group(function () {
+->prefix('api')->group(function () {
 
     Route::prefix('ciudades')->group( function() {
         Route::get('/{depto}', [App\Http\Controllers\Api\v1\CiudadesController::class, 'byDepto']);
