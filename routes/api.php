@@ -3,6 +3,9 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
+use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
+
 use App\Http\Controllers\Api\v1\UserController;
 use App\Http\Controllers\Api\v1\TenantsController;
 
@@ -18,9 +21,13 @@ use App\Http\Controllers\Api\v1\TenantsController;
 */
 
 
+Route::middleware('auth:sanctum')
+->get('/user', function (Request $request) {
+    return $request->user();
+});
+
 
 Route::middleware([
-    'api',
     InitializeTenancyByDomain::class,
     PreventAccessFromCentralDomains::class,
 ])
@@ -86,12 +93,6 @@ Route::middleware([
     });
 });
 
-
-
-Route::middleware('auth:sanctum')
-->get('/user', function (Request $request) {
-    return $request->user();
-});
 
 Route::group(['prefix' => 'v1'], function () {
 
