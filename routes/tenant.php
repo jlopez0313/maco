@@ -37,9 +37,6 @@ use App\Http\Controllers\UserController;
 |
 */
 
-
-
-
 Route::middleware([
     'web',
     InitializeTenancyByDomain::class,

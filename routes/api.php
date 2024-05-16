@@ -28,6 +28,7 @@ Route::middleware('auth:sanctum')
 
 
 Route::middleware([
+    'api',
     InitializeTenancyByDomain::class,
     PreventAccessFromCentralDomains::class,
 ])
