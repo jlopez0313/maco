@@ -32,7 +32,7 @@ Route::middleware([
     InitializeTenancyByDomain::class,
     PreventAccessFromCentralDomains::class,
 ])
-->prefix('api/v1')->group(function () {
+->prefix('v1')->group(function () {
 
     Route::apiResource('usuarios', UserController::class);
 
