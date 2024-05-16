@@ -134,7 +134,7 @@ export const Form = ({ id, roles, setIsOpen, onReload }) => {
                             <TextInput
                                 placeholder="Escriba aquí"
                                 id="password"
-                                type="text"
+                                type="password"
                                 name="password"
                                 value={data.password}
                                 className="mt-1 block w-full"
