@@ -34,6 +34,9 @@ Route::middleware([
 ])
 ->prefix('v1')->group(function () {
 
+    Route::prefix('usuarios')->group( function() {
+        Route::post('/get-admin', [UserController::class, 'getAdmin']);
+    });
     Route::apiResource('usuarios', UserController::class);
 
     Route::prefix('ciudades')->group( function() {
@@ -100,7 +103,6 @@ Route::middleware([
 Route::group(['prefix' => 'v1'], function () {
 
     Route::apiResource('tenants', TenantsController::class);  
-
 
     Route::prefix('usuarios')->group( function() {
         Route::post('/get-admin', [UserController::class, 'getAdmin']);
