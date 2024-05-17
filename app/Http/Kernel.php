@@ -47,7 +47,7 @@ class Kernel extends HttpKernel
         ],
 
         'universal' => [
-            Stancl\Tenancy\Features\UniversalRoutes::class,
+            \Stancl\Tenancy\Features\UniversalRoutes::class,
         ]
     ];
 
