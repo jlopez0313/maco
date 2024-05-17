@@ -23,7 +23,7 @@ export default function Login({ status, canResetPassword }) {
     const submit = (e) => {
         e.preventDefault();
 
-        post(route('api/v1/login'));
+        post('/api/v1/login');
     };
 
     return (
