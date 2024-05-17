@@ -104,9 +104,4 @@ Route::group(['prefix' => 'v1'], function () {
 
     Route::apiResource('tenants', TenantsController::class);  
 
-    Route::prefix('usuarios')->group( function() {
-        Route::post('/get-admin', [UserController::class, 'getAdmin']);
-    });
-    Route::apiResource('usuarios', UserController::class);
-
 })->middleware(['auth:sanctum', 'verified']);
