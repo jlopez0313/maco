@@ -41,10 +41,6 @@ $app->singleton(
     App\Exceptions\Handler::class
 );
 
-$app->withMiddleware(function (\Middleware $middleware) {
-    $middleware->group('universal', []);
-});
-
 /*
 |--------------------------------------------------------------------------
 | Return The Application
