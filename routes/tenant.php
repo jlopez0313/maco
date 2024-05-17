@@ -203,5 +203,5 @@ Route::middleware([
 
 });
 
-require __DIR__.'/tenant_auth.php';
+// require __DIR__.'/tenant_auth.php';
 
