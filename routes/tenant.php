@@ -46,8 +46,6 @@ Route::middleware([
         return 'This is your multi-tenant application. The id of the current tenant is ' . tenant('id');
     });
 
-    \Auth::routes();
-
     Route::get('/', function () {
         return Inertia::render('Welcome', [
             'canLogin' => Route::has('login'),
