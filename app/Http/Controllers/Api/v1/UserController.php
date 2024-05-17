@@ -66,18 +66,5 @@ class UserController extends Controller {
         return new UserResource( $usuario );
     }
 
-    public function login( Request $request )
-    {
-        $user = User::where('email', $request->email)->first();
-
-        if ($user && \Hash::check( $request->password, $user->password ) ) {
-
-            return new UserResource($user);
-
-        } else {
-            return null;
-        }
-    }
-
 
 }
