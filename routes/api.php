@@ -39,6 +39,8 @@ Route::middleware([
     });
     Route::apiResource('usuarios', UserController::class);
 
+    Route::post('login', [UserController::class, 'login']);
+
     Route::prefix('ciudades')->group( function() {
         Route::get('/{depto}', [App\Http\Controllers\Api\v1\CiudadesController::class, 'byDepto']);
     });
