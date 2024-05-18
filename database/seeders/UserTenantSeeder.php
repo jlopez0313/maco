@@ -14,9 +14,9 @@ class UserTenantSeeder extends Seeder
     {
         \DB::table('users')->insert([
             'roles_id' => '1',
-            'name' => 'admin',
-            'email' => 'admin@correo.com',
-            'password' => \Hash::make('maco123'),
+            'name' => 'administrador',
+            'email' => 'usuario@macosystem.com',
+            'password' => \Hash::make('macosystem123'),
         ]);
     }
 }
