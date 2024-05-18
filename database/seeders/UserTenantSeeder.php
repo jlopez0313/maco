@@ -16,7 +16,7 @@ class UserTenantSeeder extends Seeder
             'roles_id' => '1',
             'name' => 'administrador',
             'email' => 'usuario@macosystem.com',
-            'password' => \Hash::make('macosystem123'),
+            'password' => \Hash::make('usuario1'),
         ]);
     }
 }

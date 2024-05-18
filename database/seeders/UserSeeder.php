@@ -14,9 +14,9 @@ class UserSeeder extends Seeder
     {
         \DB::table('users')->insert([
             'roles_id' => '1',
-            'name' => 'admin',
+            'name' => 'superadmin',
             'email' => 'admin@macosystem.com',
-            'password' => \Hash::make('Maco123'),
+            'password' => \Hash::make('maco123'),
         ]);
     }
 }
