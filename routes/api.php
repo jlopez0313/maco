@@ -30,7 +30,6 @@ Route::middleware([
     'api',
     'universal',
     InitializeTenancyByDomain::class,
-    PreventAccessFromCentralDomains::class,
 ])
 ->prefix('v1')->group(function () {
     Route::prefix('usuarios')->group( function() {
