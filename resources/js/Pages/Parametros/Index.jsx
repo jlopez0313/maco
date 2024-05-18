@@ -10,7 +10,7 @@ export default function Dashboard({ auth }) {
     ]
 
     const list = [
-        {
+        auth.user?.roles_id == 1 && {
             id: 1,
             parametro: 'Usuarios',   
             descripcion: 'Gestionar los Usuarios de la plataforma',
