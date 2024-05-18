@@ -26,6 +26,17 @@ Route::middleware('auth:sanctum')
     return $request->user();
 });
 
+Route::middleware([
+    'api',
+    'universal',
+    InitializeTenancyByDomain::class,
+    PreventAccessFromCentralDomains::class,
+])
+->prefix('v1')->group(function () {
+    Route::prefix('usuarios')->group( function() {
+        Route::post('/get-admin', [UserController::class, 'getAdmin']);
+    });
+});
 
 Route::middleware([
     'api',
@@ -34,9 +45,6 @@ Route::middleware([
 ])
 ->prefix('v1')->group(function () {
 
-    Route::prefix('usuarios')->group( function() {
-        Route::post('/get-admin', [UserController::class, 'getAdmin']);
-    });
     Route::apiResource('usuarios', UserController::class);
 
     Route::post('login', [UserController::class, 'login']);
