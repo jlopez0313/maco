@@ -31,7 +31,7 @@ export default function Reportes({ auth }) {
     const onSearch = async () => {
         const {
             data: { data: lista },
-        } = await axios.post(`/api/v1/reportes/articulos_vendidos/`, data);
+        } = await axios.post(`/api/v1/reportes/articulos_vendidos`, data);
         let _list = [];
 
         lista.forEach((item) => {

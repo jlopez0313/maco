@@ -24,7 +24,7 @@ export default function Reportes({ auth }) {
     const onSearch = async () => {
         const {
             data: { data: lista },
-        } = await axios.post(`/api/v1/reportes/gastos/`, data);
+        } = await axios.post(`/api/v1/reportes/gastos`, data);
 
         const _list = lista.map((item, idx) => {
             return {

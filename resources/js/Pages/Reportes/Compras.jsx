@@ -29,7 +29,7 @@ export default function Reportes({ auth }) {
     const [ currentDate, setCurrentDate ] = useState( new Date() );
     
     const onSearch = async() => {
-        const {data: {data: lista}} = await axios.post(`/api/v1/reportes/compras/`, data);
+        const {data: {data: lista}} = await axios.post(`/api/v1/reportes/compras`, data);
         
         const sum = lista.map((item) => {
             return (

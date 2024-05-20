@@ -29,7 +29,7 @@ export default function Reportes({ auth, clientes }) {
     const onSearch = async () => {
         const {
             data: { data: lista },
-        } = await axios.post(`/api/v1/reportes/estado_cuenta_cliente/`, data);
+        } = await axios.post(`/api/v1/reportes/estado_cuenta_cliente`, data);
 
         const valor = lista.map((item) => {
             return (

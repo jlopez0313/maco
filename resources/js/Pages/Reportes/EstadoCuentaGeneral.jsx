@@ -29,7 +29,7 @@ export default function Reportes({ auth }) {
 
     
     const onSearch = async() => {
-        const {data: {data: lista}} = await axios.post(`/api/v1/reportes/estado_cuenta_general/`, data);
+        const {data: {data: lista}} = await axios.post(`/api/v1/reportes/estado_cuenta_general`, data);
         
         const valor = lista.map( item => {
             return item.detalles.reduce( (sum, det) => sum + ( det.precio_venta * det.cantidad ), 0 ) || 0 
