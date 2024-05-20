@@ -23,7 +23,7 @@ export default function Reportes({ auth, inventarios }) {
     const onSearch = async () => {
         const {
             data: { data: lista },
-        } = await axios.post(`/api/v1/reportes/existencia_articulo/`, data);
+        } = await axios.post(`/api/v1/reportes/existencia_articulo`, data);
 
         setList(lista);
     };
