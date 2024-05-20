@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Api\v1;
 use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
-use App\Http\Requests\facturasRequest;
-use App\Http\Resources\facturasResource;
+use App\Http\Requests\FacturasRequest;
+use App\Http\Resources\FacturasResource;
 use App\Models\Productos;
 use App\Models\Facturas;
 use App\Models\Clientes;
