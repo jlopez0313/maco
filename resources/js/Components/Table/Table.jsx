@@ -4,10 +4,13 @@ import Icon from "../Icon";
 import ActionsTable from "./ActionsTable";
 
 
-export default ({ data = [], routes = {}, titles = [], actions = [], onTrash, onEdit, onSearch }) => {
+export default ({ caption='', data = [], routes = {}, titles = [], actions = [], onTrash, onEdit, onSearch }) => {
 
     return (
         <table className="w-full whitespace-nowrap">
+            
+            <caption>{caption}</caption>
+
             <thead>
                 <tr className="font-bold text-left">
                     {
@@ -66,7 +69,7 @@ export default ({ data = [], routes = {}, titles = [], actions = [], onTrash, on
                 ))}
                 {data.length === 0 && (
                     <tr>
-                        <td className="px-6 py-4 border-t" colSpan={titles.length}>
+                        <td className="px-6 py-4 border-t" colSpan={titles.length + 1}>
                             No data found.
                         </td>
                     </tr>

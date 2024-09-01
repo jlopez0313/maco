@@ -14,7 +14,7 @@ import { AdminModal } from "@/Components/AdminModal";
 import TextInput from "@/Components/Form/TextInput";
 import SecondaryButton from "@/Components/Buttons/SecondaryButton";
 
-export default ({ auth, q, tipos_doc, contacts, tipoClientes, departamentos }) => {
+export default ({ auth, q, tipoDocumentos, contacts, tipoClientes, departamentos, responsabilidades }) => {
     const {
         data,
         meta: { links },
@@ -23,7 +23,10 @@ export default ({ auth, q, tipos_doc, contacts, tipoClientes, departamentos }) =
     const titles = [
         "Tipo Documento",
         "Documento",
+        "Responsabilidad Fiscal",
         "Nombre",
+        "Comercio",
+        "Matrícula",
         "Departamento",
         "Ciudad",
         "Dirección",
@@ -43,15 +46,18 @@ export default ({ auth, q, tipos_doc, contacts, tipoClientes, departamentos }) =
         const _list = data.map((item) => {
             return {
                 id: item.id,
-                tipo_doc: item.tipo_doc_label,
-                documento: item.documento,
-                nombre: item.nombre,
-                departamento: item.ciudad?.departamento?.departamento || "",
-                ciudad: item.ciudad?.ciudad || "",
-                direccion: item.direccion,
-                celular: item.celular,
-                correo: item.correo,
-                tipo: item.tipo?.tipo || "",
+                tipo_doc: item.tipo_doc?.tipo || "-",
+                responsabilidad: item.responsabilidad?.descripcion || "-",
+                documento: `${item.documento}-${item.dv}`,
+                nombre: item.nombre || '-',
+                comercio: item.comercio || '-',
+                matricula: item.matricula || '-',
+                departamento: item.ciudad?.departamento?.departamento || "-",
+                ciudad: item.ciudad?.ciudad || "-",
+                direccion: item.direccion || '-',
+                celular: item.celular || '-',
+                correo: item.correo || '-',
+                tipo: item.tipo?.tipo || "-",
             };
         });
 
@@ -162,8 +168,9 @@ export default ({ auth, q, tipos_doc, contacts, tipoClientes, departamentos }) =
             <Modal show={show} closeable={true} title="Crear Cliente">
                 <Form
                     auth={auth}
-                    tipos_doc={tipos_doc}
+                    tipoDocumentos={tipoDocumentos}
                     departamentos={departamentos}
+                    responsabilidades={responsabilidades}
                     tipoClientes={tipoClientes}
                     setIsOpen={onToggleModal}
                     onReload={onReload}

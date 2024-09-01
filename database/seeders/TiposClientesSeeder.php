@@ -13,8 +13,8 @@ class TiposClientesSeeder extends Seeder
     public function run(): void
     {
         \DB::table('tipos_clientes')->insert([
-            ['id' => 1, 'tipo' => 'Crédito'],
-            ['id' => 2, 'tipo' => 'Contado'],
+            ['id' => 1, 'codigo' => 1, 'tipo' => 'Persona Jurídica y asimiladas'],
+            ['id' => 2, 'codigo' => 2, 'tipo' => 'Persona Natural y asimiladas'],
         ]);
     }
 }

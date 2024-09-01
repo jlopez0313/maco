@@ -23,6 +23,7 @@ class ProveedoresResource extends JsonResource
             'tipo_doc' => $this->tipo_doc,
             'tipo_doc_label' => $this->tipo_doc_label,
             'documento' => $this->documento,
+            'dv' => $this->dv,
             'ciudad' => $this->ciudad,
             'nombre' => $this->nombre,
             'direccion' => $this->direccion,

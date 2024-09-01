@@ -75,16 +75,16 @@ placeholder="Escriba aquí"
                                 className="ms-4 mx-4"
                                 disabled={processing}
                             >
-                                {" "}
-                                Continuar{" "}
+                                
+                                Continuar
                             </PrimaryButton>
 
                             <SecondaryButton
                                 type="button"
                                 onClick={() => onReset()}
                             >
-                                {" "}
-                                Cancelar{" "}
+                                
+                                Cancelar
                             </SecondaryButton>
                         </div>
                     </form>

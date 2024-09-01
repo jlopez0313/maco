@@ -18,8 +18,6 @@ import { toCurrency } from "@/Helpers/Numbers";
 import { goToQR } from "@/Helpers/Modals";
 
 export default ({ auth, factura }) => {
-
-
     const data = factura.detalles;
 
     const titles = [
@@ -28,41 +26,43 @@ export default ({ auth, factura }) => {
         "Color",
         "Medida",
         "Cantidad",
-        "Precio Venta",
+        "Precio Venta Unit.",
+        "Impuestos Unit.",
     ];
 
-    const [action, setAction] = useState( '' );
-    const [adminModal, setAdminModal] = useState( false );
+    const [action, setAction] = useState("");
+    const [adminModal, setAdminModal] = useState(false);
     const [id, setId] = useState(null);
     const [show, setShow] = useState(false);
     const [list, setList] = useState([]);
     const [sum, setSum] = useState(0);
+    const [imptos, setImptos] = useState(0);
 
     const onSetAdminModal = (_id, action) => {
-        setId(_id)
-        setAdminModal(true)
-        setAction( action )
-    }
+        setId(_id);
+        setAdminModal(true);
+        setAction(action);
+    };
 
     const onConfirm = async ({ data }) => {
-        if ( action == 'edit' ) {
-            setAdminModal( false )
-            onToggleModal( true )
+        if (action == "edit") {
+            setAdminModal(false);
+            onToggleModal(true);
         } else {
-            onTrash(data)
+            onTrash(data);
         }
-    }
+    };
 
     const onTrash = async (data) => {
-        if ( data ) {
+        if (data) {
             await axios.delete(`/api/v1/detalles/${id}`);
-            onReload()
+            onReload();
         }
-    }
+    };
 
     const onToggleModal = (isShown) => {
-        if ( !isShown ) {
-            setId(null)
+        if (!isShown) {
+            setId(null);
         }
         setShow(isShown);
     };
@@ -71,44 +71,80 @@ export default ({ auth, factura }) => {
         onToggleModal(false);
 
         router.visit(window.location.pathname);
-    }
+    };
 
     const goToPDF = () => {
-        window.location.href = '/remisiones/pdf/' + factura.id;
-    }
+        window.location.href = "/remisiones/pdf/" + factura.id;
+    };
 
     const onSetList = () => {
         const _list = data.map((item) => {
+            let impuestos = 0;
+
+            item.producto?.impuestos.forEach((impto) => {
+                if (impto.impuesto.tipo_tarifa == "P") {
+                    impuestos +=
+                        ((item.precio_venta || 0) *
+                            Number(impto.impuesto.tarifa)) /
+                        100;
+                } else if (impto.impuesto.tipo_tarifa == "V") {
+                    impuestos += Number(impto.impuesto.tarifa);
+                }
+            });
+
             return {
                 id: item.id,
-                articulo: item.producto?.inventario?.articulo || '',
-                referenia: item.producto?.referencia || '',
-                color: item.producto?.color?.color || '',
-                medida: item.producto?.medida?.medida || '',
+                articulo: item.producto?.inventario?.articulo || "",
+                referenia: item.producto?.referencia || "",
+                color: item.producto?.color?.color || "",
+                medida: item.producto?.medida?.medida || "",
                 cantidad: item.cantidad,
-                precio: toCurrency( item.precio_venta || 0 ),
+                precio: toCurrency(item.precio_venta || 0),
+                impuestos: toCurrency(impuestos),
             };
         });
 
         setList(_list);
-        setShow( _list.length == 0 )
+        setShow(_list.length == 0);
     };
 
     const onSetSum = () => {
-        const sum = data.reduce( (sum, item) => {
-            return sum + (item.precio_venta * item.cantidad);
+        const sum = data.reduce((sum, item) => {
+            return sum + item.precio_venta * item.cantidad;
         }, 0);
 
-        setSum( toCurrency( sum ) )
-    }
+        setSum(sum);
+
+        let impuestos = 0;
+
+        data.forEach((item) => {
+            item.producto?.impuestos.forEach((impto) => {
+                if (impto.impuesto.tipo_tarifa == "P") {
+                    impuestos +=
+                        (((item.precio_venta || 0) *
+                            Number(impto.impuesto.tarifa)) /
+                            100) *
+                        item.cantidad;
+                } else if (impto.impuesto.tipo_tarifa == "V") {
+                    impuestos += Number(impto.impuesto.tarifa) * item.cantidad;
+                }
+            });
+        });
+
+        setImptos(impuestos);
+    };
 
     const onBack = () => {
-        router.visit('/remisiones');
-    }
+        router.visit("/remisiones");
+    };
 
     const onPrint = () => {
         window.print();
-    }
+    };
+
+    const onSOAP = async () => {
+        await axios.get("/api/v1/soap/download");
+    };
 
     useEffect(() => {
         onSetList();
@@ -150,7 +186,7 @@ export default ({ auth, factura }) => {
                                         readOnly={true}
                                     />
                                 </div>
-                                
+
                                 <div>
                                     <InputLabel value="Cliente" />
 
@@ -161,7 +197,7 @@ export default ({ auth, factura }) => {
                                         readOnly={true}
                                     />
                                 </div>
-                                
+
                                 <div>
                                     <InputLabel htmlFor="fecha" value="Fecha" />
 
@@ -172,22 +208,51 @@ export default ({ auth, factura }) => {
                                         readOnly={true}
                                     />
                                 </div>
-                                
+
                                 <div>
-                                    <InputLabel htmlFor="ciudad" value="Valor Total" />
-                                    
+                                    <InputLabel
+                                        htmlFor="ciudad"
+                                        value="SubTotal"
+                                    />
+
                                     <TextInput
                                         type="text"
-                                        value={sum}
+                                        value={toCurrency(sum)}
                                         className="mt-1 block w-full"
                                         readOnly={true}
                                     />
                                 </div>
-                                
+
+                                <div>
+                                    <InputLabel
+                                        htmlFor="ciudad"
+                                        value="Impuestos"
+                                    />
+
+                                    <TextInput
+                                        type="text"
+                                        value={toCurrency(imptos)}
+                                        className="mt-1 block w-full"
+                                        readOnly={true}
+                                    />
+                                </div>
+
+                                <div>
+                                    <InputLabel
+                                        htmlFor="ciudad"
+                                        value="Valor Total"
+                                    />
+
+                                    <TextInput
+                                        type="text"
+                                        value={toCurrency(sum + imptos)}
+                                        className="mt-1 block w-full"
+                                        readOnly={true}
+                                    />
+                                </div>
                             </div>
                         </form>
                     </div>
-
 
                     <div className="bg-white overflow-auto shadow-sm sm:rounded-lg">
                         <Table
@@ -197,34 +262,31 @@ export default ({ auth, factura }) => {
                             actions={[]}
                         />
                     </div>
-                    
+
                     <div className="flex items-center justify-end mt-4 mb-4 no-print">
-                        <SecondaryButton
-                            className="ms-4"
-                            onClick={onPrint}
-                        >
+                        <SecondaryButton className="ms-4" onClick={onSOAP}>
+                            SOAP
+                        </SecondaryButton>
+
+                        <SecondaryButton className="ms-4" onClick={onPrint}>
                             Imprimir
                         </SecondaryButton>
 
-                        <PrimaryButton
-                            className="ms-4 me-3"
-                            onClick={goToPDF}
-                        >
+                        <PrimaryButton className="ms-4 me-3" onClick={goToPDF}>
                             PDF
                         </PrimaryButton>
 
                         <SecondaryButton
                             className="ms-4"
-                            onClick={() => goToQR('/remisiones/qr/' + factura.id) }
+                            onClick={() =>
+                                goToQR("/remisiones/qr/" + factura.id)
+                            }
                         >
                             QR
                         </SecondaryButton>
-
                     </div>
-
                 </div>
             </div>
-            
         </AuthenticatedLayout>
     );
 };

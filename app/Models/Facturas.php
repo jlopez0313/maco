@@ -13,6 +13,7 @@ class Facturas extends Model
 
     protected $table = 'facturas';
     protected $guarded = [];
+    protected $appends = ['estado_label'];
 
     protected $casts = [
         'created_at' => 'datetime:Y-m-d H:i A',
@@ -31,7 +32,12 @@ class Facturas extends Model
     }
 
     public function forma_pago() {
-        return $this->hasOne(TiposClientes::class, 'id', 'tipos_id');
+        return $this->hasOne(FormasPago::class, 'id', 'forma_pago_id');
+
+    }
+
+    public function medio_pago() {
+        return $this->hasOne(MediosPago::class, 'id', 'medio_pago_id');
 
     }
 
@@ -46,7 +52,7 @@ class Facturas extends Model
     public function getEstadoLabelAttribute() {
 
         // if ( isset($this->attributes['estado']) && $this->attributes['estado'] ) {
-            $lista = config('constants.estados-facturas');
+            $lista = config('constants.facturas.estados');
             $origenObj = \Arr::first($lista, function($val, $key) {
                 return $val['key'] == $this->estado;
             });

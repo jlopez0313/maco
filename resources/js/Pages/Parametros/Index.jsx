@@ -11,37 +11,73 @@ export default function Dashboard({ auth }) {
 
     const list = [
         auth.user?.roles_id == 1 && {
-            id: 1,
+            id: 'USUA',
             parametro: 'Usuarios',   
             descripcion: 'Gestionar los Usuarios de la plataforma',
             ruta: 'parametros/usuarios'
         },
         {
-            id: 2,
-            parametro: 'Formas de Pago',   
-            descripcion: 'Gestionar las Formas de Pago que se desea manejar',
+            id: 'TICL',
+            parametro: 'Tipos de Clientes',   
+            descripcion: 'Gestionar los Tipos de Clientes que se desea manejar',
             ruta: 'parametros/tipos_clientes'
         },
         {
-            id: 3,
+            id: 'TIDO',
+            parametro: 'Tipos de Documentos',   
+            descripcion: 'Gestionar los Tipos de Documentos que se desea manejar',
+            ruta: 'parametros/tipos_documentos'
+        },
+        {
+            id: 'REFI',
+            parametro: 'Responsabilidades Fiscales',   
+            descripcion: 'Gestionar los tipos de Responsabilidades Fiscales que se desea manejar',
+            ruta: 'parametros/responsabilidades_fiscales'
+        },
+        {
+            id: 'IMPU',
+            parametro: 'Impuestos',   
+            descripcion: 'Gestionar los impuestos de la empresa',
+            ruta: 'parametros/impuestos'
+        },
+        {
+            id: 'CONC',
             parametro: 'Conceptos',   
-            descripcion: 'Acción / Gasto a registrar en la sección de Gastos',
+            descripcion: 'Acción / Gasto a registrar en la sección de Compras',
             ruta: 'parametros/conceptos'
         },
         {
-            id: 4,
+            id: 'MEPA',
+            parametro: 'Medios de Pago',   
+            descripcion: 'Gestionar los medios de pago que tienen las facturas que se manejan. ',
+            ruta: 'parametros/medios_pago'
+        },
+        {
+            id: 'FOPA',
+            parametro: 'Formas de Pago',   
+            descripcion: 'Gestionar las formas de pago que tienen las facturas que se manejan. ',
+            ruta: 'parametros/formas_pago'
+        },
+        {
+            id: 'BANC',
             parametro: 'Bancos',   
             descripcion: 'Gestionar los Bancos que se utilizan',
             ruta: 'parametros/bancos'
         },
         {
-            id: 5,
+            id: 'UNME',
+            parametro: 'Unidades de Medida',   
+            descripcion: 'Gestionar Unidades de Medida que tienen los productos que se manejan. ',
+            ruta: 'parametros/unidades_medida'
+        },
+        {
+            id: 'MEDI',
             parametro: 'Medidas',   
             descripcion: 'Gestionar Tallas, Mililitros, entre otros, que tienen los productos que se manejan. ',
             ruta: 'parametros/medidas'
         },
         {
-            id: 6,
+            id: 'COLO',
             parametro: 'Colores',   
             descripcion: 'Gestionar los diferentes colores que se manejan',
             ruta: 'parametros/colores'

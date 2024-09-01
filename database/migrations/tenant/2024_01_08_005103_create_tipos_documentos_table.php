@@ -11,8 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('proveedores', function (Blueprint $table) {
-            $table->bigInteger('tipo_doc');
+        Schema::create('tipos_documentos', function (Blueprint $table) {
+            $table->id();
+            $table->integer('codigo')->unique();
+            $table->string('tipo');
+            $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -21,8 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('proveedores', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('tipos_documentos');
     }
 };

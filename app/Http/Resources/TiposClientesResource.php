@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class tiposClientesResource extends JsonResource
+class TiposClientesResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -20,6 +20,7 @@ class tiposClientesResource extends JsonResource
         
         return [
             'id' => $this->id,
+            'codigo' => $this->codigo,
             'tipo' => $this->tipo,
         ];
     }

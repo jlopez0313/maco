@@ -17,9 +17,9 @@ class ProductosCollection extends ResourceCollection
         if (is_null($this->resource)) {
             return [];
         }
-        
+
         return $this->collection->map->only(
-            'id', 'inventario', 'referencia', 'color', 'medida', 'cantidad', 'precio'
+            'id', 'inventario', 'referencia', 'color', 'unidad_medida', 'medida', 'cantidad', 'precio', 'impuestos'
         );
     }
 }

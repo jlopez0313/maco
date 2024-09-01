@@ -14,7 +14,7 @@ import { AdminModal } from "@/Components/AdminModal";
 import { toCurrency } from "@/Helpers/Numbers";
 import TextInput from "@/Components/Form/TextInput";
 
-export default ({ auth, q, tipoClientes, contacts, departments, payments }) => {
+export default ({ auth, q, contacts, departments, payments, medios_pago }) => {
     const { data: departamentos } = departments;
 
     const {
@@ -27,6 +27,7 @@ export default ({ auth, q, tipoClientes, contacts, departments, payments }) => {
         "Código",
         "Cliente",
         "Forma de Pago",
+        "Medio de Pago",
         "Valor Total",
         "Estado",
     ];
@@ -54,7 +55,8 @@ export default ({ auth, q, tipoClientes, contacts, departments, payments }) => {
                 fecha: item.created_at,
                 codigo: item.id,
                 cliente: item.cliente?.nombre || "",
-                payment: item.forma_pago?.tipo || "",
+                payment: item.forma_pago?.descripcion || "",
+                medio_pago: item.medio_pago?.descripcion || "",
                 valor_total: toCurrency(sum[idx] || 0),
                 estado_label: item.estado_label || "",
                 estado: item.estado || "",
@@ -122,11 +124,11 @@ export default ({ auth, q, tipoClientes, contacts, departments, payments }) => {
             user={auth.user}
             header={
                 <h2 className="font-semibold text-xl text-gray-800 leading-tight">
-                    Órdenes de Compra
+                    Ventas
                 </h2>
             }
         >
-            <Head title="Órdenes de Compra" />
+            <Head title="Ventas" />
 
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -172,14 +174,14 @@ export default ({ auth, q, tipoClientes, contacts, departments, payments }) => {
                 </div>
             </div>
 
-            <Modal show={show} closeable={true} title="Registrar Órden">
+            <Modal show={show} closeable={true} title="Registrar Venta">
                 <Form
                     auth={auth}
                     departamentos={departamentos}
                     medidas={[]}
                     origenes={[]}
-                    tipoClientes={tipoClientes}
                     payments={payments}
+                    medios_pago={medios_pago}
                     setIsOpen={onToggleModal}
                     onEdit={onEdit}
                     id={id}

@@ -8,7 +8,7 @@ import { useForm } from "@inertiajs/react";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-export const Form = ({ id, auth, origenes, setIsOpen, onEdit }) => {
+export const Form = ({ id, auth, origenes, setIsOpen, onSearch }) => {
 
     const [ciudades, setCiudades] = useState([]);
 
@@ -30,7 +30,7 @@ export const Form = ({ id, auth, origenes, setIsOpen, onEdit }) => {
             resp = await axios.post(`/api/v1/inventarios`, data);
         }
         
-        onEdit( id || resp.data?.data?.id );
+        onSearch( id || resp.data?.data?.id );
     };
 
     const onGetItem = async () => {
@@ -113,16 +113,16 @@ placeholder="Escriba aquí"
                             className="ms-4 mx-4"
                             disabled={processing}
                         >
-                            {" "}
-                            Guardar{" "}
+                            
+                            Guardar
                         </PrimaryButton>
 
                         <SecondaryButton
                             type="button"
                             onClick={() => setIsOpen(false)}
                         >
-                            {" "}
-                            Cancelar{" "}
+                            
+                            Cancelar
                         </SecondaryButton>
                     </div>
                 </form>

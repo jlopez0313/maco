@@ -1,13 +1,12 @@
 <?php
 
+use App\Http\Controllers\Api\v1\SoapController;
+use App\Http\Controllers\Api\v1\TenantsController;
+use App\Http\Controllers\Api\v1\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
 use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
-
-use App\Http\Controllers\Api\v1\UserController;
-use App\Http\Controllers\Api\v1\TenantsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,7 +19,6 @@ use App\Http\Controllers\Api\v1\TenantsController;
 |
 */
 
-
 Route::middleware('auth:sanctum')
 ->get('/user', function (Request $request) {
     return $request->user();
@@ -32,7 +30,7 @@ Route::middleware([
     InitializeTenancyByDomain::class,
 ])
 ->prefix('v1')->group(function () {
-    Route::prefix('usuarios')->group( function() {
+    Route::prefix('usuarios')->group(function () {
         Route::post('/get-admin', [UserController::class, 'getAdmin']);
     });
 });
@@ -43,74 +41,101 @@ Route::middleware([
     PreventAccessFromCentralDomains::class,
 ])
 ->prefix('v1')->group(function () {
-
     Route::apiResource('usuarios', UserController::class);
 
     Route::post('login', [UserController::class, 'login']);
 
-    Route::prefix('ciudades')->group( function() {
+    Route::prefix('ciudades')->group(function () {
         Route::get('/{depto}', [App\Http\Controllers\Api\v1\CiudadesController::class, 'byDepto']);
     });
-    
+
     Route::apiResource('bancos', App\Http\Controllers\Api\v1\BancosController::class);
     Route::apiResource('colores', App\Http\Controllers\Api\v1\ColoresController::class);
     Route::apiResource('conceptos', App\Http\Controllers\Api\v1\ConceptosController::class);
-    
-    Route::prefix('clientes')->group( function() {
+    Route::apiResource('impuestos', App\Http\Controllers\Api\v1\ImpuestosController::class);
+
+    Route::prefix('clientes')->group(function () {
         Route::post('by-document/{cedula}', [App\Http\Controllers\Api\v1\ClientesController::class, 'byDocument']);
     });
     Route::apiResource('clientes', App\Http\Controllers\Api\v1\ClientesController::class);
 
-    Route::prefix('facturas')->group( function() {
+    Route::prefix('facturas')->group(function () {
         Route::post('registrar/{id}', [App\Http\Controllers\Api\v1\FacturasController::class, 'registrar']);
     });
     Route::apiResource('facturas', App\Http\Controllers\Api\v1\FacturasController::class);
-    
+
     Route::apiResource('gastos', App\Http\Controllers\Api\v1\GastosController::class);
     Route::apiResource('inventarios', App\Http\Controllers\Api\v1\InventariosController::class);
     Route::apiResource('medidas', App\Http\Controllers\Api\v1\MedidasController::class);
     Route::apiResource('proveedores', App\Http\Controllers\Api\v1\ProveedoresController::class);
-    
-    Route::prefix('productos')->group( function() {
+
+    Route::prefix('productos')->group(function () {
         Route::get('referencia/{referencia}', [App\Http\Controllers\Api\v1\ProductosController::class, 'byReferencia']);
     });
-    Route::apiResource('productos', App\Http\Controllers\Api\v1\ProductosController::class);
-    
-    Route::apiResource('tipo-clientes', App\Http\Controllers\Api\v1\TipoClientesController::class);
-    Route::apiResource('detalles', App\Http\Controllers\Api\v1\DetallesController::class);
-    Route::apiResource('recaudos', App\Http\Controllers\Api\v1\RecaudosController::class);
+    Route::apiResource('productos', App\Http\Controllers\Api\v1\ProductosController::class);    
 
-    Route::prefix('reportes')->group( function() {
-        Route::prefix('inventario')->group( function() {
+    Route::apiResource('responsabilidades-fiscales', App\Http\Controllers\Api\v1\ResponsabilidadesFiscalesController::class);
+    Route::apiResource('tipo-clientes', App\Http\Controllers\Api\v1\TipoClientesController::class);
+    Route::apiResource('tipo-documentos', App\Http\Controllers\Api\v1\TipoDocumentosController::class);
+    Route::apiResource('unidades-medida', App\Http\Controllers\Api\v1\UnidadesMedidaController::class);
+    Route::apiResource('formas-pago', App\Http\Controllers\Api\v1\FormasPagoController::class);
+    Route::apiResource('medios-pago', App\Http\Controllers\Api\v1\MediosPagoController::class);
+    Route::apiResource('detalles', App\Http\Controllers\Api\v1\DetallesController::class);
+    Route::apiResource('empresas', App\Http\Controllers\Api\v1\EmpresasController::class);
+    Route::apiResource('recaudos', App\Http\Controllers\Api\v1\RecaudosController::class);
+    
+    
+    Route::prefix('contactos')->group(function () {
+        Route::get('empresa/{empresa}', [App\Http\Controllers\Api\v1\ContactosController::class, 'byEmpresa']);
+    });
+    Route::apiResource('contactos', App\Http\Controllers\Api\v1\ContactosController::class);
+
+    Route::prefix('resoluciones')->group(function () {
+        Route::get('empresa/{empresa}', [App\Http\Controllers\Api\v1\ResolucionesController::class, 'byEmpresa']);
+        Route::get('consecutivo/{empresa}', [App\Http\Controllers\Api\v1\ResolucionesController::class, 'consecutivo']);
+    });
+    Route::apiResource('resoluciones', App\Http\Controllers\Api\v1\ResolucionesController::class);
+
+
+    Route::prefix('reportes')->group(function () {
+        Route::prefix('inventario')->group(function () {
             Route::post('/', [App\Http\Controllers\Api\v1\ReportesController::class, 'inventario']);
         });
-        Route::prefix('existencia_articulo')->group( function() {
+        Route::prefix('existencia_articulo')->group(function () {
             Route::post('/', [App\Http\Controllers\Api\v1\ReportesController::class, 'existencia_articulo']);
         });
-        Route::prefix('articulos_vendidos')->group( function() {
+        Route::prefix('articulos_vendidos')->group(function () {
             Route::post('/', [App\Http\Controllers\Api\v1\ReportesController::class, 'articulos_vendidos']);
         });
-        Route::prefix('compras')->group( function() {
+        Route::prefix('compras')->group(function () {
             Route::post('/', [App\Http\Controllers\Api\v1\ReportesController::class, 'compras']);
         });
-        Route::prefix('gastos')->group( function() {
+        Route::prefix('gastos')->group(function () {
             Route::post('/', [App\Http\Controllers\Api\v1\ReportesController::class, 'gastos']);
         });
-        Route::prefix('estado_cuenta_general')->group( function() {
+        Route::prefix('estado_cuenta_general')->group(function () {
             Route::post('/', [App\Http\Controllers\Api\v1\ReportesController::class, 'estado_cuenta_general']);
         });
-        Route::prefix('estado_cuenta_cliente')->group( function() {
+        Route::prefix('estado_cuenta_cliente')->group(function () {
             Route::post('/', [App\Http\Controllers\Api\v1\ReportesController::class, 'estado_cuenta_cliente']);
         });
-        Route::prefix('utilidad')->group( function() {
+        Route::prefix('utilidad')->group(function () {
             Route::post('/', [App\Http\Controllers\Api\v1\ReportesController::class, 'utilidad']);
         });
     });
+
+    Route::prefix('soap')->group(function () {
+        Route::get('generarNumeracion', [SoapController::class, 'generarNumeracion']);
+        Route::get('consultaNumeracion', [SoapController::class, 'consultaNumeracion']);
+        Route::get('actualizarNumTipoDocumento', [SoapController::class, 'actualizarNumTipoDocumento']);
+        Route::get('upload', [SoapController::class, 'upload']);
+        Route::get('status', [SoapController::class, 'status']);
+        Route::get('download', [SoapController::class, 'download']);
+        // Route::get('upload', [SoapController::class, 'upload']);
+        // Route::get('upload', [SoapController::class, 'upload']);
+    });
 });
 
-
 Route::group(['prefix' => 'v1'], function () {
-
-    Route::apiResource('tenants', TenantsController::class);  
-
+    Route::apiResource('tenants', TenantsController::class);
 })->middleware(['auth:sanctum', 'verified']);

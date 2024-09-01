@@ -9,13 +9,17 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Icon from "@/Components/Icon";
 
-export const Form = ({ id, auth, payments, tipoClientes, departamentos, setIsOpen, onEdit }) => {
+export const Form = ({ id, auth, payments, medios_pago, setIsOpen, onEdit }) => {
 
     const [ciudades, setCiudades] = useState([]);
 
     const {
-        data: tipos,
+        data: formasPago,
     } = payments;
+
+    const {
+        data: mediosPago,
+    } = medios_pago;
 
 
     const { data, setData, processing, errors, reset } = useForm({
@@ -28,8 +32,8 @@ export const Form = ({ id, auth, payments, tipoClientes, departamentos, setIsOpe
         direccion: '',
         celular: '',
         correo: '',
-        tipo: '',
-        tipo_pago: '',
+        forma_pago_id: '',
+        medio_pago_id: '',
     });
 
     const submit = async (e) => {
@@ -84,7 +88,8 @@ export const Form = ({ id, auth, payments, tipoClientes, departamentos, setIsOpe
                         direccion: cliente.direccion || '',
                         celular: cliente.celular || '',
                         correo: cliente.correo || '',
-                        tipo: cliente.tipo?.id || '',
+                        forma_pago_id: cliente.forma_pago?.id || '',
+                        medio_pago_id: cliente.medio_pago?.id || '',
                     }
                 )
             } else {
@@ -189,6 +194,7 @@ export const Form = ({ id, auth, payments, tipoClientes, departamentos, setIsOpe
                                 className="mt-2"
                             />
                         </div>
+
                         {/*
                         <div>
                             <InputLabel htmlFor="ciudad" value="Ciudad" />
@@ -287,28 +293,56 @@ export const Form = ({ id, auth, payments, tipoClientes, departamentos, setIsOpe
 
                         <div>
                             <InputLabel
-                                htmlFor="tipo_pago"
+                                htmlFor="forma_pago_id"
                                 value="Forma de Pago"
                             />
 
                             <Select
-                                id="tipo_pago"
-                                name="tipo_pago"
+                                id="forma_pago_id"
+                                name="forma_pago_id"
                                 className="mt-1 block w-full"
-                                value={data.tipo_pago}
+                                value={data.forma_pago_id}
                                 onChange={(e) =>
-                                    setData("tipo_pago", e.target.value)
+                                    setData("forma_pago_id", e.target.value)
                                 }
                             >
                                 {
-                                    tipos.map( (tipo, key) => {
-                                        return <option value={ tipo.id } key={key}> { tipo.tipo } </option>
+                                    formasPago.map( (tipo, key) => {
+                                        return <option value={ tipo.id } key={key}> { tipo.descripcion } </option>
                                     })
                                 }
                             </Select>
 
                             <InputError
-                                message={errors.tipo_pago}
+                                message={errors.forma_pago_id}
+                                className="mt-2"
+                            />
+                        </div>
+
+                        <div>
+                            <InputLabel
+                                htmlFor="medio_pago_id"
+                                value="Medio de Pago"
+                            />
+
+                            <Select
+                                id="medio_pago_id"
+                                name="medio_pago_id"
+                                className="mt-1 block w-full"
+                                value={data.medio_pago_id}
+                                onChange={(e) =>
+                                    setData("medio_pago_id", e.target.value)
+                                }
+                            >
+                                {
+                                    mediosPago.map( (tipo, key) => {
+                                        return <option value={ tipo.id } key={key}> { tipo.descripcion } </option>
+                                    })
+                                }
+                            </Select>
+
+                            <InputError
+                                message={errors.medio_pago_id}
                                 className="mt-2"
                             />
                         </div>
@@ -320,16 +354,16 @@ export const Form = ({ id, auth, payments, tipoClientes, departamentos, setIsOpe
                             className="ms-4 mx-4"
                             disabled={processing}
                         >
-                            {" "}
-                            Guardar{" "}
+                            
+                            Guardar
                         </PrimaryButton>
 
                         <SecondaryButton
                             type="button"
                             onClick={() => setIsOpen(false)}
                         >
-                            {" "}
-                            Cancelar{" "}
+                            
+                            Cancelar
                         </SecondaryButton>
                     </div>
 

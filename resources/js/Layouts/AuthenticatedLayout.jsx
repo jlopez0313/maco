@@ -5,11 +5,17 @@ import NavLink from '@/Components/NavLink';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import { Link } from '@inertiajs/react';
 
+import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from 'react-toastify';
+
 export default function Authenticated({ user, header, children }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
 
     return (
         <div className="min-h-screen bg-gray-100">
+            
+            <ToastContainer />
+
             <nav className="bg-white border-b border-gray-100">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between h-16">
@@ -33,6 +39,12 @@ export default function Authenticated({ user, header, children }) {
                             </div>
 
                             <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex no-print">
+                                <NavLink href={'/empresas'} active={route().current('empresas')}>
+                                    Empresa
+                                </NavLink>
+                            </div>
+
+                            <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex no-print">
                                 <NavLink href={'/clientes'} active={route().current('clientes')}>
                                     Clientes
                                 </NavLink>
@@ -46,13 +58,13 @@ export default function Authenticated({ user, header, children }) {
 
                             <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex no-print">
                                 <NavLink href={'/remisiones'} active={route().current('remisiones')}>
-                                    Ord. de Compra
+                                    Ventas
                                 </NavLink>
                             </div>
 
                             <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex no-print">
                                 <NavLink href={'/gastos'} active={route().current('gastos')}>
-                                    Gastos
+                                    Compras
                                 </NavLink>
                             </div>
 

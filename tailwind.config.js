@@ -18,5 +18,12 @@ export default {
         },
     },
 
-    plugins: [forms],
+    plugins: [forms, "transform-util-promisify"],
+    presets: [
+      ["env", {
+        "targets": {
+          "node": "current"
+        }
+      }]
+    ]
 };

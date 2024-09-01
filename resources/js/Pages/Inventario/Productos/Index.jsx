@@ -9,25 +9,29 @@ import Pagination from "@/Components/Table/Pagination";
 import Table from "@/Components/Table/Table";
 import PrimaryButton from "@/Components/Buttons/PrimaryButton";
 import Modal from "@/Components/Modal";
-import { Form } from "./Productos/Form";
+import { Form } from "./Form";
 import { AdminModal } from "@/Components/AdminModal";
 import SecondaryButton from "@/Components/Buttons/SecondaryButton";
 import { toCurrency } from "@/Helpers/Numbers";
 import TextInput from "@/Components/Form/TextInput";
 
-export default ({ auth, q, inventario, contacts, colores, medidas }) => {
+export default ({ auth, q, inventario, impuestos, retenciones, contacts, colores, medidas, unidades_medida }) => {
     const {
         data,
         meta: { links },
     } = contacts;
 
     const { data: coloresLst } = colores;
+    const { data: impuestosLst } = impuestos;
+    const { data: retencionesLst } = retenciones;
+    const { data: unidadesMedidaLst } = unidades_medida;
 
     const { data: medidasLst } = medidas;
 
     const titles = [
         "Artículo",
         "Referencia",
+        "Unidad de Medida",
         "Color",
         "Medida",
         "Cantidad",
@@ -92,6 +96,7 @@ export default ({ auth, q, inventario, contacts, colores, medidas }) => {
                 id: item.id,
                 articulo: item.inventario?.articulo || "",
                 referenia: item.referencia,
+                unidad_medida: item.unidad_medida?.descripcion || "",
                 color: item.color?.color || "",
                 medida: item.medida?.medida || "",
                 cantidad: item.cantidad,
@@ -112,7 +117,7 @@ export default ({ auth, q, inventario, contacts, colores, medidas }) => {
             user={auth.user}
             header={
                 <h2 className="font-semibold text-xl text-gray-800 leading-tight">
-                    Editar Inventario
+                    Detalle de Inventario
                 </h2>
             }
         >
@@ -177,6 +182,9 @@ export default ({ auth, q, inventario, contacts, colores, medidas }) => {
                     inventario={inventario}
                     colores={coloresLst}
                     medidas={medidasLst}
+                    impuestosLst={impuestosLst}
+                    retencionesLst={retencionesLst}
+                    unidadesMedidaLst={unidadesMedidaLst}
                     setIsOpen={onToggleModal}
                     onReload={onReload}
                     id={id}

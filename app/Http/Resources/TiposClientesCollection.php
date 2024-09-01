@@ -19,7 +19,7 @@ class TiposClientesCollection extends ResourceCollection
         }
         
         return $this->collection->map->only(
-            'id', 'documento', 'nombre', 'ciudad', 'direccion', 'celular', 'tipo'
+            'id', 'tipo', 'codigo'
         );
     }
 }

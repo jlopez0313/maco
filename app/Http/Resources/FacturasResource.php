@@ -24,6 +24,7 @@ class FacturasResource extends JsonResource
             'cliente' => $this->cliente,
             'recaudos' => $this->recaudos,
             'forma_pago' => $this->forma_pago,
+            'medio_pago' => $this->medio_pago,
             'valor' => $this->valor,
             'estado' => $this->estado,
             'estado_label' => $this->estado_label,

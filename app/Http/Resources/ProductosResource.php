@@ -17,15 +17,17 @@ class ProductosResource extends JsonResource
         if (is_null($this->resource)) {
             return [];
         }
-        
+
         return [
             'id' => $this->id,
             'inventario' => $this->inventario,
-            'referencia' => $this->referencia, 
+            'referencia' => $this->referencia,
             'color' => $this->color,
+            'unidad_medida' => $this->unidad_medida,
             'medida' => $this->medida,
             'cantidad' => $this->cantidad,
             'precio' => $this->precio,
+            'impuestos' => $this->impuestos,
         ];
     }
 }

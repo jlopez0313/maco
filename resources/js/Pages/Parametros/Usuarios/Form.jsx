@@ -116,8 +116,8 @@ export const Form = ({ id, roles, setIsOpen, onReload }) => {
                                 {listaRoles.map((tipo, key) => {
                                     return (
                                         <option value={tipo.id} key={key}>
-                                            {" "}
-                                            {tipo.rol}{" "}
+                                            
+                                            {tipo.rol}
                                         </option>
                                     );
                                 })}
@@ -157,16 +157,16 @@ export const Form = ({ id, roles, setIsOpen, onReload }) => {
                             className="ms-4 mx-4"
                             disabled={processing}
                         >
-                            {" "}
-                            Guardar{" "}
+                            
+                            Guardar
                         </PrimaryButton>
 
                         <SecondaryButton
                             type="button"
                             onClick={() => setIsOpen(false)}
                         >
-                            {" "}
-                            Cancelar{" "}
+                            
+                            Cancelar
                         </SecondaryButton>
                     </div>
                 </form>

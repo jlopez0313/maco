@@ -268,16 +268,16 @@ export const Form = ({ id, auth, factura, setIsOpen, onReload }) => {
                             className="ms-4 mx-4"
                             disabled={processing || !producto.id}
                         >
-                            {" "}
-                            Registrar{" "}
+                            
+                            Registrar
                         </PrimaryButton>
 
                         <SecondaryButton
                             type="button"
                             onClick={() => setIsOpen(false)}
                         >
-                            {" "}
-                            Cancelar{" "}
+                            
+                            Cancelar
                         </SecondaryButton>
                     </div>
 

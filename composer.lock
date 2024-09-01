@@ -4,8 +4,54 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3659941bd5d22494e2861247cd3acc56",
+    "content-hash": "de4948720415609c559bbfae728581b8",
     "packages": [
+        {
+            "name": "artisaninweb/laravel-soap",
+            "version": "0.2.5.10",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/artisaninweb/laravel-soap.git",
+                "reference": "a25956372fdc095a2206a5cacf76d12b1b11c084"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/artisaninweb/laravel-soap/zipball/a25956372fdc095a2206a5cacf76d12b1b11c084",
+                "reference": "a25956372fdc095a2206a5cacf76d12b1b11c084",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Artisaninweb\\SoapWrapper": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Michael van de Rijt",
+                    "email": "me@mvdrijt.com"
+                }
+            ],
+            "description": "A SoapClient wrapper integration for Laravel",
+            "keywords": [
+                "client",
+                "laravel",
+                "soap",
+                "wrapper"
+            ],
+            "support": {
+                "issues": "https://github.com/artisaninweb/laravel-soap/issues",
+                "source": "https://github.com/artisaninweb/laravel-soap/tree/master"
+            },
+            "time": "2015-06-17T11:22:29+00:00"
+        },
         {
             "name": "bacon/bacon-qr-code",
             "version": "1.0.2",
@@ -4237,6 +4283,70 @@
                 }
             ],
             "time": "2023-11-08T05:53:05+00:00"
+        },
+        {
+            "name": "ricorocks-digital-agency/soap",
+            "version": "2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Ricorocks-Digital-Agency/Soap.git",
+                "reference": "f4eeff3133abc8e147ed5065c84bef3a30b8239f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Ricorocks-Digital-Agency/Soap/zipball/f4eeff3133abc8e147ed5065c84bef3a30b8239f",
+                "reference": "f4eeff3133abc8e147ed5065c84bef3a30b8239f",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "^10.0|^11.0",
+                "php": "^8.1|^8.2|^8.3"
+            },
+            "require-dev": {
+                "ext-soap": "*",
+                "laravel/pint": "^1.14",
+                "mockery/mockery": "^1.4",
+                "orchestra/testbench": "^8.0|^9.0",
+                "pestphp/pest": "^2.0",
+                "phpoption/phpoption": "^1.8.1",
+                "spatie/ray": "^1.17"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "RicorocksDigitalAgency\\Soap\\Providers\\SoapServiceProvider"
+                    ],
+                    "aliases": {
+                        "Soap": "RicorocksDigitalAgency\\Soap\\Facades\\Soap"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "RicorocksDigitalAgency\\Soap\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Luke Downing",
+                    "email": "luke@ricorocks.agency"
+                },
+                {
+                    "name": "Sam Rowden",
+                    "email": "sam@ricorocks.agency"
+                }
+            ],
+            "description": "A SOAP client that provides a clean interface for handling requests and responses.",
+            "support": {
+                "issues": "https://github.com/Ricorocks-Digital-Agency/Soap/issues",
+                "source": "https://github.com/Ricorocks-Digital-Agency/Soap/tree/2.0.0"
+            },
+            "time": "2024-03-19T12:59:19+00:00"
         },
         {
             "name": "sabberworm/php-css-parser",

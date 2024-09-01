@@ -19,7 +19,7 @@ class ProveedoresCollection extends ResourceCollection
         }
         
         return $this->collection->map->only(
-            'id', 'documento', 'nombre', 'ciudad', 'direccion', 'celular', 'tipo_doc', 'tipo_doc_label',
+            'id', 'dv', 'documento', 'nombre', 'ciudad', 'direccion', 'celular', 'tipo_doc', 'tipo_doc_label',
         );
     }
 }

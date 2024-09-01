@@ -17,6 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('depto_id');
             $table->foreign('depto_id')->references('id')->on('departamentos');
             
+            $table->string('codigo');
             $table->string('ciudad');
             $table->timestamps();
             $table->softDeletes();

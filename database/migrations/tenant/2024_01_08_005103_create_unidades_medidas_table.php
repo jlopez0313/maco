@@ -11,8 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('clientes', function (Blueprint $table) {
-            $table->bigInteger('tipo_doc');
+        Schema::create('unidades_medidas', function (Blueprint $table) {
+            $table->id();
+            $table->string('codigo')->unique();
+            $table->string('descripcion');
+            $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -21,8 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('clientes', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('unidades_medidas');
     }
 };

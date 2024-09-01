@@ -22,7 +22,8 @@ class FacturasController extends Controller
     {
         $data['updated_by'] = $request->updated_by;
         $data['clientes_id'] = $request->clientes_id;
-        $data['tipos_id'] = $request->tipo_pago;
+        $data['forma_pago_id'] = $request->forma_pago_id;
+        $data['medio_pago_id'] = $request->medio_pago_id;
         $data['valor'] = 0;
         $data['estado'] = 'A';
 

@@ -100,16 +100,16 @@ export const Form = ({ id, auth, factura, sum, saldo, setIsOpen, onReload }) => 
                             className="ms-4 mx-4"
                             disabled={processing}
                         >
-                            {" "}
-                            Guardar{" "}
+                            
+                            Guardar
                         </PrimaryButton>
 
                         <SecondaryButton
                             type="button"
                             onClick={() => setIsOpen(false)}
                         >
-                            {" "}
-                            Cancelar{" "}
+                            
+                            Cancelar
                         </SecondaryButton>
                     </div>
 

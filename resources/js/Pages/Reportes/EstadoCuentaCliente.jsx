@@ -143,8 +143,8 @@ export default function Reportes({ auth, clientes }) {
                                 {listaClientes.map((tipo, key) => {
                                     return (
                                         <option value={tipo.id} key={key}>
-                                            {" "}
-                                            {tipo.nombre}{" "}
+                                            
+                                            {tipo.nombre}
                                         </option>
                                     );
                                 })}

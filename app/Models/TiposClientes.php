@@ -11,6 +11,6 @@ class TiposClientes extends Model
     use HasFactory;
     use softDeletes;
 
-    protected $table = 'tipos_clientes';
+    protected $table = 'tipos_personas';
     protected $guarded = [];
 }

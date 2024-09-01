@@ -2,6 +2,7 @@
     $sum = 0;
     $break = 0;
     $total = 0;
+    $impuestos = 0;
 @endphp
 
 
@@ -99,24 +100,26 @@
 
     <table border="1" class="detalle" cellpadding="3" cellspacing="0">
         <tr class="font-12">
-            <th style="width: 170px">Artículo</th>
+            <th style="width: 140px">Artículo</th>
             <th style="width: 140px">Referencia</th>
-            <th style="width: 80px">Color</th>
+            <th style="width: 60px">Color</th>
             <th style="width: 60px">Medida</th>
             <th style="width: 50px">Cantidad</th>
-            <th style="width: 80px">Precio Venta</th>
-            <th style="width: 80px">Total</th>
+            <th style="width: 60px">Valor Unitario</th>
+            <th style="width: 60px">Impuestos Unit.</th>
+            <th style="width: 60px">Total</th>
         </tr>
         
         @foreach ($factura->detalles as $index => $item)
             <tr>
-                <td style="width: 170px">{{ $item->producto->inventario->articulo ?? '' }}</td>
+                <td style="width: 140px">{{ $item->producto->inventario->articulo ?? '' }}</td>
                 <td style="width: 140px">{{ $item->producto->referencia ?? '' }}</td>
-                <td style="width: 80px">{{ $item->producto->color->color ?? '' }}</td>
+                <td style="width: 60px">{{ $item->producto->color->color ?? '' }}</td>
                 <td style="width: 60px">{{ $item->producto->medida->medida ?? '' }}</td>
                 <td style="width: 50px">{{ $item->cantidad }}</td>
-                <td style="width: 80px">{{ number_format($item->precio_venta, 0, ',', '.') }}</td>
-                <td style="width: 80px">{{ number_format($item->precio_venta * $item->cantidad, 0, ',', '.') }}</td>
+                <td style="width: 60px">{{ number_format($item->precio_venta, 0, ',', '.') }}</td>
+                <td style="width: 60px">{{ number_format( getImpuestos( $item ) , 0, ',', '.') }}</td>
+                <td style="width: 60px">{{ number_format($item->precio_venta * $item->cantidad, 0, ',', '.') }}</td>
             </tr>
             
             @if( $index == 25 || $break == 50 )
@@ -130,14 +133,26 @@
             
             @php
                 $break ++;
-                $total += ( $item->precio_venta * $item->cantidad )
+                $total += ( $item->precio_venta * $item->cantidad );
+                $impuestos += ( getImpuestos( $item )  * $item->cantidad );
             @endphp
 
         @endforeach
 
         <tr>
-            <th colspan="6"> Total: </th>
+            <th colspan="6"> </th>
+            <th> SubTotal: </th>
             <td style="width: 80px"> {{ number_format($total, 0, ',', '.') }} </td>
+        </tr>
+        <tr>
+            <th colspan="6"> </th>
+            <th> Impuestos: </th>
+            <td style="width: 80px"> {{ number_format($impuestos, 0, ',', '.') }} </td>
+        </tr>
+        <tr>
+            <th colspan="6"> </th>
+            <th> Total: </th>
+            <td style="width: 80px"> {{ number_format($total + $impuestos, 0, ',', '.') }} </td>
         </tr>
 
     </table>

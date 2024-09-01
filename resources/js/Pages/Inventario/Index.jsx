@@ -81,14 +81,14 @@ export default ({ auth, q, contacts, origenes, departamentos }) => {
         router.visit(window.location.pathname);
     }
 
-    const onSearch = () => {
+    const onFilter = () => {
         onToggleModal(false);
 
         router.visit(window.location.pathname + "?q=" + search);
     };
 
-    const onEdit = (id) => {
-        router.get( `inventario/edit/${ id }` )
+    const onSearch = (id) => {
+        router.get( `inventario/show/${ id }` )
     }
 
     useEffect(() => {
@@ -123,7 +123,7 @@ export default ({ auth, q, contacts, origenes, departamentos }) => {
 
                             <PrimaryButton
                                 className="ms-4"
-                                onClick={() => onSearch()}
+                                onClick={() => onFilter()}
                             >
                                 Buscar
                             </PrimaryButton>
@@ -140,10 +140,10 @@ export default ({ auth, q, contacts, origenes, departamentos }) => {
                         <Table
                             data={list}
                             links={links}
-                            onEdit={ (evt) => onEdit(evt) }
+                            onSearch={ (evt) => onSearch(evt) }
                             onTrash={ (evt) => onSetAdminModal(evt, 'trash') }
                             titles={titles}
-                            actions={["edit", "trash"]}
+                            actions={["search", "trash"]}
                         />
                     </div>
 
@@ -157,7 +157,7 @@ export default ({ auth, q, contacts, origenes, departamentos }) => {
                     departamentos={[]}
                     origenes={origenes}
                     setIsOpen={onToggleModal}        
-                    onEdit={onEdit}
+                    onSearch={onSearch}
                     id={id}
                 />
             </Modal>

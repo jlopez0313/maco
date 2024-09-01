@@ -8,16 +8,15 @@ import React, { useEffect } from "react";
 import axios from "axios";
 
 export const Form = ({ id, setIsOpen, onReload }) => {
-
     const { data, setData, processing, errors, reset } = useForm({
-        tipo: '',
+        codigo: "",
+        tipo: "",
     });
 
     const submit = async (e) => {
         e.preventDefault();
 
-        
-        if ( id ) {
+        if (id) {
             await axios.put(`/api/v1/tipo-clientes/${id}`, data);
         } else {
             await axios.post(`/api/v1/tipo-clientes`, data);
@@ -27,20 +26,18 @@ export const Form = ({ id, setIsOpen, onReload }) => {
     };
 
     const onGetItem = async () => {
-
         const { data } = await axios.get(`/api/v1/tipo-clientes/${id}`);
-        const item = { ...data.data }
+        const item = { ...data.data };
 
-        setData(
-            {                
-                tipo: item.tipo,
-            }
-        )
-    }
+        setData({
+            codigo: item.codigo,
+            tipo: item.tipo,
+        });
+    };
 
-    useEffect( () => {
-        id && onGetItem()
-    }, [])
+    useEffect(() => {
+        id && onGetItem();
+    }, []);
 
     return (
         <div className="pb-12 pt-6">
@@ -48,10 +45,33 @@ export const Form = ({ id, setIsOpen, onReload }) => {
                 <form onSubmit={submit}>
                     <div className="grid grid-cols-1 gap-4">
                         <div>
-                            <InputLabel htmlFor="tipo" value="Forma de pago" />
+                            <InputLabel htmlFor="codigo" value="Código" />
 
                             <TextInput
-placeholder="Escriba aquí"
+                                placeholder="Escriba aquí"
+                                id="codigo"
+                                type="text"
+                                name="codigo"
+                                value={data.codigo}
+                                className="mt-1 block w-full"
+                                autoComplete="codigo"
+                                isFocused={true}
+                                onChange={(e) =>
+                                    setData("codigo", e.target.value)
+                                }
+                            />
+
+                            <InputError
+                                message={errors.codigo}
+                                className="mt-2"
+                            />
+                        </div>
+                        
+                        <div>
+                            <InputLabel htmlFor="tipo" value="Tipo de Cliente" />
+
+                            <TextInput
+                                placeholder="Escriba aquí"
                                 id="tipo"
                                 type="text"
                                 name="tipo"
@@ -76,16 +96,14 @@ placeholder="Escriba aquí"
                             className="ms-4 mx-4"
                             disabled={processing}
                         >
-                            {" "}
-                            Guardar{" "}
+                            Guardar
                         </PrimaryButton>
 
                         <SecondaryButton
                             type="button"
                             onClick={() => setIsOpen(false)}
                         >
-                            {" "}
-                            Cancelar{" "}
+                            Cancelar
                         </SecondaryButton>
                     </div>
                 </form>

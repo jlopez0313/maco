@@ -2,20 +2,17 @@
 
 namespace App\Http\Controllers;
 
-
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Request as Peticion;
 use App\Http\Resources\DepartamentosCollection;
 use App\Http\Resources\FacturasCollection;
-use App\Http\Resources\ProductosCollection;
-use App\Http\Resources\TiposClientesCollection;
-use App\Models\Productos;
-use App\Models\Facturas;
+use App\Http\Resources\FormasPagoCollection;
+use App\Http\Resources\MediosPagoCollection;
+use App\Models\MediosPago;
 use App\Models\Departamentos;
-use App\Models\TiposClientes;
+use App\Models\Facturas;
+use App\Models\FormasPago;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Request as Peticion;
 use Inertia\Inertia;
-
-use Barryvdh\DomPDF\Facade\Pdf;
 
 class FacturasController extends Controller
 {
@@ -27,14 +24,14 @@ class FacturasController extends Controller
         $query = Facturas::with(
             'cliente', 'forma_pago'
         );
-        
-        if( $request->q ) {
-            $query->where('id', 'LIKE', '%' . $request->q . '%')
-            ->orWhere('created_at', 'LIKE', '%' . $request->q . '%')
-            ->orWhereHas( 'cliente', function($q) use ($request) {
-                    $q->where('nombre', 'LIKE', '%' . $request->q . '%')
-                    ->orWhere('direccion', 'LIKE', '%' . $request->q . '%')
-                    ->orWhere('celular', 'LIKE', '%' . $request->q . '%')
+
+        if ($request->q) {
+            $query->where('id', 'LIKE', '%'.$request->q.'%')
+            ->orWhere('created_at', 'LIKE', '%'.$request->q.'%')
+            ->orWhereHas('cliente', function ($q) use ($request) {
+                $q->where('nombre', 'LIKE', '%'.$request->q.'%')
+                ->orWhere('direccion', 'LIKE', '%'.$request->q.'%')
+                ->orWhere('celular', 'LIKE', '%'.$request->q.'%')
                 ;
             })
             ;
@@ -46,8 +43,11 @@ class FacturasController extends Controller
                 $query->paginate()->appends(request()->query())
             ),
             'q' => $request->q ?? '',
-            'payments' => new TiposClientesCollection(
-                TiposClientes::orderBy('tipo')->get()
+            'medios_pago' => new MediosPagoCollection(
+                MediosPago::orderBy('descripcion')->get()
+            ),
+            'payments' => new FormasPagoCollection(
+                FormasPago::orderBy('descripcion')->get()
             ),
             'departments' => new DepartamentosCollection(
                 Departamentos::orderBy('departamento')->get()
@@ -60,7 +60,6 @@ class FacturasController extends Controller
      */
     public function create()
     {
-        //
     }
 
     /**
@@ -68,7 +67,6 @@ class FacturasController extends Controller
      */
     public function store(Request $request)
     {
-        //
     }
 
     /**
@@ -77,8 +75,13 @@ class FacturasController extends Controller
     public function show(string $id)
     {
         return Inertia::render('Facturas/Show', [
-            'factura' => Facturas::with('detalles.producto.inventario', 'detalles.producto.color', 'detalles.producto.medida', 'cliente')
-                ->find( $id )
+            'factura' => Facturas::with(
+                'detalles.producto.impuestos.impuesto',
+                'detalles.producto.inventario',
+                'detalles.producto.color',
+                'detalles.producto.medida', 'cliente'
+            )
+                ->find($id),
         ]);
     }
 
@@ -89,7 +92,7 @@ class FacturasController extends Controller
     {
         return Inertia::render('Facturas/Edit', [
             'factura' => Facturas::with('detalles.producto.inventario', 'detalles.producto.color', 'detalles.producto.medida', 'cliente')
-                ->find( $id )
+                ->find($id),
         ]);
     }
 
@@ -98,7 +101,6 @@ class FacturasController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
     }
 
     /**
@@ -106,24 +108,23 @@ class FacturasController extends Controller
      */
     public function destroy(string $id)
     {
-        //
     }
 
     public function pdf(string $id)
     {
-
-        $factura = Facturas::find( $id );
+        $factura = Facturas::find($id);
 
         $data = [
-            'factura' => $factura
+            'factura' => $factura,
         ];
 
         $pdf = \PDF::loadView('factura', $data);
-    
-        return $pdf->download($factura->id . '.pdf');
+
+        return $pdf->download($factura->id.'.pdf');
     }
 
-    public function qr( string $id) {
-        echo \QrCode::size(700)->generate( url('/remisiones/pdf/' .  $id ) );
+    public function qr(string $id)
+    {
+        echo \QrCode::size(700)->generate(url('/remisiones/pdf/'.$id));
     }
 }

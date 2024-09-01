@@ -7,37 +7,49 @@ import Select from "@/Components/Form/Select";
 import { useForm } from "@inertiajs/react";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { calcularDigitoVerificacion } from "@/Helpers/Numbers";
 
-export const Form = ({ id, auth, tipos_doc, tipoClientes, departamentos, setIsOpen, onReload }) => {
-
+export const Form = ({
+    id,
+    auth,
+    tipoDocumentos,
+    tipoClientes,
+    departamentos,
+    responsabilidades,
+    setIsOpen,
+    onReload,
+}) => {
     const [ciudades, setCiudades] = useState([]);
-
 
     const { data, setData, processing, errors, reset } = useForm({
         updated_by: auth.user.id,
-        tipo_doc: '',
-        documento: '',
-        nombre: '',
-        tipo: '',
-        depto: '',
-        ciudad: '',
-        direccion: '',
-        celular: '',
-        correo: ''
+        responsabilidad_fiscal_id: "",
+        tipo_doc_id: "",
+        documento: "",
+        dv: "",
+        nombre: "",
+        comercio: "",
+        tipo: "",
+        depto: "",
+        ciudad: "",
+        direccion: "",
+        celular: "",
+        correo: "",
+        matricula: "",
     });
 
-    const {
-        data: tipos,
-    } = tipoClientes;
+    const { data: tipos } = tipoClientes;
 
-    const {
-        data: deptos,
-    } = departamentos;
+    const { data: tipos_doc } = tipoDocumentos;
+
+    const { data: responsabilidadesLst } = responsabilidades;
+
+    const { data: deptos } = departamentos;
 
     const submit = async (e) => {
         e.preventDefault();
 
-        if ( id ) {
+        if (id) {
             await axios.put(`/api/v1/clientes/${id}`, data);
         } else {
             await axios.post(`/api/v1/clientes`, data);
@@ -46,42 +58,55 @@ export const Form = ({ id, auth, tipos_doc, tipoClientes, departamentos, setIsOp
     };
 
     const onGetItem = async () => {
-
         const { data } = await axios.get(`/api/v1/clientes/${id}`);
-        const item = { ...data.data }
+        const item = { ...data.data };
 
-        await onGetCities( item.ciudad.departamento.id );
+        await onGetCities(item.ciudad.departamento.id);
 
-        setData(
-            {
-                updated_by: auth.user.id,
-                tipo_doc: item.tipo_doc|| '',
-                documento: item.documento|| '',
-                nombre: item.nombre|| '',
-                tipo: item.tipo?.id || '',
-                depto: item.ciudad?.departamento?.id || '',
-                ciudad: item.ciudad?.id || '',
-                direccion: item.direccion|| '',
-                celular: item.celular|| '',
-                correo: item.correo|| '',
-            }
-        )
-    }
+        setData({
+            updated_by: auth.user.id,
+            responsabilidad_fiscal_id: item.responsabilidad?.id || "",
+            tipo_doc_id: item.tipo_doc?.id || "",
+            documento: item.documento || "",
+            dv: item.dv || "",
+            nombre: item.nombre || "",
+            comercio: item.comercio || "",
+            tipo: item.tipo?.id || "",
+            depto: item.ciudad?.departamento?.id || "",
+            ciudad: item.ciudad?.id || "",
+            direccion: item.direccion || "",
+            celular: item.celular || "",
+            matricula: item.matricula,
+            correo: item.correo || "",
+        });
+    };
 
     const onGetCities = async (deptoID) => {
-        if ( deptoID ) {
-            const {data} = await axios.get(`/api/v1/ciudades/${deptoID}`);
-            
-            setData("depto", deptoID)
-            setCiudades(data.data)
-        } else {
-            setCiudades([])
-        }
-    }
+        if (deptoID) {
+            const { data } = await axios.get(`/api/v1/ciudades/${deptoID}`);
 
-    useEffect( () => {
-        id && onGetItem()
-    }, [])
+            setData("depto", deptoID);
+            setCiudades(data.data);
+        } else {
+            setCiudades([]);
+        }
+    };
+
+    const onGetDV = (myNit) => {
+        const dv = calcularDigitoVerificacion(String(myNit));
+
+        if (dv) {
+            setData("dv", dv);
+        }
+    };
+
+    useEffect(() => {
+        id && onGetItem();
+    }, []);
+
+    useEffect(() => {
+        data.documento && onGetDV(data.documento);
+    }, [data.documento]);
 
     return (
         <div className="pb-12 pt-6">
@@ -90,35 +115,71 @@ export const Form = ({ id, auth, tipos_doc, tipoClientes, departamentos, setIsOp
                     <div className="grid grid-cols-2 gap-4">
                         <div>
                             <InputLabel
+                                htmlFor="responsabilidad_fiscal_id"
+                                value="Responsabilidad Fiscal"
+                            />
+
+                            <Select
+                                id="responsabilidad_fiscal_id"
+                                name="responsabilidad_fiscal_id"
+                                className="mt-1 block w-full"
+                                value={data.responsabilidad_fiscal_id}
+                                onChange={(e) =>
+                                    setData(
+                                        "responsabilidad_fiscal_id",
+                                        e.target.value
+                                    )
+                                }
+                            >
+                                {responsabilidadesLst.map((tipo, key) => {
+                                    return (
+                                        <option value={tipo.id} key={key}>
+                                            {" "}
+                                            {tipo.descripcion}{" "}
+                                        </option>
+                                    );
+                                })}
+                            </Select>
+
+                            <InputError
+                                message={errors.responsabilidad_fiscal_id}
+                                className="mt-2"
+                            />
+                        </div>
+
+                        <div>
+                            <InputLabel
                                 htmlFor="tipo_doc"
                                 value="Tipo de Documento"
                             />
 
                             <Select
-                                id="tipo_doc"
-                                name="tipo_doc"
+                                id="tipo_doc_id"
+                                name="tipo_doc_id"
                                 className="mt-1 block w-full"
-                                value={data.tipo_doc}
-                                onChange={ (e) => 
-                                    setData("tipo_doc", e.target.value)
+                                value={data.tipo_doc_id}
+                                onChange={(e) =>
+                                    setData("tipo_doc_id", e.target.value)
                                 }
                             >
-                                {
-                                    tipos_doc.map( (tipo, key) => {
-                                        return <option value={ tipo.key } key={key}> { tipo.valor} </option>
-                                    })
-                                }
+                                {tipos_doc.map((tipo, key) => {
+                                    return (
+                                        <option value={tipo.id} key={key}>
+                                            {" "}
+                                            {tipo.tipo}{" "}
+                                        </option>
+                                    );
+                                })}
                             </Select>
 
                             <InputError
-                                message={errors.tipo_doc}
+                                message={errors.tipo_doc_id}
                                 className="mt-2"
                             />
                         </div>
 
                         <div>
                             <InputLabel htmlFor="documento" value="Documento" />
-
                             <TextInput
                                 placeholder="Escriba aquí"
                                 id="documento"
@@ -143,7 +204,7 @@ export const Form = ({ id, auth, tipos_doc, tipoClientes, departamentos, setIsOp
                             <InputLabel htmlFor="nombre" value="Nombre" />
 
                             <TextInput
-                               placeholder="Escriba aquí"
+                                placeholder="Escriba aquí"
                                 id="nombre"
                                 type="text"
                                 name="nombre"
@@ -163,6 +224,31 @@ export const Form = ({ id, auth, tipos_doc, tipoClientes, departamentos, setIsOp
 
                         <div>
                             <InputLabel
+                                htmlFor="comercio"
+                                value="Nombre Comercial"
+                            />
+
+                            <TextInput
+                                placeholder="Escriba aquí"
+                                id="comercio"
+                                type="text"
+                                name="comercio"
+                                value={data.comercio}
+                                className="mt-1 block w-full"
+                                autoComplete="comercio"
+                                onChange={(e) =>
+                                    setData("comercio", e.target.value)
+                                }
+                            />
+
+                            <InputError
+                                message={errors.comercio}
+                                className="mt-2"
+                            />
+                        </div>
+
+                        <div>
+                            <InputLabel
                                 htmlFor="tipo"
                                 value="Tipo de Cliente"
                             />
@@ -176,15 +262,43 @@ export const Form = ({ id, auth, tipos_doc, tipoClientes, departamentos, setIsOp
                                     setData("tipo", e.target.value)
                                 }
                             >
-                                {
-                                    tipos.map( (tipo, key) => {
-                                        return <option value={ tipo.id } key={key}> { tipo.tipo} </option>
-                                    })
-                                }
+                                {tipos.map((tipo, key) => {
+                                    return (
+                                        <option value={tipo.id} key={key}>
+                                            {" "}
+                                            {tipo.tipo}{" "}
+                                        </option>
+                                    );
+                                })}
                             </Select>
 
                             <InputError
                                 message={errors.tipo}
+                                className="mt-2"
+                            />
+                        </div>
+
+                        <div>
+                            <InputLabel
+                                htmlFor="matricula"
+                                value="Matrícula Mercantíl"
+                            />
+
+                            <TextInput
+                                placeholder="Escriba aquí"
+                                id="matricula"
+                                type="number"
+                                name="matricula"
+                                value={data.matricula}
+                                className="mt-1 block w-full"
+                                autoComplete="matricula"
+                                onChange={(e) =>
+                                    setData("matricula", e.target.value)
+                                }
+                            />
+
+                            <InputError
+                                message={errors.matricula}
                                 className="mt-2"
                             />
                         </div>
@@ -200,13 +314,16 @@ export const Form = ({ id, auth, tipos_doc, tipoClientes, departamentos, setIsOp
                                 name="departamento"
                                 className="mt-1 block w-full"
                                 value={data.depto}
-                                onChange={e => onGetCities(e.target.value)}
+                                onChange={(e) => onGetCities(e.target.value)}
                             >
-                                {
-                                    deptos.map( (depto, key) => {
-                                        return <option value={ depto.id } key={key}> { depto.departamento} </option>
-                                    })
-                                }
+                                {deptos.map((depto, key) => {
+                                    return (
+                                        <option value={depto.id} key={key}>
+                                            {" "}
+                                            {depto.departamento}{" "}
+                                        </option>
+                                    );
+                                })}
                             </Select>
 
                             <InputError
@@ -227,11 +344,14 @@ export const Form = ({ id, auth, tipos_doc, tipoClientes, departamentos, setIsOp
                                     setData("ciudad", e.target.value)
                                 }
                             >
-                                {
-                                    ciudades.map( (ciudad, key) => {
-                                        return <option value={ ciudad.id } key={key}> { ciudad.ciudad } </option>
-                                    })
-                                }
+                                {ciudades.map((ciudad, key) => {
+                                    return (
+                                        <option value={ciudad.id} key={key}>
+                                            {" "}
+                                            {ciudad.ciudad}{" "}
+                                        </option>
+                                    );
+                                })}
                             </Select>
 
                             <InputError
@@ -244,7 +364,7 @@ export const Form = ({ id, auth, tipos_doc, tipoClientes, departamentos, setIsOp
                             <InputLabel htmlFor="direccion" value="Dirección" />
 
                             <TextInput
-                               placeholder="Escriba aquí"
+                                placeholder="Escriba aquí"
                                 id="direccion"
                                 type="text"
                                 name="direccion"
@@ -266,7 +386,7 @@ export const Form = ({ id, auth, tipos_doc, tipoClientes, departamentos, setIsOp
                             <InputLabel htmlFor="celular" value="Celular" />
 
                             <TextInput
-                               placeholder="Escriba aquí"
+                                placeholder="Escriba aquí"
                                 id="celular"
                                 type="number"
                                 name="celular"
@@ -288,7 +408,7 @@ export const Form = ({ id, auth, tipos_doc, tipoClientes, departamentos, setIsOp
                             <InputLabel htmlFor="correo" value="Correo" />
 
                             <TextInput
-                               placeholder="Escriba aquí"
+                                placeholder="Escriba aquí"
                                 id="correo"
                                 name="correo"
                                 value={data.correo}
@@ -311,16 +431,14 @@ export const Form = ({ id, auth, tipos_doc, tipoClientes, departamentos, setIsOp
                             className="ms-4 mx-4"
                             disabled={processing}
                         >
-                            {" "}
-                            Guardar{" "}
+                            Guardar
                         </PrimaryButton>
 
                         <SecondaryButton
                             type="button"
                             onClick={() => setIsOpen(false)}
                         >
-                            {" "}
-                            Cancelar{" "}
+                            Cancelar
                         </SecondaryButton>
                     </div>
                 </form>

@@ -1,14 +1,12 @@
 <?php
 
 namespace App\Http\Controllers\Api\v1;
-use App\Http\Controllers\Controller;
 
-use Illuminate\Http\Request;
-use App\Http\Requests\ProductosRequest;
+use App\Http\Controllers\Controller;
 use App\Http\Resources\ProductosResource;
 use App\Models\Productos;
-use Inertia\Inertia;
-
+use App\Models\ProductosImpuestos;
+use Illuminate\Http\Request;
 
 class ProductosController extends Controller
 {
@@ -17,9 +15,17 @@ class ProductosController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->all();
-        $producto = Productos::create( $data );
-        return new ProductosResource( $producto );
+        $data = $request->except('impuestos');
+        $producto = Productos::create($data);
+
+        foreach ($request->impuestos as $impuesto) {
+            ProductosImpuestos::create([
+                'productos_id' => $producto->id,
+                'impuestos_id' => $impuesto['impuestos_id'],
+            ]);
+        }
+
+        return new ProductosResource($producto);
     }
 
     /**
@@ -27,7 +33,9 @@ class ProductosController extends Controller
      */
     public function show(Productos $producto)
     {
-        return new ProductosResource( $producto );
+        $producto->loadMissing('impuestos.impuesto');
+
+        return new ProductosResource($producto);
     }
 
     /**
@@ -35,8 +43,20 @@ class ProductosController extends Controller
      */
     public function update(Request $request, Productos $producto)
     {
-        $producto->update( $request->all() );
-        return new ProductosResource( $producto );
+        $data = $request->except('impuestos');
+        $producto->update($data);
+
+        ProductosImpuestos::where('productos_id', $producto->id)
+        ->delete();
+
+        foreach ($request->impuestos as $impuesto) {
+            ProductosImpuestos::create([
+                'productos_id' => $producto->id,
+                'impuestos_id' => $impuesto['impuestos_id'],
+            ]);
+        }
+
+        return new ProductosResource($producto);
     }
 
     /**
@@ -45,15 +65,17 @@ class ProductosController extends Controller
     public function destroy(Productos $producto)
     {
         $producto->delete();
-        return new ProductosResource( $producto );
+
+        return new ProductosResource($producto);
     }
 
-    public function byReferencia( $referencia ) {
-        $producto = Productos::where('referencia', 'LIKE', $referencia.'%' )
+    public function byReferencia($referencia)
+    {
+        $producto = Productos::where('referencia', 'LIKE', $referencia.'%')
         ->first();
 
         return new ProductosResource(
             $producto
-        );      
+        );
     }
 }

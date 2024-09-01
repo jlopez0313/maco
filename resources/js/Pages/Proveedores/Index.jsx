@@ -30,6 +30,8 @@ export default ({
         "Tipo Documento",
         "Documento",
         "Nombre",
+        "Comercio",
+        "Matrícula",
         "Departamento",
         "Ciudad",
         "Dirección",
@@ -47,9 +49,11 @@ export default ({
         const _list = data.map((item) => {
             return {
                 id: item.id,
-                tipo_doc: item.tipo_doc_label,
-                documento: item.documento,
+                tipo_doc: item.tipo_doc?.tipo || "",
+                documento: `${item.documento}-${item.dv}`,
                 nombre: item.nombre,
+                comercio: item.comercio || '-',
+                matricula: item.matricula || '-',
                 departamento: item.ciudad?.departamento?.departamento || "",
                 ciudad: item.ciudad?.ciudad || "",
                 direccion: item.direccion,

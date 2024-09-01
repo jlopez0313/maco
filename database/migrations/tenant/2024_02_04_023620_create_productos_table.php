@@ -19,6 +19,9 @@ return new class extends Migration
             $table->unsignedBigInteger('inventarios_id');
             $table->foreign('inventarios_id')->references('id')->on('inventarios');            
             
+            $table->unsignedBigInteger('unidad_medida_id');
+            $table->foreign('unidad_medida_id')->references('id')->on('unidades_medidas');
+
             $table->unsignedBigInteger('colores_id')->nullable();
             $table->foreign('colores_id')->references('id')->on('colores');
             

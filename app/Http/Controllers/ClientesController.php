@@ -9,6 +9,10 @@ use App\Http\Resources\ClientesCollection;
 use App\Http\Resources\ClientesResource;
 use App\Http\Resources\TiposClientesCollection;
 use App\Http\Resources\DepartamentosCollection;
+use App\Http\Resources\TiposDocumentosCollection;
+use App\Http\Resources\ResponsabilidadesFiscalesCollection;
+use App\Models\ResponsabilidadesFiscales;
+use App\Models\TiposDocumentos;
 use App\Models\Clientes;
 use App\Models\TiposClientes;
 use App\Models\Departamentos;
@@ -24,6 +28,7 @@ class ClientesController extends Controller
     {
         $query = Clientes::with(
             'tipo', 
+            'tipo_doc', 
             'ciudad',
             'ciudad.departamento'
         );
@@ -41,14 +46,19 @@ class ClientesController extends Controller
             'departamentos' => new DepartamentosCollection(
                 Departamentos::orderBy('departamento')->get()
             ),
+            'responsabilidades' => new ResponsabilidadesFiscalesCollection(
+                ResponsabilidadesFiscales::orderBy('descripcion')->get()
+            ),
             'tipoClientes' => new TiposClientesCollection(
                 TiposClientes::orderBy('tipo')->get()
+            ),
+            'tipoDocumentos' => new TiposDocumentosCollection(
+                TiposDocumentos::orderBy('tipo')->get()
             ),
             'contacts' => new ClientesCollection(
                 $query->paginate()->appends(request()->query())
             ),
             'q' => $request->q ?? '',
-            'tipos_doc' => config('constants.tipo_doc')
         ]);
     }
 
