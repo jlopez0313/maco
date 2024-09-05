@@ -17,6 +17,7 @@ class TenantSeeder extends Seeder
         $this->call(RolesSeeder::class);
         $this->call(UserTenantSeeder::class);
         $this->call(TiposClientesSeeder::class);
+        $this->call(TiposDocumentosSeeder::class);
         $this->call(ClientesSeeder::class);
         // \App\Models\User::factory(10)->create();
 
