@@ -24,6 +24,7 @@ class ClientesSeeder extends Seeder
             'direccion' => 'Generico',
             'celular' => '1234567890',
             'tipo_doc_id' => 1,
+            'responsabilidad_fiscal_id' => 1,
         ]);
     }
 }
