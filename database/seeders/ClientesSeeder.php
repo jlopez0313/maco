@@ -18,6 +18,7 @@ class ClientesSeeder extends Seeder
             'tipo_id' => 1,
             'ciudad_id' => 150,
             'documento' => 1,
+            'dv' => 8,
             'nombre' => 'Generico',
             'matricula' => '111111',
             'comercio' => 'Generico',
