@@ -22,7 +22,7 @@ class FacturasController extends Controller
     public function index(Request $request)
     {
         $query = Facturas::with(
-            'cliente', 'forma_pago'
+            'cliente', 'forma_pago', 'medio_pago'
         );
 
         if ($request->q) {

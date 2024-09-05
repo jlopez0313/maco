@@ -87,6 +87,8 @@ Route::middleware([
     
     Route::prefix('contactos')->group(function () {
         Route::get('empresa/{empresa}', [App\Http\Controllers\Api\v1\ContactosController::class, 'byEmpresa']);
+        Route::get('cliente/{cliente}', [App\Http\Controllers\Api\v1\ContactosController::class, 'byCliente']);
+        Route::get('proveedor/{proveedor}', [App\Http\Controllers\Api\v1\ContactosController::class, 'byProveedor']);
     });
     Route::apiResource('contactos', App\Http\Controllers\Api\v1\ContactosController::class);
 
@@ -128,9 +130,9 @@ Route::middleware([
         Route::get('generarNumeracion', [SoapController::class, 'generarNumeracion']);
         Route::get('consultaNumeracion', [SoapController::class, 'consultaNumeracion']);
         Route::get('actualizarNumTipoDocumento', [SoapController::class, 'actualizarNumTipoDocumento']);
-        Route::get('upload', [SoapController::class, 'upload']);
-        Route::get('status', [SoapController::class, 'status']);
-        Route::get('download', [SoapController::class, 'download']);
+        Route::get('upload/{id}', [SoapController::class, 'upload']);
+        Route::get('status/{id}', [SoapController::class, 'status']);
+        Route::get('download/{id}', [SoapController::class, 'download']);
         // Route::get('upload', [SoapController::class, 'upload']);
         // Route::get('upload', [SoapController::class, 'upload']);
     });

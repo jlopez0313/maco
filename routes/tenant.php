@@ -118,6 +118,8 @@ Route::middleware([
 
     Route::prefix('clientes')->group(function () {
         Route::get('/', [ClientesController::class, 'index'])->name('clientes');
+        Route::get('/create', [ClientesController::class, 'create'])->name('clientes.create');
+        Route::get('/edit/{id}', [ClientesController::class, 'edit'])->name('clientes.edit');
     })->middleware(['auth', 'verified']);
 
     Route::prefix('empresas')->group(function () {
@@ -126,6 +128,8 @@ Route::middleware([
 
     Route::prefix('proveedores')->group(function () {
         Route::get('/', [ProveedoresController::class, 'index'])->name('proveedores');
+        Route::get('/create', [ProveedoresController::class, 'create'])->name('proveedores.create');
+        Route::get('/edit/{id}', [ProveedoresController::class, 'edit'])->name('proveedores.edit');
     })->middleware(['auth', 'verified']);
 
     Route::prefix('remisiones')->group(function () {

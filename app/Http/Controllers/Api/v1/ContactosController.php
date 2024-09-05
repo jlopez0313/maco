@@ -16,6 +16,8 @@ class ContactosController extends Controller
     {
         if ($request->principal == 'S') {
             Contactos::where('empresas_id', $request->empresas_id)
+            ->where('clientes_id', $request->clientes_id)
+            ->where('proveedores_id', $request->proveedores_id)
             ->update(['principal' => 'N']);
         }
 
@@ -59,6 +61,24 @@ class ContactosController extends Controller
         return ContactosResource::collection(
             Contactos::with('empresa')
             ->where('empresas_id', $empresa)
+            ->get()
+        );
+    }
+
+    public function byCliente( $cliente )
+    {
+        return ContactosResource::collection(
+            Contactos::with('cliente')
+            ->where('clientes_id', $cliente)
+            ->get()
+        );
+    }
+
+    public function byProveedor( $proveedor )
+    {
+        return ContactosResource::collection(
+            Contactos::with('proveedor')
+            ->where('proveedores_id', $proveedor)
             ->get()
         );
     }

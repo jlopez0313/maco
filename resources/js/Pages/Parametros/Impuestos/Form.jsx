@@ -8,19 +8,25 @@ import React, { useEffect } from "react";
 import axios from "axios";
 import Select from "@/Components/Form/Select";
 
-export const Form = ({ id, tipos_tarifas, tipos_impuestos, setIsOpen, onReload }) => {
-
+export const Form = ({
+    id,
+    tipos_tarifas,
+    tipos_impuestos,
+    setIsOpen,
+    onReload,
+}) => {
     const { data, setData, processing, errors, reset } = useForm({
-        concepto: '',
+        codigo: "",
+        concepto: "",
         tarifa: 0,
-        tipo_tarifa: '',
-        tipo_impuesto: ''
+        tipo_tarifa: "",
+        tipo_impuesto: "",
     });
 
     const submit = async (e) => {
         e.preventDefault();
 
-        if ( id ) {
+        if (id) {
             await axios.put(`/api/v1/impuestos/${id}`, data);
         } else {
             await axios.post(`/api/v1/impuestos`, data);
@@ -30,23 +36,21 @@ export const Form = ({ id, tipos_tarifas, tipos_impuestos, setIsOpen, onReload }
     };
 
     const onGetItem = async () => {
-
         const { data } = await axios.get(`/api/v1/impuestos/${id}`);
-        const item = { ...data.data }
+        const item = { ...data.data };
 
-        setData(
-            {                
-                concepto: item.concepto,
-                tarifa: item.tarifa,
-                tipo_tarifa: item.tipo_tarifa,
-                tipo_impuesto: item.tipo_impuesto,
-            }
-        )
-    }
+        setData({
+            codigo: item.codigo,
+            concepto: item.concepto,
+            tarifa: item.tarifa,
+            tipo_tarifa: item.tipo_tarifa,
+            tipo_impuesto: item.tipo_impuesto,
+        });
+    };
 
-    useEffect( () => {
-        id && onGetItem()
-    }, [])
+    useEffect(() => {
+        id && onGetItem();
+    }, []);
 
     return (
         <div className="pb-12 pt-6">
@@ -54,10 +58,33 @@ export const Form = ({ id, tipos_tarifas, tipos_impuestos, setIsOpen, onReload }
                 <form onSubmit={submit}>
                     <div className="grid grid-cols-2 gap-4">
                         <div>
+                            <InputLabel htmlFor="codigo" value="Codigo" />
+
+                            <TextInput
+                                placeholder="Escriba aquí"
+                                id="codigo"
+                                type="text"
+                                name="codigo"
+                                value={data.codigo}
+                                className="mt-1 block w-full"
+                                autoComplete="codigo"
+                                isFocused={true}
+                                onChange={(e) =>
+                                    setData("codigo", e.target.value)
+                                }
+                            />
+
+                            <InputError
+                                message={errors.codigo}
+                                className="mt-2"
+                            />
+                        </div>
+
+                        <div>
                             <InputLabel htmlFor="concepto" value="Concepto" />
 
                             <TextInput
-placeholder="Escriba aquí"
+                                placeholder="Escriba aquí"
                                 id="concepto"
                                 type="text"
                                 name="concepto"
@@ -71,16 +98,16 @@ placeholder="Escriba aquí"
                             />
 
                             <InputError
-                                message={errors.banco}
+                                message={errors.concepto}
                                 className="mt-2"
                             />
                         </div>
-                        
+
                         <div>
                             <InputLabel htmlFor="tarifa" value="Tarifa" />
 
                             <TextInput
-placeholder="Escriba aquí"
+                                placeholder="Escriba aquí"
                                 id="tarifa"
                                 type="number"
                                 name="tarifa"
@@ -96,9 +123,12 @@ placeholder="Escriba aquí"
                                 className="mt-2"
                             />
                         </div>
-                        
+
                         <div>
-                            <InputLabel htmlFor="tipo_tarifa" value="Tipo de Tarifa" />
+                            <InputLabel
+                                htmlFor="tipo_tarifa"
+                                value="Tipo de Tarifa"
+                            />
 
                             <Select
                                 placeholder="Escriba aquí"
@@ -110,11 +140,14 @@ placeholder="Escriba aquí"
                                     setData("tipo_tarifa", e.target.value)
                                 }
                             >
-                                {
-                                    tipos_tarifas.map( (item, idx) => {
-                                        return <option key={idx} value={item.key}> {item.valor} </option>
-                                    })
-                                }
+                                {tipos_tarifas.map((item, idx) => {
+                                    return (
+                                        <option key={idx} value={item.key}>
+                                            {" "}
+                                            {item.valor}{" "}
+                                        </option>
+                                    );
+                                })}
                             </Select>
                             <InputError
                                 message={errors.tipo_tarifa}
@@ -123,7 +156,10 @@ placeholder="Escriba aquí"
                         </div>
 
                         <div>
-                            <InputLabel htmlFor="tipo_impuesto" value="Tipo de Impuesto" />
+                            <InputLabel
+                                htmlFor="tipo_impuesto"
+                                value="Tipo de Impuesto"
+                            />
 
                             <Select
                                 placeholder="Escriba aquí"
@@ -135,18 +171,20 @@ placeholder="Escriba aquí"
                                     setData("tipo_impuesto", e.target.value)
                                 }
                             >
-                                {
-                                    tipos_impuestos.map( (item, idx) => {
-                                        return <option key={idx} value={item.key}> {item.valor} </option>
-                                    })
-                                }
+                                {tipos_impuestos.map((item, idx) => {
+                                    return (
+                                        <option key={idx} value={item.key}>
+                                            {" "}
+                                            {item.valor}{" "}
+                                        </option>
+                                    );
+                                })}
                             </Select>
                             <InputError
                                 message={errors.tipo_impuesto}
                                 className="mt-2"
                             />
                         </div>
-                        
                     </div>
 
                     <div className="flex items-center justify-end mt-4">
@@ -154,7 +192,6 @@ placeholder="Escriba aquí"
                             className="ms-4 mx-4"
                             disabled={processing}
                         >
-                            
                             Guardar
                         </PrimaryButton>
 
@@ -162,7 +199,6 @@ placeholder="Escriba aquí"
                             type="button"
                             onClick={() => setIsOpen(false)}
                         >
-                            
                             Cancelar
                         </SecondaryButton>
                     </div>

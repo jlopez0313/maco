@@ -4,38 +4,42 @@ import PrimaryButton from "@/Components/Buttons/PrimaryButton";
 import SecondaryButton from "@/Components/Buttons/SecondaryButton";
 import TextInput from "@/Components/Form/TextInput";
 import Select from "@/Components/Form/Select";
-import { useForm } from "@inertiajs/react";
+import { Head, router, useForm } from "@inertiajs/react";
+import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
+
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { calcularDigitoVerificacion } from "@/Helpers/Numbers";
+import Contactos from './Contacto/Index';
 
-export const Form = ({
-    id,
+export default ({
     auth,
+    contact,
     tipoDocumentos,
     tipoClientes,
     departamentos,
     responsabilidades,
-    setIsOpen,
-    onReload,
+    S_N
 }) => {
+
+    const { data: cliente } = contact || {cliente: {}};
     const [ciudades, setCiudades] = useState([]);
 
     const { data, setData, processing, errors, reset } = useForm({
         updated_by: auth.user.id,
-        responsabilidad_fiscal_id: "",
-        tipo_doc_id: "",
-        documento: "",
-        dv: "",
-        nombre: "",
-        comercio: "",
-        tipo: "",
-        depto: "",
-        ciudad: "",
-        direccion: "",
-        celular: "",
-        correo: "",
-        matricula: "",
+        responsabilidad_fiscal_id: cliente?.responsabilidad?.id || "",
+        tipo_doc_id: cliente?.tipo_doc?.id || "",
+        documento: cliente?.documento || "",
+        dv: cliente?.dv || "",
+        nombre: cliente?.nombre || "",
+        comercio: cliente?.comercio || "",
+        tipo: cliente?.tipo?.id || "",
+        depto: cliente?.ciudad?.depto_id || "",
+        ciudad: cliente?.ciudad?.id || "",
+        direccion: cliente?.direccion || "",
+        celular: cliente?.celular || "",
+        correo: cliente?.correo || "",
+        matricula: cliente?.matricula || "",
     });
 
     const { data: tipos } = tipoClientes;
@@ -46,39 +50,29 @@ export const Form = ({
 
     const { data: deptos } = departamentos;
 
-    const submit = async (e) => {
-        e.preventDefault();
-
-        if (id) {
-            await axios.put(`/api/v1/clientes/${id}`, data);
+    const submit = async (salir) => {
+        if (cliente?.id) {
+            await axios.put(`/api/v1/clientes/${cliente.id}`, data);
+            if ( salir ) {
+                onReload();
+            }
         } else {
-            await axios.post(`/api/v1/clientes`, data);
+            const {data: {data: newClient}} = await axios.post(`/api/v1/clientes`, data);
+            
+            if ( salir ) {
+                onReload();
+            } else {
+                onEdit( newClient.id )
+            }
         }
-        onReload();
     };
 
-    const onGetItem = async () => {
-        const { data } = await axios.get(`/api/v1/clientes/${id}`);
-        const item = { ...data.data };
+    const onReload = () => {
+        router.visit('/clientes');
+    };
 
-        await onGetCities(item.ciudad.departamento.id);
-
-        setData({
-            updated_by: auth.user.id,
-            responsabilidad_fiscal_id: item.responsabilidad?.id || "",
-            tipo_doc_id: item.tipo_doc?.id || "",
-            documento: item.documento || "",
-            dv: item.dv || "",
-            nombre: item.nombre || "",
-            comercio: item.comercio || "",
-            tipo: item.tipo?.id || "",
-            depto: item.ciudad?.departamento?.id || "",
-            ciudad: item.ciudad?.id || "",
-            direccion: item.direccion || "",
-            celular: item.celular || "",
-            matricula: item.matricula,
-            correo: item.correo || "",
-        });
+    const onEdit = ( id ) => {
+        router.visit(`/clientes/edit/${id}`);
     };
 
     const onGetCities = async (deptoID) => {
@@ -101,348 +95,399 @@ export const Form = ({
     };
 
     useEffect(() => {
-        id && onGetItem();
-    }, []);
-
-    useEffect(() => {
         data.documento && onGetDV(data.documento);
     }, [data.documento]);
 
+    useEffect(() => {
+        data.depto && onGetCities(data.depto);
+    }, [data.depto]);
+
     return (
-        <div className="pb-12 pt-6">
-            <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <form onSubmit={submit}>
-                    <div className="grid grid-cols-2 gap-4">
-                        <div>
-                            <InputLabel
-                                htmlFor="responsabilidad_fiscal_id"
-                                value="Responsabilidad Fiscal"
-                            />
+        <AuthenticatedLayout
+            user={auth.user}
+            header={
+                <h2 className="font-semibold text-xl text-gray-800 leading-tight">
+                    Clientes
+                </h2>
+            }
+        >
+            <Head title="Clientes" />
 
-                            <Select
-                                id="responsabilidad_fiscal_id"
-                                name="responsabilidad_fiscal_id"
-                                className="mt-1 block w-full"
-                                value={data.responsabilidad_fiscal_id}
-                                onChange={(e) =>
-                                    setData(
-                                        "responsabilidad_fiscal_id",
-                                        e.target.value
-                                    )
-                                }
-                            >
-                                {responsabilidadesLst.map((tipo, key) => {
-                                    return (
-                                        <option value={tipo.id} key={key}>
-                                            {" "}
-                                            {tipo.descripcion}{" "}
-                                        </option>
-                                    );
-                                })}
-                            </Select>
+            <div className="pb-12 pt-6">
+                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                    <div className="bg-white overflow-auto shadow-sm sm:rounded-lg p-6 mt-6">
+                        
+                        <h2 className="font-semibold text-xl text-gray-800 leading-tight pb-5">
+                            Información General
+                        </h2>
 
-                            <InputError
-                                message={errors.responsabilidad_fiscal_id}
-                                className="mt-2"
-                            />
-                        </div>
+                        <form>
+                            <div className="grid grid-cols-2 gap-4">
+                                <div>
+                                    <InputLabel
+                                        htmlFor="responsabilidad_fiscal_id"
+                                        value="Responsabilidad Fiscal"
+                                    />
 
-                        <div>
-                            <InputLabel
-                                htmlFor="tipo_doc"
-                                value="Tipo de Documento"
-                            />
+                                    <Select
+                                        id="responsabilidad_fiscal_id"
+                                        name="responsabilidad_fiscal_id"
+                                        className="mt-1 block w-full"
+                                        value={data.responsabilidad_fiscal_id}
+                                        onChange={(e) =>
+                                            setData(
+                                                "responsabilidad_fiscal_id",
+                                                e.target.value
+                                            )
+                                        }
+                                    >
+                                        {responsabilidadesLst.map((tipo, key) => {
+                                            return (
+                                                <option value={tipo.id} key={key}>
+                                                    {" "}
+                                                    {tipo.descripcion}{" "}
+                                                </option>
+                                            );
+                                        })}
+                                    </Select>
 
-                            <Select
-                                id="tipo_doc_id"
-                                name="tipo_doc_id"
-                                className="mt-1 block w-full"
-                                value={data.tipo_doc_id}
-                                onChange={(e) =>
-                                    setData("tipo_doc_id", e.target.value)
-                                }
-                            >
-                                {tipos_doc.map((tipo, key) => {
-                                    return (
-                                        <option value={tipo.id} key={key}>
-                                            {" "}
-                                            {tipo.tipo}{" "}
-                                        </option>
-                                    );
-                                })}
-                            </Select>
+                                    <InputError
+                                        message={errors.responsabilidad_fiscal_id}
+                                        className="mt-2"
+                                    />
+                                </div>
 
-                            <InputError
-                                message={errors.tipo_doc_id}
-                                className="mt-2"
-                            />
-                        </div>
+                                <div>
+                                    <InputLabel
+                                        htmlFor="tipo_doc"
+                                        value="Tipo de Documento"
+                                    />
 
-                        <div>
-                            <InputLabel htmlFor="documento" value="Documento" />
-                            <TextInput
-                                placeholder="Escriba aquí"
-                                id="documento"
-                                type="number"
-                                name="documento"
-                                value={data.documento}
-                                className="mt-1 block w-full"
-                                autoComplete="documento"
-                                isFocused={true}
-                                onChange={(e) =>
-                                    setData("documento", e.target.value)
-                                }
-                            />
+                                    <Select
+                                        id="tipo_doc_id"
+                                        name="tipo_doc_id"
+                                        className="mt-1 block w-full"
+                                        value={data.tipo_doc_id}
+                                        onChange={(e) =>
+                                            setData("tipo_doc_id", e.target.value)
+                                        }
+                                    >
+                                        {tipos_doc.map((tipo, key) => {
+                                            return (
+                                                <option value={tipo.id} key={key}>
+                                                    {" "}
+                                                    {tipo.tipo}{" "}
+                                                </option>
+                                            );
+                                        })}
+                                    </Select>
 
-                            <InputError
-                                message={errors.documento}
-                                className="mt-2"
-                            />
-                        </div>
+                                    <InputError
+                                        message={errors.tipo_doc_id}
+                                        className="mt-2"
+                                    />
+                                </div>
 
-                        <div>
-                            <InputLabel htmlFor="nombre" value="Nombre" />
+                                <div>
+                                    <InputLabel
+                                        htmlFor="documento"
+                                        value="Documento"
+                                    />
+                                    <TextInput
+                                        placeholder="Escriba aquí"
+                                        id="documento"
+                                        type="number"
+                                        name="documento"
+                                        value={data.documento}
+                                        className="mt-1 block w-full"
+                                        autoComplete="documento"
+                                        isFocused={true}
+                                        onChange={(e) =>
+                                            setData("documento", e.target.value)
+                                        }
+                                    />
 
-                            <TextInput
-                                placeholder="Escriba aquí"
-                                id="nombre"
-                                type="text"
-                                name="nombre"
-                                value={data.nombre}
-                                className="mt-1 block w-full"
-                                autoComplete="nombre"
-                                onChange={(e) =>
-                                    setData("nombre", e.target.value)
-                                }
-                            />
+                                    <InputError
+                                        message={errors.documento}
+                                        className="mt-2"
+                                    />
+                                </div>
 
-                            <InputError
-                                message={errors.nombre}
-                                className="mt-2"
-                            />
-                        </div>
+                                <div>
+                                    <InputLabel htmlFor="nombre" value="Nombre" />
 
-                        <div>
-                            <InputLabel
-                                htmlFor="comercio"
-                                value="Nombre Comercial"
-                            />
+                                    <TextInput
+                                        placeholder="Escriba aquí"
+                                        id="nombre"
+                                        type="text"
+                                        name="nombre"
+                                        value={data.nombre}
+                                        className="mt-1 block w-full"
+                                        autoComplete="nombre"
+                                        onChange={(e) =>
+                                            setData("nombre", e.target.value)
+                                        }
+                                    />
 
-                            <TextInput
-                                placeholder="Escriba aquí"
-                                id="comercio"
-                                type="text"
-                                name="comercio"
-                                value={data.comercio}
-                                className="mt-1 block w-full"
-                                autoComplete="comercio"
-                                onChange={(e) =>
-                                    setData("comercio", e.target.value)
-                                }
-                            />
+                                    <InputError
+                                        message={errors.nombre}
+                                        className="mt-2"
+                                    />
+                                </div>
 
-                            <InputError
-                                message={errors.comercio}
-                                className="mt-2"
-                            />
-                        </div>
+                                <div>
+                                    <InputLabel
+                                        htmlFor="comercio"
+                                        value="Nombre Comercial"
+                                    />
 
-                        <div>
-                            <InputLabel
-                                htmlFor="tipo"
-                                value="Tipo de Cliente"
-                            />
+                                    <TextInput
+                                        placeholder="Escriba aquí"
+                                        id="comercio"
+                                        type="text"
+                                        name="comercio"
+                                        value={data.comercio}
+                                        className="mt-1 block w-full"
+                                        autoComplete="comercio"
+                                        onChange={(e) =>
+                                            setData("comercio", e.target.value)
+                                        }
+                                    />
 
-                            <Select
-                                id="tipo"
-                                name="tipo"
-                                className="mt-1 block w-full"
-                                value={data.tipo}
-                                onChange={(e) =>
-                                    setData("tipo", e.target.value)
-                                }
-                            >
-                                {tipos.map((tipo, key) => {
-                                    return (
-                                        <option value={tipo.id} key={key}>
-                                            {" "}
-                                            {tipo.tipo}{" "}
-                                        </option>
-                                    );
-                                })}
-                            </Select>
+                                    <InputError
+                                        message={errors.comercio}
+                                        className="mt-2"
+                                    />
+                                </div>
 
-                            <InputError
-                                message={errors.tipo}
-                                className="mt-2"
-                            />
-                        </div>
+                                <div>
+                                    <InputLabel
+                                        htmlFor="tipo"
+                                        value="Tipo de Cliente"
+                                    />
 
-                        <div>
-                            <InputLabel
-                                htmlFor="matricula"
-                                value="Matrícula Mercantíl"
-                            />
+                                    <Select
+                                        id="tipo"
+                                        name="tipo"
+                                        className="mt-1 block w-full"
+                                        value={data.tipo}
+                                        onChange={(e) =>
+                                            setData("tipo", e.target.value)
+                                        }
+                                    >
+                                        {tipos.map((tipo, key) => {
+                                            return (
+                                                <option value={tipo.id} key={key}>
+                                                    {" "}
+                                                    {tipo.tipo}{" "}
+                                                </option>
+                                            );
+                                        })}
+                                    </Select>
 
-                            <TextInput
-                                placeholder="Escriba aquí"
-                                id="matricula"
-                                type="number"
-                                name="matricula"
-                                value={data.matricula}
-                                className="mt-1 block w-full"
-                                autoComplete="matricula"
-                                onChange={(e) =>
-                                    setData("matricula", e.target.value)
-                                }
-                            />
+                                    <InputError
+                                        message={errors.tipo}
+                                        className="mt-2"
+                                    />
+                                </div>
 
-                            <InputError
-                                message={errors.matricula}
-                                className="mt-2"
-                            />
-                        </div>
+                                <div>
+                                    <InputLabel
+                                        htmlFor="matricula"
+                                        value="Matrícula Mercantíl"
+                                    />
 
-                        <div>
-                            <InputLabel
-                                htmlFor="departamento"
-                                value="Departamento"
-                            />
+                                    <TextInput
+                                        placeholder="Escriba aquí"
+                                        id="matricula"
+                                        type="number"
+                                        name="matricula"
+                                        value={data.matricula}
+                                        className="mt-1 block w-full"
+                                        autoComplete="matricula"
+                                        onChange={(e) =>
+                                            setData("matricula", e.target.value)
+                                        }
+                                    />
 
-                            <Select
-                                id="departamento"
-                                name="departamento"
-                                className="mt-1 block w-full"
-                                value={data.depto}
-                                onChange={(e) => onGetCities(e.target.value)}
-                            >
-                                {deptos.map((depto, key) => {
-                                    return (
-                                        <option value={depto.id} key={key}>
-                                            {" "}
-                                            {depto.departamento}{" "}
-                                        </option>
-                                    );
-                                })}
-                            </Select>
+                                    <InputError
+                                        message={errors.matricula}
+                                        className="mt-2"
+                                    />
+                                </div>
 
-                            <InputError
-                                message={errors.departamento}
-                                className="mt-2"
-                            />
-                        </div>
+                                <div>
+                                    <InputLabel
+                                        htmlFor="departamento"
+                                        value="Departamento"
+                                    />
 
-                        <div>
-                            <InputLabel htmlFor="ciudad" value="Ciudad" />
+                                    <Select
+                                        id="departamento"
+                                        name="departamento"
+                                        className="mt-1 block w-full"
+                                        value={data.depto}
+                                        onChange={(e) =>
+                                            onGetCities(e.target.value)
+                                        }
+                                    >
+                                        {deptos.map((depto, key) => {
+                                            return (
+                                                <option value={depto.id} key={key}>
+                                                    {" "}
+                                                    {depto.departamento}{" "}
+                                                </option>
+                                            );
+                                        })}
+                                    </Select>
 
-                            <Select
-                                id="ciudad"
-                                name="ciudad"
-                                className="mt-1 block w-full"
-                                value={data.ciudad}
-                                onChange={(e) =>
-                                    setData("ciudad", e.target.value)
-                                }
-                            >
-                                {ciudades.map((ciudad, key) => {
-                                    return (
-                                        <option value={ciudad.id} key={key}>
-                                            {" "}
-                                            {ciudad.ciudad}{" "}
-                                        </option>
-                                    );
-                                })}
-                            </Select>
+                                    <InputError
+                                        message={errors.departamento}
+                                        className="mt-2"
+                                    />
+                                </div>
 
-                            <InputError
-                                message={errors.ciudad}
-                                className="mt-2"
-                            />
-                        </div>
+                                <div>
+                                    <InputLabel htmlFor="ciudad" value="Ciudad" />
 
-                        <div>
-                            <InputLabel htmlFor="direccion" value="Dirección" />
+                                    <Select
+                                        id="ciudad"
+                                        name="ciudad"
+                                        className="mt-1 block w-full"
+                                        value={data.ciudad}
+                                        onChange={(e) =>
+                                            setData("ciudad", e.target.value)
+                                        }
+                                    >
+                                        {ciudades.map((ciudad, key) => {
+                                            return (
+                                                <option value={ciudad.id} key={key}>
+                                                    {" "}
+                                                    {ciudad.ciudad}{" "}
+                                                </option>
+                                            );
+                                        })}
+                                    </Select>
 
-                            <TextInput
-                                placeholder="Escriba aquí"
-                                id="direccion"
-                                type="text"
-                                name="direccion"
-                                value={data.direccion}
-                                className="mt-1 block w-full"
-                                autoComplete="direccion"
-                                onChange={(e) =>
-                                    setData("direccion", e.target.value)
-                                }
-                            />
+                                    <InputError
+                                        message={errors.ciudad}
+                                        className="mt-2"
+                                    />
+                                </div>
 
-                            <InputError
-                                message={errors.direccion}
-                                className="mt-2"
-                            />
-                        </div>
+                                <div>
+                                    <InputLabel
+                                        htmlFor="direccion"
+                                        value="Dirección"
+                                    />
 
-                        <div>
-                            <InputLabel htmlFor="celular" value="Celular" />
+                                    <TextInput
+                                        placeholder="Escriba aquí"
+                                        id="direccion"
+                                        type="text"
+                                        name="direccion"
+                                        value={data.direccion}
+                                        className="mt-1 block w-full"
+                                        autoComplete="direccion"
+                                        onChange={(e) =>
+                                            setData("direccion", e.target.value)
+                                        }
+                                    />
 
-                            <TextInput
-                                placeholder="Escriba aquí"
-                                id="celular"
-                                type="number"
-                                name="celular"
-                                value={data.celular}
-                                className="mt-1 block w-full"
-                                autoComplete="celular"
-                                onChange={(e) =>
-                                    setData("celular", e.target.value)
-                                }
-                            />
+                                    <InputError
+                                        message={errors.direccion}
+                                        className="mt-2"
+                                    />
+                                </div>
 
-                            <InputError
-                                message={errors.celular}
-                                className="mt-2"
-                            />
-                        </div>
+                                <div>
+                                    <InputLabel htmlFor="celular" value="Celular" />
 
-                        <div>
-                            <InputLabel htmlFor="correo" value="Correo" />
+                                    <TextInput
+                                        placeholder="Escriba aquí"
+                                        id="celular"
+                                        type="number"
+                                        name="celular"
+                                        value={data.celular}
+                                        className="mt-1 block w-full"
+                                        autoComplete="celular"
+                                        onChange={(e) =>
+                                            setData("celular", e.target.value)
+                                        }
+                                    />
 
-                            <TextInput
-                                placeholder="Escriba aquí"
-                                id="correo"
-                                name="correo"
-                                value={data.correo}
-                                className="mt-1 block w-full"
-                                autoComplete="correo"
-                                onChange={(e) =>
-                                    setData("correo", e.target.value)
-                                }
-                            />
+                                    <InputError
+                                        message={errors.celular}
+                                        className="mt-2"
+                                    />
+                                </div>
 
-                            <InputError
-                                message={errors.correo}
-                                className="mt-2"
-                            />
-                        </div>
+                                <div>
+                                    <InputLabel htmlFor="correo" value="Correo" />
+
+                                    <TextInput
+                                        placeholder="Escriba aquí"
+                                        id="correo"
+                                        name="correo"
+                                        value={data.correo}
+                                        className="mt-1 block w-full"
+                                        autoComplete="correo"
+                                        onChange={(e) =>
+                                            setData("correo", e.target.value)
+                                        }
+                                    />
+
+                                    <InputError
+                                        message={errors.correo}
+                                        className="mt-2"
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="flex items-center justify-end mt-4">
+                                <PrimaryButton
+                                    type="button"
+                                    className="ms-4 mx-4"
+                                    disabled={processing}
+                                    onClick={() => submit(false)}
+                                >
+                                    Guardar y Continuar
+                                </PrimaryButton>
+
+                                <SecondaryButton
+                                    type="button"
+                                    className="ms-4 mx-4"
+                                    disabled={processing}
+                                    onClick={() => submit(true)}
+                                >
+                                    Guardar y Salir
+                                </SecondaryButton>
+                            </div>
+                        </form>
                     </div>
+                    
+                    {
+                        cliente?.id && 
+                            <div className="bg-white overflow-auto shadow-sm sm:rounded-lg p-6 mt-6">
+                                <h2 className="font-semibold text-xl text-gray-800 leading-tight">
+                                    Información de Contáctos
+                                </h2>
 
-                    <div className="flex items-center justify-end mt-4">
-                        <PrimaryButton
-                            className="ms-4 mx-4"
-                            disabled={processing}
-                        >
-                            Guardar
-                        </PrimaryButton>
+                                <Contactos
+                                    auth={auth}
+                                    cliente={cliente}
+                                    tipoDocumentos={tipoDocumentos}
+                                    tipoClientes={tipoClientes}
+                                    departamentos={departamentos}
+                                    responsabilidades={responsabilidades}
+                                    S_N={S_N}
 
-                        <SecondaryButton
-                            type="button"
-                            onClick={() => setIsOpen(false)}
-                        >
-                            Cancelar
-                        </SecondaryButton>
-                    </div>
-                </form>
+                                />
+
+                            </div>
+                    }
+                </div>
             </div>
-        </div>
+        </AuthenticatedLayout>
     );
 };

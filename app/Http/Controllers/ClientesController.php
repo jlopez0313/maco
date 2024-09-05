@@ -43,18 +43,6 @@ class ClientesController extends Controller
 
         return Inertia::render('Clientes/Index', [
             'filters' => Peticion::all('search', 'trashed'),
-            'departamentos' => new DepartamentosCollection(
-                Departamentos::orderBy('departamento')->get()
-            ),
-            'responsabilidades' => new ResponsabilidadesFiscalesCollection(
-                ResponsabilidadesFiscales::orderBy('descripcion')->get()
-            ),
-            'tipoClientes' => new TiposClientesCollection(
-                TiposClientes::orderBy('tipo')->get()
-            ),
-            'tipoDocumentos' => new TiposDocumentosCollection(
-                TiposDocumentos::orderBy('tipo')->get()
-            ),
             'contacts' => new ClientesCollection(
                 $query->paginate()->appends(request()->query())
             ),
@@ -67,7 +55,21 @@ class ClientesController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('Clientes/Form', [
+            'departamentos' => new DepartamentosCollection(
+                Departamentos::orderBy('departamento')->get()
+            ),
+            'responsabilidades' => new ResponsabilidadesFiscalesCollection(
+                ResponsabilidadesFiscales::orderBy('descripcion')->get()
+            ),
+            'tipoClientes' => new TiposClientesCollection(
+                TiposClientes::orderBy('tipo')->get()
+            ),
+            'tipoDocumentos' => new TiposDocumentosCollection(
+                TiposDocumentos::orderBy('tipo')->get()
+            ),
+            'S_N' => config('constants.S_N'),
+        ]);
     }
 
     /**
@@ -91,7 +93,25 @@ class ClientesController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        return Inertia::render('Clientes/Form', [
+            'departamentos' => new DepartamentosCollection(
+                Departamentos::orderBy('departamento')->get()
+            ),
+            'responsabilidades' => new ResponsabilidadesFiscalesCollection(
+                ResponsabilidadesFiscales::orderBy('descripcion')->get()
+            ),
+            'tipoClientes' => new TiposClientesCollection(
+                TiposClientes::orderBy('tipo')->get()
+            ),
+            'tipoDocumentos' => new TiposDocumentosCollection(
+                TiposDocumentos::orderBy('tipo')->get()
+            ),
+            'contact' => new ClientesResource(
+                Clientes::with('contactos')
+                ->find( $id )
+            ),
+            'S_N' => config('constants.S_N'),
+        ]);
     }
 
     /**

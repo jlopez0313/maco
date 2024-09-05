@@ -16,8 +16,14 @@ return new class extends Migration {
             $table->unsignedBigInteger('updated_by');
             $table->foreign('updated_by')->references('id')->on('users');
 
-            $table->unsignedBigInteger('empresas_id');
+            $table->unsignedBigInteger('empresas_id')->nullable();
             $table->foreign('empresas_id')->references('id')->on('empresas');
+
+            $table->unsignedBigInteger('clientes_id')->nullable();
+            $table->foreign('clientes_id')->references('id')->on('clientes');
+
+            $table->unsignedBigInteger('proveedores_id')->nullable();
+            $table->foreign('proveedores_id')->references('id')->on('proveedores');
 
             $table->string('nombre');
             $table->string('celular');

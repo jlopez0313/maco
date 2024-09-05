@@ -21,13 +21,17 @@ class ProveedoresResource extends JsonResource
         return [
             'id' => $this->id,
             'tipo_doc' => $this->tipo_doc,
-            'tipo_doc_label' => $this->tipo_doc_label,
+            'responsabilidad' => $this->responsabilidad,
             'documento' => $this->documento,
-            'dv' => $this->dv,
+            'dv' => $this->dv, 
             'ciudad' => $this->ciudad,
             'nombre' => $this->nombre,
+            'comercio' => $this->comercio,
             'direccion' => $this->direccion,
+            'tipo' => $this->tipo,
             'celular' => $this->celular,
+            'correo' => $this->correo,
+            'matricula' => $this->matricula,
         ];
     }
 }

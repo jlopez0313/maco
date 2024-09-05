@@ -20,6 +20,7 @@ class ImpuestosResource extends JsonResource
 
         return [
             'id' => $this->id,
+            'codigo' => $this->codigo,
             'concepto' => $this->concepto,
             'tarifa' => $this->tarifa,
             'tipo_tarifa' => $this->tipo_tarifa,

@@ -19,7 +19,14 @@ class ImpuestosCollection extends ResourceCollection
         }
 
         return $this->collection->map->only(
-            'id', 'concepto', 'tarifa', 'tipo_tarifa', 'tipo_tarifa_label', 'tipo_impuesto', 'tipo_impuesto_label'
+            'id',
+            'codigo',
+            'concepto',
+            'tarifa',
+            'tipo_tarifa',
+            'tipo_tarifa_label',
+            'tipo_impuesto',
+            'tipo_impuesto_label'
         );
     }
 }

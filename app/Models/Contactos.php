@@ -19,6 +19,14 @@ class Contactos extends Model
         return $this->hasOne(Empresas::class, 'id', 'empresas_id');
     }
 
+    public function cliente() {
+        return $this->hasOne(Clientes::class, 'id', 'clientes_id');
+    }
+
+    public function proveedor() {
+        return $this->hasOne(Proveedores::class, 'id', 'proveedores_id');
+    }
+
     public function getPrincipalLabelAttribute() {
 
         // if ( isset($this->attributes['estado']) && $this->attributes['estado'] ) {

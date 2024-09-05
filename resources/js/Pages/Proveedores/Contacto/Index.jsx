@@ -11,43 +11,40 @@ import { AdminModal } from "@/Components/AdminModal";
 export default ({
     auth,
     S_N,
-    contact,
+    tipoDocumentos,
+    tipoClientes,
+    departamentos,
+    responsabilidades,
+    proveedor,
 }) => {
 
-    const { data: empresa } = contact;
-
-    const [empresasId, setEmpresasId] = useState(empresa.id);
+    const [proveedoresId, setEmpresasId] = useState(proveedor?.id || null);
     const [id, setId] = useState(null);
+    const [tab, setTab] = useState("general");
     const [show, setShow] = useState(false);
     const [adminModal, setAdminModal] = useState(false);
     const [action, setAction] = useState("");
     const [list, setList] = useState([]);
 
     const titles = [
-        "Resolución",
-        "Prefijo",
-        "Fecha Inicial",
-        "Fecha Final",
-        "Consecutivo Inicial",
-        "Consecutivo Final",
-        "Estado",
+        "Nombre",
+        "Correo",
+        "Celular",
+        "Contacto Principal"
     ];
 
     const onSetList = async () => {
 
-        const { data: resoluciones } = await axios.get(`/api/v1/resoluciones/empresa/${empresasId}`);
-        const lista = [ ...resoluciones.data ]
+        const { data: contactos } = await axios.get(`/api/v1/contactos/proveedor/${proveedoresId}`);
+        const lista = [ ...contactos.data ]
         
         const _list = lista.map((item, idx) => {
             return {
                 id: item.id,
-                resolucion: item.resolucion,
-                prefijo: item.prefijo,
-                fecha_inicial: item.fecha_inicial,
-                fecha_final: item.fecha_final,
-                consecutivo_inicial: item.consecutivo_inicial,
-                consecutivo_final: item.consecutivo_final,
-                estado_label: item.estado_label,
+                nombre: item.nombre,
+                correo: item.correo,
+                celular: item.celular,
+                principal: item.principal_label
             };
         });
 
@@ -81,7 +78,7 @@ export default ({
 
     const onTrash = async (data) => {
         if (data) {
-            await axios.delete(`/api/v1/resoluciones/${id}`);
+            await axios.delete(`/api/v1/contactos/${id}`);
             onReload();
         }
     };
@@ -93,12 +90,12 @@ export default ({
 
     useEffect(() => {
         onSetList();
-    }, [empresasId]);
+    }, [proveedoresId]);
 
     return (
         <>
-            <div className="pb-12 pt-6">
-                <div className="mt-4 mb-6 flex justify-end	">
+            <div className="pb-12">
+                <div className="mb-6 flex justify-end	">
                     <PrimaryButton
                         className="ms-4"
                         onClick={() => onToggleModal(true)}
@@ -111,23 +108,27 @@ export default ({
                     <Table
                         data={list}
                         links={[]}
-                        onEdit={() => onSetAdminModal(evt, "edit")}
+                        onEdit={(evt) => onSetAdminModal(evt, "edit")}
                         onTrash={(evt) => onSetAdminModal(evt, "trash")}
                         titles={titles}
-                        actions={["trash"]}
+                        actions={["edit", "trash"]}
                     />
                 </div>
             </div>
 
-            <Modal show={show} closeable={true} title="Registrar Resolución">
+            <Modal show={show} closeable={true} title="Registrar Contacto">
                 <Form
                     auth={auth}
+                    tipoDocumentos={tipoDocumentos}
+                    tipoClientes={tipoClientes}
+                    departamentos={departamentos}
+                    responsabilidades={responsabilidades}
                     setIsOpen={onToggleModal}
                     onEdit={(evt) => onSetAdminModal(evt, "edit")}
                     onTrash={(evt) => onSetAdminModal(evt, "trash")}
                     id={id}
                     S_N={S_N}
-                    empresasId={empresasId}
+                    proveedoresId={proveedoresId}
                     onReload={onReload}
                 />
             </Modal>

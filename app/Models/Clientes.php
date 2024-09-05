@@ -29,4 +29,12 @@ class Clientes extends Model
     public function responsabilidad() {
         return $this->hasOne(ResponsabilidadesFiscales::class, 'id', 'responsabilidad_fiscal_id');
     }
+
+    public function contactos() {
+        return $this->hasMany(Contactos::class, 'clientes_id');
+    }
+
+    public function contacto() {
+        return $this->hasOne(Contactos::class, 'clientes_id')->where('principal', 'S');
+    }
 }

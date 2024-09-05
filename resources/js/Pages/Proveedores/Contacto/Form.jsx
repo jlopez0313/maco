@@ -8,7 +8,7 @@ import React, { useEffect } from "react";
 import axios from "axios";
 import Select from "@/Components/Form/Select";
 
-export default ({ id, S_N, empresasId, auth, setIsOpen, onReload }) => {
+export default ({ id, S_N, proveedoresId, auth, setIsOpen, onReload }) => {
 
     const { data, setData, processing, errors, reset } = useForm({
         updated_by: auth.user.id,
@@ -16,7 +16,7 @@ export default ({ id, S_N, empresasId, auth, setIsOpen, onReload }) => {
         celular: '',
         correo: '',
         principal: '',
-        empresas_id: empresasId,
+        proveedores_id: proveedoresId,
     });
 
     const submit = async (e) => {
@@ -44,7 +44,7 @@ export default ({ id, S_N, empresasId, auth, setIsOpen, onReload }) => {
                 celular: item.celular,
                 correo: item.correo,
                 principal: item.principal,
-                empresas_id: item.empresa?.id,
+                proveedores_id: item.proveedores?.id,
             }
         )
     }

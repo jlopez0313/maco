@@ -18,15 +18,31 @@ class Empresas extends Model
         return $this->hasOne(Ciudades::class, 'id', 'ciudad_id');
     }
     
-    public function tipo() {
+    public function tipo() { // Tipo de Persona
         return $this->hasOne(TiposClientes::class, 'id', 'tipo_id');
     }
 
-    public function tipo_doc() {
+    public function tipo_doc() { // Tipo de Documento
         return $this->hasOne(TiposDocumentos::class, 'id', 'tipo_doc_id');
     }
 
-    public function responsabilidad() {
+    public function responsabilidad() { // Responsabilidad Jurídica
         return $this->hasOne(ResponsabilidadesFiscales::class, 'id', 'responsabilidad_fiscal_id');
+    }
+
+    public function contactos() {
+        return $this->hasMany(Contactos::class, 'empresas_id');
+    }
+
+    public function contacto() {
+        return $this->hasOne(Contactos::class, 'empresas_id')->where('principal', 'S');
+    }
+
+    public function resoluciones() {
+        return $this->hasMany(Resoluciones::class, 'empresas_id');
+    }
+
+    public function resolucion() {
+        return $this->hasOne(Resoluciones::class, 'empresas_id')->where('estado', 'A');
     }
 }

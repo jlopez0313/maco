@@ -33,12 +33,10 @@ class Facturas extends Model
 
     public function forma_pago() {
         return $this->hasOne(FormasPago::class, 'id', 'forma_pago_id');
-
     }
 
     public function medio_pago() {
         return $this->hasOne(MediosPago::class, 'id', 'medio_pago_id');
-
     }
 
     public function getCreatedAtAttribute( $date ) {

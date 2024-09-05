@@ -18,6 +18,7 @@ class ProveedoresController extends Controller
     public function store(Request $request)
     {
         $data = $request->except(['depto', 'tipo', 'ciudad']);
+        $data['tipo_id'] = $request->tipo;
         $data['ciudad_id'] = $request->ciudad;
 
         $proveedor = Proveedores::create( $data );
@@ -39,6 +40,7 @@ class ProveedoresController extends Controller
     public function update(Request $request, Proveedores $proveedore)
     {
         $data = $request->except(['depto', 'tipo', 'ciudad']);
+        $data['tipo_id'] = $request->tipo;
         $data['ciudad_id'] = $request->ciudad;
 
         $proveedore->update( $data );

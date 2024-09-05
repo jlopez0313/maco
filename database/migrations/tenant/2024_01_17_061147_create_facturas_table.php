@@ -29,6 +29,9 @@ return new class extends Migration
             $table->bigInteger('valor');
             
             $table->char('estado', 1);
+            $table->string('prefijo')->nullable();
+            $table->integer('folio')->nullable();
+            $table->string('transaccionID')->nullable();
 
             $table->timestamps();
             $table->softDeletes();

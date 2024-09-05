@@ -9,7 +9,6 @@ import Pagination from "@/Components/Table/Pagination";
 import Table from "@/Components/Table/Table";
 import PrimaryButton from "@/Components/Buttons/PrimaryButton";
 import Modal from "@/Components/Modal";
-import { Form } from "./Form";
 import { AdminModal } from "@/Components/AdminModal";
 import TextInput from "@/Components/Form/TextInput";
 import SecondaryButton from "@/Components/Buttons/SecondaryButton";
@@ -22,8 +21,8 @@ export default ({ auth, q, tipoDocumentos, contacts, tipoClientes, departamentos
 
     const titles = [
         "Tipo Documento",
-        "Documento",
         "Responsabilidad Fiscal",
+        "Documento",
         "Nombre",
         "Comercio",
         "Matrícula",
@@ -73,7 +72,7 @@ export default ({ auth, q, tipoDocumentos, contacts, tipoClientes, departamentos
     const onConfirm = async ({ data }) => {
         if (action == "edit") {
             setAdminModal(false);
-            onToggleModal(true);
+            onGoToEdit( data )
         } else {
             onTrash(data);
         }
@@ -91,6 +90,16 @@ export default ({ auth, q, tipoDocumentos, contacts, tipoClientes, departamentos
             setId(null);
         }
         setShow(isShown);
+    };
+
+    const onGoToCreate = () => {
+        onToggleModal(false);
+
+        router.visit('/clientes/create');
+    };
+
+    const onGoToEdit = (data) => {
+        router.visit(`/clientes/edit/${id}`);
     };
 
     const onReload = () => {
@@ -144,7 +153,7 @@ export default ({ auth, q, tipoDocumentos, contacts, tipoClientes, departamentos
                         </div>
 
                         <PrimaryButton
-                            onClick={() => onToggleModal(true)}
+                            onClick={() => onGoToCreate()}
                         >
                             Agregar
                         </PrimaryButton>
@@ -164,19 +173,6 @@ export default ({ auth, q, tipoDocumentos, contacts, tipoClientes, departamentos
                     <Pagination links={links} />
                 </div>
             </div>
-
-            <Modal show={show} closeable={true} title="Crear Cliente">
-                <Form
-                    auth={auth}
-                    tipoDocumentos={tipoDocumentos}
-                    departamentos={departamentos}
-                    responsabilidades={responsabilidades}
-                    tipoClientes={tipoClientes}
-                    setIsOpen={onToggleModal}
-                    onReload={onReload}
-                    id={id}
-                />
-            </Modal>
 
             <AdminModal
                 title={action}

@@ -28,6 +28,8 @@ export default ({ auth, factura }) => {
         "Cantidad",
         "Precio Venta Unit.",
         "Impuestos Unit.",
+        "Total Impuestos",
+        "Total",
     ];
 
     const [action, setAction] = useState("");
@@ -73,22 +75,20 @@ export default ({ auth, factura }) => {
         router.visit(window.location.pathname);
     };
 
-    const goToPDF = () => {
-        window.location.href = "/remisiones/pdf/" + factura.id;
-    };
-
     const onSetList = () => {
         const _list = data.map((item) => {
             let impuestos = 0;
 
             item.producto?.impuestos.forEach((impto) => {
-                if (impto.impuesto.tipo_tarifa == "P") {
-                    impuestos +=
-                        ((item.precio_venta || 0) *
-                            Number(impto.impuesto.tarifa)) /
-                        100;
-                } else if (impto.impuesto.tipo_tarifa == "V") {
-                    impuestos += Number(impto.impuesto.tarifa);
+                if (impto.impuesto.tipo_impuesto == 'I') {
+                    if (impto.impuesto.tipo_tarifa == "P") {
+                        impuestos +=
+                            ((item.precio_venta || 0) *
+                                Number(impto.impuesto.tarifa)) /
+                            100;
+                    } else if (impto.impuesto.tipo_tarifa == "V") {
+                        impuestos += Number(impto.impuesto.tarifa);
+                    }
                 }
             });
 
@@ -101,6 +101,8 @@ export default ({ auth, factura }) => {
                 cantidad: item.cantidad,
                 precio: toCurrency(item.precio_venta || 0),
                 impuestos: toCurrency(impuestos),
+                total_impuestos: toCurrency(impuestos * item.cantidad),
+                total: toCurrency( (impuestos * item.cantidad) + ((item.precio_venta || 0) * item.cantidad)),
             };
         });
 
@@ -119,14 +121,16 @@ export default ({ auth, factura }) => {
 
         data.forEach((item) => {
             item.producto?.impuestos.forEach((impto) => {
-                if (impto.impuesto.tipo_tarifa == "P") {
-                    impuestos +=
-                        (((item.precio_venta || 0) *
-                            Number(impto.impuesto.tarifa)) /
-                            100) *
-                        item.cantidad;
-                } else if (impto.impuesto.tipo_tarifa == "V") {
-                    impuestos += Number(impto.impuesto.tarifa) * item.cantidad;
+                if (impto.impuesto.tipo_impuesto == 'I') {
+                    if (impto.impuesto.tipo_tarifa == "P") {
+                        impuestos +=
+                            (((item.precio_venta || 0) *
+                                Number(impto.impuesto.tarifa)) /
+                                100) *
+                            item.cantidad;
+                    } else if (impto.impuesto.tipo_tarifa == "V") {
+                        impuestos += Number(impto.impuesto.tarifa) * item.cantidad;
+                    }
                 }
             });
         });
@@ -138,12 +142,18 @@ export default ({ auth, factura }) => {
         router.visit("/remisiones");
     };
 
-    const onPrint = () => {
-        window.print();
+    const onSOAP = async () => {
+        await axios.get(`/api/v1/soap/upload/${factura.id}`);
+    };
+    
+    const onPrint = async () => {
+        // window.print();
+        await axios.get(`/api/v1/soap/status/${factura.id}`);
     };
 
-    const onSOAP = async () => {
-        await axios.get("/api/v1/soap/download");
+    const goToPDF = async () => {
+        // window.location.href = "/remisiones/pdf/" + factura.id;
+        await axios.get(`/api/v1/soap/download/${factura.id}`);
     };
 
     useEffect(() => {
@@ -264,12 +274,15 @@ export default ({ auth, factura }) => {
                     </div>
 
                     <div className="flex items-center justify-end mt-4 mb-4 no-print">
-                        <SecondaryButton className="ms-4" onClick={onSOAP}>
-                            SOAP
-                        </SecondaryButton>
+                        {
+                            factura.transaccionID && 
+                                <SecondaryButton className="ms-4" onClick={onSOAP}>
+                                    SOAP
+                                </SecondaryButton>
+                        }
 
                         <SecondaryButton className="ms-4" onClick={onPrint}>
-                            Imprimir
+                            Estado
                         </SecondaryButton>
 
                         <PrimaryButton className="ms-4 me-3" onClick={goToPDF}>

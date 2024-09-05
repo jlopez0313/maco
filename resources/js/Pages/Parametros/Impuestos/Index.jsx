@@ -20,6 +20,7 @@ export default ({ auth, contacts, impuestos_tarifas, impuestos_tipos }) => {
     } = contacts;
 
     const titles = [
+        "Codigo",
         "Concepto",
         "Tarifa",
         'Tipo de Tarifa',
@@ -35,6 +36,7 @@ export default ({ auth, contacts, impuestos_tarifas, impuestos_tipos }) => {
         const _list = data.map((item) => {
             return {
                 id: item.id,
+                codigo: item.codigo,
                 concepto: item.concepto,
                 tarifa: item.tarifa,
                 tipo_tarifa: item.tipo_tarifa_label,

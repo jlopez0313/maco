@@ -27,7 +27,6 @@ class Resoluciones extends Model
         });
         
         return $origenObj['valor'] ?? 'N/A';
-        
     }
     
 }

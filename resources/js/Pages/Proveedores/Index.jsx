@@ -8,8 +8,6 @@ import { Head, Link, router, usePage } from "@inertiajs/react";
 import Pagination from "@/Components/Table/Pagination";
 import Table from "@/Components/Table/Table";
 import PrimaryButton from "@/Components/Buttons/PrimaryButton";
-import Modal from "@/Components/Modal";
-import { Form } from "./Form";
 import { AdminModal } from "@/Components/AdminModal";
 import TextInput from "@/Components/Form/TextInput";
 
@@ -73,7 +71,7 @@ export default ({
     const onConfirm = async ({ data }) => {
         if (action == "edit") {
             setAdminModal(false);
-            onToggleModal(true);
+            onGoToEdit( data )
         } else {
             onTrash(data);
         }
@@ -91,6 +89,16 @@ export default ({
             setId(null);
         }
         setShow(isShown);
+    };
+
+    const onGoToCreate = () => {
+        onToggleModal(false);
+
+        router.visit('/proveedores/create');
+    };
+
+    const onGoToEdit = (data) => {
+        router.visit(`/proveedores/edit/${id}`);
     };
 
     const onReload = () => {
@@ -143,7 +151,7 @@ export default ({
                             </PrimaryButton>
                         </div>
 
-                        <PrimaryButton onClick={() => onToggleModal(true)}>
+                        <PrimaryButton onClick={() => onGoToCreate()}>
                             Agregar
                         </PrimaryButton>
                     </div>
@@ -162,18 +170,6 @@ export default ({
                     <Pagination links={links} />
                 </div>
             </div>
-
-            <Modal show={show} closeable={true} title="Crear Proveedor">
-                <Form
-                    auth={auth}
-                    tipos_doc={tipos_doc}
-                    departamentos={departamentos}
-                    tipoClientes={tipoClientes}
-                    setIsOpen={onToggleModal}
-                    onReload={onReload}
-                    id={id}
-                />
-            </Modal>
 
             <AdminModal
                 title={action}

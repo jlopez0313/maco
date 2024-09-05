@@ -5,9 +5,16 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Request as Peticion;
+use App\Http\Resources\ProveedoresResource;
 use App\Http\Resources\ProveedoresCollection;
 use App\Http\Resources\DepartamentosCollection;
+use App\Http\Resources\TiposClientesCollection;
+use App\Http\Resources\TiposDocumentosCollection;
+use App\Http\Resources\ResponsabilidadesFiscalesCollection;
+use App\Models\ResponsabilidadesFiscales;
+use App\Models\TiposDocumentos;
 use App\Models\Proveedores;
+use App\Models\TiposClientes;
 use App\Models\Departamentos;
 use Inertia\Inertia;
 
@@ -49,7 +56,21 @@ class ProveedoresController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('Proveedores/Form', [
+            'departamentos' => new DepartamentosCollection(
+                Departamentos::orderBy('departamento')->get()
+            ),
+            'responsabilidades' => new ResponsabilidadesFiscalesCollection(
+                ResponsabilidadesFiscales::orderBy('descripcion')->get()
+            ),
+            'tipoClientes' => new TiposClientesCollection(
+                TiposClientes::orderBy('tipo')->get()
+            ),
+            'tipoDocumentos' => new TiposDocumentosCollection(
+                TiposDocumentos::orderBy('tipo')->get()
+            ),
+            'S_N' => config('constants.S_N'),
+        ]);
     }
 
     /**
@@ -73,7 +94,25 @@ class ProveedoresController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        return Inertia::render('Proveedores/Form', [
+            'departamentos' => new DepartamentosCollection(
+                Departamentos::orderBy('departamento')->get()
+            ),
+            'responsabilidades' => new ResponsabilidadesFiscalesCollection(
+                ResponsabilidadesFiscales::orderBy('descripcion')->get()
+            ),
+            'tipoClientes' => new TiposClientesCollection(
+                TiposClientes::orderBy('tipo')->get()
+            ),
+            'tipoDocumentos' => new TiposDocumentosCollection(
+                TiposDocumentos::orderBy('tipo')->get()
+            ),
+            'contact' => new ProveedoresResource(
+                Proveedores::with('contactos')
+                ->find( $id )
+            ),
+            'S_N' => config('constants.S_N'),
+        ]);
     }
 
     /**
