@@ -12,7 +12,7 @@ class TiposDocumentosSeeder extends Seeder
      */
     public function run(): void
     {
-        \DB::table('tipos_clientes')->insert([
+        \DB::table('tipos_documentos')->insert([
             ['id' => 1, 'codigo' => 11, 'tipo' => 'Registro civil'],
             ['id' => 2, 'codigo' => 12, 'tipo' => 'Tarjeta de identidad'],
             ['id' => 3, 'codigo' => 13, 'tipo' => 'Cédula de ciudadanía'],
