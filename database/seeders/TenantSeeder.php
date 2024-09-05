@@ -16,6 +16,7 @@ class TenantSeeder extends Seeder
         $this->call(CiudadesSeeder::class);
         $this->call(RolesSeeder::class);
         $this->call(UserTenantSeeder::class);
+        $this->call(ResponsabilidadesFiscalesSeeder::class);
         $this->call(TiposClientesSeeder::class);
         $this->call(TiposDocumentosSeeder::class);
         $this->call(ClientesSeeder::class);
