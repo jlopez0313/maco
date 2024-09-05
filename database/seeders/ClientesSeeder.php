@@ -23,7 +23,7 @@ class ClientesSeeder extends Seeder
             'comercio' => 'Generico',
             'direccion' => 'Generico',
             'celular' => '1234567890',
-            'tipo_doc' => 1,
+            'tipo_doc_id' => 1,
         ]);
     }
 }
