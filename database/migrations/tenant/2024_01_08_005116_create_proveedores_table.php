@@ -22,7 +22,7 @@ return new class extends Migration {
             $table->unsignedBigInteger('tipo_doc_id');
             $table->foreign('tipo_doc_id')->references('id')->on('tipos_documentos');
 
-            $$table->unsignedBigInteger('ciudad_id');
+            $table->unsignedBigInteger('ciudad_id');
             $table->foreign('ciudad_id')->references('id')->on('ciudades');
 
             $table->unsignedBigInteger('responsabilidad_fiscal_id');
