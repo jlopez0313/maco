@@ -153,6 +153,7 @@ export default ({ id, empresasId, estados, auth, setIsOpen, onReload }) => {
                                 type="date"
                                 name="fecha_final"
                                 value={data.fecha_final}
+                                min={data.fecha_inicial}
                                 className="mt-1 block w-full"
                                 autoComplete="fecha_final"
                                 onChange={(e) =>
