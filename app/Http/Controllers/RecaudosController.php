@@ -24,8 +24,7 @@ class RecaudosController extends Controller
         $query = Facturas::with(
             'cliente', 'detalles', 'recaudos'
         )
-        ->has('detalles')
-        ->where('tipos_id', '1');
+        ->has('detalles');
         
         if( $request->q ) {
             $query->where('id', 'LIKE', '%' . $request->q . '%')
