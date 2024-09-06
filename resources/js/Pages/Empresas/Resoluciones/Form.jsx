@@ -9,7 +9,7 @@ import axios from "axios";
 import Select from "@/Components/Form/Select";
 import TextSpan from "@/Components/Form/TextSpan";
 
-export default ({ id, empresasId, auth, setIsOpen, onReload }) => {
+export default ({ id, empresasId, estados, auth, setIsOpen, onReload }) => {
 
     const { data, setData, processing, errors, reset } = useForm({
         updated_by: auth.user.id,
@@ -201,21 +201,21 @@ export default ({ id, empresasId, auth, setIsOpen, onReload }) => {
                         </div>
 
                         <div>
-                            <InputLabel htmlFor="principal" value="Principal" />
+                            <InputLabel htmlFor="estado" value="Estado" />
 
                             <Select
-                                id="principal"
-                                name="principal"
+                                id="estado"
+                                name="estado"
                                 className="mt-1 block w-full"
-                                value={data.principal}
+                                value={data.estado}
                                 onChange={(e) =>
                                     setData(
-                                        "principal",
+                                        "estado",
                                         e.target.value
                                     )
                                 }
                             >
-                                {S_N.map((tipo, key) => {
+                                {estados.map((tipo, key) => {
                                     return (
                                         <option value={tipo.key} key={key}>
                                             {" "}
@@ -226,7 +226,7 @@ export default ({ id, empresasId, auth, setIsOpen, onReload }) => {
                             </Select>
 
                             <InputError
-                                message={errors.principal}
+                                message={errors.estado}
                                 className="mt-2"
                             />
                         </div>

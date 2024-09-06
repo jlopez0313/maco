@@ -10,7 +10,7 @@ import { AdminModal } from "@/Components/AdminModal";
 
 export default ({
     auth,
-    S_N,
+    estados_resoluciones,
     contact,
 }) => {
 
@@ -126,8 +126,8 @@ export default ({
                     onEdit={(evt) => onSetAdminModal(evt, "edit")}
                     onTrash={(evt) => onSetAdminModal(evt, "trash")}
                     id={id}
-                    S_N={S_N}
                     empresasId={empresasId}
+                    estados={estados_resoluciones}
                     onReload={onReload}
                 />
             </Modal>
