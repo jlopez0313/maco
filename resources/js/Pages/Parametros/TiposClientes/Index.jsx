@@ -21,7 +21,7 @@ export default ({ auth, contacts }) => {
 
     const titles= [
         'Codigo',
-        'Tipo de Cliente'
+        'Tipo de Persona'
     ]
 
     const [action, setAction] = useState( '' );
@@ -92,11 +92,11 @@ export default ({ auth, contacts }) => {
             user={auth.user}
             header={
                 <h2 className="font-semibold text-xl text-gray-800 leading-tight">
-                    Tipos de Clientes
+                    Tipos de Personas
                 </h2>
             }
         >
-            <Head title="Tipos de Clientes" />
+            <Head title="Tipos de Personas" />
 
             <div className="py-12">
 
@@ -132,7 +132,7 @@ export default ({ auth, contacts }) => {
                 </div>
             </div>
 
-            <Modal show={show} closeable={true} title="Crear Tipo de Cliente">
+            <Modal show={show} closeable={true} title="Crear Tipo de Persona">
                 <Form
                     setIsOpen={onToggleModal}        
                     onReload={onReload}

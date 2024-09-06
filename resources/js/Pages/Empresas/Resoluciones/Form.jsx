@@ -1,151 +1,256 @@
-import React, { useEffect, useState } from "react";
-// import Layout from '@/Components/Layout';
-import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import InputError from "@/Components/Form/InputError";
 import InputLabel from "@/Components/Form/InputLabel";
 import PrimaryButton from "@/Components/Buttons/PrimaryButton";
 import SecondaryButton from "@/Components/Buttons/SecondaryButton";
 import TextInput from "@/Components/Form/TextInput";
-import Select from "@/Components/Form/Select";
-import { Head, useForm, router } from "@inertiajs/react";
+import { useForm } from "@inertiajs/react";
+import React, { useEffect } from "react";
 import axios from "axios";
-import { calcularDigitoVerificacion } from "@/Helpers/Numbers";
-import { notify } from "@/Helpers/Notify";
+import Select from "@/Components/Form/Select";
+import TextSpan from "@/Components/Form/TextSpan";
 
-export default ({
-    auth,
-    tipoDocumentos,
-    tipoEmpresas,
-    departamentos,
-    responsabilidades,
-    contact,
-}) => {
-    const [ciudades, setCiudades] = useState([]);
-    const [id, setId] = useState([]);
+export default ({ id, empresasId, auth, setIsOpen, onReload }) => {
 
     const { data, setData, processing, errors, reset } = useForm({
         updated_by: auth.user.id,
-        tipo_doc_id: "",
-        documento: "",
-        dv: "",
-        nombre: "",
-        comercio: "",
-        matricula: "",
-        tipo_id: "",
-        depto: "",
-        ciudad: "",
-        direccion: "",
-        prefijo: "",
+        resolucion: '',
+        prefijo: '',
+        fecha_inicial: '',
+        fecha_final: '',
+        consecutivo_inicial: '',
+        consecutivo_final: '',
+        estado: '',
+        empresas_id: empresasId,
     });
-
-    const { data: tipos } = tipoEmpresas;
-
-    const { data: tipos_doc } = tipoDocumentos;
-
-    const { data: deptos } = departamentos;
-
-    const { data: responsabilidadesLst } = responsabilidades;
 
     const submit = async (e) => {
         e.preventDefault();
 
-        try {
-            if (id) {
-                await axios.put(`/api/v1/empresas/${id}`, data);
-            } else {
-                await axios.post(`/api/v1/empresas`, data);
-            }
-
-            // notify('success', 'Datos de la Empresa registrados!')
-
-            onReload();
-        } catch (e) {
-            console.log(e);
-            notify("error", e.message);
+        
+        if ( id ) {
+            await axios.put(`/api/v1/resoluciones/${id}`, data);
+        } else {
+            await axios.post(`/api/v1/resoluciones`, data);
         }
+
+        onReload();
     };
 
     const onGetItem = async () => {
-        const { data: empresa } = contact;
-        const item = { ...empresa };
 
-        await onGetCities(item.ciudad?.departamento?.id);
+        const { data } = await axios.get(`/api/v1/resoluciones/${id}`);
+        const item = { ...data.data }
 
-        setId(item.id);
+        setData(
+            {
+                updated_by: auth.user.id,
+                resolucion: item.resolucion,
+                prefijo: item.prefijo,
+                fecha_inicial: item.fecha_inicial,
+                fecha_final: item.fecha_final,
+                consecutivo_inicial: item.consecutivo_inicial,
+                consecutivo_final: item.consecutivo_final,
+                estado: item.estado,
+                empresas_id: item.empresa?.id,
+            }
+        )
+    }
 
-        setData({
-            ...data,
-            updated_by: auth.user.id,
-            tipo_doc_id: item.tipo_doc?.id || "",
-            documento: item.documento || "",
-            dv: item.dv || "",
-            nombre: item.nombre || "",
-            comercio: item.comercio || "",
-            matricula: item.matricula || "",
-            tipo_id: item.tipo?.id || "",
-            depto: item.ciudad?.departamento?.id || "",
-            ciudad: item.ciudad?.id || "",
-            direccion: item.direccion || "",
-            prefijo: item.prefijo || "",
-            // celular: item.celular || "",
-            // correo: item.correo || "",
-        });
-    };
+    const onGetConsecutivo = async () => {
+        const { data: info } = await axios.get(`/api/v1/resoluciones/consecutivo/${empresasId}`);
+        const item = { ...info.data }
 
-    const onGetCities = async (deptoID) => {
-        if (deptoID) {
-            const { data } = await axios.get(`/api/v1/ciudades/${deptoID}`);
+        setData(
+            {
+                ...data,
+                consecutivo_inicial: item.consecutivo_inicial,
+            }
+        )
+    }
 
-            setData("depto", deptoID);
-            setCiudades(data.data);
-        } else {
-            setCiudades([]);
-        }
-    };
-
-    const onGetDV = (myNit) => {
-        const dv = calcularDigitoVerificacion(String(myNit));
-
-        if (dv) {
-            setData("dv", dv);
-        }
-    };
-
-    const onReload = () => {
-        router.visit(window.location.pathname);
-    };
-
-    useEffect(() => {
-        onGetItem();
-    }, []);
-
-    useEffect(() => {
-        data.documento && onGetDV(data.documento);
-    }, [data.documento]);
+    useEffect( () => {
+        id && onGetItem();
+        onGetConsecutivo();
+    }, [])
 
     return (
         <div className="pb-12 pt-6">
-            <form onSubmit={submit}>
-                <div className="bg-white overflow-auto shadow-sm sm:rounded-lg p-6">
-                    <h2 className="font-semibold text-xl text-gray-800 leading-tight">
-                        Resoluciones de Facturación
-                    </h2>
-                    <div className="grid grid-cols-2 gap-4 mt-6"></div>
-                </div>
+            <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                <form onSubmit={submit}>
+                    <div className="grid grid-cols-2 gap-4">
+                        <div>
+                            <InputLabel htmlFor="resolucion" value="Resolución" />
 
-                <div className="flex items-center justify-end mt-4">
-                    <PrimaryButton className="ms-4 mx-4" disabled={processing}>
-                        Guardar
-                    </PrimaryButton>
+                            <TextInput
+                               placeholder="Escriba aquí"
+                                id="resolucion"
+                                type="text"
+                                name="nombre"
+                                value={data.resolucion}
+                                className="mt-1 block w-full"
+                                autoComplete="resolucion"
+                                onChange={(e) =>
+                                    setData("resolucion", e.target.value)
+                                }
+                            />
 
-                    <SecondaryButton
-                        type="button"
-                        onClick={() => setIsOpen(false)}
-                    >
-                        Cancelar
-                    </SecondaryButton>
-                </div>
-            </form>
+                            <InputError
+                                message={errors.resolucion}
+                                className="mt-2"
+                            />
+                        </div>
+                        
+                        <div>
+                            <InputLabel htmlFor="prefijo" value="Prefijo" />
+
+                            <TextInput
+                               placeholder="Escriba aquí"
+                                id="prefijo"
+                                type="text"
+                                name="prefijo"
+                                value={data.prefijo}
+                                className="mt-1 block w-full"
+                                autoComplete="prefijo"
+                                onChange={(e) =>
+                                    setData("prefijo", e.target.value)
+                                }
+                            />
+
+                            <InputError
+                                message={errors.prefijo}
+                                className="mt-2"
+                            />
+                        </div>
+                        
+                        <div>
+                            <InputLabel htmlFor="fecha_inicial" value="Fecha Inicial" />
+
+                            <TextInput
+                               placeholder="Escriba aquí"
+                                id="fecha_inicial"
+                                type="date"
+                                name="fecha_inicial"
+                                value={data.fecha_inicial}
+                                className="mt-1 block w-full"
+                                autoComplete="fecha_inicial"
+                                onChange={(e) =>
+                                    setData("fecha_inicial", e.target.value)
+                                }
+                            />
+
+                            <InputError
+                                message={errors.fecha_inicial}
+                                className="mt-2"
+                            />
+                        </div>
+
+                        <div>
+                            <InputLabel htmlFor="fecha_final" value="Fecha Final" />
+
+                            <TextInput
+                               placeholder="Escriba aquí"
+                                id="fecha_final"
+                                type="date"
+                                name="fecha_final"
+                                value={data.fecha_final}
+                                className="mt-1 block w-full"
+                                autoComplete="fecha_final"
+                                onChange={(e) =>
+                                    setData("fecha_final", e.target.value)
+                                }
+                            />
+
+                            <InputError
+                                message={errors.fecha_final}
+                                className="mt-2"
+                            />
+                        </div>                      
+                        
+                        <div>
+                            <InputLabel htmlFor="consecutivo_inicial" value="Consecutivo Inicial" />
+
+                            <TextSpan
+                                id="consecutivo_inicial"
+                                name="consecutivo_inicial"
+                                value={data.consecutivo_inicial}
+                                className="mt-1 block w-full"
+                            />
+                        </div>
+                        
+                        <div>
+                            <InputLabel htmlFor="consecutivo_final" value="Consecutivo Final" />
+
+                            <TextInput
+                               placeholder="Escriba aquí"
+                                id="consecutivo_final"
+                                type="number"
+                                name="consecutivo_final"
+                                value={data.consecutivo_final}
+                                min={data.consecutivo_inicial + 1}
+                                className="mt-1 block w-full"
+                                autoComplete="consecutivo_final"
+                                onChange={(e) =>
+                                    setData("consecutivo_final", e.target.value)
+                                }
+                            />
+
+                            <InputError
+                                message={errors.consecutivo_final}
+                                className="mt-2"
+                            />
+                        </div>
+
+                        <div>
+                            <InputLabel htmlFor="principal" value="Principal" />
+
+                            <Select
+                                id="principal"
+                                name="principal"
+                                className="mt-1 block w-full"
+                                value={data.principal}
+                                onChange={(e) =>
+                                    setData(
+                                        "principal",
+                                        e.target.value
+                                    )
+                                }
+                            >
+                                {S_N.map((tipo, key) => {
+                                    return (
+                                        <option value={tipo.key} key={key}>
+                                            {" "}
+                                            {tipo.valor}{" "}
+                                        </option>
+                                    );
+                                })}
+                            </Select>
+
+                            <InputError
+                                message={errors.principal}
+                                className="mt-2"
+                            />
+                        </div>
+                    </div>
+
+                    <div className="flex items-center justify-end mt-4">
+                        <PrimaryButton
+                            className="ms-4 mx-4"
+                            disabled={processing}
+                        >
+                            
+                            Guardar
+                        </PrimaryButton>
+
+                        <SecondaryButton
+                            type="button"
+                            onClick={() => setIsOpen(false)}
+                        >
+                            
+                            Cancelar
+                        </SecondaryButton>
+                    </div>
+                </form>
+            </div>
         </div>
     );
 };

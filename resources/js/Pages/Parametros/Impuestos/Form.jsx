@@ -166,7 +166,7 @@ export const Form = ({
                                 id="tipo_impuesto"
                                 name="tipo_impuesto"
                                 className="mt-1 block w-full"
-                                value={data.tipo_tarifa}
+                                value={data.tipo_impuesto}
                                 onChange={(e) =>
                                     setData("tipo_impuesto", e.target.value)
                                 }

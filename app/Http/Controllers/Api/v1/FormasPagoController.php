@@ -25,26 +25,26 @@ class FormasPagoController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(FormasPago $forma_pago)
+    public function show(FormasPago $formas_pago)
     {
-        return new FormasPagoResource( $forma_pago );
+        return new FormasPagoResource( $formas_pago );
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, FormasPago $forma_pago)
+    public function update(Request $request, FormasPago $formas_pago)
     {
-        $forma_pago->update( $request->all() );
-        return new FormasPagoResource( $forma_pago );
+        $formas_pago->update( $request->all() );
+        return new FormasPagoResource( $formas_pago );
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(FormasPago $forma_pago)
+    public function destroy(FormasPago $formas_pago)
     {
-        $forma_pago->delete();
-        return new FormasPagoResource( $forma_pago );
+        $formas_pago->delete();
+        return new FormasPagoResource( $formas_pago );
     }
 }
