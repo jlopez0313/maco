@@ -63,7 +63,7 @@ export default ({ id, empresasId, estados, auth, setIsOpen, onReload }) => {
         setData(
             {
                 ...data,
-                consecutivo_inicial: item.consecutivo_inicial || 1,
+                consecutivo_inicial: (+item.consecutivo_inicial + 1) || 1,
             }
         )
     }
