@@ -16,6 +16,7 @@ return new class extends Migration {
             $table->string('concepto');
             $table->string('tarifa');
             $table->char('tipo_tarifa');
+            $table->char('tipo_impuesto');
             $table->timestamps();
             $table->softDeletes();
         });
