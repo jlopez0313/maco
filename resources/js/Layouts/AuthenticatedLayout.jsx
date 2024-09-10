@@ -9,7 +9,6 @@ import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 
 export default function Authenticated({ user, header, children }) {
-
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);
 
@@ -18,7 +17,7 @@ export default function Authenticated({ user, header, children }) {
             <ToastContainer />
 
             <nav className="bg-white border-b border-gray-100">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-6">
                     <div className="flex justify-between h-16">
                         <div className="flex flex-col">
                             <div className="shrink-0 flex items-center">
@@ -27,7 +26,18 @@ export default function Authenticated({ user, header, children }) {
                                 </Link>
                             </div>
 
-                            <div className="hidden space-x-8 sm:-my-px sm:mt-8 sm:flex no-print">
+                            <div className="hidden border-b space-x-8 sm:-my-px sm:mt-6 sm:flex no-print">
+                                <div className="">
+                                    <div className="font-medium text-base text-gray-800">
+                                        {user.name}
+                                    </div>
+                                    <div className="font-medium text-sm text-gray-500">
+                                        {user.email}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="hidden space-x-8 sm:-my-px sm:mt-6 sm:flex no-print">
                                 <NavLink
                                     href={"/dashboard"}
                                     active={route().current("dashboard")}
@@ -36,7 +46,7 @@ export default function Authenticated({ user, header, children }) {
                                 </NavLink>
                             </div>
 
-                            <div className="hidden space-x-8 sm:-my-px sm:mt-8 sm:flex no-print">
+                            <div className="hidden space-x-8 sm:-my-px sm:mt-6 sm:flex no-print">
                                 <NavLink
                                     href={"/parametros"}
                                     active={route().current("parametros")}
@@ -45,20 +55,18 @@ export default function Authenticated({ user, header, children }) {
                                 </NavLink>
                             </div>
 
-                            {
-                                ['SUDO', 'ADMIN' ].includes(user.rol.slug) && 
-                                    <div className="hidden space-x-8 sm:-my-px sm:mt-8 sm:flex no-print">
-                                        <NavLink
-                                            href={"/empresas"}
-                                            active={route().current("empresas")}
-                                        >
-                                            Empresa
-                                        </NavLink>
-                                    </div>
-                            }
+                            {["SUDO", "ADMIN"].includes(user.rol.slug) && (
+                                <div className="hidden space-x-8 sm:-my-px sm:mt-6 sm:flex no-print">
+                                    <NavLink
+                                        href={"/empresas"}
+                                        active={route().current("empresas")}
+                                    >
+                                        Empresa
+                                    </NavLink>
+                                </div>
+                            )}
 
-
-                            <div className="hidden space-x-8 sm:-my-px sm:mt-8 sm:flex no-print">
+                            <div className="hidden space-x-8 sm:-my-px sm:mt-6 sm:flex no-print">
                                 <NavLink
                                     href={"/clientes"}
                                     active={route().current("clientes")}
@@ -67,7 +75,7 @@ export default function Authenticated({ user, header, children }) {
                                 </NavLink>
                             </div>
 
-                            <div className="hidden space-x-8 sm:-my-px sm:mt-8 sm:flex no-print">
+                            <div className="hidden space-x-8 sm:-my-px sm:mt-6 sm:flex no-print">
                                 <NavLink
                                     href={"/inventario"}
                                     active={route().current("inventario")}
@@ -76,7 +84,7 @@ export default function Authenticated({ user, header, children }) {
                                 </NavLink>
                             </div>
 
-                            <div className="hidden space-x-8 sm:-my-px sm:mt-8 sm:flex no-print">
+                            <div className="hidden space-x-8 sm:-my-px sm:mt-6 sm:flex no-print">
                                 <NavLink
                                     href={"/remisiones"}
                                     active={route().current("remisiones")}
@@ -85,7 +93,7 @@ export default function Authenticated({ user, header, children }) {
                                 </NavLink>
                             </div>
 
-                            <div className="hidden space-x-8 sm:-my-px sm:mt-8 sm:flex no-print">
+                            <div className="hidden space-x-8 sm:-my-px sm:mt-6 sm:flex no-print">
                                 <NavLink
                                     href={"/gastos"}
                                     active={route().current("gastos")}
@@ -96,7 +104,7 @@ export default function Authenticated({ user, header, children }) {
 
                             {/*
 
-                            <div className="hidden space-x-8 sm:-my-px sm:mt-8 sm:flex">
+                            <div className="hidden space-x-8 sm:-my-px sm:mt-6 sm:flex">
                                 <NavLink href={route('creditos')} active={route().current('creditos')}>
                                     Créditos
                                 </NavLink>
@@ -104,7 +112,7 @@ export default function Authenticated({ user, header, children }) {
                             
                             */}
 
-                            <div className="hidden space-x-8 sm:-my-px sm:mt-8 sm:flex no-print">
+                            <div className="hidden space-x-8 sm:-my-px sm:mt-6 sm:flex no-print">
                                 <NavLink
                                     href={"/recaudos"}
                                     active={route().current("recaudos")}
@@ -113,7 +121,7 @@ export default function Authenticated({ user, header, children }) {
                                 </NavLink>
                             </div>
 
-                            <div className="hidden space-x-8 sm:-my-px sm:mt-8 sm:flex no-print">
+                            <div className="hidden space-x-8 sm:-my-px sm:mt-6 sm:flex no-print">
                                 <NavLink
                                     href={"/proveedores"}
                                     active={route().current("proveedores")}
@@ -122,7 +130,7 @@ export default function Authenticated({ user, header, children }) {
                                 </NavLink>
                             </div>
 
-                            <div className="hidden space-x-8 sm:-my-px sm:mt-8 sm:flex no-print">
+                            <div className="hidden space-x-8 sm:-my-px sm:mt-6 sm:flex no-print">
                                 <NavLink
                                     href={"/reportes"}
                                     active={route().current("reportes")}
@@ -131,8 +139,12 @@ export default function Authenticated({ user, header, children }) {
                                 </NavLink>
                             </div>
 
-                            <div className="hidden space-x-8 sm:-my-px sm:mt-8 sm:flex no-print">
-                                <NavLink href={"/logout"} method="post" as="button">
+                            <div className="hidden space-x-8 sm:-my-px sm:mt-6 sm:flex no-print">
+                                <NavLink
+                                    href={"/logout"}
+                                    method="post"
+                                    as="button"
+                                >
                                     Salir
                                 </NavLink>
                             </div>
@@ -187,6 +199,17 @@ export default function Authenticated({ user, header, children }) {
                         " sm:hidden"
                     }
                 >
+                    <div className="pt-4 pb-1 border-b border-gray-200">
+                        <div className="px-4">
+                            <div className="font-medium text-base text-gray-800">
+                                {user.name}
+                            </div>
+                            <div className="font-medium text-sm text-gray-500">
+                                {user.email}
+                            </div>
+                        </div>
+                    </div>
+
                     <div className="pt-2 pb-3 space-y-1">
                         <ResponsiveNavLink
                             href={"/dashboard"}
@@ -250,21 +273,6 @@ export default function Authenticated({ user, header, children }) {
                         >
                             Salir
                         </ResponsiveNavLink>
-                    </div>
-
-                    <div className="pt-4 pb-1 border-t border-gray-200">
-                        <div className="px-4">
-                            <div className="font-medium text-base text-gray-800">
-                                {user.name}
-                            </div>
-                            <div className="font-medium text-sm text-gray-500">
-                                {user.email}
-                            </div>
-                        </div>
-
-                        <div className="mt-3 space-y-1">
-                            {/*  <ResponsiveNavLink href={route('profile.edit')}>Profile</ResponsiveNavLink> */}
-                        </div>
                     </div>
                 </div>
             </nav>

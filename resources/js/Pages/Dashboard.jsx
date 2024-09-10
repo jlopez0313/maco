@@ -1,5 +1,6 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/react';
+import Logo from '../../img/logo.svg';
 
 export default function Dashboard({ auth }) {
 
@@ -16,6 +17,8 @@ export default function Dashboard({ auth }) {
                     <div className="bg-white overflow-auto shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900">Bienvenido!</div>
                     </div>
+
+                    <img src={Logo} className='mx-auto mt-40' style={{opacity: '.2'}} />
                 </div>
             </div>
         </AuthenticatedLayout>

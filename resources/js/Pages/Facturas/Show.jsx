@@ -275,9 +275,9 @@ export default ({ auth, factura }) => {
 
                     <div className="flex items-center justify-end mt-4 mb-4 no-print">
                         {
-                            factura.transaccionID && 
+                            !factura.transaccionID && 
                                 <SecondaryButton className="ms-4" onClick={onSOAP}>
-                                    SOAP
+                                    Factura Electrónica
                                 </SecondaryButton>
                         }
 

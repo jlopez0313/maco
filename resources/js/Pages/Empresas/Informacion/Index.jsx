@@ -226,7 +226,7 @@ export default ({
                         </div>
 
                         <div>
-                            <InputLabel htmlFor="documento" value="Documento" />
+                            <InputLabel htmlFor="documento" value="Documento sin puntos ni dígitos de verificación" />
                             <TextInput
                                 placeholder="Escriba aquí"
                                 id="documento"
