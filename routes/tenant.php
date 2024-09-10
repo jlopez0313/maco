@@ -6,6 +6,7 @@ use App\Http\Controllers\BancosController;
 use App\Http\Controllers\ClientesController;
 use App\Http\Controllers\ColoresController;
 use App\Http\Controllers\ConceptosController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FacturasController;
 use App\Http\Controllers\GastosController;
 use App\Http\Controllers\ImpuestosController;
@@ -58,9 +59,9 @@ Route::middleware([
         ]);
     });
 
-    Route::get('/dashboard', function () {
-        return Inertia::render('Dashboard');
-    })->middleware(['auth', 'verified'])->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
 
     Route::prefix('parametros')->group(function () {
         Route::get('/', function () {

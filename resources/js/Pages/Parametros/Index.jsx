@@ -10,77 +10,89 @@ export default function Dashboard({ auth }) {
     ]
 
     const list = [
-        auth.user?.roles_id == 1 && {
+        {
             id: 'USUA',
             parametro: 'Usuarios',   
             descripcion: 'Gestionar los Usuarios de la plataforma',
-            ruta: 'parametros/usuarios'
+            ruta: 'parametros/usuarios',
+            roles: ['SUDO', 'ADMIN']
         },
         {
             id: 'TICL',
-            parametro: 'Tipos de Clientes',   
-            descripcion: 'Gestionar los Tipos de Clientes que se desea manejar',
-            ruta: 'parametros/tipos_clientes'
+            parametro: 'Tipos de Personas',   
+            descripcion: 'Gestionar los Tipos de Personas que se desea manejar',
+            ruta: 'parametros/tipos_clientes',
+            roles: ['SUDO', 'ADMIN']
         },
         {
             id: 'TIDO',
             parametro: 'Tipos de Documentos',   
             descripcion: 'Gestionar los Tipos de Documentos que se desea manejar',
-            ruta: 'parametros/tipos_documentos'
+            ruta: 'parametros/tipos_documentos',
+            roles: ['SUDO', 'ADMIN']
         },
         {
             id: 'REFI',
             parametro: 'Responsabilidades Fiscales',   
             descripcion: 'Gestionar los tipos de Responsabilidades Fiscales que se desea manejar',
-            ruta: 'parametros/responsabilidades_fiscales'
+            ruta: 'parametros/responsabilidades_fiscales',
+            roles: ['SUDO', 'ADMIN']
         },
         {
             id: 'IMPU',
             parametro: 'Impuestos',   
             descripcion: 'Gestionar los impuestos de la empresa',
-            ruta: 'parametros/impuestos'
+            ruta: 'parametros/impuestos',
+            roles: ['SUDO', 'ADMIN']
         },
         {
             id: 'CONC',
             parametro: 'Conceptos',   
             descripcion: 'Acción / Gasto a registrar en la sección de Compras',
-            ruta: 'parametros/conceptos'
+            ruta: 'parametros/conceptos',
+            roles: ['SUDO', 'ADMIN']
         },
         {
             id: 'MEPA',
             parametro: 'Medios de Pago',   
             descripcion: 'Gestionar los medios de pago que tienen las facturas que se manejan. ',
-            ruta: 'parametros/medios_pago'
+            ruta: 'parametros/medios_pago',
+            roles: []
         },
         {
             id: 'FOPA',
             parametro: 'Formas de Pago',   
             descripcion: 'Gestionar las formas de pago que tienen las facturas que se manejan. ',
-            ruta: 'parametros/formas_pago'
+            ruta: 'parametros/formas_pago',
+            roles: []
         },
         {
             id: 'BANC',
             parametro: 'Bancos',   
             descripcion: 'Gestionar los Bancos que se utilizan',
-            ruta: 'parametros/bancos'
+            ruta: 'parametros/bancos',
+            roles: []
         },
         {
             id: 'UNME',
             parametro: 'Unidades de Medida',   
             descripcion: 'Gestionar Unidades de Medida que tienen los productos que se manejan. ',
-            ruta: 'parametros/unidades_medida'
+            ruta: 'parametros/unidades_medida',
+            roles: []
         },
         {
             id: 'MEDI',
             parametro: 'Medidas',   
             descripcion: 'Gestionar Tallas, Mililitros, entre otros, que tienen los productos que se manejan. ',
-            ruta: 'parametros/medidas'
+            ruta: 'parametros/medidas',
+            roles: []
         },
         {
             id: 'COLO',
             parametro: 'Colores',   
             descripcion: 'Gestionar los diferentes colores que se manejan',
-            ruta: 'parametros/colores'
+            ruta: 'parametros/colores',
+            roles: []
         },
     ]
 
@@ -99,7 +111,7 @@ export default function Dashboard({ auth }) {
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white overflow-auto shadow-sm sm:rounded-lg">
-                        <Table data={list} titles={titles} actions={['chevron-right']} onEdit={ onNavigate } />
+                        <Table user={auth.user} data={list} titles={titles} actions={['chevron-right']} onEdit={ onNavigate } />
                     </div>
                 </div>
             </div>

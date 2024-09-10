@@ -4,7 +4,7 @@ import Icon from "../Icon";
 import ActionsTable from "./ActionsTable";
 
 
-export default ({ caption='', data = [], routes = {}, titles = [], actions = [], onTrash, onEdit, onSearch }) => {
+export default ({ user={}, caption='', data = [], routes = {}, titles = [], actions = [], onTrash, onEdit, onSearch }) => {
 
     return (
         <table className="w-full whitespace-nowrap">
@@ -22,17 +22,20 @@ export default ({ caption='', data = [], routes = {}, titles = [], actions = [],
                 </tr>
             </thead>
             <tbody>
-                {data.map((item, key) => (
-                    <tr
+                {data.map((item, key) => {
+                    if (item?.roles?.length && !item.roles.includes(user?.rol?.slug) ) return;
+                    return  <tr
                         key={key}
                         className="hover:bg-gray-100 focus-within:bg-gray-100"
+                        id={key}
                     >
                         {
                             Object.keys( item ).map((key, idx) => {
                                 if ( 
                                     key == 'id' ||
                                     key == 'ruta' ||
-                                    key == 'estado' 
+                                    key == 'estado' ||
+                                    key == 'roles' 
                                 ) return;
                                 return <td className="border-t" key={ key }>
                                     <a
@@ -66,7 +69,7 @@ export default ({ caption='', data = [], routes = {}, titles = [], actions = [],
                             }
                         </td>
                     </tr>
-                ))}
+                })}
                 {data.length === 0 && (
                     <tr>
                         <td className="px-6 py-4 border-t" colSpan={titles.length + 1}>

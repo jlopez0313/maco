@@ -124,7 +124,7 @@ export default ({ auth, contacts }) => {
                             onEdit={ (evt) => onSetAdminModal(evt, 'edit') }
                             onTrash={ (evt) => onSetAdminModal(evt, 'trash') }
                             titles={titles}
-                            actions={['edit', 'trash']}
+                            actions={['edit']}
                         />
                     </div>
 

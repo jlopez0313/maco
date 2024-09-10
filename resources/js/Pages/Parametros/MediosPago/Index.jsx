@@ -59,7 +59,7 @@ export default ({ auth, contacts }) => {
 
     const onTrash = async (data) => {
         if ( data ) {
-            await axios.delete(`/api/v1/formas-pago/${id}`);
+            await axios.delete(`/api/v1/medios-pago/${id}`);
             onReload()
         }
     }
@@ -124,7 +124,7 @@ export default ({ auth, contacts }) => {
                             onEdit={ (evt) => onSetAdminModal(evt, 'edit') }
                             onTrash={ (evt) => onSetAdminModal(evt, 'trash') }
                             titles={titles}
-                            actions={['edit', 'trash']}
+                            actions={['edit']}
                         />
                     </div>
 
