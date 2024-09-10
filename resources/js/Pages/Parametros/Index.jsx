@@ -15,84 +15,84 @@ export default function Dashboard({ auth }) {
             parametro: 'Usuarios',   
             descripcion: 'Gestionar los Usuarios de la plataforma',
             ruta: 'parametros/usuarios',
-            roles: ['SUDO', 'ADMIN']
+            roles_adm: ['SUDO', 'ADMIN']
         },
         {
             id: 'TICL',
             parametro: 'Tipos de Personas',   
             descripcion: 'Gestionar los Tipos de Personas que se desea manejar',
             ruta: 'parametros/tipos_clientes',
-            roles: ['SUDO', 'ADMIN']
+            roles_adm: ['SUDO', 'ADMIN']
         },
         {
             id: 'TIDO',
             parametro: 'Tipos de Documentos',   
             descripcion: 'Gestionar los Tipos de Documentos que se desea manejar',
             ruta: 'parametros/tipos_documentos',
-            roles: ['SUDO', 'ADMIN']
+            roles_adm: ['SUDO', 'ADMIN']
         },
         {
             id: 'REFI',
             parametro: 'Responsabilidades Fiscales',   
             descripcion: 'Gestionar los tipos de Responsabilidades Fiscales que se desea manejar',
             ruta: 'parametros/responsabilidades_fiscales',
-            roles: ['SUDO', 'ADMIN']
+            roles_adm: ['SUDO', 'ADMIN']
         },
         {
             id: 'IMPU',
             parametro: 'Impuestos',   
             descripcion: 'Gestionar los impuestos de la empresa',
             ruta: 'parametros/impuestos',
-            roles: ['SUDO', 'ADMIN']
+            roles_adm: ['SUDO', 'ADMIN']
         },
         {
             id: 'CONC',
             parametro: 'Conceptos',   
             descripcion: 'Acción / Gasto a registrar en la sección de Compras',
             ruta: 'parametros/conceptos',
-            roles: ['SUDO', 'ADMIN']
+            roles_adm: ['SUDO', 'ADMIN']
         },
         {
             id: 'MEPA',
             parametro: 'Medios de Pago',   
             descripcion: 'Gestionar los medios de pago que tienen las facturas que se manejan. ',
             ruta: 'parametros/medios_pago',
-            roles: []
+            roles_adm: []
         },
         {
             id: 'FOPA',
             parametro: 'Formas de Pago',   
             descripcion: 'Gestionar las formas de pago que tienen las facturas que se manejan. ',
             ruta: 'parametros/formas_pago',
-            roles: []
+            roles_adm: []
         },
         {
             id: 'BANC',
             parametro: 'Bancos',   
             descripcion: 'Gestionar los Bancos que se utilizan',
             ruta: 'parametros/bancos',
-            roles: []
+            roles_adm: []
         },
         {
             id: 'UNME',
             parametro: 'Unidades de Medida',   
             descripcion: 'Gestionar Unidades de Medida que tienen los productos que se manejan. ',
             ruta: 'parametros/unidades_medida',
-            roles: []
+            roles_adm: []
         },
         {
             id: 'MEDI',
             parametro: 'Medidas',   
             descripcion: 'Gestionar Tallas, Mililitros, entre otros, que tienen los productos que se manejan. ',
             ruta: 'parametros/medidas',
-            roles: []
+            roles_adm: []
         },
         {
             id: 'COLO',
             parametro: 'Colores',   
             descripcion: 'Gestionar los diferentes colores que se manejan',
             ruta: 'parametros/colores',
-            roles: []
+            roles_adm: []
         },
     ]
 

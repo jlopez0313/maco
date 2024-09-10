@@ -23,7 +23,7 @@ export default ({ user={}, caption='', data = [], routes = {}, titles = [], acti
             </thead>
             <tbody>
                 {data.map((item, key) => {
-                    if (item?.roles?.length && !item.roles.includes(user?.rol?.slug) ) return;
+                    if (item?.roles_adm?.length && !item.roles_adm.includes(user?.rol?.slug) ) return;
                     return  <tr
                         key={key}
                         className="hover:bg-gray-100 focus-within:bg-gray-100"
@@ -35,7 +35,7 @@ export default ({ user={}, caption='', data = [], routes = {}, titles = [], acti
                                     key == 'id' ||
                                     key == 'ruta' ||
                                     key == 'estado' ||
-                                    key == 'roles' 
+                                    key == 'roles_adm' 
                                 ) return;
                                 return <td className="border-t" key={ key }>
                                     <a
