@@ -11,6 +11,9 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { calcularDigitoVerificacion } from "@/Helpers/Numbers";
 import Contactos from './Contacto/Index';
+import TextSpan from "@/Components/Form/TextSpan";
+
+import { notify } from "@/Helpers/Notify";
 
 export default ({
     auth,
@@ -51,19 +54,25 @@ export default ({
     const { data: deptos } = departamentos;
 
     const submit = async (salir) => {
-        if (cliente?.id) {
-            await axios.put(`/api/v1/clientes/${cliente.id}`, data);
-            if ( salir ) {
-                onReload();
-            }
-        } else {
-            const {data: {data: newClient}} = await axios.post(`/api/v1/clientes`, data);
-            
-            if ( salir ) {
-                onReload();
+        
+        try {
+            if (cliente?.id) {
+                await axios.put(`/api/v1/clientes/${cliente.id}`, data);
+                if ( salir ) {
+                    onReload();
+                }
             } else {
-                onEdit( newClient.id )
+                const {data: {data: newClient}} = await axios.post(`/api/v1/clientes`, data);
+                
+                if ( salir ) {
+                    onReload();
+                } else {
+                    onEdit( newClient.id )
+                    notify('success', 'Datos registrados exitosamente!')
+                }
             }
+        } catch(e) {
+            console.log( e );
         }
     };
 
@@ -210,6 +219,17 @@ export default ({
                                     <InputError
                                         message={errors.documento}
                                         className="mt-2"
+                                    />
+                                </div>
+
+                                <div>
+                                    <InputLabel
+                                        htmlFor="dv"
+                                        value="Dígito de Verificación"
+                                    />
+                                    <TextSpan
+                                        value={data.dv}
+                                        className="mt-1 block w-full"
                                     />
                                 </div>
 
@@ -451,7 +471,7 @@ export default ({
                                     disabled={processing}
                                     onClick={() => submit(false)}
                                 >
-                                    Guardar y Continuar
+                                    Guardar y Editar
                                 </PrimaryButton>
 
                                 <SecondaryButton
@@ -460,7 +480,7 @@ export default ({
                                     disabled={processing}
                                     onClick={() => submit(true)}
                                 >
-                                    Guardar y Salir
+                                    Guardar y Regresar
                                 </SecondaryButton>
                             </div>
                         </form>

@@ -10,7 +10,10 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { calcularDigitoVerificacion } from "@/Helpers/Numbers";
-import Contactos from './Contacto/Index';
+import Contactos from "./Contacto/Index";
+import TextSpan from "@/Components/Form/TextSpan";
+
+import { notify } from "@/Helpers/Notify";
 
 export default ({
     auth,
@@ -19,10 +22,9 @@ export default ({
     tipoClientes,
     departamentos,
     responsabilidades,
-    S_N
+    S_N,
 }) => {
-
-    const { data: proveedor } = contact || {proveedor: {}};
+    const { data: proveedor } = contact || { proveedor: {} };
     const [ciudades, setCiudades] = useState([]);
 
     const { data, setData, processing, errors, reset } = useForm({
@@ -53,25 +55,28 @@ export default ({
     const submit = async (salir) => {
         if (proveedor?.id) {
             await axios.put(`/api/v1/proveedores/${proveedor.id}`, data);
-            if ( salir ) {
+            if (salir) {
                 onReload();
             }
         } else {
-            const {data: {data: newClient}} = await axios.post(`/api/v1/proveedores`, data);
-            
-            if ( salir ) {
+            const {
+                data: { data: newClient },
+            } = await axios.post(`/api/v1/proveedores`, data);
+
+            if (salir) {
                 onReload();
             } else {
-                onEdit( newClient.id )
+                onEdit(newClient.id);
+                notify('success', 'Datos registrados exitosamente!')
             }
         }
     };
 
     const onReload = () => {
-        router.visit('/proveedores');
+        router.visit("/proveedores");
     };
 
-    const onEdit = ( id ) => {
+    const onEdit = (id) => {
         router.visit(`/proveedores/edit/${id}`);
     };
 
@@ -116,7 +121,6 @@ export default ({
             <div className="pb-12 pt-6">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white overflow-auto shadow-sm sm:rounded-lg p-6 mt-6">
-                        
                         <h2 className="font-semibold text-xl text-gray-800 leading-tight pb-5">
                             Información General
                         </h2>
@@ -141,18 +145,25 @@ export default ({
                                             )
                                         }
                                     >
-                                        {responsabilidadesLst.map((tipo, key) => {
-                                            return (
-                                                <option value={tipo.id} key={key}>
-                                                    {" "}
-                                                    {tipo.descripcion}{" "}
-                                                </option>
-                                            );
-                                        })}
+                                        {responsabilidadesLst.map(
+                                            (tipo, key) => {
+                                                return (
+                                                    <option
+                                                        value={tipo.id}
+                                                        key={key}
+                                                    >
+                                                        {" "}
+                                                        {tipo.descripcion}{" "}
+                                                    </option>
+                                                );
+                                            }
+                                        )}
                                     </Select>
 
                                     <InputError
-                                        message={errors.responsabilidad_fiscal_id}
+                                        message={
+                                            errors.responsabilidad_fiscal_id
+                                        }
                                         className="mt-2"
                                     />
                                 </div>
@@ -169,12 +180,18 @@ export default ({
                                         className="mt-1 block w-full"
                                         value={data.tipo_doc_id}
                                         onChange={(e) =>
-                                            setData("tipo_doc_id", e.target.value)
+                                            setData(
+                                                "tipo_doc_id",
+                                                e.target.value
+                                            )
                                         }
                                     >
                                         {tipos_doc.map((tipo, key) => {
                                             return (
-                                                <option value={tipo.id} key={key}>
+                                                <option
+                                                    value={tipo.id}
+                                                    key={key}
+                                                >
                                                     {" "}
                                                     {tipo.tipo}{" "}
                                                 </option>
@@ -214,7 +231,21 @@ export default ({
                                 </div>
 
                                 <div>
-                                    <InputLabel htmlFor="nombre" value="Nombre" />
+                                    <InputLabel
+                                        htmlFor="dv"
+                                        value="Dígito de Verificación"
+                                    />
+                                    <TextSpan
+                                        value={data.dv}
+                                        className="mt-1 block w-full"
+                                    />
+                                </div>
+
+                                <div>
+                                    <InputLabel
+                                        htmlFor="nombre"
+                                        value="Nombre"
+                                    />
 
                                     <TextInput
                                         placeholder="Escriba aquí"
@@ -277,7 +308,10 @@ export default ({
                                     >
                                         {tipos.map((tipo, key) => {
                                             return (
-                                                <option value={tipo.id} key={key}>
+                                                <option
+                                                    value={tipo.id}
+                                                    key={key}
+                                                >
                                                     {" "}
                                                     {tipo.tipo}{" "}
                                                 </option>
@@ -333,7 +367,10 @@ export default ({
                                     >
                                         {deptos.map((depto, key) => {
                                             return (
-                                                <option value={depto.id} key={key}>
+                                                <option
+                                                    value={depto.id}
+                                                    key={key}
+                                                >
                                                     {" "}
                                                     {depto.departamento}{" "}
                                                 </option>
@@ -348,7 +385,10 @@ export default ({
                                 </div>
 
                                 <div>
-                                    <InputLabel htmlFor="ciudad" value="Ciudad" />
+                                    <InputLabel
+                                        htmlFor="ciudad"
+                                        value="Ciudad"
+                                    />
 
                                     <Select
                                         id="ciudad"
@@ -361,7 +401,10 @@ export default ({
                                     >
                                         {ciudades.map((ciudad, key) => {
                                             return (
-                                                <option value={ciudad.id} key={key}>
+                                                <option
+                                                    value={ciudad.id}
+                                                    key={key}
+                                                >
                                                     {" "}
                                                     {ciudad.ciudad}{" "}
                                                 </option>
@@ -401,7 +444,10 @@ export default ({
                                 </div>
 
                                 <div>
-                                    <InputLabel htmlFor="celular" value="Celular" />
+                                    <InputLabel
+                                        htmlFor="celular"
+                                        value="Celular"
+                                    />
 
                                     <TextInput
                                         placeholder="Escriba aquí"
@@ -423,7 +469,10 @@ export default ({
                                 </div>
 
                                 <div>
-                                    <InputLabel htmlFor="correo" value="Correo" />
+                                    <InputLabel
+                                        htmlFor="correo"
+                                        value="Correo"
+                                    />
 
                                     <TextInput
                                         placeholder="Escriba aquí"
@@ -451,7 +500,7 @@ export default ({
                                     disabled={processing}
                                     onClick={() => submit(false)}
                                 >
-                                    Guardar y Continuar
+                                    Guardar y Editar
                                 </PrimaryButton>
 
                                 <SecondaryButton
@@ -460,32 +509,29 @@ export default ({
                                     disabled={processing}
                                     onClick={() => submit(true)}
                                 >
-                                    Guardar y Salir
+                                    Guardar y Regresar
                                 </SecondaryButton>
                             </div>
                         </form>
                     </div>
-                    
-                    {
-                        proveedor?.id && 
-                            <div className="bg-white overflow-auto shadow-sm sm:rounded-lg p-6 mt-6">
-                                <h2 className="font-semibold text-xl text-gray-800 leading-tight">
-                                    Información de Contáctos
-                                </h2>
 
-                                <Contactos
-                                    auth={auth}
-                                    proveedor={proveedor}
-                                    tipoDocumentos={tipoDocumentos}
-                                    tipoClientes={tipoClientes}
-                                    departamentos={departamentos}
-                                    responsabilidades={responsabilidades}
-                                    S_N={S_N}
+                    {proveedor?.id && (
+                        <div className="bg-white overflow-auto shadow-sm sm:rounded-lg p-6 mt-6">
+                            <h2 className="font-semibold text-xl text-gray-800 leading-tight">
+                                Información de Contáctos
+                            </h2>
 
-                                />
-
-                            </div>
-                    }
+                            <Contactos
+                                auth={auth}
+                                proveedor={proveedor}
+                                tipoDocumentos={tipoDocumentos}
+                                tipoClientes={tipoClientes}
+                                departamentos={departamentos}
+                                responsabilidades={responsabilidades}
+                                S_N={S_N}
+                            />
+                        </div>
+                    )}
                 </div>
             </div>
         </AuthenticatedLayout>

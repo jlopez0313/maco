@@ -11,6 +11,7 @@ import { Head, useForm, router } from "@inertiajs/react";
 import axios from "axios";
 import { calcularDigitoVerificacion } from "@/Helpers/Numbers";
 import { notify } from "@/Helpers/Notify";
+import TextSpan from "@/Components/Form/TextSpan";
 
 export default ({
     auth,
@@ -226,7 +227,10 @@ export default ({
                         </div>
 
                         <div>
-                            <InputLabel htmlFor="documento" value="Documento sin puntos ni dígitos de verificación" />
+                            <InputLabel
+                                htmlFor="documento"
+                                value="Documento sin puntos ni dígitos de verificación"
+                            />
                             <TextInput
                                 placeholder="Escriba aquí"
                                 id="documento"
@@ -244,6 +248,17 @@ export default ({
                             <InputError
                                 message={errors.documento}
                                 className="mt-2"
+                            />
+                        </div>
+
+                        <div>
+                            <InputLabel
+                                htmlFor="dv"
+                                value="Dígito de Verificación"
+                            />
+                            <TextSpan
+                                value={data.dv}
+                                className="mt-1 block w-full"
                             />
                         </div>
 
