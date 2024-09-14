@@ -65,17 +65,44 @@ class FacturasController extends Controller
 
     public function registrar(Request $request, String $id)
     {
-        $factura = Facturas::find( $id );
-        $factura->estado = 'C';
-        $factura->updated_by = $request->updated_by;
-        $factura->save();
+        \DB::beginTransaction();
 
-        foreach( $factura->detalles as $detalle) {
-            $producto = Productos::find( $detalle->productos_id );
-            $producto->cantidad -= $detalle->cantidad;
-            $producto->save();
+        try {
+
+            $factura = Facturas::find( $id );
+            $factura->estado = 'C';
+            $factura->updated_by = $request->updated_by;
+            $factura->save();
+    
+            foreach( $factura->detalles as $detalle) {
+                $producto = Productos::find( $detalle->productos_id );
+                $producto->cantidad -= $detalle->cantidad;
+                $producto->save();
+            }
+    
+            if( $request->desea == 'S' ) {
+
+                $soap = new SoapController();
+                $result = $soap->upload($id);
+
+                if( !isset($result->errors) ) {
+
+                    \DB::commit();
+                    return new FacturasResource( $factura );
+                } else {
+                    \DB::rollback();
+                    return response([ 'errors' => $result->errors ], 500);
+                }
+            } else {
+
+                \DB::commit();
+                return new FacturasResource( $factura );
+            }
+
+        } catch( \Exception $ex ) {
+            \DB::rollback();
+            return response([ 'errors' => $ex ], 500);
         }
 
-        return new FacturasResource( $factura );
     }
 }

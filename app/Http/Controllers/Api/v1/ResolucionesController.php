@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\ResolucionesResource;
+use App\Models\Consecutivos;
 use App\Models\Resoluciones;
 use Illuminate\Http\Request;
 
@@ -20,6 +21,9 @@ class ResolucionesController extends Controller
         }
 
         $resolucione = Resoluciones::create($request->all());
+
+        $consecutivo = Consecutivos::create([ 'consecutivo' => $request->consecutivo_inicial ]);
+
         return new ResolucionesResource($resolucione);
     }
 

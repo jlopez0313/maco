@@ -9,6 +9,8 @@ use App\Models\Consecutivos;
 use App\Models\Facturas;
 use App\Models\Productos;
 use App\Models\Proveedores;
+use SoapClient;
+
 
 class SoapController extends Controller
 {

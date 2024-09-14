@@ -9,13 +9,15 @@ import Pagination from "@/Components/Table/Pagination";
 import Table from "@/Components/Table/Table";
 import PrimaryButton from "@/Components/Buttons/PrimaryButton";
 import Modal from "@/Components/Modal";
-import { Form } from "./Detalle/Form";
+import { Form } from "./Form";
 import InputLabel from "@/Components/Form/InputLabel";
 import TextInput from "@/Components/Form/TextInput";
 import { AdminModal } from "@/Components/AdminModal";
 import SecondaryButton from "@/Components/Buttons/SecondaryButton";
 import { toCurrency } from "@/Helpers/Numbers";
 import { goToQR } from "@/Helpers/Modals";
+import Select from "@/Components/Form/Select";
+import InputError from "@/Components/Form/InputError";
 
 export default ({ auth, factura }) => {
     const data = factura.detalles;
@@ -32,6 +34,7 @@ export default ({ auth, factura }) => {
         "Total",
     ];
 
+    const [fel, setFel] = useState("N");
     const [action, setAction] = useState("");
     const [adminModal, setAdminModal] = useState(false);
     const [id, setId] = useState(null);
@@ -80,7 +83,7 @@ export default ({ auth, factura }) => {
             let impuestos = 0;
 
             item.producto?.impuestos.forEach((impto) => {
-                if (impto.impuesto.tipo_impuesto == 'I') {
+                if (impto.impuesto.tipo_impuesto == "I") {
                     if (impto.impuesto.tipo_tarifa == "P") {
                         impuestos +=
                             ((item.precio_venta || 0) *
@@ -102,7 +105,10 @@ export default ({ auth, factura }) => {
                 precio: toCurrency(item.precio_venta || 0),
                 impuestos: toCurrency(impuestos),
                 total_impuestos: toCurrency(impuestos * item.cantidad),
-                total: toCurrency( (impuestos * item.cantidad) + ((item.precio_venta || 0) * item.cantidad)),
+                total: toCurrency(
+                    impuestos * item.cantidad +
+                        (item.precio_venta || 0) * item.cantidad
+                ),
             };
         });
 
@@ -121,7 +127,7 @@ export default ({ auth, factura }) => {
 
         data.forEach((item) => {
             item.producto?.impuestos.forEach((impto) => {
-                if (impto.impuesto.tipo_impuesto == 'I') {
+                if (impto.impuesto.tipo_impuesto == "I") {
                     if (impto.impuesto.tipo_tarifa == "P") {
                         impuestos +=
                             (((item.precio_venta || 0) *
@@ -129,7 +135,8 @@ export default ({ auth, factura }) => {
                                 100) *
                             item.cantidad;
                     } else if (impto.impuesto.tipo_tarifa == "V") {
-                        impuestos += Number(impto.impuesto.tarifa) * item.cantidad;
+                        impuestos +=
+                            Number(impto.impuesto.tarifa) * item.cantidad;
                     }
                 }
             });
@@ -145,15 +152,29 @@ export default ({ auth, factura }) => {
     const onSOAP = async () => {
         await axios.get(`/api/v1/soap/upload/${factura.id}`);
     };
-    
+
     const onPrint = async () => {
         // window.print();
         await axios.get(`/api/v1/soap/status/${factura.id}`);
     };
 
     const goToPDF = async () => {
+        if ( !factura.transaccionID ) {
+            window.location.href = "/remisiones/pdf/" + factura.id;
+        } else {
+            await axios.get(`/api/v1/soap/download/${factura.id}`);
+            const anchor = document.createElement('a');
+            anchor.href = "/" + factura.prefijo + factura.folio + '.pdf';
+            anchor.target="_blank";
+            anchor.click();
+
+        }
         // window.location.href = "/remisiones/pdf/" + factura.id;
-        await axios.get(`/api/v1/soap/download/${factura.id}`);
+    };
+
+    const onSetFel = (e) => {
+        console.log(e.target.value);
+        setFel(e.target.value);
     };
 
     useEffect(() => {
@@ -274,17 +295,13 @@ export default ({ auth, factura }) => {
                     </div>
 
                     <div className="flex items-center justify-end mt-4 mb-4 no-print">
-                        {
-                            !factura.transaccionID && 
-                                <SecondaryButton className="ms-4" onClick={onSOAP}>
-                                    Factura Electrónica
-                                </SecondaryButton>
-                        }
-
+                        {/* 
                         <SecondaryButton className="ms-4" onClick={onPrint}>
                             Estado
                         </SecondaryButton>
 
+                        */}
+                        
                         <PrimaryButton className="ms-4 me-3" onClick={goToPDF}>
                             PDF
                         </PrimaryButton>

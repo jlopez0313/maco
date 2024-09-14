@@ -15,10 +15,10 @@ import TextInput from "@/Components/Form/TextInput";
 import { AdminModal } from "@/Components/AdminModal";
 import SecondaryButton from "@/Components/Buttons/SecondaryButton";
 import { toCurrency } from "@/Helpers/Numbers";
+import Select from "@/Components/Form/Select";
+import { notify } from "@/Helpers/Notify";
 
 export default ({ auth, factura }) => {
-
-
     const data = factura.detalles;
 
     const titles = [
@@ -27,41 +27,46 @@ export default ({ auth, factura }) => {
         "Color",
         "Medida",
         "Cantidad",
-        "Precio Venta",
+        "Precio Venta Unit.",
+        "Impuestos Unit.",
+        "Total Impuestos",
+        "Total",
     ];
 
-    const [action, setAction] = useState( '' );
-    const [adminModal, setAdminModal] = useState( false );
+    const [action, setAction] = useState("");
+    const [adminModal, setAdminModal] = useState(false);
     const [id, setId] = useState(null);
     const [show, setShow] = useState(false);
     const [list, setList] = useState([]);
     const [sum, setSum] = useState(0);
+    const [imptos, setImptos] = useState(0);
+    const [desea, setDesea] = useState('');
 
     const onSetAdminModal = (_id, action) => {
-        setId(_id)
-        setAdminModal(true)
-        setAction( action )
-    }
+        setId(_id);
+        setAdminModal(true);
+        setAction(action);
+    };
 
     const onConfirm = async ({ data }) => {
-        if ( action == 'edit' ) {
-            setAdminModal( false )
-            onToggleModal( true )
+        if (action == "edit") {
+            setAdminModal(false);
+            onToggleModal(true);
         } else {
-            onTrash(data)
+            onTrash(data);
         }
-    }
+    };
 
     const onTrash = async (data) => {
-        if ( data ) {
+        if (data) {
             await axios.delete(`/api/v1/detalles/${id}`);
-            onReload()
+            onReload();
         }
-    }
+    };
 
     const onToggleModal = (isShown) => {
-        if ( !isShown ) {
-            setId(null)
+        if (!isShown) {
+            setId(null);
         }
         setShow(isShown);
     };
@@ -70,46 +75,95 @@ export default ({ auth, factura }) => {
         onToggleModal(false);
 
         router.visit(window.location.pathname);
-    }
+    };
 
     const onRegistrar = async () => {
-        const data = {
-            updated_by: auth.user.id
+        try {
+            const data = {
+                updated_by: auth.user.id,
+                desea
+            };
+            await axios.post(`/api/v1/facturas/registrar/${factura.id}`, data);
+            onReload();
+    
+            router.visit("/remisiones/show/" + factura.id);
+        } catch (e) {
+            notify('error',e.response?.data?.errors.join(','))
         }
-        await axios.post(`/api/v1/facturas/registrar/${factura.id}`, data);
-        onReload()
-
-        router.visit('/remisiones/show/' + factura.id);
-    }
+    };
 
     const onSetList = () => {
         const _list = data.map((item) => {
+
+            let impuestos = 0;
+
+            item.producto?.impuestos.forEach((impto) => {
+                if (impto.impuesto.tipo_impuesto == "I") {
+                    if (impto.impuesto.tipo_tarifa == "P") {
+                        impuestos +=
+                            ((item.precio_venta || 0) *
+                                Number(impto.impuesto.tarifa)) /
+                            100;
+                    } else if (impto.impuesto.tipo_tarifa == "V") {
+                        impuestos += Number(impto.impuesto.tarifa);
+                    }
+                }
+            });
+
             return {
                 id: item.id,
-                articulo: item.producto?.inventario?.articulo || '',
-                referenia: item.producto?.referencia || '',
-                color: item.producto?.color?.color || '',
-                medida: item.producto?.medida?.medida || '',
+                articulo: item.producto?.inventario?.articulo || "",
+                referenia: item.producto?.referencia || "",
+                color: item.producto?.color?.color || "",
+                medida: item.producto?.medida?.medida || "",
                 cantidad: item.cantidad,
                 precio: toCurrency(item.precio_venta),
+                impuestos: toCurrency(impuestos),
+                total_impuestos: toCurrency(impuestos * item.cantidad),
+                total: toCurrency(
+                    impuestos * item.cantidad +
+                        (item.precio_venta || 0) * item.cantidad
+                ),
             };
         });
 
         setList(_list);
-        setShow( _list.length == 0 )
+        setShow(_list.length == 0);
     };
 
     const onSetSum = () => {
-        const sum = data.reduce( (sum, item) => {
-            return sum + (item.precio_venta * item.cantidad);
+        const sum = data.reduce((sum, item) => {
+            return sum + item.precio_venta * item.cantidad;
         }, 0);
 
-        setSum( sum )
-    }
+        setSum(sum);
+
+        let impuestos = 0;
+
+        data.forEach((item) => {
+            item.producto?.impuestos.forEach((impto) => {
+                if (impto.impuesto.tipo_impuesto == "I") {
+                    if (impto.impuesto.tipo_tarifa == "P") {
+                        impuestos +=
+                            (((item.precio_venta || 0) *
+                                Number(impto.impuesto.tarifa)) /
+                                100) *
+                            item.cantidad;
+                    } else if (impto.impuesto.tipo_tarifa == "V") {
+                        impuestos +=
+                            Number(impto.impuesto.tarifa) * item.cantidad;
+                    }
+                }
+            });
+        });
+
+        setImptos(impuestos);
+
+    };
 
     const onBack = () => {
-        router.visit('/remisiones');
-    }
+        router.visit("/remisiones");
+    };
 
     useEffect(() => {
         onSetList();
@@ -129,7 +183,6 @@ export default ({ auth, factura }) => {
 
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-
                     <div className="bg-white overflow-auto shadow-sm sm:rounded-lg p-6">
                         <form>
                             <div className="grid grid-cols-2 gap-4">
@@ -143,7 +196,7 @@ export default ({ auth, factura }) => {
                                         readOnly={true}
                                     />
                                 </div>
-                                
+
                                 <div>
                                     <InputLabel value="Cliente" />
 
@@ -154,7 +207,7 @@ export default ({ auth, factura }) => {
                                         readOnly={true}
                                     />
                                 </div>
-                                
+
                                 <div>
                                     <InputLabel htmlFor="fecha" value="Fecha" />
 
@@ -165,18 +218,20 @@ export default ({ auth, factura }) => {
                                         readOnly={true}
                                     />
                                 </div>
-                                
+
                                 <div>
-                                    <InputLabel htmlFor="ciudad" value="Valor Total" />
-                                    
+                                    <InputLabel
+                                        htmlFor="ciudad"
+                                        value="Valor Total"
+                                    />
+
                                     <TextInput
                                         type="text"
-                                        value={ toCurrency( sum )}
+                                        value={toCurrency(sum + imptos)}
                                         className="mt-1 block w-full"
                                         readOnly={true}
                                     />
                                 </div>
-                                
                             </div>
                         </form>
                     </div>
@@ -188,59 +243,76 @@ export default ({ auth, factura }) => {
                         >
                             Atras
                         </SecondaryButton>
-                        {
-                            factura.estado != 'C' && 
-                                    <PrimaryButton
-                                        className="ms-4"
-                                        onClick={() => onToggleModal(true)}
-                                    >
-                                        Agregar
-                                    </PrimaryButton>
-                        }
+                        {factura.estado != "C" && (
+                            <PrimaryButton
+                                className="ms-4"
+                                onClick={() => onToggleModal(true)}
+                            >
+                                Agregar
+                            </PrimaryButton>
+                        )}
                     </div>
 
                     <div className="bg-white overflow-auto shadow-sm sm:rounded-lg">
                         <Table
                             data={list}
                             links={[]}
-                            onEdit={ (evt) => onSetAdminModal(evt, 'edit') }
-                            onTrash={ (evt) => onSetAdminModal(evt, 'trash') }
+                            onEdit={(evt) => onSetAdminModal(evt, "edit")}
+                            onTrash={(evt) => onSetAdminModal(evt, "trash")}
                             titles={titles}
                             actions={[
-                                factura.estado != 'C' ? 'edit' : '',
-                                factura.estado != 'C' ? 'trash' : '',
+                                factura.estado != "C" ? "edit" : "",
+                                factura.estado != "C" ? "trash" : "",
                             ]}
                         />
                     </div>
 
-                    <div className="flex items-center justify-end mt-4 mb-4">
-                        {
-                            factura.estado != 'C' && 
-                                    <PrimaryButton
-                                        className="ms-4"
-                                        onClick={() => onRegistrar(true)}
-                                    >
-                                        Registrar
-                                    </PrimaryButton>
-                        }
+                    <div className="flex items-center justify-end mt-4 mb-4 no-print">
+                        <InputLabel
+                            htmlFor="desea_factura"
+                            value="Desea Factura Electrónica?"
+                        />
+
+                        <Select
+                            id="desea_factura"
+                            name="desea_factura"
+                            className="mt-1 block w-full"
+                            onChange={ (e) => { setDesea(e.target.value) }}
+                        >
+                            <option value="S"> SI </option>
+                            <option value="N"> NO </option>
+                        </Select>
                     </div>
 
+                    <div className="flex items-center justify-end mt-4 mb-4">
+                        {factura.estado != "C" && (
+                            <PrimaryButton
+                                className="ms-4"
+                                onClick={() => onRegistrar(true)}
+                            >
+                                Registrar
+                            </PrimaryButton>
+                        )}
+                    </div>
                 </div>
             </div>
-            
 
             <Modal show={show} closeable={true} title="Agregar Producto">
                 <Form
                     auth={auth}
                     factura={factura}
-                    setIsOpen={onToggleModal}        
+                    setIsOpen={onToggleModal}
                     onReload={onReload}
                     id={id}
                 />
             </Modal>
 
-            <AdminModal title={ action } show={adminModal} setIsOpen={setAdminModal} onConfirm={onConfirm}></AdminModal>
-
+            <AdminModal
+                title={action}
+                show={adminModal}
+                setIsOpen={setAdminModal}
+                onConfirm={onConfirm}
+            ></AdminModal>
         </AuthenticatedLayout>
     );
 };

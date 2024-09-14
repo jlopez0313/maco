@@ -80,7 +80,7 @@
     <table class="cliente">
         <tr>
             <th style="">Tipo de Venta: </th>
-            <td style="width: 265px"> {{ $factura->forma_pago->tipo }} </td>
+            <td style="width: 265px"> {{ $factura->forma_pago->descripcion }} </td>
             <th style="">Dirección: </th>
             <td style="width: 265px"> {{ $factura->cliente->direccion }} </td>
         </tr>

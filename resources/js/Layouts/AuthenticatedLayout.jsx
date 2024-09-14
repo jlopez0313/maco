@@ -26,7 +26,7 @@ export default function Authenticated({ user, header, children }) {
                                 </Link>
                             </div>
 
-                            <div className="hidden border-b space-x-8 sm:-my-px sm:mt-6 sm:flex no-print">
+                            <div className="hidden border-b space-x-8 sm:-my-px sm:mt-4 sm:flex no-print">
                                 <div className="">
                                     <div className="font-medium text-base text-gray-800">
                                         {user.name}
@@ -37,7 +37,7 @@ export default function Authenticated({ user, header, children }) {
                                 </div>
                             </div>
 
-                            <div className="hidden space-x-8 sm:-my-px sm:mt-6 sm:flex no-print">
+                            <div className="hidden space-x-8 sm:-my-px sm:mt-6 sm:flex no-print bg-blue-300	">
                                 <NavLink
                                     href={"/dashboard"}
                                     active={route().current("dashboard")}
@@ -46,7 +46,7 @@ export default function Authenticated({ user, header, children }) {
                                 </NavLink>
                             </div>
 
-                            <div className="hidden space-x-8 sm:-my-px sm:mt-6 sm:flex no-print">
+                            <div className="hidden space-x-8 sm:-my-px sm:mt-4 sm:flex no-print">
                                 <NavLink
                                     href={"/parametros"}
                                     active={route().current("parametros")}
@@ -56,7 +56,7 @@ export default function Authenticated({ user, header, children }) {
                             </div>
 
                             {["SUDO", "ADMIN"].includes(user.rol.slug) && (
-                                <div className="hidden space-x-8 sm:-my-px sm:mt-6 sm:flex no-print">
+                                <div className="hidden space-x-8 sm:-my-px sm:mt-4 sm:flex no-print">
                                     <NavLink
                                         href={"/empresas"}
                                         active={route().current("empresas")}
@@ -66,7 +66,7 @@ export default function Authenticated({ user, header, children }) {
                                 </div>
                             )}
 
-                            <div className="hidden space-x-8 sm:-my-px sm:mt-6 sm:flex no-print">
+                            <div className="hidden space-x-8 sm:-my-px sm:mt-4 sm:flex no-print">
                                 <NavLink
                                     href={"/clientes"}
                                     active={route().current("clientes")}
@@ -75,7 +75,7 @@ export default function Authenticated({ user, header, children }) {
                                 </NavLink>
                             </div>
 
-                            <div className="hidden space-x-8 sm:-my-px sm:mt-6 sm:flex no-print">
+                            <div className="hidden space-x-8 sm:-my-px sm:mt-4 sm:flex no-print">
                                 <NavLink
                                     href={"/inventario"}
                                     active={route().current("inventario")}
@@ -84,7 +84,7 @@ export default function Authenticated({ user, header, children }) {
                                 </NavLink>
                             </div>
 
-                            <div className="hidden space-x-8 sm:-my-px sm:mt-6 sm:flex no-print">
+                            <div className="hidden space-x-8 sm:-my-px sm:mt-4 sm:flex no-print">
                                 <NavLink
                                     href={"/remisiones"}
                                     active={route().current("remisiones")}
@@ -93,7 +93,7 @@ export default function Authenticated({ user, header, children }) {
                                 </NavLink>
                             </div>
 
-                            <div className="hidden space-x-8 sm:-my-px sm:mt-6 sm:flex no-print">
+                            <div className="hidden space-x-8 sm:-my-px sm:mt-4 sm:flex no-print">
                                 <NavLink
                                     href={"/gastos"}
                                     active={route().current("gastos")}
@@ -104,7 +104,7 @@ export default function Authenticated({ user, header, children }) {
 
                             {/*
 
-                            <div className="hidden space-x-8 sm:-my-px sm:mt-6 sm:flex">
+                            <div className="hidden space-x-8 sm:-my-px sm:mt-4 sm:flex">
                                 <NavLink href={route('creditos')} active={route().current('creditos')}>
                                     Créditos
                                 </NavLink>
@@ -112,7 +112,7 @@ export default function Authenticated({ user, header, children }) {
                             
                             */}
 
-                            <div className="hidden space-x-8 sm:-my-px sm:mt-6 sm:flex no-print">
+                            <div className="hidden space-x-8 sm:-my-px sm:mt-4 sm:flex no-print">
                                 <NavLink
                                     href={"/recaudos"}
                                     active={route().current("recaudos")}
@@ -121,7 +121,7 @@ export default function Authenticated({ user, header, children }) {
                                 </NavLink>
                             </div>
 
-                            <div className="hidden space-x-8 sm:-my-px sm:mt-6 sm:flex no-print">
+                            <div className="hidden space-x-8 sm:-my-px sm:mt-4 sm:flex no-print">
                                 <NavLink
                                     href={"/proveedores"}
                                     active={route().current("proveedores")}
@@ -130,7 +130,7 @@ export default function Authenticated({ user, header, children }) {
                                 </NavLink>
                             </div>
 
-                            <div className="hidden space-x-8 sm:-my-px sm:mt-6 sm:flex no-print">
+                            <div className="hidden space-x-8 sm:-my-px sm:mt-4 sm:flex no-print">
                                 <NavLink
                                     href={"/reportes"}
                                     active={route().current("reportes")}
@@ -139,7 +139,7 @@ export default function Authenticated({ user, header, children }) {
                                 </NavLink>
                             </div>
 
-                            <div className="hidden space-x-8 sm:-my-px sm:mt-6 sm:flex no-print">
+                            <div className="hidden space-x-8 sm:-my-px sm:mt-4 sm:flex no-print bg-red-300	">
                                 <NavLink
                                     href={"/logout"}
                                     method="post"

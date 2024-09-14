@@ -76,20 +76,20 @@ export const Form = ({ id, auth, payments, medios_pago, setIsOpen, onEdit }) => 
             const { data: {data: cliente} } = await axios.post(`/api/v1/clientes/by-document/${data.documento}`);
             
             if ( cliente ) {
-                await onGetCities( cliente.ciudad.departamento.id );
+                await onGetCities( cliente.ciudad?.departamento?.id );
     
                 setData(
                     {
                         ...data,
-                        clientes_id: cliente.id,
-                        nombre: cliente.nombre,
-                        departamento: cliente.ciudad?.departamento?.id || '',
-                        ciudad: cliente.ciudad?.id || '',
+                        clientes_id: cliente.id || '',
+                        nombre: cliente.nombre || '',
+                        departamento: cliente?.ciudad?.departamento?.id || '',
+                        ciudad: cliente?.ciudad?.id || '',
                         direccion: cliente.direccion || '',
                         celular: cliente.celular || '',
                         correo: cliente.correo || '',
-                        forma_pago_id: cliente.forma_pago?.id || '',
-                        medio_pago_id: cliente.medio_pago?.id || '',
+                        forma_pago_id: cliente?.forma_pago?.id || '',
+                        medio_pago_id: cliente?.medio_pago?.id || '',
                     }
                 )
             } else {

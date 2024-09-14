@@ -74,12 +74,13 @@ class FacturasController extends Controller
      */
     public function show(string $id)
     {
-        return Inertia::render('Facturas/Show', [
+        return Inertia::render('Facturas/Detalle/Index', [
             'factura' => Facturas::with(
                 'detalles.producto.impuestos.impuesto',
                 'detalles.producto.inventario',
                 'detalles.producto.color',
-                'detalles.producto.medida', 'cliente'
+                'detalles.producto.medida',
+                'cliente'
             )
                 ->find($id),
         ]);
@@ -91,8 +92,14 @@ class FacturasController extends Controller
     public function edit(string $id)
     {
         return Inertia::render('Facturas/Edit', [
-            'factura' => Facturas::with('detalles.producto.inventario', 'detalles.producto.color', 'detalles.producto.medida', 'cliente')
-                ->find($id),
+            'factura' => Facturas::with(
+                'detalles.producto.impuestos.impuesto',
+                'detalles.producto.inventario',
+                'detalles.producto.color',
+                'detalles.producto.medida',
+                'cliente'
+            )
+            ->find($id),
         ]);
     }
 
