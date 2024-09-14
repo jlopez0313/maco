@@ -285,7 +285,7 @@ export default ({ auth, factura }) => {
                     </div>
 
                     <div className="flex items-center justify-end mt-4 mb-4">
-                        {factura.estado != "C" && (
+                        {factura.estado != "C" && desea && (
                             <PrimaryButton
                                 className="ms-4"
                                 onClick={() => onRegistrar(true)}
