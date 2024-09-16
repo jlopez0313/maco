@@ -336,12 +336,9 @@ class SoapController extends Controller
             ->first();
 
             $adquiriente = Clientes::with('tipo', 'responsabilidad', 'tipo_doc', 'ciudad.departamento', 'contacto')
-            ->first();
+            ->find('id', $factura->clientes_id);
 
-            $proveedor = Proveedores::with('tipo', 'responsabilidad', 'tipo_doc', 'ciudad.departamento', 'contacto')
-            ->first();
-
-            // return [$emisor, $adquiriente, $proveedor, $consecutivo, $emisor->resolucion->prefijo . ($consecutivo->consecutivo ?? 1)];
+            // return [$emisor, $adquiriente, $consecutivo, $emisor->resolucion->prefijo . ($consecutivo->consecutivo ?? 1)];
 
             $xml = '<?xml version="1.0" encoding="UTF-8"?> <!-- FACTURA DE EXPORTACION V1.9 -->
             <FACTURA>
@@ -614,7 +611,6 @@ class SoapController extends Controller
                 $result->data = [
                     'emisor' => $emisor,
                     'adquiriente' => $adquiriente,
-                    'proveedor' => $proveedor,
                     'consecutivo' => $consecutivo,
                     'factura' => $factura,
                     'factura No' => $emisor->resolucion->prefijo . ($consecutivo->consecutivo ?? 1)
