@@ -81,21 +81,16 @@ class FacturasController extends Controller
             }
     
             if( $request->desea == 'S' ) {
-
                 $soap = new SoapController();
                 $result = $soap->upload($id);
-
-                \DB::commit();
-                return new FacturasResource( $factura );
-            } else {
-
-                \DB::commit();
-                return new FacturasResource( $factura );
             }
+
+            \DB::commit();
+            return new FacturasResource( $factura );
 
         } catch( \Exception $ex ) {
             \DB::rollback();
-            return response([ 'errors' => $ex ], 501);
+            return response([ 'errors' => $ex ], 500);
         }
 
     }
