@@ -83,6 +83,10 @@ class FacturasController extends Controller
             if( $request->desea == 'S' ) {
                 $soap = new SoapController();
                 $result = $soap->upload($id);
+
+                if ( isset( $result->errors ) ) {
+                    return response([ 'data' => $result, 'errors' => $result->errors ], 500);
+                }
             }
 
             \DB::commit();

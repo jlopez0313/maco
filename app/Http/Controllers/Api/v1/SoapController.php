@@ -616,8 +616,6 @@ class SoapController extends Controller
                     'factura No' => $emisor->resolucion->prefijo . ($consecutivo->consecutivo ?? 1)
                 ];
                 $result->errors = explode('"', $result->error);
-
-                throw new \Exception( json_encode($result) );
             }
 
             return $result;
