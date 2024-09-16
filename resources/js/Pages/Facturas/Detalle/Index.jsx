@@ -150,7 +150,12 @@ export default ({ auth, factura }) => {
     };
 
     const onSOAP = async () => {
-        await axios.get(`/api/v1/soap/upload/${factura.id}`);
+        try {
+            await axios.get(`/api/v1/soap/upload/${factura.id}`);
+        } catch ( ex ) {
+            console.log( ex );
+        }
+
     };
 
     const onPrint = async () => {
@@ -295,12 +300,15 @@ export default ({ auth, factura }) => {
                     </div>
 
                     <div className="flex items-center justify-end mt-4 mb-4 no-print">
-                        {/* 
+                        
+                        <SecondaryButton className="ms-4" onClick={onSOAP}>
+                            SOAP
+                        </SecondaryButton>
+
+                        
                         <SecondaryButton className="ms-4" onClick={onPrint}>
                             Estado
                         </SecondaryButton>
-
-                        */}
                         
                         <PrimaryButton className="ms-4 me-3" onClick={goToPDF}>
                             PDF
