@@ -305,11 +305,11 @@ export default ({ auth, factura }) => {
                             <SecondaryButton className="ms-4" onClick={onSOAP}>
                                 SOAP
                             </SecondaryButton>
-
+*/}
                             <SecondaryButton className="ms-4" onClick={onPrint}>
                                 Estado
                             </SecondaryButton>
-                        */}
+                        
 
                         <PrimaryButton className="ms-4 me-3" onClick={goToPDF}>
                             PDF
