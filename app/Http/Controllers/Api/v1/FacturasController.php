@@ -85,15 +85,8 @@ class FacturasController extends Controller
                 $soap = new SoapController();
                 $result = $soap->upload($id);
 
-                if( !isset($result->errors) ) {
-
-                    \DB::commit();
-                    return new FacturasResource( $factura );
-                } else {
-
-                    \DB::rollback();
-                    return response([ 'result' => $result, 'errors' => $result->errors ], 500);
-                }
+                \DB::commit();
+                return new FacturasResource( $factura );
             } else {
 
                 \DB::commit();
