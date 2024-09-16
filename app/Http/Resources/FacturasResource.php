@@ -20,6 +20,9 @@ class FacturasResource extends JsonResource
         
         return [
             'id' => $this->id,
+            'transaccionID' => $this->transaccionID,
+            'prefijo' => $this->prefijo,
+            'folio' => $this->folio,
             'detalles' => $this->detalles,
             'cliente' => $this->cliente,
             'recaudos' => $this->recaudos,

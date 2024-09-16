@@ -20,6 +20,9 @@ class FacturasCollection extends ResourceCollection
         
         return $this->collection->map->only(
             'id',
+            'transaccionID',
+            'prefijo',
+            'folio',
             'cliente',
             'forma_pago',
             'medio_pago',
