@@ -24,7 +24,7 @@ class ClientesSeeder extends Seeder
             'comercio' => 'varios null varios',
             'direccion' => 'Calle 123',
             'celular' => '1234567890',
-            'tipo_doc_id' => 31,
+            'tipo_doc_id' => 6,
             'responsabilidad_fiscal_id' => 5,
         ]);
     }
