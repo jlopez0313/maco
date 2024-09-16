@@ -625,7 +625,7 @@ class SoapController extends Controller
 
             return $result;
         } catch (Exception $ex) {
-            return $ex;
+            throw new Exception($ex);
         }
     }
 
