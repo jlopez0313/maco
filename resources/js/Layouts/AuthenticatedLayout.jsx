@@ -7,6 +7,7 @@ import { Link } from "@inertiajs/react";
 
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
+import Icon from "@/Components/Icon";
 
 export default function Authenticated({ user, header, children }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
@@ -26,7 +27,8 @@ export default function Authenticated({ user, header, children }) {
                                 </Link>
                             </div>
 
-                            <div className="hidden border-b space-x-8 sm:-my-px sm:mt-4 sm:flex no-print">
+                            <div className="hidden border-b space-x-2 sm:-my-px sm:mt-4 sm:flex no-print">
+                                <Icon name='user' />
                                 <div className="">
                                     <div className="font-medium text-base text-gray-800">
                                         {user.name}
@@ -210,8 +212,10 @@ export default function Authenticated({ user, header, children }) {
                         " sm:hidden"
                     }
                 >
-                    <div className="pt-4 pb-1 border-b border-gray-200">
-                        <div className="px-4">
+                    
+                    <div className="pt-4 pb-1 border-b border-gray-200 flex m-2">
+                        <Icon name='user' />
+                        <div className="">
                             <div className="font-medium text-base text-gray-800">
                                 {user.name}
                             </div>
@@ -223,7 +227,7 @@ export default function Authenticated({ user, header, children }) {
 
                     <div className="pt-2 pb-3 space-y-1">
                         <ResponsiveNavLink
-                            className="!font-bold"
+                            className="!font-bold bg-blue-300"
                             href={"/dashboard"}
                             active={route().current("dashboard")}
                         >
@@ -287,7 +291,7 @@ export default function Authenticated({ user, header, children }) {
                         </ResponsiveNavLink>
 
                         <ResponsiveNavLink
-                            className="!font-bold"
+                            className="!font-bold bg-red-300"
                             method="post"
                             href={"/logout"}
                             as="button"
