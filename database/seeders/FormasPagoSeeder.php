@@ -12,7 +12,7 @@ class FormasPagoSeeder extends Seeder
      */
     public function run(): void
     {
-        \DB::table('tipos_personas')->insert([
+        \DB::table('formas_pagos')->insert([
             ['id' => 1, 'codigo' => 1, 'descripcion' => 'Contado'],
             ['id' => 2, 'codigo' => 2, 'descripcion' => 'Crédito'],
         ]);

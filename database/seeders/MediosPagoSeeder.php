@@ -12,7 +12,7 @@ class MediosPagoSeeder extends Seeder
      */
     public function run(): void
     {
-        \DB::table('tipos_personas')->insert([
+        \DB::table('medios_pagos')->insert([
             ['id' =>1, 'codigo' =>'1' , 'tipo' => 'Instrumento no definido'],
             ['id' =>2, 'codigo' =>'2' , 'tipo' => 'Crédito ACH'],
             ['id' =>3, 'codigo' =>'3' , 'tipo' => 'Débito ACH'],

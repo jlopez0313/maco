@@ -12,7 +12,7 @@ class UnidadesMedidaSeeder extends Seeder
      */
     public function run(): void
     {
-        \DB::table('tipos_personas')->insert([
+        \DB::table('unidades_medidas')->insert([
             ['id' =>1, 'codigo' =>'04', 'descripcion' => 'spray pequeño'],
             ['id' =>2, 'codigo' =>'05', 'descripcion' => 'levantar'],
             ['id' =>3, 'codigo' =>'08', 'descripcion' => 'Lote calor'],
