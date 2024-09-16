@@ -336,7 +336,7 @@ class SoapController extends Controller
             ->first();
 
             $adquiriente = Clientes::with('tipo', 'responsabilidad', 'tipo_doc', 'ciudad.departamento', 'contacto')
-            ->find('id', $factura->clientes_id);
+            ->find($factura->clientes_id);
 
             // return [$emisor, $adquiriente, $consecutivo, $emisor->resolucion->prefijo . ($consecutivo->consecutivo ?? 1)];
 
