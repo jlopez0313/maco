@@ -90,8 +90,9 @@ class FacturasController extends Controller
                     \DB::commit();
                     return new FacturasResource( $factura );
                 } else {
+
                     \DB::rollback();
-                    return response([ 'errors' => $result->errors ], 500);
+                    return response([ 'result' => $result, 'errors' => $result->errors ], 500);
                 }
             } else {
 

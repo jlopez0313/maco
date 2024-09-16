@@ -37,8 +37,9 @@ export default function Authenticated({ user, header, children }) {
                                 </div>
                             </div>
 
-                            <div className="hidden space-x-8 sm:-my-px sm:mt-6 sm:flex no-print bg-blue-300	">
+                            <div className="hidden space-x-8 sm:-my-px sm:mt-6 sm:flex no-print bg-blue-300">
                                 <NavLink
+                                    className="!font-bold"
                                     href={"/dashboard"}
                                     active={route().current("dashboard")}
                                 >
@@ -48,6 +49,7 @@ export default function Authenticated({ user, header, children }) {
 
                             <div className="hidden space-x-8 sm:-my-px sm:mt-4 sm:flex no-print">
                                 <NavLink
+                                    className="!font-bold"
                                     href={"/parametros"}
                                     active={route().current("parametros")}
                                 >
@@ -58,6 +60,7 @@ export default function Authenticated({ user, header, children }) {
                             {["SUDO", "ADMIN"].includes(user.rol.slug) && (
                                 <div className="hidden space-x-8 sm:-my-px sm:mt-4 sm:flex no-print">
                                     <NavLink
+                                        className="!font-bold"
                                         href={"/empresas"}
                                         active={route().current("empresas")}
                                     >
@@ -68,6 +71,7 @@ export default function Authenticated({ user, header, children }) {
 
                             <div className="hidden space-x-8 sm:-my-px sm:mt-4 sm:flex no-print">
                                 <NavLink
+                                    className="!font-bold"
                                     href={"/clientes"}
                                     active={route().current("clientes")}
                                 >
@@ -77,6 +81,7 @@ export default function Authenticated({ user, header, children }) {
 
                             <div className="hidden space-x-8 sm:-my-px sm:mt-4 sm:flex no-print">
                                 <NavLink
+                                    className="!font-bold"
                                     href={"/inventario"}
                                     active={route().current("inventario")}
                                 >
@@ -86,6 +91,7 @@ export default function Authenticated({ user, header, children }) {
 
                             <div className="hidden space-x-8 sm:-my-px sm:mt-4 sm:flex no-print">
                                 <NavLink
+                                    className="!font-bold"
                                     href={"/remisiones"}
                                     active={route().current("remisiones")}
                                 >
@@ -95,6 +101,7 @@ export default function Authenticated({ user, header, children }) {
 
                             <div className="hidden space-x-8 sm:-my-px sm:mt-4 sm:flex no-print">
                                 <NavLink
+                                    className="!font-bold"
                                     href={"/gastos"}
                                     active={route().current("gastos")}
                                 >
@@ -114,6 +121,7 @@ export default function Authenticated({ user, header, children }) {
 
                             <div className="hidden space-x-8 sm:-my-px sm:mt-4 sm:flex no-print">
                                 <NavLink
+                                    className="!font-bold"
                                     href={"/recaudos"}
                                     active={route().current("recaudos")}
                                 >
@@ -123,6 +131,7 @@ export default function Authenticated({ user, header, children }) {
 
                             <div className="hidden space-x-8 sm:-my-px sm:mt-4 sm:flex no-print">
                                 <NavLink
+                                    className="!font-bold"
                                     href={"/proveedores"}
                                     active={route().current("proveedores")}
                                 >
@@ -132,6 +141,7 @@ export default function Authenticated({ user, header, children }) {
 
                             <div className="hidden space-x-8 sm:-my-px sm:mt-4 sm:flex no-print">
                                 <NavLink
+                                    className="!font-bold"
                                     href={"/reportes"}
                                     active={route().current("reportes")}
                                 >
@@ -141,6 +151,7 @@ export default function Authenticated({ user, header, children }) {
 
                             <div className="hidden space-x-8 sm:-my-px sm:mt-4 sm:flex no-print bg-red-300	">
                                 <NavLink
+                                    className="!font-bold"
                                     href={"/logout"}
                                     method="post"
                                     as="button"
@@ -212,54 +223,63 @@ export default function Authenticated({ user, header, children }) {
 
                     <div className="pt-2 pb-3 space-y-1">
                         <ResponsiveNavLink
+                            className="!font-bold"
                             href={"/dashboard"}
                             active={route().current("dashboard")}
                         >
                             Inicio
                         </ResponsiveNavLink>
                         <ResponsiveNavLink
+                            className="!font-bold"
                             href={"/parametros"}
                             active={route().current("parametros")}
                         >
                             Configuración
                         </ResponsiveNavLink>
                         <ResponsiveNavLink
+                            className="!font-bold"
                             href={"/clientes"}
                             active={route().current("clientes")}
                         >
                             Clientes
                         </ResponsiveNavLink>
                         <ResponsiveNavLink
+                            className="!font-bold"
                             href={"/inventario"}
                             active={route().current("inventario")}
                         >
                             Inventario
                         </ResponsiveNavLink>
                         <ResponsiveNavLink
+                            className="!font-bold"
                             href={"/remisiones"}
                             active={route().current("remisiones")}
                         >
                             Ord. de Compra
                         </ResponsiveNavLink>
                         <ResponsiveNavLink
+                            className="!font-bold"
                             href={"/gastos"}
                             active={route().current("gastos")}
                         >
                             Gastos
                         </ResponsiveNavLink>
                         <ResponsiveNavLink
+                            className="!font-bold"
                             href={"/recaudos"}
                             active={route().current("recaudos")}
                         >
                             Recaudos
                         </ResponsiveNavLink>
                         <ResponsiveNavLink
+                            className="!font-bold"
                             href={"/proveedores"}
                             active={route().current("proveedores")}
                         >
                             Proveedores
                         </ResponsiveNavLink>
                         <ResponsiveNavLink
+                            className="!font-bold"
                             href={"/reportes"}
                             active={route().current("reportes")}
                         >
@@ -267,6 +287,7 @@ export default function Authenticated({ user, header, children }) {
                         </ResponsiveNavLink>
 
                         <ResponsiveNavLink
+                            className="!font-bold"
                             method="post"
                             href={"/logout"}
                             as="button"
