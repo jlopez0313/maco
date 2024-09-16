@@ -624,10 +624,9 @@ class SoapController extends Controller
                 throw new Exception( json_encode($result) );
             }
 
-
             return $result;
         } catch (Exception $ex) {
-            throw new Exception($ex);
+            throw new Exception( $ex->getMessage() );
         }
     }
 

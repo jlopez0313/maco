@@ -169,12 +169,19 @@ export default ({ id, empresasId, estados, auth, setIsOpen, onReload }) => {
                         
                         <div>
                             <InputLabel htmlFor="consecutivo_inicial" value="Consecutivo Inicial" />
-
-                            <TextSpan
+                            
+                            <TextInput
+                               placeholder="Escriba aquí"
                                 id="consecutivo_inicial"
-                                name="consecutivo_inicial"
+                                type="number"
+                                name="consecutivo_final"
                                 value={data.consecutivo_inicial}
+                                min={1}
                                 className="mt-1 block w-full"
+                                autoComplete="consecutivo_inicial"
+                                onChange={(e) =>
+                                    setData("consecutivo_inicial", e.target.value)
+                                }
                             />
                         </div>
                         
