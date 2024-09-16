@@ -194,7 +194,7 @@ export default ({ id, empresasId, estados, auth, setIsOpen, onReload }) => {
                                 type="number"
                                 name="consecutivo_final"
                                 value={data.consecutivo_final}
-                                min={data.consecutivo_inicial + 1}
+                                min={Number(data.consecutivo_inicial) + 1}
                                 className="mt-1 block w-full"
                                 autoComplete="consecutivo_final"
                                 onChange={(e) =>
