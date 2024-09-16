@@ -90,7 +90,7 @@ class FacturasController extends Controller
 
         } catch( \Exception $ex ) {
             \DB::rollback();
-            return response([ 'errors' => $ex ], 500);
+            return response([ 'errors' => $ex->getMessage() ], 500);
         }
 
     }
