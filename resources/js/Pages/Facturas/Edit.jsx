@@ -289,6 +289,7 @@ export default ({ auth, factura }) => {
                             <PrimaryButton
                                 className="ms-4"
                                 onClick={() => onRegistrar(true)}
+                                disabled={!list.length}
                             >
                                 Registrar
                             </PrimaryButton>

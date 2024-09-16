@@ -32,6 +32,7 @@ class ClientesResource extends JsonResource
             'celular' => $this->celular,
             'correo' => $this->correo,
             'matricula' => $this->matricula,
+            'contacto' => $this->contacto,
 
         ];
     }

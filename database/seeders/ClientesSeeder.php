@@ -17,15 +17,15 @@ class ClientesSeeder extends Seeder
             'updated_by' => 1,
             'tipo_id' => 1,
             'ciudad_id' => 150,
-            'documento' => 1,
-            'dv' => 8,
-            'nombre' => 'Generico',
-            'matricula' => '111111',
-            'comercio' => 'Generico',
-            'direccion' => 'Generico',
+            'documento' => 123456789,
+            'dv' => 1,
+            'nombre' => 'varios null varios',
+            'matricula' => '784112',
+            'comercio' => 'varios null varios',
+            'direccion' => 'Calle 123',
             'celular' => '1234567890',
-            'tipo_doc_id' => 1,
-            'responsabilidad_fiscal_id' => 1,
+            'tipo_doc_id' => 31,
+            'responsabilidad_fiscal_id' => 5,
         ]);
     }
 }

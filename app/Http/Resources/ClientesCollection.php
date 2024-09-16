@@ -32,6 +32,7 @@ class ClientesCollection extends ResourceCollection
             'tipo',
             'responsabilidad',
             'matricula',
+            'contacto',
         );
     }
 }

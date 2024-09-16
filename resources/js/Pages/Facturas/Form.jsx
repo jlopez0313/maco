@@ -5,35 +5,37 @@ import SecondaryButton from "@/Components/Buttons/SecondaryButton";
 import TextInput from "@/Components/Form/TextInput";
 import Select from "@/Components/Form/Select";
 import { useForm } from "@inertiajs/react";
-import React, { useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import axios from "axios";
 import Icon from "@/Components/Icon";
 
-export const Form = ({ id, auth, payments, medios_pago, setIsOpen, onEdit }) => {
-
+export const Form = ({
+    id,
+    auth,
+    payments,
+    medios_pago,
+    setIsOpen,
+    onEdit,
+}) => {
     const [ciudades, setCiudades] = useState([]);
+    const [LazyComponent, setLazyComponent] = useState();
 
-    const {
-        data: formasPago,
-    } = payments;
+    const { data: formasPago } = payments;
 
-    const {
-        data: mediosPago,
-    } = medios_pago;
-
+    const { data: mediosPago } = medios_pago;
 
     const { data, setData, processing, errors, reset } = useForm({
         updated_by: auth.user.id,
-        clientes_id: '',
-        documento: '',
-        nombre: '',
-        departamento: '',
-        ciudad: '',
-        direccion: '',
-        celular: '',
-        correo: '',
-        forma_pago_id: '',
-        medio_pago_id: '',
+        clientes_id: "",
+        documento: "",
+        nombre: "",
+        departamento: "",
+        ciudad: "",
+        direccion: "",
+        celular: "",
+        correo: "",
+        forma_pago_id: "",
+        medio_pago_id: "",
     });
 
     const submit = async (e) => {
@@ -41,80 +43,88 @@ export const Form = ({ id, auth, payments, medios_pago, setIsOpen, onEdit }) => 
 
         let resp = {};
 
-        if ( id ) {
+        if (id) {
             await axios.put(`/api/v1/facturas/${id}`, data);
         } else {
             resp = await axios.post(`/api/v1/facturas`, data);
         }
 
-        onEdit( id || resp.data?.data?.id);
+        onEdit(id || resp.data?.data?.id);
     };
 
     const onGetItem = async () => {
-
         const { data } = await axios.get(`/api/v1/inventarios/${id}`);
-        const item = { ...data.data }
+        const item = { ...data.data };
 
-        setData(
-            {                
-                articulo: item.articulo,
-                origen: item.origen,
-            }
-        )
-    }
+        setData({
+            articulo: item.articulo,
+            origen: item.origen,
+        });
+    };
 
-    const onCheckDoc = ( doc ) => {
-        if (!doc ) {
+    const onCheckDoc = (doc) => {
+        if (!doc) {
             reset();
         } else {
-            setData("documento", doc)
+            setData("documento", doc);
         }
-    }
+    };
 
     const onSearchCliente = async () => {
-        if ( data.documento ) {
-            const { data: {data: cliente} } = await axios.post(`/api/v1/clientes/by-document/${data.documento}`);
-            
-            if ( cliente ) {
-                await onGetCities( cliente.ciudad?.departamento?.id );
-    
-                setData(
-                    {
-                        ...data,
-                        clientes_id: cliente.id || '',
-                        nombre: cliente.nombre || '',
-                        departamento: cliente?.ciudad?.departamento?.id || '',
-                        ciudad: cliente?.ciudad?.id || '',
-                        direccion: cliente.direccion || '',
-                        celular: cliente.celular || '',
-                        correo: cliente.correo || '',
-                        forma_pago_id: cliente?.forma_pago?.id || '',
-                        medio_pago_id: cliente?.medio_pago?.id || '',
-                    }
-                )
+        if (data.documento) {
+            setLazyComponent(null);
+
+            const {
+                data: { data: cliente },
+            } = await axios.post(
+                `/api/v1/clientes/by-document/${data.documento}`
+            );
+
+            if (cliente) {
+                await onGetCities(cliente.ciudad?.departamento?.id);
+
+                setData({
+                    ...data,
+                    clientes_id: cliente.id || "",
+                    nombre: cliente.nombre || "",
+                    departamento: cliente?.ciudad?.departamento?.id || "",
+                    ciudad: cliente?.ciudad?.id || "",
+                    direccion: cliente.direccion || "",
+                    celular: cliente.celular || "",
+                    correo: cliente.correo || "",
+                    forma_pago_id: cliente?.forma_pago?.id || "",
+                    medio_pago_id: cliente?.medio_pago?.id || "",
+                });
+
+                if (!cliente.contacto) {
+                    const module = await import(
+                        "@/Pages/Errors/Clientes/Contactos/Empty"
+                    );
+                    const Lazy = module.default;
+                    setLazyComponent(<Lazy id={cliente.id} />);
+                }
             } else {
-                reset()
+                reset();
             }
         } else {
-            reset()
+            reset();
         }
-    }
+    };
 
     const onGetCities = async (deptoID) => {
-        if ( deptoID ) {
-            const {data} = await axios.get(`/api/v1/ciudades/${deptoID}`);
-            
-            setData("depto", deptoID)
-            setCiudades(data.data)
+        if (deptoID) {
+            const { data } = await axios.get(`/api/v1/ciudades/${deptoID}`);
+
+            setData("depto", deptoID);
+            setCiudades(data.data);
         } else {
-            setCiudades([])
+            setCiudades([]);
         }
-    }
+    };
 
-    useEffect( () => {
-        id && onGetItem()
-    }, [])
-
+    useEffect(() => {
+        id && onGetItem();
+    }, []);
 
     return (
         <div className="pb-12 pt-6">
@@ -133,15 +143,13 @@ export const Form = ({ id, auth, payments, medios_pago, setIsOpen, onEdit }) => 
                                     value={data.documento}
                                     className="mt-1 block w-full col-start-1 col-span-10"
                                     autoComplete="documento"
-                                    onChange={(e) =>
-                                        onCheckDoc( e.target.value )
-                                    }
+                                    onChange={(e) => onCheckDoc(e.target.value)}
                                     onBlur={onSearchCliente}
                                 />
-                                
+
                                 <Icon
                                     name="search"
-                                    className="self-center col-start-11 col-span-2 block w-6 h-6 "
+                                    className="cursor-pointer self-center col-start-11 col-span-2 block w-6 h-6 "
                                 />
                             </div>
 
@@ -150,7 +158,7 @@ export const Form = ({ id, auth, payments, medios_pago, setIsOpen, onEdit }) => 
                                 className="mt-2"
                             />
                         </div>
-                        
+
                         <div>
                             <InputLabel htmlFor="nombre" value="Nombre" />
 
@@ -172,7 +180,7 @@ export const Form = ({ id, auth, payments, medios_pago, setIsOpen, onEdit }) => 
                                 className="mt-2"
                             />
                         </div>
-                        
+
                         <div>
                             <InputLabel htmlFor="correo" value="Correo" />
 
@@ -306,11 +314,14 @@ export const Form = ({ id, auth, payments, medios_pago, setIsOpen, onEdit }) => 
                                     setData("forma_pago_id", e.target.value)
                                 }
                             >
-                                {
-                                    formasPago.map( (tipo, key) => {
-                                        return <option value={ tipo.id } key={key}> { tipo.descripcion } </option>
-                                    })
-                                }
+                                {formasPago.map((tipo, key) => {
+                                    return (
+                                        <option value={tipo.id} key={key}>
+                                            {" "}
+                                            {tipo.descripcion}{" "}
+                                        </option>
+                                    );
+                                })}
                             </Select>
 
                             <InputError
@@ -334,11 +345,14 @@ export const Form = ({ id, auth, payments, medios_pago, setIsOpen, onEdit }) => 
                                     setData("medio_pago_id", e.target.value)
                                 }
                             >
-                                {
-                                    mediosPago.map( (tipo, key) => {
-                                        return <option value={ tipo.id } key={key}> { tipo.descripcion } </option>
-                                    })
-                                }
+                                {mediosPago.map((tipo, key) => {
+                                    return (
+                                        <option value={tipo.id} key={key}>
+                                            {" "}
+                                            {tipo.descripcion}{" "}
+                                        </option>
+                                    );
+                                })}
                             </Select>
 
                             <InputError
@@ -346,15 +360,15 @@ export const Form = ({ id, auth, payments, medios_pago, setIsOpen, onEdit }) => 
                                 className="mt-2"
                             />
                         </div>
-
                     </div>
+
+                    <div className="my-4 bg-error">{LazyComponent}</div>
 
                     <div className="flex items-center justify-end mt-4">
                         <PrimaryButton
                             className="ms-4 mx-4"
-                            disabled={processing}
+                            disabled={processing || LazyComponent}
                         >
-                            
                             Guardar
                         </PrimaryButton>
 
@@ -362,24 +376,20 @@ export const Form = ({ id, auth, payments, medios_pago, setIsOpen, onEdit }) => 
                             type="button"
                             onClick={() => setIsOpen(false)}
                         >
-                            
                             Cancelar
                         </SecondaryButton>
                     </div>
 
                     <TextInput
-                               placeholder="Escriba aquí"
+                        placeholder="Escriba aquí"
                         id="clientes_id"
                         type="hidden"
                         name="clientes_id"
                         value={data.clientes_id}
                         className="mt-1 block w-full"
                         autoComplete="clientes_id"
-                        onChange={(e) =>
-                            setData("clientes_id", e.target.value)
-                        }
+                        onChange={(e) => setData("clientes_id", e.target.value)}
                     />
-
                 </form>
             </div>
         </div>

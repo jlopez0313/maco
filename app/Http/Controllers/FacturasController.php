@@ -10,6 +10,8 @@ use App\Models\MediosPago;
 use App\Models\Departamentos;
 use App\Models\Facturas;
 use App\Models\FormasPago;
+use App\Models\Resoluciones;
+use App\Models\Empresas;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Request as Peticion;
 use Inertia\Inertia;
@@ -21,6 +23,20 @@ class FacturasController extends Controller
      */
     public function index(Request $request)
     {
+
+        $resolucion = Resoluciones::where('estado', 'A')->first();
+        $empresa = Empresas::with('contacto')->first();
+
+        if ( !$resolucion ) {
+            return Inertia::render('Errors/Index', [
+                'error' => './Empresa/Resolucion/Empty'
+            ]);
+        } else if ( !$empresa->contacto ) {
+            return Inertia::render('Errors/Index', [
+                'error' => './Empresa/Contactos/Empty'
+            ]);
+        }
+
         $query = Facturas::with(
             'cliente', 'forma_pago', 'medio_pago'
         );

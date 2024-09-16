@@ -30,6 +30,7 @@ class EmpresasCollection extends ResourceCollection
             'direccion',
             'tipo',
             'responsabilidad',
+            'contacto',
         );
     }
 }

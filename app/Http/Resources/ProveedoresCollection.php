@@ -32,6 +32,7 @@ class ProveedoresCollection extends ResourceCollection
             'tipo',
             'responsabilidad',
             'matricula',
+            'contacto',
         );
     }
 }

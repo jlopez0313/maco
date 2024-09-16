@@ -51,8 +51,7 @@ export default ({ auth, factura }) => {
 
     const onConfirm = async ({ data }) => {
         if (action == "edit") {
-            setAdminModal(false);
-            onToggleModal(true);
+            onEdit(data);
         } else {
             onTrash(data);
         }
@@ -60,9 +59,13 @@ export default ({ auth, factura }) => {
 
     const onTrash = async (data) => {
         if (data) {
-            await axios.delete(`/api/v1/detalles/${id}`);
-            onReload();
+            await axios.delete(`/api/v1/facturas/${id}`);
+            onBack();
         }
+    };
+
+    const onEdit = (data) => {
+        router.get(`/remisiones/edit/${id}`);
     };
 
     const onToggleModal = (isShown) => {
@@ -152,10 +155,9 @@ export default ({ auth, factura }) => {
     const onSOAP = async () => {
         try {
             await axios.get(`/api/v1/soap/upload/${factura.id}`);
-        } catch ( ex ) {
-            console.log( ex );
+        } catch (ex) {
+            console.log(ex);
         }
-
     };
 
     const onPrint = async () => {
@@ -164,15 +166,14 @@ export default ({ auth, factura }) => {
     };
 
     const goToPDF = async () => {
-        if ( !factura.transaccionID ) {
+        if (!factura.transaccionID) {
             window.location.href = "/remisiones/pdf/" + factura.id;
         } else {
             await axios.get(`/api/v1/soap/download/${factura.id}`);
-            const anchor = document.createElement('a');
-            anchor.href = "/" + factura.prefijo + factura.folio + '.pdf';
-            anchor.target="_blank";
+            const anchor = document.createElement("a");
+            anchor.href = "/" + factura.prefijo + factura.folio + ".pdf";
+            anchor.target = "_blank";
             anchor.click();
-
         }
         // window.location.href = "/remisiones/pdf/" + factura.id;
     };
@@ -300,32 +301,64 @@ export default ({ auth, factura }) => {
                     </div>
 
                     <div className="flex items-center justify-end mt-4 mb-4 no-print">
-                        
-                        {/* 
-*/}
-<SecondaryButton className="ms-4" onClick={onSOAP}>
-    SOAP
-</SecondaryButton>
-                            <SecondaryButton className="ms-4" onClick={onPrint}>
-                                Estado
-                            </SecondaryButton>
-                        
+                        {factura.estado == "C" ? (
+                            <>
+                                {/* 
+                                <SecondaryButton className="ms-4" onClick={onSOAP}>
+                                    SOAP
+                                </SecondaryButton>
 
-                        <PrimaryButton className="ms-4 me-3" onClick={goToPDF}>
-                            PDF
-                        </PrimaryButton>
+                                <SecondaryButton className="ms-4" onClick={onPrint}>
+                                    Estado
+                                </SecondaryButton>
+    */}
 
-                        <SecondaryButton
-                            className="ms-4"
-                            onClick={() =>
-                                goToQR("/remisiones/qr/" + factura.id)
-                            }
-                        >
-                            QR
-                        </SecondaryButton>
+                                <PrimaryButton
+                                    className="ms-4 me-3"
+                                    onClick={goToPDF}
+                                >
+                                    PDF
+                                </PrimaryButton>
+
+                                <SecondaryButton
+                                    className="ms-4"
+                                    onClick={() =>
+                                        goToQR("/remisiones/qr/" + factura.id)
+                                    }
+                                >
+                                    QR
+                                </SecondaryButton>
+                            </>
+                        ) : (
+                            <>
+                                <PrimaryButton
+                                    className="ms-4 me-3"
+                                    onClick={() =>
+                                        onSetAdminModal(factura.id, "edit")
+                                    }
+                                >
+                                    Editar
+                                </PrimaryButton>
+
+                                <SecondaryButton
+                                    className="ms-4"
+                                    onClick={() =>
+                                        onSetAdminModal(factura.id, "trash")
+                                    }
+                                >
+                                    Eliminar
+                                </SecondaryButton>
+                            </>
+                        )}
                     </div>
                 </div>
             </div>
+            <AdminModal
+                title={action}
+                show={adminModal}
+                setIsOpen={setAdminModal}
+                onConfirm={onConfirm}
+            ></AdminModal>
         </AuthenticatedLayout>
     );
 };

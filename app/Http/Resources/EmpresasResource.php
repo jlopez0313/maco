@@ -29,6 +29,7 @@ class EmpresasResource extends JsonResource
             'comercio' => $this->comercio,
             'matricula' => $this->matricula,
             'direccion' => $this->direccion,
+            'contacto' => $this->contacto,
             'tipo' => $this->tipo,
         ];
     }
