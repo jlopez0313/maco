@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('tipos_documentos', function (Blueprint $table) {
             $table->id();
-            $table->integer('codigo')->unique();
+            $table->string('codigo')->unique();
             $table->string('tipo');
             $table->timestamps();
             $table->softDeletes();
