@@ -621,7 +621,8 @@ class SoapController extends Controller
                 ];
                 $result->errors = explode('"', $result->error);
 
-                throw new \Exception( json_encode($result) );
+                return $result;
+                // throw new \Exception( json_encode($result) );
             }
 
             return $result;
