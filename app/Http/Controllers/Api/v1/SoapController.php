@@ -665,7 +665,7 @@ class SoapController extends Controller
             $status = $this->status( $id );
             $result = '';
 
-            if ( $tatus->code == '201') {
+            if ( $status->code == '201') {
 
                 // $wsdlUrl = 'https://webservice.facturatech.co/v2/BETA/WSV2DEMO.asmx?WSDL';
                 $wsdlUrl = 'https://ws.facturatech.co/v2/demo/index.php?wsdl';
