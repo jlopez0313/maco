@@ -379,7 +379,7 @@ class SoapController extends Controller
                     <DFE_1>'. $emisor->ciudad->codigo .'</DFE_1>                            <!-- Tabla 35 - Municipios - Código Municipio - Excel Simplificado Anexo - Tablas 2.1 - OK -->
                     <DFE_2>'. $emisor->ciudad->departamento->id .'</DFE_2>                  <!-- Tabla 34 - Departamentos - Excel Simplificado Anexo - Tablas 2.1 - OK Constante -->
                     <DFE_3>CO</DFE_3>                                                       <!-- Tabla 1 - Códigos de países - Alfa2 - Excel Simplificado Anexo - Tablas 2.1 - OK Constante -->
-                    <DFE_4>'. $emisor->ciudad->codigo .'</DFE_4>                            <!-- Tabla 39 - Código Postal - Excel Simplificado Anexo - Tablas 2.1 - OK Constante Tabla 35 -->
+                    <DFE_4>190003</DFE_4>                                                   <!-- Tabla 39 - Código Postal - Excel Simplificado Anexo - Tablas 2.1 - OK Constante Tabla 35 -->
                     <DFE_5>Colombia</DFE_5>                                                 <!-- Tabla 1 - Códigos de países - Nombre Común - Excel Simplificado Anexo - Tablas 2.1 - OK Constante -->
                     <DFE_6>'. $emisor->ciudad->departamento->departamento .'</DFE_6>        <!-- Tabla 34 - Departamentos - Nombre- Excel Simplificado Anexo - Tablas 2.1 - OK -->            
                     <DFE_7>'. $emisor->ciudad->ciudad .'</DFE_7>                            <!-- Tabla 35 - Municipios - Nombre Municipio - Excel Simplificado Anexo - Tablas 2.1 - OK -->
@@ -409,7 +409,7 @@ class SoapController extends Controller
                 <ADQ_10>'. $adquiriente->direccion .'</ADQ_10>                              <!-- dirección - OK -->
                 <ADQ_11>'. $adquiriente->ciudad->departamento->id .'</ADQ_11>               <!-- Tabla 34 - Departamentos - codigo - Excel Simplificado Anexo - Tablas 2.1 - OK -->
                 <ADQ_13>'. $adquiriente->ciudad->ciudad .'</ADQ_13>                         <!-- Tabla 35 - Municipios - Nombre Municipio - Excel Simplificado Anexo - Tablas 2.1 - OK -->
-                <ADQ_14>'. $adquiriente->ciudad->codigo .'</ADQ_14>                         <!-- Tabla 39 - Código Postal - Excel Simplificado Anexo - Tablas 2.1 - OK Constante -->
+                <ADQ_14>190003</ADQ_14>                                                     <!-- Tabla 39 - Código Postal - Excel Simplificado Anexo - Tablas 2.1 - OK Constante -->
                 <ADQ_15>CO</ADQ_15>                                                         <!-- Tabla 1 - Códigos de países - Alfa2 - Excel Simplificado Anexo - Tablas 2.1 - OK Constante -->
                 <ADQ_19>'. $adquiriente->ciudad->departamento->departamento .'</ADQ_19>     <!-- Tabla 34 - Departamentos - nombre - Excel Simplificado Anexo - Tablas 2.1 - OK -->
                 <ADQ_21>Colombia</ADQ_21>                                                   <!-- Tabla 1 - Códigos de países - Nombre Común - Excel Simplificado Anexo - Tablas 2.1 - OK Cosntante -->
@@ -427,7 +427,7 @@ class SoapController extends Controller
                 <DFA>                                       <!-- INFORMACION FISCAL ADQUIRIENTE - OPCIONAL -->
                     <DFA_1>CO</DFA_1>                                                       <!-- Tabla 1 - Códigos de países - Alfa2 - Excel Simplificado Anexo - Tablas 2.1 - OK Constante -->
                     <DFA_2>'. $adquiriente->ciudad->departamento->id .'</DFA_2>             <!-- Tabla 34 - Departamentos - codigo - Excel Simplificado Anexo - Tablas 2.1 - OK -->
-                    <DFA_3>'. $adquiriente->ciudad->codigo .'</DFA_3>                       <!-- Tabla 39 - Código Postal - Excel Simplificado Anexo - Tablas 2.1 - OK Constante Tabla 35 -->
+                    <DFA_3>190003</DFA_3>                                                   <!-- Tabla 39 - Código Postal - Excel Simplificado Anexo - Tablas 2.1 - OK Constante Tabla 35 -->
                     <DFA_4>'. $adquiriente->ciudad->codigo .'</DFA_4>                       <!-- Tabla 35 - Municipios - Código Municipio - Excel Simplificado Anexo - Tablas 2.1 - OK --> 
                     <DFA_5>Colombia</DFA_5>                                                 <!-- Tabla 1 - Códigos de países - Nombre Común - Excel Simplificado Anexo - Tablas 2.1 - OK Constante -->
                     <DFA_6>'. $adquiriente->ciudad->departamento->departamento .'</DFA_6>   <!-- Tabla 34 - Departamentos - nombre - Excel Simplificado Anexo - Tablas 2.1 - OK -->
