@@ -19,7 +19,7 @@ class DepartamentosCollection extends ResourceCollection
         }
         
         return $this->collection->map->only(
-            'id', 'departamento'
+            'id', 'codigo', 'departamento'
         );
     }
 }

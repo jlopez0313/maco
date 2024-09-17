@@ -96,6 +96,8 @@ export default ({ auth, factura }) => {
     const onSetList = () => {
         const _list = data.map((item) => {
 
+            console.log( item );
+
             let impuestos = 0;
 
             item.producto?.impuestos.forEach((impto) => {
@@ -115,7 +117,7 @@ export default ({ auth, factura }) => {
                 id: item.id,
                 articulo: item.producto?.inventario?.articulo || "",
                 referenia: item.producto?.referencia || "",
-                unidad_medida: item.unidad_medida?.descripcion || "",
+                unidad_medida: item.producto?.unidad_medida?.descripcion || "",
                 color: item.producto?.color?.color || "",
                 medida: item.producto?.medida?.medida || "",
                 cantidad: item.cantidad,

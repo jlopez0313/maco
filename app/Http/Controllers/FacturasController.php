@@ -113,6 +113,7 @@ class FacturasController extends Controller
                 'detalles.producto.inventario',
                 'detalles.producto.color',
                 'detalles.producto.medida',
+                'detalles.producto.unidad_medida',
                 'cliente'
             )
             ->find($id),

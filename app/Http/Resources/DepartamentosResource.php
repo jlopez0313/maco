@@ -20,6 +20,7 @@ class DepartamentosResource extends JsonResource
         
         return [
             'id' => $this->id,
+            'codigo' => $this->codigo,
             'departamento' => $this->departamento,
         ];
     }
