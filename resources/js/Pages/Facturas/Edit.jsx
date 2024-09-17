@@ -24,6 +24,7 @@ export default ({ auth, factura }) => {
     const titles = [
         "Artículo",
         "Referencia",
+        "Unidad de Medida",
         "Color",
         "Medida",
         "Cantidad",
@@ -114,6 +115,7 @@ export default ({ auth, factura }) => {
                 id: item.id,
                 articulo: item.producto?.inventario?.articulo || "",
                 referenia: item.producto?.referencia || "",
+                unidad_medida: item.unidad_medida?.descripcion || "",
                 color: item.producto?.color?.color || "",
                 medida: item.producto?.medida?.medida || "",
                 cantidad: item.cantidad,

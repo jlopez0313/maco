@@ -259,7 +259,7 @@ export default function Authenticated({ user, header, children }) {
                             href={"/remisiones"}
                             active={route().current("remisiones")}
                         >
-                            Ord. de Compra
+                            Ventas
                         </ResponsiveNavLink>
                         <ResponsiveNavLink
                             className="!font-bold"
