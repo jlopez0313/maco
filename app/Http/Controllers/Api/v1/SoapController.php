@@ -661,37 +661,46 @@ class SoapController extends Controller
     public function download( $id )
     {
         try {
-            // $wsdlUrl = 'https://webservice.facturatech.co/v2/BETA/WSV2DEMO.asmx?WSDL';
-            $wsdlUrl = 'https://ws.facturatech.co/v2/demo/index.php?wsdl';
 
-            $soapClientOptions = [
-                'encoding' => 'UTF-8',
-                'soap_version' => 'SOAP_1_2',
-                'trace' => 1,
-                'exceptions' => 1,
-                'connection_timeout' => 1000,
-                'soap.wsdl_cache_enabled' => '0',
-            ];
+            $status = $this->status( $id );
+            $result = '';
 
-            $factura = Facturas::find($id);
-            
-            $client = new \SoapClient($wsdlUrl, $soapClientOptions);
-            
-            $result = $client->__soapCall('FtechAction.downloadPDFFile', [
-                'username' => 'MACO02062024',
-                'password' => '2a4d4a72f5aacf82e517cad6943fd3891157a52d8ed5a6fddedbbd31632035e8',
-                'prefijo' => $factura->prefijo,
-                'folio' => $factura->folio,
-            ]);
+            if ( $tatus->code == '201') {
 
-            // Decode pdf content
-            $pdf_decoded = base64_decode($result->resourceData);
-            $pdf = fopen($factura->prefijo . $factura->folio . '.pdf', 'w');
-            fwrite($pdf, $pdf_decoded);
-            fclose($pdf);
-
-            if( $result->code == '404' ) {
-                $result->folio = $factura->prefijo . $factura->folio;
+                // $wsdlUrl = 'https://webservice.facturatech.co/v2/BETA/WSV2DEMO.asmx?WSDL';
+                $wsdlUrl = 'https://ws.facturatech.co/v2/demo/index.php?wsdl';
+    
+                $soapClientOptions = [
+                    'encoding' => 'UTF-8',
+                    'soap_version' => 'SOAP_1_2',
+                    'trace' => 1,
+                    'exceptions' => 1,
+                    'connection_timeout' => 1000,
+                    'soap.wsdl_cache_enabled' => '0',
+                ];
+    
+                $factura = Facturas::find($id);
+                
+                $client = new \SoapClient($wsdlUrl, $soapClientOptions);
+                
+                $result = $client->__soapCall('FtechAction.downloadPDFFile', [
+                    'username' => 'MACO02062024',
+                    'password' => '2a4d4a72f5aacf82e517cad6943fd3891157a52d8ed5a6fddedbbd31632035e8',
+                    'prefijo' => $factura->prefijo,
+                    'folio' => $factura->folio,
+                ]);
+    
+                // Decode pdf content
+                $pdf_decoded = base64_decode($result->resourceData);
+                $pdf = fopen($factura->prefijo . $factura->folio . '.pdf', 'w');
+                fwrite($pdf, $pdf_decoded);
+                fclose($pdf);
+    
+                if( $result->code == '404' ) {
+                    $result->folio = $factura->prefijo . $factura->folio;
+                }
+            } else {
+                $result = $status;
             }
 
             return $result;

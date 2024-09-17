@@ -18,6 +18,7 @@ import { toCurrency } from "@/Helpers/Numbers";
 import { goToQR } from "@/Helpers/Modals";
 import Select from "@/Components/Form/Select";
 import InputError from "@/Components/Form/InputError";
+import { notify } from "@/Helpers/Notify";
 
 export default ({ auth, factura }) => {
     const data = factura.detalles;
@@ -169,11 +170,21 @@ export default ({ auth, factura }) => {
         if (!factura.transaccionID) {
             window.location.href = "/remisiones/pdf/" + factura.id;
         } else {
-            await axios.get(`/api/v1/soap/download/${factura.id}`);
-            const anchor = document.createElement("a");
-            anchor.href = "/" + factura.prefijo + factura.folio + ".pdf";
-            anchor.target = "_blank";
-            anchor.click();
+            try {
+                const resp = await axios.get(`/api/v1/soap/download/${factura.id}`);
+                if ( resp.code == 404 ) {
+                    throw new Error(resp.error)
+                }
+                
+                const anchor = document.createElement("a");
+                anchor.href = "/" + factura.prefijo + factura.folio + ".pdf";
+                anchor.target = "_blank";
+                anchor.click();
+
+            } catch( e ) {
+                console.error( e );
+                notify('error', e)
+            }
         }
         // window.location.href = "/remisiones/pdf/" + factura.id;
     };
