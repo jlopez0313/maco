@@ -20,9 +20,15 @@ class ResolucionesController extends Controller
             ->update(['estado' => 'I']);
         }
 
+
         $resolucione = Resoluciones::create($request->all());
 
-        $consecutivo = Consecutivos::create([ 'consecutivo' => $request->consecutivo_inicial ]);
+        $consecutivo = Consecutivos::first();
+        if ( !$consecutivo ) {
+            $consecutivo = Consecutivos::create([ 'consecutivo' => $request->consecutivo_inicial ]);
+        } else {
+            $consecutivo = Consecutivos::update([ 'consecutivo' => $request->consecutivo_inicial ]);
+        }
 
         return new ResolucionesResource($resolucione);
     }
