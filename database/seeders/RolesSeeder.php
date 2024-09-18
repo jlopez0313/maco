@@ -14,14 +14,17 @@ class RolesSeeder extends Seeder
     {
         \DB::table('roles')->insert([
             [
+                'id' => 1,
                 'slug' => 'SUDO',
                 'rol' => 'superadmin'
             ],
             [
+                'id' => 2,
                 'slug' => 'ADMIN',
                 'rol' => 'admin'
             ],
             [
+                'id' => 3,
                 'slug' => 'SELL',
                 'rol' => 'Comercial'
             ],
