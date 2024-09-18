@@ -33,7 +33,7 @@ export default ({ auth, tenants }) => {
             return {
                 'id': item.id,
                 'tenant': item.id,
-                'domain': item.domain.domain,
+                'domain': item.domain?.domain,
                 'fecha': item.created_at,
                 
             }
