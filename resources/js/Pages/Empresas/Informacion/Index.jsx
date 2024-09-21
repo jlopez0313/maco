@@ -418,14 +418,7 @@ export default ({
                 <div className="flex items-center justify-end mt-4">
                     <PrimaryButton className="ms-4 mx-4" disabled={processing}>
                         Guardar
-                    </PrimaryButton>
-
-                    <SecondaryButton
-                        type="button"
-                        onClick={() => setIsOpen(false)}
-                    >
-                        Cancelar
-                    </SecondaryButton>
+                    </PrimaryButton>                    
                 </div>
             </form>
         </div>

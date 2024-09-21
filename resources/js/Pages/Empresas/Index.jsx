@@ -5,6 +5,7 @@ import { Head } from "@inertiajs/react";
 import Informacion from "./Informacion/Index";
 import Contacto from "./Contacto/Index";
 import Resoluciones from "./Resoluciones/Index";
+import Consecutivo from "./Consecutivo/Index";
 
 export default ({
     auth,
@@ -15,6 +16,7 @@ export default ({
     estados_resoluciones,
     S_N,
     contact,
+    consecutivo,
 }) => {
     const [tab, setTab] = useState("general");
 
@@ -92,6 +94,12 @@ export default ({
                             responsabilidades={responsabilidades}
                             contact={contact}
                             estados={estados_resoluciones}
+                        />
+                    )}
+
+                    {tab == "consecutivo" && (
+                        <Consecutivo
+                            consecutivo={consecutivo}
                         />
                     )}
                 </div>

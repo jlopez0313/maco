@@ -26,11 +26,14 @@ export default ({ id, empresasId, estados, auth, setIsOpen, onReload }) => {
     const submit = async (e) => {
         e.preventDefault();
 
-        
-        if ( id ) {
-            await axios.put(`/api/v1/resoluciones/${id}`, data);
-        } else {
-            await axios.post(`/api/v1/resoluciones`, data);
+        try {
+            if ( id ) {
+                await axios.put(`/api/v1/resoluciones/${id}`, data);
+            } else {
+                await axios.post(`/api/v1/resoluciones`, data);
+            }
+        } catch (e) {
+            console.error( e );
         }
 
         onReload();

@@ -82,6 +82,7 @@ Route::middleware([
     Route::apiResource('medios-pago', App\Http\Controllers\Api\v1\MediosPagoController::class);
     Route::apiResource('detalles', App\Http\Controllers\Api\v1\DetallesController::class);
     Route::apiResource('empresas', App\Http\Controllers\Api\v1\EmpresasController::class);
+    Route::apiResource('consecutivos', App\Http\Controllers\Api\v1\ConsecutivosController::class);
     Route::apiResource('recaudos', App\Http\Controllers\Api\v1\RecaudosController::class);
     
     
