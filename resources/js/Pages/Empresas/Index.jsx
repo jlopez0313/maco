@@ -59,6 +59,13 @@ export default ({
                             >
                                 Resoluciones de Facturación
                             </div>
+
+                            <div
+                                className={`cursor-pointer items-center font-bold ${ tab == 'resoluciones' ? 'underline' : ''}`}
+                                onClick={() => setTab("resoluciones")}
+                            >
+                                Consecutivo de Factura
+                            </div>
                         </div>
                     </div>
 
