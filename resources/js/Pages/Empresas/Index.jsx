@@ -61,7 +61,7 @@ export default ({
                             </div>
 
                             <div
-                                className={`cursor-pointer items-center font-bold ${ tab == 'resoluciones' ? 'underline' : ''}`}
+                                className={`cursor-pointer items-center font-bold ${ tab == 'consecutivo' ? 'underline' : ''}`}
                                 onClick={() => setTab("consecutivo")}
                             >
                                 Consecutivo de Factura
