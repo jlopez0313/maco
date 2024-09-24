@@ -15,10 +15,17 @@ class FormasPagoController extends Controller
      */
     public function index()
     {
+        $query = null;
+        if ( isset($_COOKIE['sort']) && isset($_COOKIE['icon']) ) {
+            $query = FormasPago::orderBy( $_COOKIE['sort'], $_COOKIE['icon'] )->paginate();
+        } else {
+            $query = FormasPago::paginate();
+        }
+
         return Inertia::render('Parametros/FormasPago/Index', [
             'filters' => Peticion::all('search', 'trashed'),
             'contacts' => new FormasPagoCollection(
-                FormasPago::paginate()
+                $query
             ),
         ]);
     }

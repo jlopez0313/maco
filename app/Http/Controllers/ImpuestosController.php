@@ -15,10 +15,17 @@ class ImpuestosController extends Controller
      */
     public function index()
     {
+        $query = null;
+        if ( isset($_COOKIE['sort']) && isset($_COOKIE['icon']) ) {
+            $query = Impuestos::orderBy( $_COOKIE['sort'], $_COOKIE['icon'] )->paginate();
+        } else {
+            $query = Impuestos::paginate();
+        }
+
         return Inertia::render('Parametros/Impuestos/Index', [
             'filters' => Peticion::all('search', 'trashed'),
             'contacts' => new ImpuestosCollection(
-                Impuestos::paginate()
+                $query
             ),
             'impuestos_tarifas' => config('constants.impuestos.tarifas'),
             'impuestos_tipos' => config('constants.impuestos.tipos'),

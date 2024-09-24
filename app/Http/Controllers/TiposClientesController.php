@@ -15,12 +15,21 @@ class TiposClientesController extends Controller
      */
     public function index()
     {
+        $query = null;
+        if ( isset($_COOKIE['sort']) && isset($_COOKIE['icon']) ) {
+            $query = TiposClientes::orderBy( $_COOKIE['sort'], $_COOKIE['icon'] )->paginate();
+        } else {
+            $query = TiposClientes::paginate();
+        }
+
         return Inertia::render('Parametros/TiposClientes/Index', [
             'filters' => Peticion::all('search', 'trashed'),
             'contacts' => new TiposClientesCollection(
-                TiposClientes::paginate()
+                $query
             ),
         ]);
+
+
     }
 
     /**

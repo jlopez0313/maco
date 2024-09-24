@@ -15,10 +15,17 @@ class TiposDocumentosController extends Controller
      */
     public function index()
     {
+        $query = null;
+        if ( isset($_COOKIE['sort']) && isset($_COOKIE['icon']) ) {
+            $query = TiposDocumentos::orderBy( $_COOKIE['sort'], $_COOKIE['icon'] )->paginate();
+        } else {
+            $query = TiposDocumentos::paginate();
+        }
+
         return Inertia::render('Parametros/TiposDocumentos/Index', [
             'filters' => Peticion::all('search', 'trashed'),
             'contacts' => new TiposDocumentosCollection(
-                TiposDocumentos::paginate()
+                $query
             ),
         ]);
     }

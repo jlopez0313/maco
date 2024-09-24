@@ -12,6 +12,7 @@ import Modal from "@/Components/Modal";
 import { Form } from "./Form";
 import SecondaryButton from "@/Components/Buttons/SecondaryButton";
 import { AdminModal } from "@/Components/AdminModal";
+import { useCookies } from 'react-cookie'
 
 export default ({ auth, contacts }) => {
     const {
@@ -20,9 +21,14 @@ export default ({ auth, contacts }) => {
     } = contacts;
 
     const titles= [
-        'Codigo',
+        {
+            key:'codigo',
+            title: 'Codigo'
+        },
         'Unidad de Medida'
     ]
+
+    const [cookies, setCookie] = useCookies(['maco'])
 
     const [action, setAction] = useState( '' );
     const [adminModal, setAdminModal] = useState( false );
@@ -82,6 +88,14 @@ export default ({ auth, contacts }) => {
     const onBack = () => {
         history.back();
     }
+    
+    const onSort = (field) => {
+        const sort = cookies.icon == 'asc' ? 'desc' : 'asc';
+        setCookie('sort', field, { path: window.location.pathname })
+        setCookie('icon', sort, { path: window.location.pathname })
+
+        router.visit(window.location.pathname)
+    }
 
     useEffect(() => {
         onSetList();
@@ -119,6 +133,8 @@ export default ({ auth, contacts }) => {
 
                     <div className="bg-white overflow-auto shadow-sm sm:rounded-lg">
                         <Table 
+                            sortIcon={cookies.icon || 'down'}
+                            onSort={onSort}
                             data={list}
                             links={links}
                             onEdit={ (evt) => onSetAdminModal(evt, 'edit') }

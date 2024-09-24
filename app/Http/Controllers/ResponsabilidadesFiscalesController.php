@@ -15,10 +15,17 @@ class ResponsabilidadesFiscalesController extends Controller
      */
     public function index()
     {
+        $query = null;
+        if ( isset($_COOKIE['sort']) && isset($_COOKIE['icon']) ) {
+            $query = ResponsabilidadesFiscales::orderBy( $_COOKIE['sort'], $_COOKIE['icon'] )->paginate();
+        } else {
+            $query = ResponsabilidadesFiscales::paginate();
+        }
+
         return Inertia::render('Parametros/ResponsabilidadesFiscales/Index', [
             'filters' => Peticion::all('search', 'trashed'),
             'contacts' => new ResponsabilidadesFiscalesCollection(
-                ResponsabilidadesFiscales::paginate()
+                $query
             ),
         ]);
     }

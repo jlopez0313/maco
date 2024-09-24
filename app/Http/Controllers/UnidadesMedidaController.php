@@ -15,10 +15,17 @@ class UnidadesMedidaController extends Controller
      */
     public function index()
     {
+        $query = null;
+        if ( isset($_COOKIE['sort']) && isset($_COOKIE['icon']) ) {
+            $query = UnidadesMedida::orderBy( $_COOKIE['sort'], $_COOKIE['icon'] )->paginate();
+        } else {
+            $query = UnidadesMedida::paginate();
+        }
+
         return Inertia::render('Parametros/UnidadesMedida/Index', [
             'filters' => Peticion::all('search', 'trashed'),
             'contacts' => new UnidadesMedidaCollection(
-                UnidadesMedida::paginate()
+                $query
             ),
         ]);
     }

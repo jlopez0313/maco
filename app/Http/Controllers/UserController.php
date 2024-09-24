@@ -20,7 +20,8 @@ class UserController extends Controller
         return Inertia::render('Parametros/Usuarios/Index', [
             'filters' => Peticion::all('search', 'trashed'),
             'contacts' => new UserCollection(
-                User::paginate()
+                User::where('roles_id', '>=', \Auth::user()->roles_id)
+                ->paginate()
             ),
             'roles' =>  new RolesCollection(
                 Roles::all()

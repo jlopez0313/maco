@@ -13,6 +13,7 @@ import { Form } from "./Form";
 import { AdminModal } from "@/Components/AdminModal";
 import { toCurrency } from "@/Helpers/Numbers";
 import TextInput from "@/Components/Form/TextInput";
+import { useCookies } from "react-cookie";
 
 export default ({ auth, q, contacts, departments, payments, medios_pago }) => {
     const { data: departamentos } = departments;
@@ -24,13 +25,18 @@ export default ({ auth, q, contacts, departments, payments, medios_pago }) => {
 
     const titles = [
         "Fecha de Creación",
-        "Código",
+        {
+            key: "id",
+            title: "Codigo",
+        },
         "Cliente",
         "Forma de Pago",
         "Medio de Pago",
         "Valor Total",
         "Estado",
     ];
+
+    const [cookies, setCookie] = useCookies(["maco"]);
 
     const [search, setSearch] = useState(q);
     const [action, setAction] = useState("");
@@ -41,14 +47,38 @@ export default ({ auth, q, contacts, departments, payments, medios_pago }) => {
 
     const onSetList = () => {
         const sum = data.map((item) => {
+            
+            
+            item.detalles.forEach((_item) => {
+                let impuestos = 0;
+
+                _item.producto?.impuestos.forEach((impto) => {
+                    if (impto.impuesto?.tipo_impuesto == "I") {
+                        if (impto.impuesto.tipo_tarifa == "P") {
+                            impuestos +=
+                                ((_item.precio_venta || 0) *
+                                    Number(impto.impuesto.tarifa)) /
+                                100;
+                        } else if (impto.impuesto.tipo_tarifa == "V") {
+                            impuestos += Number(impto.impuesto.tarifa);
+                        }
+                    }
+                });
+
+                _item.total_impuestos = impuestos;
+            });
+            
             return (
                 item.detalles.reduce(
-                    (sum, det) => sum + det.precio_venta * det.cantidad,
+                    (sum, det) =>
+                        sum +
+                        det.precio_venta * det.cantidad +
+                        det.total_impuestos * det.cantidad,
                     0
                 ) || 0
             );
         });
-
+        
         const _list = data.map((item, idx) => {
             return {
                 id: item.id,
@@ -115,6 +145,14 @@ export default ({ auth, q, contacts, departments, payments, medios_pago }) => {
         router.get(`remisiones/show/${id}`);
     };
 
+    const onSort = (field) => {
+        const sort = cookies.icon == "asc" ? "desc" : "asc";
+        setCookie("sort", field, { path: window.location.pathname });
+        setCookie("icon", sort, { path: window.location.pathname });
+
+        router.visit(window.location.pathname);
+    };
+
     useEffect(() => {
         onSetList();
     }, []);
@@ -160,6 +198,8 @@ export default ({ auth, q, contacts, departments, payments, medios_pago }) => {
 
                     <div className="bg-white overflow-auto shadow-sm sm:rounded-lg">
                         <Table
+                            sortIcon={cookies.icon || "down"}
+                            onSort={onSort}
                             data={list}
                             links={links}
                             onSearch={(evt) => onSearch(evt)}

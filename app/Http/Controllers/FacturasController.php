@@ -38,7 +38,7 @@ class FacturasController extends Controller
         }
 
         $query = Facturas::with(
-            'cliente', 'forma_pago', 'medio_pago'
+            'cliente', 'forma_pago', 'medio_pago', 'detalles.producto.impuestos.impuesto'
         );
 
         if ($request->q) {
@@ -49,8 +49,11 @@ class FacturasController extends Controller
                 ->orWhere('direccion', 'LIKE', '%'.$request->q.'%')
                 ->orWhere('celular', 'LIKE', '%'.$request->q.'%')
                 ;
-            })
-            ;
+            });
+        }
+
+        if ( isset($_COOKIE['sort']) && isset($_COOKIE['icon']) ) {
+            $query->orderBy( $_COOKIE['sort'], $_COOKIE['icon'] );
         }
 
         return Inertia::render('Facturas/Index', [

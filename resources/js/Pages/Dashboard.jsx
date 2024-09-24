@@ -1,14 +1,35 @@
-import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
-import { Head } from '@inertiajs/react';
-import Logo from '../../img/logo.svg';
+import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
+import { Head } from "@inertiajs/react";
+import Logo from "../../img/logo.svg";
+import { useEffect, useState } from "react";
 
 export default function Dashboard({ auth }) {
+    const [message, setMessage] = useState(false);
+    const [limitDate, setLimitDate] = useState('');
+
+    const calculateFechaPago = () => {
+        const fecha = new Date();
+        const date = new Date(fecha.getDate(), fecha.getMonth() + 1, 0);
+
+        if (date.getDate() - fecha.getDate() <= 7) {
+            setMessage(true);
+            setLimitDate( `${date.getDate()}/${fecha.getMonth() + 1}/${fecha.getFullYear()}` )
+        }
+    };
+
+    useEffect(() => {
+        calculateFechaPago();
+    }, []);
 
     return (
         <AuthenticatedLayout
             user={auth.user}
             rol={auth.rol}
-            header={<h2 className="font-semibold text-xl text-gray-800 leading-tight">Inicio</h2>}
+            header={
+                <h2 className="font-semibold text-xl text-gray-800 leading-tight">
+                    Inicio
+                </h2>
+            }
         >
             <Head title="Inicio" />
 
@@ -17,8 +38,25 @@ export default function Dashboard({ auth }) {
                     <div className="bg-white overflow-auto shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900">Bienvenido!</div>
                     </div>
+                    {message && (
+                        <div className="bg-amber-50 overflow-auto shadow-sm sm:rounded-lg mt-5">
+                            <div className="p-6 text-gray-900">
+                                Apreciado Cliente, <br />
+                                Le recordamos que su mensualidad está próxima a vencer, por favor
+                                realizar su pago para evitar suspensión en el servicio. <br /> <br />
+                                Fecha límite de pago { limitDate } <br /> <br />
+                                Métodos de pago: Bancolombia - Nequi - NU <br /><br />
 
-                    <img src={Logo} className='mx-auto mt-40' style={{opacity: '.2'}} />
+                                ¡Gracias por confiar en nuestros servicios!
+                            </div>
+                        </div>
+                    )}
+
+                    <img
+                        src={Logo}
+                        className="mx-auto mt-40"
+                        style={{ opacity: ".2" }}
+                    />
                 </div>
             </div>
         </AuthenticatedLayout>

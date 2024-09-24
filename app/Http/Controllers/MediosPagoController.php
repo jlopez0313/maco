@@ -15,10 +15,17 @@ class MediosPagoController extends Controller
      */
     public function index()
     {
+        $query = null;
+        if ( isset($_COOKIE['sort']) && isset($_COOKIE['icon']) ) {
+            $query = MediosPago::orderBy( $_COOKIE['sort'], $_COOKIE['icon'] )->paginate();
+        } else {
+            $query = MediosPago::paginate();
+        }
+
         return Inertia::render('Parametros/MediosPago/Index', [
             'filters' => Peticion::all('search', 'trashed'),
             'contacts' => new MediosPagoCollection(
-                MediosPago::paginate()
+                $query
             ),
         ]);
     }
