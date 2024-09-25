@@ -26,7 +26,7 @@ return new class extends Migration {
             $table->date('fecha_inicial');
             $table->date('fecha_final');
             $table->char('estado');
-            $table->unique(['resolucion', 'prefijo', 'consecutivo_inicial', 'consecutivo_final']);
+            $table->unique(['resolucion']);
             
             $table->timestamps();
             $table->softDeletes();
