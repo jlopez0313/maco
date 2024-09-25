@@ -3,17 +3,20 @@ import { Head } from "@inertiajs/react";
 import Logo from "../../img/logo.svg";
 import { useEffect, useState } from "react";
 
-export default function Dashboard({ auth }) {
+export default function Dashboard({ auth, created_at }) {
+
     const [message, setMessage] = useState(false);
     const [limitDate, setLimitDate] = useState('');
 
     const calculateFechaPago = () => {
-        const fecha = new Date();
-        const date = new Date(fecha.getDate(), fecha.getMonth() + 1, 0);
-
-        if (date.getDate() - fecha.getDate() <= 7) {
+        const timestamp = Date.parse(created_at);
+        const limit = new Date(timestamp);
+        
+        const now = new Date();
+        
+        if (limit.getDate() - now.getDate() <= 7) {
             setMessage(true);
-            setLimitDate( `${date.getDate()}/${fecha.getMonth() + 1}/${fecha.getFullYear()}` )
+            setLimitDate( `${limit.getDate()}/${String(now.getMonth() + 1).padStart(2, '0')}/${now.getFullYear()}` )
         }
     };
 
@@ -43,9 +46,11 @@ export default function Dashboard({ auth }) {
                             <div className="p-6 text-gray-900">
                                 Apreciado Cliente, <br />
                                 Le recordamos que su mensualidad está próxima a vencer, por favor
-                                realizar su pago para evitar suspensión en el servicio. <br /> <br />
-                                Fecha límite de pago { limitDate } <br /> <br />
-                                Métodos de pago: Bancolombia - Nequi - NU <br /><br />
+                                realizar su pago para evitar suspensión en el servicio. <br />
+                                Por favor omita este mensaje si ya realizó su respectivo pago.<br /> <br />
+
+                                Fecha límite de pago: <b> { limitDate } </b> <br /> <br />
+                                Métodos de pago: <b> Bancolombia - Nequi - NU </b> <br /><br />
 
                                 ¡Gracias por confiar en nuestros servicios!
                             </div>
