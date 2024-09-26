@@ -10,6 +10,17 @@ import ContactosEmpty from "./Empresa/Contactos/Empty";
 import ResolucionEmpty from "./Empresa/Resolucion/Empty";
 
 export default ({ auth, error, ...props }) => {
+
+    const printError = () => {
+        switch (error) {
+            case "Resolucion/Empty":
+                return <ResolucionEmpty {...props} />;
+            case "Contactos/Empty":
+                return <ContactosEmpty {...props} />;
+            default:
+                return <></>
+        }
+    }
     return (
         <AuthenticatedLayout
             user={auth.user}
@@ -27,16 +38,7 @@ export default ({ auth, error, ...props }) => {
                         <div
                             className={`p-6 text-gray-900 ${styles["bg-robot"]}`}
                         >
-                            {(() => {
-                                switch (error) {
-                                    case "Resolucion/Empty":
-                                        <ResolucionEmpty {...props} />;
-                                        break;
-                                    case "Contactos/Empty":
-                                        <ContactosEmpty {...props} />;
-                                        break;
-                                }
-                            })()}
+                            {printError()}
                         </div>
                     </div>
                 </div>
