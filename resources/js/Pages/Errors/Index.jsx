@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 // import Layout from '@/Components/Layout';
 import Icon from "@/Components/Icon";
 // import SearchFilter from '@/Shared/SearchFilter';
@@ -8,7 +8,12 @@ import { Head, router } from "@inertiajs/react";
 import styles from "./Errors.module.css";
 
 export default ({ auth, error, ...props }) => {
-    const LazyComponent = React.lazy(() => import(error));
+    const [LazyComponent, setLazy] = useState();
+    
+    useEffect(() => {
+        const Lazy = React.lazy(() => import(error));
+        setLazy( Lazy )
+    }, [error])
 
     return (
         <AuthenticatedLayout
