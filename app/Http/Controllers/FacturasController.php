@@ -29,11 +29,11 @@ class FacturasController extends Controller
 
         if ( !$resolucion ) {
             return Inertia::render('Errors/Index', [
-                'error' => './Empresa/Resolucion/Empty'
+                'error' => '@/Pages/Empresa/Resolucion/Empty'
             ]);
         } else if ( !$empresa->contacto ) {
             return Inertia::render('Errors/Index', [
-                'error' => './Empresa/Contactos/Empty'
+                'error' => '@/Pages/Empresa/Contactos/Empty'
             ]);
         }
 
