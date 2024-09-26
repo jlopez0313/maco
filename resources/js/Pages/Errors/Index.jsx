@@ -10,7 +10,6 @@ import ContactosEmpty from "./Empresa/Contactos/Empty";
 import ResolucionEmpty from "./Empresa/Resolucion/Empty";
 
 export default ({ auth, error, ...props }) => {
-
     const printError = () => {
         switch (error) {
             case "Resolucion/Empty":
@@ -18,9 +17,9 @@ export default ({ auth, error, ...props }) => {
             case "Contactos/Empty":
                 return <ContactosEmpty {...props} />;
             default:
-                return <></>
+                return <></>;
         }
-    }
+    };
     return (
         <AuthenticatedLayout
             user={auth.user}

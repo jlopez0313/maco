@@ -8,6 +8,7 @@ import { useForm } from "@inertiajs/react";
 import React, { Suspense, useEffect, useState } from "react";
 import axios from "axios";
 import Icon from "@/Components/Icon";
+import ContactosEmpty from "@/Pages/Errors/Empresa/Contactos/Empty";
 
 export const Form = ({
     id,
@@ -18,7 +19,7 @@ export const Form = ({
     onEdit,
 }) => {
     const [ciudades, setCiudades] = useState([]);
-    const [LazyComponent, setLazyComponent] = useState();
+    const [LazyComponent, setLazyComponent] = useState(null);
 
     const { data: formasPago } = payments;
 
@@ -97,11 +98,7 @@ export const Form = ({
                 });
 
                 if (!cliente.contacto) {
-                    const module = await import(
-                        "@/Pages/Errors/Clientes/Contactos/Empty"
-                    );
-                    const Lazy = module.default;
-                    setLazyComponent(<Lazy id={cliente.id} />);
+                    setLazyComponent('Contactos/Empty');
                 }
             } else {
                 reset();
@@ -119,6 +116,15 @@ export const Form = ({
             setCiudades(data.data);
         } else {
             setCiudades([]);
+        }
+    };
+
+    const loadErrorPage = () => {
+        switch (error) {
+            case "Contactos/Empty":
+                return <ContactosEmpty {...props} />;
+            default:
+                return <></>;
         }
     };
 
@@ -362,7 +368,7 @@ export const Form = ({
                         </div>
                     </div>
 
-                    <div className="my-4 bg-error">{LazyComponent}</div>
+                    <div className="my-4 bg-error">{LazyComponent && loadErrorPage()}</div>
 
                     <div className="flex items-center justify-end mt-4">
                         <PrimaryButton
