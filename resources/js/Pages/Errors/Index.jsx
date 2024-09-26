@@ -6,20 +6,10 @@ import Icon from "@/Components/Icon";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, router } from "@inertiajs/react";
 import styles from "./Errors.module.css";
+import ContactosEmpty from "./Empresa/Contactos/Empty";
+import ResolucionEmpty from "./Empresa/Resolucion/Empty";
 
 export default ({ auth, error, ...props }) => {
-    const [LazyComponent, setLazy] = useState(null);
-
-    const onSetLazy = async () => {
-        const module = await import( error);
-        const Lazy = module.default;
-        setLazyComponent(<Lazy {...props} />);
-    }
-
-    useEffect(() => {
-        onSetLazy()
-    }, []);
-
     return (
         <AuthenticatedLayout
             user={auth.user}
@@ -37,9 +27,16 @@ export default ({ auth, error, ...props }) => {
                         <div
                             className={`p-6 text-gray-900 ${styles["bg-robot"]}`}
                         >
-                            <Suspense fallback={<div>Loading...</div>}>
-                                {LazyComponent}
-                            </Suspense>
+                            {(() => {
+                                switch (error) {
+                                    case "Resolucion/Empty":
+                                        <ResolucionEmpty {...props} />;
+                                        break;
+                                    case "Contactos/Empty":
+                                        <ContactosEmpty {...props} />;
+                                        break;
+                                }
+                            })()}
                         </div>
                     </div>
                 </div>
