@@ -8,12 +8,17 @@ import { Head, router } from "@inertiajs/react";
 import styles from "./Errors.module.css";
 
 export default ({ auth, error, ...props }) => {
-    const [LazyComponent, setLazy] = useState();
-    
+    const [LazyComponent, setLazy] = useState(null);
+
+    const onSetLazy = async () => {
+        const module = await import( error);
+        const Lazy = module.default;
+        setLazyComponent(<Lazy {...props} />);
+    }
+
     useEffect(() => {
-        const Lazy = React.lazy(() => import(error));
-        setLazy( Lazy )
-    }, [error])
+        onSetLazy()
+    }, []);
 
     return (
         <AuthenticatedLayout
@@ -33,7 +38,7 @@ export default ({ auth, error, ...props }) => {
                             className={`p-6 text-gray-900 ${styles["bg-robot"]}`}
                         >
                             <Suspense fallback={<div>Loading...</div>}>
-                                <LazyComponent {...props} />
+                                {LazyComponent}
                             </Suspense>
                         </div>
                     </div>
