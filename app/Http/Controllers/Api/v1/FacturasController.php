@@ -98,4 +98,13 @@ class FacturasController extends Controller
         }
 
     }
+
+    public function cierre(Request $erquest) {
+        
+        $data = Facturas::with('detalles.producto.impuestos.impuesto')
+        ->whereDate('created_at', \Carbon\Carbon::today())
+        ->get();
+
+        return FacturasResource::collection( $data );
+    }
 }

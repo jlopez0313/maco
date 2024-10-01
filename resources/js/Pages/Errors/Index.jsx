@@ -10,7 +10,8 @@ import ContactosEmpty from "./Empresa/Contactos/Empty";
 import ResolucionEmpty from "./Empresa/Resolucion/Empty";
 
 export default ({ auth, error, ...props }) => {
-    const printError = () => {
+    
+    const loadErrorPage = () => {
         switch (error) {
             case "Resolucion/Empty":
                 return <ResolucionEmpty {...props} />;
@@ -20,6 +21,7 @@ export default ({ auth, error, ...props }) => {
                 return <></>;
         }
     };
+
     return (
         <AuthenticatedLayout
             user={auth.user}
@@ -37,7 +39,7 @@ export default ({ auth, error, ...props }) => {
                         <div
                             className={`p-6 text-gray-900 ${styles["bg-robot"]}`}
                         >
-                            {printError()}
+                            {loadErrorPage()}
                         </div>
                     </div>
                 </div>

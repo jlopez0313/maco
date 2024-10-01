@@ -14,8 +14,10 @@ import { AdminModal } from "@/Components/AdminModal";
 import { toCurrency } from "@/Helpers/Numbers";
 import TextInput from "@/Components/Form/TextInput";
 import { useCookies } from "react-cookie";
+import SecondaryButton from "@/Components/Buttons/SecondaryButton";
+import { Cierre } from "./Cierre";
 
-export default ({ auth, q, contacts, departments, payments, medios_pago }) => {
+export default ({ auth, q, contacts, departments, payments, medios_pago, clientes }) => {
     const { data: departamentos } = departments;
 
     const {
@@ -44,6 +46,7 @@ export default ({ auth, q, contacts, departments, payments, medios_pago }) => {
     const [id, setId] = useState(null);
     const [list, setList] = useState([]);
     const [show, setShow] = useState(false);
+    const [showCierre, setShowCierre] = useState(false);
 
     const onSetList = () => {
         const sum = data.map((item) => {
@@ -116,6 +119,10 @@ export default ({ auth, q, contacts, departments, payments, medios_pago }) => {
             await axios.delete(`/api/v1/facturas/${id}`);
             onReload();
         }
+    };
+
+    const onToggleCierre = (isShown) => {
+        setShowCierre(isShown);
     };
 
     const onToggleModal = (isShown) => {
@@ -191,9 +198,17 @@ export default ({ auth, q, contacts, departments, payments, medios_pago }) => {
                             </PrimaryButton>
                         </div>
 
+                        <div className="flex items-center">
+                        
+                        <SecondaryButton onClick={() => onToggleCierre(true)} className="me-4">
+                            Cierre de Caja
+                        </SecondaryButton>
+                        
                         <PrimaryButton onClick={() => onToggleModal(true)}>
                             Agregar
                         </PrimaryButton>
+                        </div>
+
                     </div>
 
                     <div className="bg-white overflow-auto shadow-sm sm:rounded-lg">
@@ -221,10 +236,18 @@ export default ({ auth, q, contacts, departments, payments, medios_pago }) => {
                     medidas={[]}
                     origenes={[]}
                     payments={payments}
+                    clientes={clientes}
                     medios_pago={medios_pago}
                     setIsOpen={onToggleModal}
                     onEdit={onEdit}
                     id={id}
+                />
+            </Modal>
+
+            <Modal show={showCierre} closeable={true} title="Cierre de Caja">
+                <Cierre
+                    auth={auth}
+                    setIsOpen={onToggleCierre}
                 />
             </Modal>
 

@@ -9,7 +9,6 @@ import Pagination from "@/Components/Table/Pagination";
 import Table from "@/Components/Table/Table";
 import PrimaryButton from "@/Components/Buttons/PrimaryButton";
 import Modal from "@/Components/Modal";
-import { Form } from "./Form";
 import { AdminModal } from "@/Components/AdminModal";
 import SecondaryButton from "@/Components/Buttons/SecondaryButton";
 import { toCurrency } from "@/Helpers/Numbers";
@@ -20,13 +19,6 @@ export default ({ auth, q, inventario, impuestos, retenciones, contacts, colores
         data,
         meta: { links },
     } = contacts;
-
-    const { data: coloresLst } = colores;
-    const { data: impuestosLst } = impuestos;
-    const { data: retencionesLst } = retenciones;
-    const { data: unidadesMedidaLst } = unidades_medida;
-
-    const { data: medidasLst } = medidas;
 
     const titles = [
         "Artículo",
@@ -71,8 +63,17 @@ export default ({ auth, q, inventario, impuestos, retenciones, contacts, colores
         if (!isShown) {
             setId(null);
         }
-        setShow(isShown);
+        onGoToForm();
     };
+
+    const onGoToForm = () => {
+
+        if ( id ) {
+            router.visit('/inventario/modify/' + inventario.id + '/' + id );
+        } else {
+            router.visit('/inventario/add/' + inventario.id );
+        }
+    }
 
     const onReload = () => {
         onToggleModal(false);
@@ -175,21 +176,6 @@ export default ({ auth, q, inventario, impuestos, retenciones, contacts, colores
                     </div>
                 </div>
             </div>
-
-            <Modal show={show} closeable={true} title="Crear Referencia">
-                <Form
-                    auth={auth}
-                    inventario={inventario}
-                    colores={coloresLst}
-                    medidas={medidasLst}
-                    impuestosLst={impuestosLst}
-                    retencionesLst={retencionesLst}
-                    unidadesMedidaLst={unidadesMedidaLst}
-                    setIsOpen={onToggleModal}
-                    onReload={onReload}
-                    id={id}
-                />
-            </Modal>
 
             <AdminModal
                 title={action}

@@ -708,4 +708,49 @@ class SoapController extends Controller
             return $ex;
         }
     }
+
+
+    function qr( $id ) {
+        try {
+
+            $status = $this->status( $id );
+            $result = '';
+
+            if ( $status->code == '201') {
+
+                // $wsdlUrl = 'https://webservice.facturatech.co/v2/BETA/WSV2DEMO.asmx?WSDL';
+                $wsdlUrl = 'https://ws.facturatech.co/v2/demo/index.php?wsdl';
+    
+                $soapClientOptions = [
+                    'encoding' => 'UTF-8',
+                    'soap_version' => 'SOAP_1_2',
+                    'trace' => 1,
+                    'exceptions' => 1,
+                    'connection_timeout' => 1000,
+                    'soap.wsdl_cache_enabled' => '0',
+                ];
+    
+                $factura = Facturas::find($id);
+                
+                $client = new \SoapClient($wsdlUrl, $soapClientOptions);
+                
+                $result = $client->__soapCall('FtechAction.getQRFile', [
+                    'username' => 'MACO02062024',
+                    'password' => '2a4d4a72f5aacf82e517cad6943fd3891157a52d8ed5a6fddedbbd31632035e8',
+                    'prefijo' => $factura->prefijo,
+                    'folio' => $factura->folio,
+                ]);
+    
+                if( $result->code == '404' ) {
+                    $result->folio = $factura->prefijo . $factura->folio;
+                }
+            } else {
+                $result = $status;
+            }
+
+            return $result;
+        } catch (Exception $ex) {
+            return $ex;
+        }
+    }
 }

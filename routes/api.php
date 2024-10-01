@@ -61,6 +61,7 @@ Route::middleware([
 
     Route::prefix('facturas')->group(function () {
         Route::post('registrar/{id}', [App\Http\Controllers\Api\v1\FacturasController::class, 'registrar']);
+        Route::post('cierre', [App\Http\Controllers\Api\v1\FacturasController::class, 'cierre']);
     });
     Route::apiResource('facturas', App\Http\Controllers\Api\v1\FacturasController::class);
 

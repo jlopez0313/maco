@@ -6,6 +6,8 @@ use App\Http\Resources\DepartamentosCollection;
 use App\Http\Resources\FacturasCollection;
 use App\Http\Resources\FormasPagoCollection;
 use App\Http\Resources\MediosPagoCollection;
+use App\Http\Resources\ClientesCollection;
+use App\Models\Clientes;
 use App\Models\MediosPago;
 use App\Models\Departamentos;
 use App\Models\Facturas;
@@ -15,6 +17,9 @@ use App\Models\Empresas;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Request as Peticion;
 use Inertia\Inertia;
+
+use App\Http\Controllers\Api\v1\SoapController;
+
 
 class FacturasController extends Controller
 {
@@ -60,6 +65,9 @@ class FacturasController extends Controller
             'filters' => Peticion::all('search', 'trashed'),
             'contacts' => new FacturasCollection(
                 $query->paginate()->appends(request()->query())
+            ),
+            'clientes' => new ClientesCollection(
+                Clientes::orderBy('documento')->get()
             ),
             'q' => $request->q ?? '',
             'medios_pago' => new MediosPagoCollection(
@@ -152,6 +160,17 @@ class FacturasController extends Controller
 
     public function qr(string $id)
     {
-        echo \QrCode::size(700)->generate(url('/remisiones/pdf/'.$id));
+        $factura = Facturas::find($id);
+
+        if ( !$factura->transaccionID ) { 
+            echo \QrCode::size(700)->generate(url('/remisiones/pdf/'.$id));
+        } else {
+            $soap = new SoapController();
+            $resource = $soap->qr( $id );
+
+            echo \QrCode::size(700)->generate($resource->resourceData);
+
+        }
+
     }
 }

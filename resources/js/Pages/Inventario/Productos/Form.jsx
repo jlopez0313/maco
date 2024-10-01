@@ -4,25 +4,30 @@ import PrimaryButton from "@/Components/Buttons/PrimaryButton";
 import SecondaryButton from "@/Components/Buttons/SecondaryButton";
 import TextInput from "@/Components/Form/TextInput";
 import Select from "@/Components/Form/Select";
-import { useForm } from "@inertiajs/react";
+import { Head, router, useForm } from "@inertiajs/react";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import Table from "@/Components/Table/Table";
 
-export const Form = ({
+export default ({
     auth,
     id,
     inventario,
-    impuestosLst,
-    retencionesLst,
-    unidadesMedidaLst,
+    impuestos,
+    retenciones,
     colores,
     medidas,
-    setIsOpen,
-    onReload,
+    unidades_medida,
 }) => {
-    
     const titles = ["Concepto", "Tarifa", "Tipo de Tarifa", "Tipo de Impuesto"];
+
+    const { data: coloresLst } = colores;
+    const { data: impuestosLst } = impuestos;
+    const { data: retencionesLst } = retenciones;
+    const { data: unidadesMedidaLst } = unidades_medida;
+
+    const { data: medidasLst } = medidas;
 
     const { data, setData, processing, errors, reset } = useForm({
         updated_by: auth.user.id,
@@ -39,8 +44,8 @@ export const Form = ({
     const [tableList, setTableList] = useState([]);
     const [listaImptos, setListaImptos] = useState(impuestosLst);
     const [listaRetenciones, setListaRetenciones] = useState(retencionesLst);
-    const [impuesto, setImpuesto] = useState('');
-    const [retencion, setRetencion] = useState('');
+    const [impuesto, setImpuesto] = useState("");
+    const [retencion, setRetencion] = useState("");
 
     const submit = async (e) => {
         e.preventDefault();
@@ -61,7 +66,7 @@ export const Form = ({
             updated_by: auth.user.id,
             inventarios_id: inventario?.id || "",
             referencia: item.referencia || "",
-            unidad_medida_id: item.unidad_medida_id || "",
+            unidad_medida_id: item.unidad_medida?.id || "",
             medidas_id: item.medida?.id || "",
             colores_id: item.color?.id || "",
             cantidad: item.cantidad,
@@ -74,27 +79,27 @@ export const Form = ({
         data.impuestos.push({
             impuestos_id: impuesto,
             productos_id: id || null,
-            impuesto: listaImptos.find( x => x.id == impuesto)
+            impuesto: listaImptos.find((x) => x.id == impuesto),
         });
 
         setData({
             ...data,
             impuestos: [...data.impuestos],
         });
-    }
+    };
 
     const onAddRetencion = () => {
         data.impuestos.push({
             impuestos_id: retencion,
             productos_id: id || null,
-            impuesto: listaRetenciones.find( x => x.id == retencion)
+            impuesto: listaRetenciones.find((x) => x.id == retencion),
         });
 
         setData({
             ...data,
             impuestos: [...data.impuestos],
         });
-    }
+    };
 
     const onListImpuestos = () => {
         const _tableList = data.impuestos.map((item) => {
@@ -106,25 +111,30 @@ export const Form = ({
                 tipo_impuesto_label: item.impuesto?.tipo_impuesto_label || "",
             };
         });
-        
+
         setTableList(_tableList);
 
-        const tmp = data.impuestos.map( (item) => Number(item.impuestos_id) );
-        const _imptos = impuestosLst.filter( _item => !tmp.includes( _item.id ) )
-        const _retenciones = retencionesLst.filter( _item => !tmp.includes( _item.id ) )
+        const tmp = data.impuestos.map((item) => Number(item.impuestos_id));
+        const _imptos = impuestosLst.filter((_item) => !tmp.includes(_item.id));
+        const _retenciones = retencionesLst.filter(
+            (_item) => !tmp.includes(_item.id)
+        );
 
-        
-        setListaImptos( _imptos )
-        setListaRetenciones( _retenciones )
-    }
+        setListaImptos(_imptos);
+        setListaRetenciones(_retenciones);
+    };
 
     const onRemoveImpuesto = (_id) => {
-        const currentImpuestos = data.impuestos.filter( x => x.id != _id);
+        const currentImpuestos = data.impuestos.filter((x) => x.id != _id);
 
         setData({
             ...data,
             impuestos: [...currentImpuestos],
         });
+    };
+
+    const onReload = () => {
+        router.visit('/inventario/show/' + inventario.id)
     }
 
     useEffect(() => {
@@ -133,292 +143,387 @@ export const Form = ({
 
     useEffect(() => {
         onListImpuestos();
-    }, [data])
+    }, [data]);
 
     return (
-        <div className="pb-12 pt-6">
-            <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <form onSubmit={submit}>
-                    <div className="grid grid-cols-2 gap-4">
-                        <div>
-                            <InputLabel htmlFor="unidad_medida_id" value="Unidad de Medida" />
+        <AuthenticatedLayout
+            user={auth.user}
+            header={
+                <h2 className="font-semibold text-xl text-gray-800 leading-tight">
+                    Registrar Referencia
+                </h2>
+            }
+        >
+            <Head title="Inventario" />
 
-                            <Select
-                                id="unidad_medida_id"
-                                name="unidad_medida_id"
-                                className="mt-1 block w-full"
-                                value={data.unidad_medida_id}
-                                onChange={(e) =>
-                                    setData("unidad_medida_id", e.target.value)
-                                }
-                            >
-                                {unidadesMedidaLst.map((tipo, key) => {
-                                    return (
-                                        <option value={tipo.id} key={key}>
-                                            {tipo.descripcion}
-                                        </option>
-                                    );
-                                })}
-                            </Select>
+            <form onSubmit={submit}>
+                <div className="py-12">
+                    <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                        <div className="bg-white overflow-auto shadow-sm sm:rounded-lg">
+                            <div className="pb-12 pt-6">
+                                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                                    <h2 className="font-semibold text-xl text-gray-800 leading-tight">
+                                        Información General
+                                    </h2>
 
-                            <InputError
-                                message={errors.unidad_medida_id}
-                                className="mt-2"
-                            />
+                                    <div className="grid grid-cols-2 gap-4  mt-6">
+                                        <div>
+                                            <InputLabel
+                                                htmlFor="unidad_medida_id"
+                                                value="Unidad de Medida"
+                                            />
+
+                                            <Select
+                                                id="unidad_medida_id"
+                                                name="unidad_medida_id"
+                                                className="mt-1 block w-full"
+                                                value={data.unidad_medida_id}
+                                                onChange={(e) =>
+                                                    setData(
+                                                        "unidad_medida_id",
+                                                        e.target.value
+                                                    )
+                                                }
+                                            >
+                                                {unidadesMedidaLst.map(
+                                                    (tipo, key) => {
+                                                        return (
+                                                            <option
+                                                                value={tipo.id}
+                                                                key={key}
+                                                            >
+                                                                {
+                                                                    tipo.descripcion
+                                                                }
+                                                            </option>
+                                                        );
+                                                    }
+                                                )}
+                                            </Select>
+
+                                            <InputError
+                                                message={
+                                                    errors.unidad_medida_id
+                                                }
+                                                className="mt-2"
+                                            />
+                                        </div>
+
+                                        <div>
+                                            <InputLabel
+                                                htmlFor="medidas_id"
+                                                value="Medida"
+                                            />
+
+                                            <Select
+                                                id="medidas_id"
+                                                name="medidas_id"
+                                                className="mt-1 block w-full"
+                                                value={data.medidas_id}
+                                                onChange={(e) =>
+                                                    setData(
+                                                        "medidas_id",
+                                                        e.target.value
+                                                    )
+                                                }
+                                            >
+                                                {medidasLst.map((tipo, key) => {
+                                                    return (
+                                                        <option
+                                                            value={tipo.id}
+                                                            key={key}
+                                                        >
+                                                            {tipo.medida}
+                                                        </option>
+                                                    );
+                                                })}
+                                            </Select>
+
+                                            <InputError
+                                                message={errors.medidas_id}
+                                                className="mt-2"
+                                            />
+                                        </div>
+
+                                        <div>
+                                            <InputLabel
+                                                htmlFor="colores_id"
+                                                value="Color"
+                                            />
+
+                                            <Select
+                                                id="colores_id"
+                                                name="colores_id"
+                                                className="mt-1 block w-full"
+                                                value={data.colores_id}
+                                                onChange={(e) =>
+                                                    setData(
+                                                        "colores_id",
+                                                        e.target.value
+                                                    )
+                                                }
+                                            >
+                                                {coloresLst.map((tipo, key) => {
+                                                    return (
+                                                        <option
+                                                            value={tipo.id}
+                                                            key={key}
+                                                        >
+                                                            {tipo.color}
+                                                        </option>
+                                                    );
+                                                })}
+                                            </Select>
+
+                                            <InputError
+                                                message={errors.colores_id}
+                                                className="mt-2"
+                                            />
+                                        </div>
+
+                                        <div>
+                                            <InputLabel
+                                                htmlFor="referencia"
+                                                value="Referencia"
+                                            />
+
+                                            <TextInput
+                                                placeholder="Escriba aquí"
+                                                id="referencia"
+                                                type="text"
+                                                name="referencia"
+                                                value={data.referencia}
+                                                className="mt-1 block w-full"
+                                                autoComplete="referencia"
+                                                onChange={(e) =>
+                                                    setData(
+                                                        "referencia",
+                                                        e.target.value
+                                                    )
+                                                }
+                                            />
+
+                                            <InputError
+                                                message={errors.referencia}
+                                                className="mt-2"
+                                            />
+                                        </div>
+
+                                        <div>
+                                            <InputLabel
+                                                htmlFor="cantidad"
+                                                value="Cantidad"
+                                            />
+
+                                            <TextInput
+                                                placeholder="Escriba aquí"
+                                                id="cantidad"
+                                                type="number"
+                                                name="cantidad"
+                                                value={data.cantidad}
+                                                className="mt-1 block w-full"
+                                                autoComplete="cantidad"
+                                                onChange={(e) =>
+                                                    setData(
+                                                        "cantidad",
+                                                        e.target.value
+                                                    )
+                                                }
+                                            />
+
+                                            <InputError
+                                                message={errors.cantidad}
+                                                className="mt-2"
+                                            />
+                                        </div>
+
+                                        <div>
+                                            <InputLabel
+                                                htmlFor="precio"
+                                                value="Precio de Costo"
+                                            />
+
+                                            <TextInput
+                                                placeholder="Escriba aquí"
+                                                id="precio"
+                                                type="number"
+                                                name="precio"
+                                                value={data.precio}
+                                                className="mt-1 block w-full"
+                                                autoComplete="precio"
+                                                onChange={(e) =>
+                                                    setData(
+                                                        "precio",
+                                                        e.target.value
+                                                    )
+                                                }
+                                            />
+
+                                            <InputError
+                                                message={errors.precio}
+                                                className="mt-2"
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        
-                        <div>
-                            <InputLabel htmlFor="medidas_id" value="Medida" />
 
-                            <Select
-                                id="medidas_id"
-                                name="medidas_id"
-                                className="mt-1 block w-full"
-                                value={data.medidas_id}
-                                onChange={(e) =>
-                                    setData("medidas_id", e.target.value)
-                                }
-                            >
-                                {medidas.map((tipo, key) => {
-                                    return (
-                                        <option value={tipo.id} key={key}>
-                                            
-                                            {tipo.medida}
-                                        </option>
-                                    );
-                                })}
-                            </Select>
+                        <div className="mt-5 bg-white overflow-auto shadow-sm sm:rounded-lg">
+                            <div className="pb-12 pt-6">
+                                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                                    <h2 className="font-semibold text-xl text-gray-800 leading-tight">
+                                    Impuestos Aplicados
+                                    </h2>
 
-                            <InputError
-                                message={errors.medidas_id}
-                                className="mt-2"
-                            />
-                        </div>
+                                    <div className="mt-5 bg-white overflow-auto shadow-sm sm:rounded-lg">
+                                        <Table
+                                            data={tableList}
+                                            links={[]}
+                                            onTrash={onRemoveImpuesto}
+                                            titles={titles}
+                                            actions={["trash"]}
+                                        />
+                                    </div>
 
-                        <div>
-                            <InputLabel htmlFor="colores_id" value="Color" />
+                                    <div className="mt-5 grid grid-cols-1 gap-4">
+                                        <div>
+                                            <InputLabel
+                                                htmlFor="medidas_id"
+                                                value="Agregar Impuesto"
+                                            />
 
-                            <Select
-                                id="colores_id"
-                                name="colores_id"
-                                className="mt-1 block w-full"
-                                value={data.colores_id}
-                                onChange={(e) =>
-                                    setData("colores_id", e.target.value)
-                                }
-                            >
-                                {colores.map((tipo, key) => {
-                                    return (
-                                        <option value={tipo.id} key={key}>
-                                            
-                                            {tipo.color}
-                                        </option>
-                                    );
-                                })}
-                            </Select>
+                                            <Select
+                                                id="impuestos_id"
+                                                name="impuestos_id"
+                                                className="mt-1 block w-full"
+                                                onChange={(e) =>
+                                                    setImpuesto(e.target.value)
+                                                }
+                                            >
+                                                {listaImptos.map(
+                                                    (tipo, key) => {
+                                                        return (
+                                                            <option
+                                                                value={tipo.id}
+                                                                key={key}
+                                                            >
+                                                                {tipo.concepto}{" "}
+                                                                - {tipo.tarifa}{" "}
+                                                                -{" "}
+                                                                {
+                                                                    tipo.tipo_tarifa_label
+                                                                }
+                                                            </option>
+                                                        );
+                                                    }
+                                                )}
+                                            </Select>
 
-                            <InputError
-                                message={errors.colores_id}
-                                className="mt-2"
-                            />
-                        </div>
+                                            <InputError
+                                                message={errors.impuestos_id}
+                                                className="mt-2"
+                                            />
+                                        </div>
+                                    </div>
 
-                        <div>
-                            <InputLabel
-                                htmlFor="referencia"
-                                value="Referencia"
-                            />
+                                    <div className="flex items-center justify-end mt-4">
+                                        <SecondaryButton
+                                            type="button"
+                                            onClick={onAddImpuesto}
+                                        >
+                                            Agregar
+                                        </SecondaryButton>
+                                    </div>
 
-                            <TextInput
-                                placeholder="Escriba aquí"
-                                id="referencia"
-                                type="text"
-                                name="referencia"
-                                value={data.referencia}
-                                className="mt-1 block w-full"
-                                autoComplete="referencia"
-                                onChange={(e) =>
-                                    setData("referencia", e.target.value)
-                                }
-                            />
+                                    <div className="mt-2 grid grid-cols-1 gap-4">
+                                        <div>
+                                            <InputLabel
+                                                htmlFor="medidas_id"
+                                                value="Agregar Retención"
+                                            />
 
-                            <InputError
-                                message={errors.referencia}
-                                className="mt-2"
-                            />
-                        </div>
+                                            <Select
+                                                id="retenciones_id"
+                                                name="retenciones_id"
+                                                className="mt-1 block w-full"
+                                                onChange={(e) =>
+                                                    setRetencion(e.target.value)
+                                                }
+                                            >
+                                                {listaRetenciones.map(
+                                                    (tipo, key) => {
+                                                        return (
+                                                            <option
+                                                                value={tipo.id}
+                                                                key={key}
+                                                            >
+                                                                {tipo.concepto}{" "}
+                                                                - {tipo.tarifa}{" "}
+                                                                -{" "}
+                                                                {
+                                                                    tipo.tipo_tarifa_label
+                                                                }
+                                                            </option>
+                                                        );
+                                                    }
+                                                )}
+                                            </Select>
 
-                        <div>
-                            <InputLabel htmlFor="cantidad" value="Cantidad" />
+                                            <InputError
+                                                message={errors.retenciones_id}
+                                                className="mt-2"
+                                            />
+                                        </div>
+                                    </div>
 
-                            <TextInput
-                                placeholder="Escriba aquí"
-                                id="cantidad"
-                                type="number"
-                                name="cantidad"
-                                value={data.cantidad}
-                                className="mt-1 block w-full"
-                                autoComplete="cantidad"
-                                onChange={(e) =>
-                                    setData("cantidad", e.target.value)
-                                }
-                            />
+                                    <div className="flex items-center justify-end mt-4">
+                                        <SecondaryButton
+                                            type="button"
+                                            onClick={onAddRetencion}
+                                        >
+                                            Agregar
+                                        </SecondaryButton>
+                                    </div>
 
-                            <InputError
-                                message={errors.cantidad}
-                                className="mt-2"
-                            />
-                        </div>
-
-                        <div>
-                            <InputLabel
-                                htmlFor="precio"
-                                value="Precio de Costo"
-                            />
-
-                            <TextInput
-                                placeholder="Escriba aquí"
-                                id="precio"
-                                type="number"
-                                name="precio"
-                                value={data.precio}
-                                className="mt-1 block w-full"
-                                autoComplete="precio"
-                                onChange={(e) =>
-                                    setData("precio", e.target.value)
-                                }
-                            />
-
-                            <InputError
-                                message={errors.precio}
-                                className="mt-2"
-                            />
-                        </div>
-                    </div>
-
-                    <div className="mt-5 bg-white overflow-auto shadow-sm sm:rounded-lg">
-                        <Table
-                            caption="Impuestos Aplicados"
-                            data={tableList}
-                            links={[]}
-                            onTrash={onRemoveImpuesto}
-                            titles={titles}
-                            actions={["trash"]}
-                        />
-                    </div>
-
-                    <div className="mt-5 grid grid-cols-1 gap-4">
-                        <div>
-                            <InputLabel
-                                htmlFor="medidas_id"
-                                value="Agregar Impuesto"
-                            />
-
-                            <Select
-                                id="impuestos_id"
-                                name="impuestos_id"
-                                className="mt-1 block w-full"
-                                onChange={(e) =>
-                                    setImpuesto(e.target.value)
-                                }
-                            >
-                                {listaImptos.map((tipo, key) => {
-                                    return (
-                                        <option value={tipo.id} key={key}>
-                                            {tipo.concepto} - {tipo.tarifa} - {tipo.tipo_tarifa_label}
-                                        </option>
-                                    );
-                                })}
-                            </Select>
-
-                            <InputError
-                                message={errors.impuestos_id}
-                                className="mt-2"
-                            />
-                        </div>
-                    </div>
-
-                    <div className="flex items-center justify-end mt-4">
-                        <SecondaryButton
-                            type="button"
-                            onClick={onAddImpuesto}
-                        >
-                            Agregar
-                        </SecondaryButton>
-                    </div>
-
-                    <div className="mt-2 grid grid-cols-1 gap-4">
-                        <div>
-                            <InputLabel
-                                htmlFor="medidas_id"
-                                value="Agregar Retención"
-                            />
-
-                            <Select
-                                id="retenciones_id"
-                                name="retenciones_id"
-                                className="mt-1 block w-full"
-                                onChange={(e) =>
-                                    setRetencion(e.target.value)
-                                }
-                            >
-                                {listaRetenciones.map((tipo, key) => {
-                                    return (
-                                        <option value={tipo.id} key={key}>
-                                            {tipo.concepto} - {tipo.tarifa} - {tipo.tipo_tarifa_label}
-                                        </option>
-                                    );
-                                })}
-                            </Select>
-
-                            <InputError
-                                message={errors.retenciones_id}
-                                className="mt-2"
-                            />
-                        </div>
-                    </div>
-
-                    <div className="flex items-center justify-end mt-4">
-                        <SecondaryButton
-                            type="button"
-                            onClick={onAddRetencion}
-                        >
-                            Agregar
-                        </SecondaryButton>
-                    </div>
-
-                    <div className="mt-11 flex items-center justify-end mt-4">
-                        <PrimaryButton
-                            className="ms-4 mx-4"
-                            disabled={processing}
-                        >
+                                    <TextInput
+                                        placeholder="Escriba aquí"
+                                        id="inventarios_id"
+                                        type="hidden"
+                                        name="inventarios_id"
+                                        value={inventario.id}
+                                        className="mt-1 block w-full"
+                                        autoComplete="inventarios_id"
+                                        onChange={(e) =>
+                                            setData(
+                                                "inventarios_id",
+                                                e.target.value
+                                            )
+                                        }
+                                    />
+                                </div>
+                            </div>
                             
-                            Guardar
-                        </PrimaryButton>
+                        </div>
 
-                        <SecondaryButton
-                            type="button"
-                            onClick={() => setIsOpen(false)}
-                        >
-                            
-                            Cancelar
-                        </SecondaryButton>
+                        <div className="mt-11 flex items-center justify-end mt-4">
+                                        <PrimaryButton
+                                            className="ms-4 mx-4"
+                                            disabled={processing}
+                                        >
+                                            Guardar
+                                        </PrimaryButton>
+
+                                        <SecondaryButton
+                                            type="button"
+                                            onClick={() => onReload()}
+                                        >
+                                            Cancelar
+                                        </SecondaryButton>
+                                    </div>
                     </div>
-
-                    <TextInput
-                        placeholder="Escriba aquí"
-                        id="inventarios_id"
-                        type="hidden"
-                        name="inventarios_id"
-                        value={inventario.id}
-                        className="mt-1 block w-full"
-                        autoComplete="inventarios_id"
-                        onChange={(e) =>
-                            setData("inventarios_id", e.target.value)
-                        }
-                    />
-                </form>
-            </div>
-        </div>
+                </div>
+            </form>
+        </AuthenticatedLayout>
     );
 };

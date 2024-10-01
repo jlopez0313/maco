@@ -106,15 +106,66 @@ class InventarioController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Request $request, string $id)
+    public function add(Request $request, string $id)
     {
+        return Inertia::render('Inventario/Productos/Form', [
+            'inventario' => Inventarios::find($id),
+            'colores' => new ColoresCollection(
+                Colores::orderBy('color')
+                ->get()
+            ),
+            'unidades_medida' => new UnidadesMedidaCollection(
+                UnidadesMedida::orderBy('descripcion')
+                ->get()
+            ),
+            'medidas' => new MedidasCollection(
+                Medidas::orderBy('medida')
+                ->get()
+            ),
+            'impuestos' => new ImpuestosCollection(
+                Impuestos::where('tipo_impuesto', 'I')
+                ->orderBy('concepto')
+                ->get()
+            ),
+            'retenciones' => new ImpuestosCollection(
+                Impuestos::where('tipo_impuesto', 'R')
+                ->orderBy('concepto')
+                ->get()
+            ),
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function modify(Request $request, string $inventario,  string $id)
     {
+        return Inertia::render('Inventario/Productos/Form', [
+            'id' => $id, // ID DEL PRODUCTO
+            'inventario' => Inventarios::find($inventario),
+            'colores' => new ColoresCollection(
+                Colores::orderBy('color')
+                ->get()
+            ),
+            'unidades_medida' => new UnidadesMedidaCollection(
+                UnidadesMedida::orderBy('descripcion')
+                ->get()
+            ),
+            'medidas' => new MedidasCollection(
+                Medidas::orderBy('medida')
+                ->get()
+            ),
+            'impuestos' => new ImpuestosCollection(
+                Impuestos::where('tipo_impuesto', 'I')
+                ->orderBy('concepto')
+                ->get()
+            ),
+            'retenciones' => new ImpuestosCollection(
+                Impuestos::where('tipo_impuesto', 'R')
+                ->orderBy('concepto')
+                ->get()
+            ),
+        ]);
     }
 
     /**

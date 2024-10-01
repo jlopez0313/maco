@@ -144,6 +144,8 @@ Route::middleware([
     Route::prefix('inventario')->group(function () {
         Route::get('/', [InventarioController::class, 'index'])->name('inventario');
         Route::get('show/{id}', [InventarioController::class, 'show'])->name('inventario.show');
+        Route::get('add/{id}', [InventarioController::class, 'add'])->name('inventario.add');
+        Route::get('modify/{inventario}/{id}', [InventarioController::class, 'modify'])->name('inventario.modify');
     })->middleware(['auth', 'verified'])->name('inventario');
 
     Route::prefix('/gastos')->group(function () {

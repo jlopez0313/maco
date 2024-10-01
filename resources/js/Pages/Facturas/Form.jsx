@@ -9,19 +9,24 @@ import React, { Suspense, useEffect, useState } from "react";
 import axios from "axios";
 import Icon from "@/Components/Icon";
 import ContactosEmpty from "@/Pages/Errors/Empresa/Contactos/Empty";
+import { ReactSearchAutocomplete } from "react-search-autocomplete";
 
 export const Form = ({
     id,
     auth,
     payments,
+    clientes,
     medios_pago,
     setIsOpen,
     onEdit,
 }) => {
     const [ciudades, setCiudades] = useState([]);
+    const [listaClientes, setClientes] = useState([]);
+
     const [LazyComponent, setLazyComponent] = useState(null);
 
     const { data: formasPago } = payments;
+    const { data: clientesLst} = clientes;
 
     const { data: mediosPago } = medios_pago;
 
@@ -75,11 +80,7 @@ export const Form = ({
         if (data.documento) {
             setLazyComponent(null);
 
-            const {
-                data: { data: cliente },
-            } = await axios.post(
-                `/api/v1/clientes/by-document/${data.documento}`
-            );
+            const cliente = clientesLst.find( x => x.documento == data.documento);
 
             if (cliente) {
                 await onGetCities(cliente.ciudad?.departamento?.id);
@@ -98,7 +99,7 @@ export const Form = ({
                 });
 
                 if (!cliente.contacto) {
-                    setLazyComponent('Contactos/Empty');
+                    setLazyComponent("Contactos/Empty");
                 }
             } else {
                 reset();
@@ -119,7 +120,7 @@ export const Form = ({
         }
     };
 
-    const loadErrorPage = () => {
+    const loadErrorPage = (error) => {
         switch (error) {
             case "Contactos/Empty":
                 return <ContactosEmpty {...props} />;
@@ -128,10 +129,49 @@ export const Form = ({
         }
     };
 
+    const handleOnSearch = (string, results) => {
+        // onSearch will have as the first callback parameter
+        // the string searched and for the second the results.
+        console.log(string, results);
+    };
+
+    const handleOnHover = (result) => {
+        // the item hovered
+        // console.log(result);
+    };
+
+    const handleOnSelect = (item) => {
+        // the item selected
+        onCheckDoc(item.name);
+    };
+
+    const handleOnFocus = () => {
+        // console.log("Focused");
+    };
+
+    const formatResult = (item) => {
+        return (
+            <>
+                <span style={{ display: "block", textAlign: "left" }}>
+                    {item.name}
+                </span>
+            </>
+        );
+    };
+
     useEffect(() => {
         id && onGetItem();
     }, []);
 
+    useEffect(() => {
+        setClientes( clientesLst.map( x => { return { id: x.id, name: x.documento.toString()} } ) )
+    }, [clientesLst]);
+
+    useEffect(() => {
+        onSearchCliente()
+    }, [data.documento])
+
+    
     return (
         <div className="pb-12 pt-6">
             <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -141,6 +181,40 @@ export const Form = ({
                             <InputLabel htmlFor="documento" value="Documento" />
 
                             <div className="grid grid-cols-12 gap-4">
+                                <div
+                                    style={{ width: 290, marginTop: "0.25rem" }}
+                                >
+                                    <ReactSearchAutocomplete
+                                        placeholder="Escriba aquí"
+                                        showNoResultsText="Sin registros"
+                                        styling={{
+                                            height: "42px",
+                                            border: "1px solid rgb(209, 213, 219)",
+                                            borderRadius: "0.375rem",
+                                            //   backgroundColor: "white",
+                                            boxShadow: "0px",
+                                            //   hoverBackgroundColor: "#eee",
+                                            color: "#000",
+                                            fontSize: "15px",
+                                            fontFamily: "Figtree",
+                                            //   iconColor: "grey",
+                                            //   lineColor: "rgb(232, 234, 237)",
+                                            //   placeholderColor: "grey",
+                                            clearIconMargin: "3px 10px 0 0",
+                                            searchIconMargin: "0 0 0 10px",
+                                            // };
+                                        }}
+                                        items={listaClientes}
+                                        fuseOptions={{minMatchCharLength: 1}}
+                                        onSearch={handleOnSearch}
+                                        onHover={handleOnHover}
+                                        onSelect={handleOnSelect}
+                                        onFocus={handleOnFocus}
+                                        autoFocus
+                                        formatResult={formatResult}
+                                    />
+                                </div>
+                                {/* 
                                 <TextInput
                                     placeholder="Escriba aquí"
                                     id="documento"
@@ -157,6 +231,7 @@ export const Form = ({
                                     name="search"
                                     className="cursor-pointer self-center col-start-11 col-span-2 block w-6 h-6 "
                                 />
+                                */}
                             </div>
 
                             <InputError
@@ -368,7 +443,9 @@ export const Form = ({
                         </div>
                     </div>
 
-                    <div className="my-4 bg-error">{LazyComponent && loadErrorPage()}</div>
+                    <div className="my-4 bg-error">
+                        {LazyComponent && loadErrorPage("Contactos/Empty")}
+                    </div>
 
                     <div className="flex items-center justify-end mt-4">
                         <PrimaryButton

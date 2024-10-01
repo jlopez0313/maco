@@ -114,26 +114,26 @@ export default function Reportes({ auth, facturas, recaudos, gastos, productos }
 
 
         _list.push(
-            ['Inventario', toCurrency(inventario || 0), ''],
-            ['Orden de Compra Contado', '', toCurrency(compraContado.total || 0)],
-            ['', 'Nacional', toCurrency(compraContado.nacional || 0)],
-            ['', 'Importado', toCurrency(compraContado.importado || 0)],
-            [' ', ' ', ' '],
-            ['Orden de Compra Crédito', '', toCurrency(compraCredito.total || 0)],
-            ['', 'Nacional', toCurrency(compraCredito.nacional || 0)],
-            ['', 'Importado', toCurrency(compraCredito.importado || 0)],
-            [' ', ' ', ' '],
-            ['Recaudos Crédito', '', toCurrency(recaudos || 0)],
-            [' ', ' ', ' '],
-            ['Gastos', '', toCurrency(gastos.total || 0)],
-            ['', 'Nacional', toCurrency(gastos.nacional || 0)],
-            ['', 'Importado', toCurrency(gastos.importado || 0)],
-            [' ', ' ', ' '],
-            ['Total', toCurrency(totalInventario || 0), ''],
-            [' ', ' ', ' '],
-            ['Caja Nacional', '', toCurrency(totalNacional || 0)],
-            [' ', ' ', ' '],
-            ['Caja Importado', '', toCurrency(totalImportado || 0)],
+            ['Inventario', toCurrency(inventario || 0), '', 'Todo el valor que se registró de todos los articulo'],
+            ['Orden de Compra Contado', '', toCurrency(compraContado.total || 0), 'Valor Total de las ventas realizada'],
+            ['', 'Nacional', toCurrency(compraContado.nacional || 0), 'Total Ventas de artículos Nacionales'],
+            ['', 'Importado', toCurrency(compraContado.importado || 0), 'Total ventas de artículos Importados'],
+            [' ', ' ', ' ', ' '],
+            ['Orden de Compra Crédito', '', toCurrency(compraCredito.total || 0), 'Valor Total de las ventas a crédito'],
+            ['', 'Nacional', toCurrency(compraCredito.nacional || 0), 'Total Ventas Crédito de artículos Nacionales'],
+            ['', 'Importado', toCurrency(compraCredito.importado || 0), 'Total ventas Crédito de artículos Importados'],
+            [' ', ' ', ' ', ' '],
+            ['Recaudos Crédito', '', toCurrency(recaudos || 0), 'Valor Total de los Abonos realizados'],
+            [' ', ' ', ' ', ' '],
+            ['Gastos', '', toCurrency(gastos.total || 0), 'Valor total de todos los gastos registrados'],
+            ['', 'Nacional', toCurrency(gastos.nacional || 0), 'Gasto que salio de la mercancía Nacional'],
+            ['', 'Importado', toCurrency(gastos.importado || 0), 'Gasto que salio de la mercancía Importada'],
+            [' ', ' ', ' ', ' '],
+            ['Total', toCurrency(totalInventario || 0), '', 'Inventario + Ventas Contado + Ventas Crédito - Gastos'],
+            [' ', ' ', ' ', ' '],
+            ['Caja Nacional', '', toCurrency(totalNacional || 0), 'Valor de venta de contado - Gastos Contado'],
+            [' ', ' ', ' ', ' '],
+            ['Caja Importado', '', toCurrency(totalImportado || 0), 'Valor de Venta de importado - Gastos Importado'],
 
         )
 
@@ -187,6 +187,7 @@ export default function Reportes({ auth, facturas, recaudos, gastos, productos }
                                     <th className="px-6 pt-5 pb-4"> Concepto </th>
                                     <th className="px-6 pt-5 pb-4"> Inventario </th>
                                     <th className="px-6 pt-5 pb-4"> Orden de Compra </th>
+                                    <th className="px-6 pt-5 pb-4"> Descripción </th>
                                 </tr>
                             </thead>
                             <tbody>
