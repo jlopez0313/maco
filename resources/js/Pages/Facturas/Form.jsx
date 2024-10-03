@@ -120,7 +120,7 @@ export const Form = ({
         }
     };
 
-    const loadErrorPage = (error) => {
+    const loadErrorPage = (error, props = {}) => {
         switch (error) {
             case "Contactos/Empty":
                 return <ContactosEmpty {...props} />;
@@ -444,7 +444,7 @@ export const Form = ({
                     </div>
 
                     <div className="my-4 bg-error">
-                        {LazyComponent && loadErrorPage("Contactos/Empty")}
+                        {LazyComponent && loadErrorPage("Contactos/Empty", {id: data.clientes_id})}
                     </div>
 
                     <div className="flex items-center justify-end mt-4">
