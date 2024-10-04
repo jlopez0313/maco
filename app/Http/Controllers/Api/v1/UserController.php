@@ -18,7 +18,7 @@ class UserController extends Controller {
             return new UserResource($user);
 
         } else {
-            return null;
+            return response()->json(['error' => 'Invalid password'], 501);
         }
     }
 

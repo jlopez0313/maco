@@ -8,7 +8,7 @@ import React, { useEffect } from "react";
 import axios from "axios";
 import Select from "@/Components/Form/Select";
 
-export const Form = ({ id, roles, setIsOpen, onReload }) => {
+export const Form = ({ id, dominio, roles, setIsOpen, onReload }) => {
 
     const { data, setData, processing, errors, reset } = useForm({
         email: '',
@@ -46,10 +46,14 @@ export const Form = ({ id, roles, setIsOpen, onReload }) => {
             }
         )
     }
-
+    
     useEffect( () => {
         id && onGetItem()
     }, [])
+    
+    useEffect( () => {
+        setData("email", data.name.replace(/ /g, '').toLowerCase() + '@' + dominio)
+    }, [data.name])
 
     return (
         <div className="pb-12 pt-6">
@@ -92,7 +96,7 @@ export const Form = ({ id, roles, setIsOpen, onReload }) => {
                                 autoComplete="name"
                                 isFocused={true}
                                 onChange={(e) =>
-                                    setData("name", e.target.value)
+                                    setData("name", e.target.value)                                    
                                 }
                             />
 

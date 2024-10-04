@@ -13,7 +13,7 @@ import { Form } from "./Form";
 import SecondaryButton from "@/Components/Buttons/SecondaryButton";
 import { AdminModal } from "@/Components/AdminModal";
 
-export default ({ auth, contacts, roles }) => {
+export default ({ auth, contacts, roles, dominio }) => {
     const {
         data,
         meta: { links },
@@ -140,6 +140,7 @@ export default ({ auth, contacts, roles }) => {
                     onReload={onReload}
                     id={id}
                     roles={roles}
+                    dominio={dominio}
                 />
             </Modal>
 

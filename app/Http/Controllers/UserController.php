@@ -26,6 +26,7 @@ class UserController extends Controller
             'roles' =>  new RolesCollection(
                 Roles::all()
             ),
+            'dominio' => env('APP_DOMAIN', '...')
         ]);
     }
 
