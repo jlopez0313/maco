@@ -6,6 +6,7 @@ import TextInput from "@/Components/Form/TextInput";
 import Modal from "@/Components/Modal";
 import { useForm } from "@inertiajs/react";
 import { useEffect, useState } from "react";
+import { notify } from "@/Helpers/Notify";
 
 export const AdminModal = ({ title, show, setIsOpen, onConfirm }) => {
 
@@ -16,9 +17,13 @@ export const AdminModal = ({ title, show, setIsOpen, onConfirm }) => {
     const [action, setAction] = useState('');
 
     const submit = async (e) => {
-        e.preventDefault();
-        onConfirm( await axios.post('/api/v1/usuarios/get-admin', data) );
-        reset();
+        try {
+            e.preventDefault();
+            onConfirm( await axios.post('/api/v1/usuarios/get-admin', data) );
+            reset();
+        } catch( error ) {
+            notify('error', error.error || 'Password Error. Try again.')
+        }
     };
 
     const onReset = () => {

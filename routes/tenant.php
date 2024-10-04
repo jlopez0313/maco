@@ -186,11 +186,11 @@ Route::middleware([
             Route::get('/pdf', [ReportesController::class, 'articulos_vendidos_pdf'])->name('reportes.articulos_vendidos_pdf');
             Route::get('/qr', [ReportesController::class, 'articulos_vendidos_qr'])->name('reportes.articulos_vendidos_qr');
         });
-        Route::prefix('compras')->group(function () {
-            Route::get('/', [ReportesController::class, 'compras'])->name('reportes.compras');
-            Route::get('/excel', [ReportesController::class, 'compras_export'])->name('reportes.compras_export');
-            Route::get('/pdf', [ReportesController::class, 'compras_pdf'])->name('reportes.compras_pdf');
-            Route::get('/qr', [ReportesController::class, 'compras_qr'])->name('reportes.compras_qr');
+        Route::prefix('ventas')->group(function () {
+            Route::get('/', [ReportesController::class, 'ventas'])->name('reportes.ventas');
+            Route::get('/excel', [ReportesController::class, 'ventas_export'])->name('reportes.ventas_export');
+            Route::get('/pdf', [ReportesController::class, 'ventas_pdf'])->name('reportes.ventas_pdf');
+            Route::get('/qr', [ReportesController::class, 'ventas_qr'])->name('reportes.ventas_qr');
         });
         Route::prefix('gastos')->group(function () {
             Route::get('/', [ReportesController::class, 'gastos'])->name('reportes.gastos');

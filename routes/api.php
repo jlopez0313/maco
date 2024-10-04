@@ -111,8 +111,8 @@ Route::middleware([
         Route::prefix('articulos_vendidos')->group(function () {
             Route::post('/', [App\Http\Controllers\Api\v1\ReportesController::class, 'articulos_vendidos']);
         });
-        Route::prefix('compras')->group(function () {
-            Route::post('/', [App\Http\Controllers\Api\v1\ReportesController::class, 'compras']);
+        Route::prefix('ventas')->group(function () {
+            Route::post('/', [App\Http\Controllers\Api\v1\ReportesController::class, 'ventas']);
         });
         Route::prefix('gastos')->group(function () {
             Route::post('/', [App\Http\Controllers\Api\v1\ReportesController::class, 'gastos']);

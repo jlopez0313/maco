@@ -50,8 +50,7 @@ export default ({ auth, q, contacts, departments, payments, medios_pago, cliente
 
     const onSetList = () => {
         const sum = data.map((item) => {
-            
-            
+                        
             item.detalles.forEach((_item) => {
                 let impuestos = 0;
 

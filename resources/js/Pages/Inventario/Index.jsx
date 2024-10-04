@@ -55,7 +55,7 @@ export default ({ auth, q, contacts, origenes, departamentos }) => {
     const onConfirm = async ({ data }) => {
         if ( action == 'edit' ) {
             setAdminModal( false )
-            onEdit( id )
+            onToggleModal( true )
         } else {
             onTrash(data)
         }
@@ -89,6 +89,10 @@ export default ({ auth, q, contacts, origenes, departamentos }) => {
 
     const onSearch = (id) => {
         router.get( `inventario/show/${ id }` )
+    }
+
+    const onEdit = (id) => {
+        
     }
 
     useEffect(() => {
@@ -142,8 +146,9 @@ export default ({ auth, q, contacts, origenes, departamentos }) => {
                             links={links}
                             onSearch={ (evt) => onSearch(evt) }
                             onTrash={ (evt) => onSetAdminModal(evt, 'trash') }
+                            onEdit={ (evt) => onSetAdminModal(evt, 'edit') }
                             titles={titles}
-                            actions={["search", "trash"]}
+                            actions={["search", "edit", "trash"]}
                         />
                     </div>
 

@@ -17,7 +17,7 @@ class ArticulosVendidosExport implements FromView
 
     public function view(): View
     {
-        $query = Facturas::with('detalles.producto.inventario')
+        $query = Facturas::with('detalles.producto.inventario', 'detalles.producto.impuestos.impuesto')
             ->whereBetween('created_at', [ $this->data['fecha_inicial'] . ' 00:00:00', $this->data['fecha_final'] . ' 23:59:59' ])
             ->get()
         ;

@@ -14,7 +14,7 @@ export default function Authenticated({ user, header, children }) {
         useState(false);
 
     return (
-        <div className="min-h-screen flex flex-row">
+        <div className="min-h-screen flex flex-row w-full">
             <ToastContainer />
 
             <nav className="bg-white border-b border-gray-100">
@@ -302,7 +302,7 @@ export default function Authenticated({ user, header, children }) {
                 </div>
             </nav>
 
-            <div className="w-full bg-gray-100 ">
+            <div className="grow bg-gray-100 ">
                 {header && (
                     <header className="bg-white shadow">
                         <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">

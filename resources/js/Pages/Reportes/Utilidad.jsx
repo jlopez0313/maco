@@ -43,11 +43,33 @@ export default function Reportes({ auth, facturas, recaudos, gastos, productos }
     }
     
     const onSetCompraCredito = () => {
-        const lista = listaFacturas.filter((item) => item.forma_pago?.id == "1");
+        const lista = listaFacturas.filter((item) => item.forma_pago?.id == "2");
         const total = lista.map((item) => {
+            item.detalles.forEach((_item) => {
+                let impuestos = 0;
+
+                _item.producto?.impuestos.forEach((impto) => {
+                    if (impto.impuesto?.tipo_impuesto == "I") {
+                        if (impto.impuesto.tipo_tarifa == "P") {
+                            impuestos +=
+                                ((_item.precio_venta || 0) *
+                                    Number(impto.impuesto.tarifa)) /
+                                100;
+                        } else if (impto.impuesto.tipo_tarifa == "V") {
+                            impuestos += Number(impto.impuesto.tarifa);
+                        }
+                    }
+                });
+
+                _item.total_impuestos = impuestos;
+            });
+
             return (
                 item.detalles.reduce(
-                    (sum, det) => sum + det.precio_venta * det.cantidad,
+                    (sum, det) =>
+                        sum +
+                        det.precio_venta * det.cantidad +
+                        det.total_impuestos * det.cantidad,
                     0
                 ) || 0
             );
@@ -58,18 +80,40 @@ export default function Reportes({ auth, facturas, recaudos, gastos, productos }
 
         return {
             total: total.reduce( (sum, item) => { return sum += item }, 0),
-            nacional: nacional.flat(1).reduce( (sum, item) => { return sum += (item.cantidad * item.precio_venta) }, 0 ),
-            importado: importado.flat(1).reduce( (sum, item) => { return sum += (item.cantidad * item.precio_venta) }, 0 ),
+            nacional: nacional.flat(1).reduce( (sum, item) => { return sum += (item.cantidad * item.total_impuestos) + (item.cantidad * item.precio_venta) }, 0 ),
+            importado: importado.flat(1).reduce( (sum, item) => { return sum += (item.cantidad * item.total_impuestos) + (item.cantidad * item.precio_venta) }, 0 ),
         }
     }
 
     const onSetCompraContado = () => {
-        const lista = listaFacturas.filter((item) => item.forma_pago?.id == "2");
+        const lista = listaFacturas.filter((item) => item.forma_pago?.id == "1");
 
         const total = lista.map((item) => {
+            item.detalles.forEach((_item) => {
+                let impuestos = 0;
+
+                _item.producto?.impuestos.forEach((impto) => {
+                    if (impto.impuesto?.tipo_impuesto == "I") {
+                        if (impto.impuesto.tipo_tarifa == "P") {
+                            impuestos +=
+                                ((_item.precio_venta || 0) *
+                                    Number(impto.impuesto.tarifa)) /
+                                100;
+                        } else if (impto.impuesto.tipo_tarifa == "V") {
+                            impuestos += Number(impto.impuesto.tarifa);
+                        }
+                    }
+                });
+
+                _item.total_impuestos = impuestos;
+            });
+
             return (
                 item.detalles.reduce(
-                    (sum, det) => sum + det.precio_venta * det.cantidad,
+                    (sum, det) =>
+                        sum +
+                        det.precio_venta * det.cantidad +
+                        det.total_impuestos * det.cantidad,
                     0
                 ) || 0
             );
@@ -81,8 +125,8 @@ export default function Reportes({ auth, facturas, recaudos, gastos, productos }
 
         return {
             total: total.reduce( (sum, item) => { return sum += item }, 0),
-            nacional: nacional.flat(1).reduce( (sum, item) => { return sum += (item.cantidad * item.precio_venta) }, 0 ),
-            importado: importado.flat(1).reduce( (sum, item) => { return sum += (item.cantidad * item.precio_venta) }, 0 ),
+            nacional: nacional.flat(1).reduce( (sum, item) => { return sum += (item.cantidad * item.total_impuestos) + (item.cantidad * item.precio_venta) }, 0 ),
+            importado: importado.flat(1).reduce( (sum, item) => { return sum += (item.cantidad * item.total_impuestos) +  (item.cantidad * item.precio_venta) }, 0 ),
         }
     }
 
@@ -115,11 +159,11 @@ export default function Reportes({ auth, facturas, recaudos, gastos, productos }
 
         _list.push(
             ['Inventario', toCurrency(inventario || 0), '', 'Todo el valor que se registró de todos los articulo'],
-            ['Orden de Compra Contado', '', toCurrency(compraContado.total || 0), 'Valor Total de las ventas realizada'],
+            ['Facturas de Contado', '', toCurrency(compraContado.total || 0), 'Valor Total de las ventas realizada'],
             ['', 'Nacional', toCurrency(compraContado.nacional || 0), 'Total Ventas de artículos Nacionales'],
             ['', 'Importado', toCurrency(compraContado.importado || 0), 'Total ventas de artículos Importados'],
             [' ', ' ', ' ', ' '],
-            ['Orden de Compra Crédito', '', toCurrency(compraCredito.total || 0), 'Valor Total de las ventas a crédito'],
+            ['Facturas a Crédito', '', toCurrency(compraCredito.total || 0), 'Valor Total de las ventas a crédito'],
             ['', 'Nacional', toCurrency(compraCredito.nacional || 0), 'Total Ventas Crédito de artículos Nacionales'],
             ['', 'Importado', toCurrency(compraCredito.importado || 0), 'Total ventas Crédito de artículos Importados'],
             [' ', ' ', ' ', ' '],

@@ -22,7 +22,7 @@ use Inertia\Inertia;
 
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\ArticulosVendidosExport;
-use App\Exports\ComprasExport;
+use App\Exports\VentasExport;
 use App\Exports\GastosExport;
 use App\Exports\InventarioExport;
 use App\Exports\EstadoCuentaGeneralExport;
@@ -107,7 +107,7 @@ class ReportesController extends Controller
 
     public function articulos_vendidos_pdf(Request $request) 
     {
-        $query = Facturas::with('detalles.producto.inventario')
+        $query = Facturas::with('detalles.producto.inventario', 'detalles.producto.impuestos.impuesto')
             ->whereBetween('created_at', [ $request['fecha_inicial'] . ' 00:00:00', $request['fecha_final'] . ' 23:59:59' ])
             ->get()
         ;
@@ -126,16 +126,16 @@ class ReportesController extends Controller
     }
 
 
-    public function compras() {
-        return Inertia::render('Reportes/Compras');
+    public function ventas() {
+        return Inertia::render('Reportes/Ventas');
     }
 
-    public function compras_export(Request $request) 
+    public function ventas_export(Request $request) 
     {
-        return Excel::download(new ComprasExport( $request->all() ), 'Compras.xlsx');
+        return Excel::download(new VentasExport( $request->all() ), 'Ventas.xlsx');
     }
 
-    public function compras_pdf(Request $request) 
+    public function ventas_pdf(Request $request) 
     {
         $query = Facturas::with('detalles', 'cliente')
             ->whereBetween('created_at', [ $request['fecha_inicial'] . ' 00:00:00', $request['fecha_final'] . ' 23:59:59' ])
@@ -146,13 +146,13 @@ class ReportesController extends Controller
             'invoices' => $query
         ];
 
-        $pdf = \PDF::loadView('exports.compras', $data);
+        $pdf = \PDF::loadView('exports.ventas', $data);
     
-        return $pdf->download('compras.pdf');
+        return $pdf->download('ventas.pdf');
     }
 
-    public function compras_qr(Request $request) {
-        echo \QrCode::size(700)->generate( url('/reportes/compras/pdf?fecha_inicial=' . $request['fecha_inicial'] . ' 00:00:00' . '&fecha_final=' . $request['fecha_final'] . ' 23:59:59') );
+    public function ventas_qr(Request $request) {
+        echo \QrCode::size(700)->generate( url('/reportes/ventas/pdf?fecha_inicial=' . $request['fecha_inicial'] . ' 00:00:00' . '&fecha_final=' . $request['fecha_final'] . ' 23:59:59') );
     }
     
     
@@ -262,7 +262,7 @@ class ReportesController extends Controller
     public function utilidad() {
 
         $facturas = Facturas::with(
-            'cliente', 'detalles.producto.inventario',
+            'cliente', 'detalles.producto.inventario', 'detalles.producto.impuestos.impuesto',
         );
 
         return Inertia::render('Reportes/Utilidad', [
@@ -282,14 +282,14 @@ class ReportesController extends Controller
     }
 
     public function utilidad_export(Request $request) 
-    {
+    {   
         return Excel::download(new UtilidadExport( $request->all() ), 'Utilidad.xlsx');
     }
 
     public function utilidad_pdf(Request $request) 
     {
         $facturas = Facturas::with(
-            'cliente', 'detalles.producto.inventario',
+            'cliente', 'detalles.producto.inventario', 'detalles.producto.impuestos.impuesto',
         )->get();
 
         $data = [
@@ -319,14 +319,35 @@ class ReportesController extends Controller
     public function onSetCompraCredito($facturas) {
         $lista = $facturas->filter( 
             function ($item) { 
-                return $item->forma_pago?->id == "1" ;
+                return $item->forma_pago?->id == "2" ;
         });
 
         $total = $lista->map( function ($item) {
+            forEach($item->detalles as $_item) {
+                $impuestos = 0;
+
+                forEach( $_item->producto?->impuestos as $impto) {
+                    if ($impto->impuesto?->tipo_impuesto == "I") {
+                        if ($impto->impuesto->tipo_tarifa == "P") {
+                            $impuestos +=
+                                (($_item->precio_venta ?? 0) *
+                                    $impto->impuesto->tarifa) /
+                                100;
+                        } else if ($impto->impuesto->tipo_tarifa == "V") {
+                            $impuestos += $impto->impuesto->tarifa;
+                        }
+                    }
+                };
+
+                $_item->total_impuestos = $impuestos;
+            }
+
             return (
                 $item->detalles->reduce(
                     function ($sum, $det) { 
-                        return $sum + ($det->precio_venta * $det->cantidad) ;
+                        return $sum +                         
+                        ($det->precio_venta * $det->cantidad) +
+                        ($det->total_impuestos * $det->cantidad) ;
                     },
                     0
                 ) ?? 0
@@ -338,35 +359,58 @@ class ReportesController extends Controller
 
         return [
             'total' => $total->reduce( function ($sum, $item) { return $sum + $item ; }, 0),
-            'nacional' => $nacional->flatten(1)->reduce( function ($sum, $item) { return $sum + ( ($item['cantidad'] ?? 0) * ($item['precio_venta'] ?? 0) ) ;}, 0),
-            'importado' => $importado->flatten(1)->reduce( function ($sum, $item) { return $sum + ( ($item['cantidad'] ?? 0) * ($item['precio_venta'] ?? 0) ) ;}, 0),
+            'nacional' => $nacional->flatten(1)->reduce( function ($sum, $item) { return $sum + ( ($item['cantidad'] ?? 0) * ($item['total_impuestos'] ?? 0) ) + ( ($item['cantidad'] ?? 0) * ($item['precio_venta'] ?? 0) ) ;}, 0),
+            'importado' => $importado->flatten(1)->reduce( function ($sum, $item) { return $sum + ( ($item['cantidad'] ?? 0) * ($item['total_impuestos'] ?? 0) ) + ( ($item['cantidad'] ?? 0) * ($item['precio_venta'] ?? 0) ) ;}, 0),
         ] ;
     }
 
     public function onSetCompraContado($facturas) {
         $lista = $facturas->filter( 
             function ($item) { 
-                return $item->forma_pago?->id == "2" ;
+                return $item->forma_pago?->id == "1" ;
         });
 
+        
         $total = $lista->map( function ($item) {
+            forEach($item->detalles as $_item) {
+                $impuestos = 0;
+                
+                forEach( $_item->producto?->impuestos as $impto) {
+                    if ($impto->impuesto?->tipo_impuesto == "I") {
+                        if ($impto->impuesto->tipo_tarifa == "P") {
+                            $impuestos +=
+                                (($_item->precio_venta ?? 0) *
+                                    $impto->impuesto->tarifa) /
+                                100;
+                        } else if ($impto->impuesto->tipo_tarifa == "V") {
+                            $impuestos += $impto->impuesto->tarifa;
+                        }
+                    }
+                };
+
+                $_item->total_impuestos = $impuestos;
+            }
+
             return (
-                $item->$detalles->reduce(
+                $item->detalles->reduce(
                     function ($sum, $det) { 
-                        return $sum + ($det->precio_venta * $det->cantidad) ;
+                        return $sum +                         
+                        ($det->precio_venta * $det->cantidad) +
+                        ($det->total_impuestos * $det->cantidad) ;
                     },
                     0
                 ) ?? 0
             );
         });
 
+
         $nacional = $lista->map( function($item) { return $item->detalles?->filter( function ($detalle) { return $detalle->producto?->inventario?->origen == 'N' ;} ) ?? []; }) ;
         $importado = $lista->map( function($item) { return $item->detalles?->filter( function ($detalle) { return $detalle->producto?->inventario?->origen == 'I' ;} ) ?? []; }) ;
 
         return [
             'total' => $total->reduce( function ($sum, $item) { return $sum + $item ; }, 0),
-            'nacional' => $nacional->flatten(1)->reduce( function ($sum, $item) { return $sum + ( ($item['cantidad'] ?? 0) * ($item['precio_venta'] ?? 0) ) ;}, 0),
-            'importado' => $importado->flatten(1)->reduce( function ($sum, $item) { return $sum + ( ($item['cantidad'] ?? 0) * ($item['precio_venta'] ?? 0) ) ;}, 0),
+            'nacional' => $nacional->flatten(1)->reduce( function ($sum, $item) { return $sum + ( ($item['cantidad'] ?? 0) * ($item['total_impuestos'] ?? 0) ) + ( ($item['cantidad'] ?? 0) * ($item['precio_venta'] ?? 0) ) ;}, 0),
+            'importado' => $importado->flatten(1)->reduce( function ($sum, $item) { return $sum + ( ($item['cantidad'] ?? 0) * ($item['total_impuestos'] ?? 0) ) + ( ($item['cantidad'] ?? 0) * ($item['precio_venta'] ?? 0) ) ;}, 0),
         ] ;
     }
 

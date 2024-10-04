@@ -30,10 +30,34 @@
 
 @php
     $sum = $invoices->map( function ($item) {
+        
+        foreach( $item->detalles as $_item) {
+            $impuestos = 0;
+
+            foreach( $_item->producto?->impuestos as $impto) {
+                if ($impto->impuesto?->tipo_impuesto == "I") {
+
+                    if ($impto->impuesto->tipo_tarifa == "P") {
+
+                        $impuestos +=
+                        (($_item->precio_venta ?? 0) *
+                        $impto->impuesto->tarifa) /
+                        100;
+                    } else if ($impto->impuesto->tipo_tarifa == "V") {
+                        $impuestos += $impto->impuesto->tarifa;
+                    }
+                }
+                
+            }
+                $_item->total_impuestos = $impuestos;
+        }
+
         return (
             $item->detalles->reduce(
                 function ($carry, $det) {
-                    return $carry + ($det['precio_venta'] * $det['cantidad']);
+                    return $carry + 
+                    ($det['precio_venta'] * $det['cantidad']) +
+                    ($det['total_impuestos'] * $det['cantidad']);
                 }, 0
             ) ?? 0
         );
@@ -56,7 +80,7 @@
                 <td> {{ $item->id }} </td>
                 <td> {{ $item->created_at }} </td>
                 <td> {{ $item->cliente?->nombre ?? "" }} </td>
-                <td> {{ $item->forma_pago->tipo ?? "" }} </td>
+                <td> {{ $item->forma_pago?->descripcion ?? "" }} </td>
                 <td> {{ number_format($sum[$idx], 0, '.', ',') ?? 0 }} </td>
             </tr>
         @endforeach

@@ -22,7 +22,9 @@ export default function Reportes({ auth }) {
         "Origen",
         "Cantidad",
         "Valor Unitario",
-        "Valor Total",
+        "Impuestos Unit.",
+        "Total Impuestos",
+        "Total",
     ];
 
     const [list, setList] = useState([]);
@@ -34,15 +36,64 @@ export default function Reportes({ auth }) {
         } = await axios.post(`/api/v1/reportes/articulos_vendidos`, data);
         let _list = [];
 
+        const sum = [];
+
         lista.forEach((item) => {
-            item.detalles?.forEach((det) => {
+                        
+            item.detalles.forEach((_item) => {
+                let impuestos = 0;
+
+                _item.producto?.impuestos.forEach((impto) => {
+                    if (impto.impuesto?.tipo_impuesto == "I") {
+                        if (impto.impuesto.tipo_tarifa == "P") {
+                            impuestos +=
+                                ((_item.precio_venta || 0) *
+                                    Number(impto.impuesto.tarifa)) /
+                                100;
+                        } else if (impto.impuesto.tipo_tarifa == "V") {
+                            impuestos += Number(impto.impuesto.tarifa);
+                        }
+                    }
+                });
+
+                sum.push(impuestos);
+            });
+            
+
+        });
+
+
+        lista.forEach((item) => {
+
+            let impuestos = 0;
+
+            item.producto?.impuestos.forEach((impto) => {
+                if (impto.impuesto.tipo_impuesto == "I") {
+                    if (impto.impuesto.tipo_tarifa == "P") {
+                        impuestos +=
+                            ((item.precio_venta || 0) *
+                                Number(impto.impuesto.tarifa)) /
+                            100;
+                    } else if (impto.impuesto.tipo_tarifa == "V") {
+                        impuestos += Number(impto.impuesto.tarifa);
+                    }
+                }
+            });
+
+            
+            item.detalles?.forEach((det, idx) => {
                 _list.push({
                     fecha: item.created_at,
                     referencia: det.producto?.referencia || "",
                     origen: det.producto?.inventario?.origenLabel || "",
                     cantidad: det.cantidad || 0,
-                    valor: toCurrency(det.precio_venta) || 0,
-                    total: toCurrency(det.precio_venta * det.cantidad) || 0,
+                    precio: toCurrency(det.precio_venta || 0),
+                    impuestos: toCurrency(sum[idx]),
+                    total_impuestos: toCurrency(sum[idx] * det.cantidad),
+                    total: toCurrency(
+                        sum[idx] * det.cantidad +
+                            (det.precio_venta || 0) * det.cantidad
+                    ),
                 });
             });
         });

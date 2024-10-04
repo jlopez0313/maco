@@ -20,7 +20,7 @@ class UtilidadExport implements FromView
     public function view(): View
     {
         $facturas = Facturas::with(
-            'cliente', 'detalles.producto.inventario',
+            'cliente', 'detalles.producto.inventario', 'detalles.producto.impuestos.impuesto',
         )->get();
 
         return view('exports.utilidad', [
@@ -42,14 +42,35 @@ class UtilidadExport implements FromView
     public function onSetCompraCredito($facturas) {
         $lista = $facturas->filter( 
             function ($item) { 
-                return $item->forma_pago?->id == "1" ;
+                return $item->forma_pago?->id == "2" ;
         });
 
         $total = $lista->map( function ($item) {
+            forEach($item->detalles as $_item) {
+                $impuestos = 0;
+
+                forEach( $_item->producto?->impuestos as $impto) {
+                    if ($impto->impuesto?->tipo_impuesto == "I") {
+                        if ($impto->impuesto->tipo_tarifa == "P") {
+                            $impuestos +=
+                                (($_item->precio_venta ?? 0) *
+                                    $impto->impuesto->tarifa) /
+                                100;
+                        } else if ($impto->impuesto->tipo_tarifa == "V") {
+                            $impuestos += $impto->impuesto->tarifa;
+                        }
+                    }
+                };
+
+                $_item->total_impuestos = $impuestos;
+            }
+
             return (
                 $item->detalles->reduce(
                     function ($sum, $det) { 
-                        return $sum + ($det->precio_venta * $det->cantidad) ;
+                        return $sum +                         
+                        ($det->precio_venta * $det->cantidad) +
+                        ($det->total_impuestos * $det->cantidad) ;
                     },
                     0
                 ) ?? 0
@@ -61,35 +82,57 @@ class UtilidadExport implements FromView
 
         return [
             'total' => $total->reduce( function ($sum, $item) { return $sum + $item ; }, 0),
-            'nacional' => $nacional->flatten(1)->reduce( function ($sum, $item) { return $sum + ( ($item['cantidad'] ?? 0) * ($item['precio_venta'] ?? 0) ) ;}, 0),
-            'importado' => $importado->flatten(1)->reduce( function ($sum, $item) { return $sum + ( ($item['cantidad'] ?? 0) * ($item['precio_venta'] ?? 0) ) ;}, 0),
+            'nacional' => $nacional->flatten(1)->reduce( function ($sum, $item) { return $sum + ( ($item['cantidad'] ?? 0) * ($item['total_impuestos'] ?? 0) ) + ( ($item['cantidad'] ?? 0) * ($item['precio_venta'] ?? 0) ) ;}, 0),
+            'importado' => $importado->flatten(1)->reduce( function ($sum, $item) { return $sum + ( ($item['cantidad'] ?? 0) * ($item['total_impuestos'] ?? 0) ) + ( ($item['cantidad'] ?? 0) * ($item['precio_venta'] ?? 0) ) ;}, 0),
         ] ;
     }
 
     public function onSetCompraContado($facturas) {
         $lista = $facturas->filter( 
             function ($item) { 
-                return $item->forma_pago?->id == "2" ;
+                return $item->forma_pago?->id == "1" ;
         });
 
         $total = $lista->map( function ($item) {
+            forEach($item->detalles as $_item) {
+                $impuestos = 0;
+
+                forEach( $_item->producto?->impuestos as $impto) {
+                    if ($impto->impuesto?->tipo_impuesto == "I") {
+                        if ($impto->impuesto->tipo_tarifa == "P") {
+                            $impuestos +=
+                                (($_item->precio_venta ?? 0) *
+                                    $impto->impuesto->tarifa) /
+                                100;
+                        } else if ($impto->impuesto->tipo_tarifa == "V") {
+                            $impuestos += $impto->impuesto->tarifa;
+                        }
+                    }
+                };
+
+                $_item->total_impuestos = $impuestos;
+            }
+
             return (
-                $item->$detalles->reduce(
+                $item->detalles->reduce(
                     function ($sum, $det) { 
-                        return $sum + ($det->precio_venta * $det->cantidad) ;
+                        return $sum +                         
+                        ($det->precio_venta * $det->cantidad) +
+                        ($det->total_impuestos * $det->cantidad) ;
                     },
                     0
                 ) ?? 0
             );
         });
 
+
         $nacional = $lista->map( function($item) { return $item->detalles?->filter( function ($detalle) { return $detalle->producto?->inventario?->origen == 'N' ;} ) ?? []; }) ;
         $importado = $lista->map( function($item) { return $item->detalles?->filter( function ($detalle) { return $detalle->producto?->inventario?->origen == 'I' ;} ) ?? []; }) ;
 
         return [
             'total' => $total->reduce( function ($sum, $item) { return $sum + $item ; }, 0),
-            'nacional' => $nacional->flatten(1)->reduce( function ($sum, $item) { return $sum + ( ($item['cantidad'] ?? 0) * ($item['precio_venta'] ?? 0) ) ;}, 0),
-            'importado' => $importado->flatten(1)->reduce( function ($sum, $item) { return $sum + ( ($item['cantidad'] ?? 0) * ($item['precio_venta'] ?? 0) ) ;}, 0),
+            'nacional' => $nacional->flatten(1)->reduce( function ($sum, $item) { return $sum + ( ($item['cantidad'] ?? 0) * ($item['total_impuestos'] ?? 0) ) + ( ($item['cantidad'] ?? 0) * ($item['precio_venta'] ?? 0) ) ;}, 0),
+            'importado' => $importado->flatten(1)->reduce( function ($sum, $item) { return $sum + ( ($item['cantidad'] ?? 0) * ($item['total_impuestos'] ?? 0) ) + ( ($item['cantidad'] ?? 0) * ($item['precio_venta'] ?? 0) ) ;}, 0),
         ] ;
     }
 

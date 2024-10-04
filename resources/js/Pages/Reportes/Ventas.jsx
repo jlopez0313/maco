@@ -29,12 +29,35 @@ export default function Reportes({ auth }) {
     const [ currentDate, setCurrentDate ] = useState( new Date() );
     
     const onSearch = async() => {
-        const {data: {data: lista}} = await axios.post(`/api/v1/reportes/compras`, data);
+        const {data: {data: lista}} = await axios.post(`/api/v1/reportes/ventas`, data);
         
         const sum = lista.map((item) => {
+                        
+            item.detalles.forEach((_item) => {
+                let impuestos = 0;
+
+                _item.producto?.impuestos.forEach((impto) => {
+                    if (impto.impuesto?.tipo_impuesto == "I") {
+                        if (impto.impuesto.tipo_tarifa == "P") {
+                            impuestos +=
+                                ((_item.precio_venta || 0) *
+                                    Number(impto.impuesto.tarifa)) /
+                                100;
+                        } else if (impto.impuesto.tipo_tarifa == "V") {
+                            impuestos += Number(impto.impuesto.tarifa);
+                        }
+                    }
+                });
+
+                _item.total_impuestos = impuestos;
+            });
+            
             return (
                 item.detalles.reduce(
-                    (sum, det) => sum + det.precio_venta * det.cantidad,
+                    (sum, det) =>
+                        sum +
+                        det.precio_venta * det.cantidad +
+                        det.total_impuestos * det.cantidad,
                     0
                 ) || 0
             );
@@ -45,7 +68,7 @@ export default function Reportes({ auth }) {
                 codigo: item.id,
                 fecha: item.created_at,
                 cliente: item.cliente?.nombre || "",
-                payment: item.forma_pago.tipo || "",
+                payment: item.forma_pago?.descripcion || "",
                 valor_total: toCurrency(sum[idx] || 0),
             };
         });
@@ -67,11 +90,11 @@ export default function Reportes({ auth }) {
             user={auth.user}
             header={
                 <h2 className="font-semibold text-xl text-gray-800 leading-tight">
-                    Reporte de Ordenes de Compra
+                    Reporte de Ventas
                 </h2>
             }
         >
-            <Head title="Reporte de Ordenes de Compra" />
+            <Head title="Reporte de Ventas" />
 
             <div className="py-12">
                 <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 text-xs">
@@ -149,7 +172,7 @@ export default function Reportes({ auth }) {
                                 <div className="flex items-center justify-end mt-4 mb-4">
                                     <a
                                         className="border border-gray-300 rounded-md bg-white hover:bg-white-700 text-gray py-2 px-4 rounded text-xs uppercase shadow-sm font-semibold text-gray-700"
-                                        href={`/reportes/compras/excel?fecha_inicial=${data.fecha_inicial}&fecha_final=${data.fecha_final}`}
+                                        href={`/reportes/ventas/excel?fecha_inicial=${data.fecha_inicial}&fecha_final=${data.fecha_final}`}
                                     >
                                         Excel
                                     </a>
@@ -164,7 +187,7 @@ export default function Reportes({ auth }) {
 {/*
                                     <a
                                         className="border border-gray-300 ms-3 rounded-md bg-white hover:bg-white-700 text-gray py-2 px-4 rounded text-xs uppercase shadow-sm font-semibold text-gray-700"
-                                        href={`/reportes/compras/pdf?fecha_inicial=${data.fecha_inicial}&fecha_final=${data.fecha_final}`}
+                                        href={`/reportes/ventas/pdf?fecha_inicial=${data.fecha_inicial}&fecha_final=${data.fecha_final}`}
                                     >
                                         Imprimir
                                     </a>

@@ -32,7 +32,7 @@ export default function Reportes({ auth }) {
             id: 4,
             parametro: 'Información Ventas',   
             descripcion: 'Reporte indica el registro de las ventas realizadas hasta el momento.',
-            ruta: 'reportes/compras'
+            ruta: 'reportes/ventas'
         },
         {
             id: 5,

@@ -8,7 +8,7 @@ use Maatwebsite\Excel\Concerns\FromView;
 use App\Models\Facturas;
 use App\Models\Gastos;
 
-class ComprasExport implements FromView
+class VentasExport implements FromView
 {
     public function __construct($data)
     {
@@ -22,7 +22,7 @@ class ComprasExport implements FromView
             ->get()
         ;
 
-        return view('exports.compras', [
+        return view('exports.ventas', [
             'invoices' => $query
         ]);
     }

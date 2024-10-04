@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+.grow{
+    flex-grow: 1;
+
+}
+
 .w-50 {
     width: 12.5rem;
 }

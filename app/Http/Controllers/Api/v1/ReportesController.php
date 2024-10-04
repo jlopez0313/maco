@@ -37,7 +37,7 @@ class ReportesController extends Controller
     public function articulos_vendidos(Request $request) {
         $data = $request->all();
         
-        $query = Facturas::with('detalles.producto.inventario')
+        $query = Facturas::with('detalles.producto.inventario', 'detalles.producto.impuestos.impuesto')
             ->whereBetween('created_at', [ $data['fecha_inicial'] . ' 00:00:00', $data['fecha_final'] . ' 23:59:59' ])
             ->get()
         ;
@@ -46,10 +46,10 @@ class ReportesController extends Controller
     }
     
     
-    public function compras(Request $request) {
+    public function ventas(Request $request) {
         $data = $request->all();
         
-        $query = Facturas::with('detalles', 'cliente')
+        $query = Facturas::with('detalles.producto.inventario', 'detalles.producto.impuestos.impuesto', 'cliente')
             ->whereBetween('created_at', [ $data['fecha_inicial'] . ' 00:00:00', $data['fecha_final'] . ' 23:59:59' ])
             ->get()
         ;
@@ -77,7 +77,7 @@ class ReportesController extends Controller
                 'cliente', 'detalles', 'recaudos'
             )
             ->has('detalles')
-            ->where('tipos_id', '1')
+            ->where('forma_pago_id', '2')
             ->whereBetween('created_at', [ $data['fecha_inicial'] . ' 00:00:00', $data['fecha_final'] . ' 23:59:59' ])
             ->get()
         ;
@@ -93,7 +93,7 @@ class ReportesController extends Controller
                 'cliente', 'detalles', 'recaudos'
             )
             ->has('detalles')
-            ->where('tipos_id', '1')
+            ->where('forma_pago_id', '2')
             ->where('clientes_id', $data['clientes_id'])
             ->whereBetween('created_at', [ $data['fecha_inicial'] . ' 00:00:00', $data['fecha_final'] . ' 23:59:59' ])
             ->get()

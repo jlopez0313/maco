@@ -45,8 +45,10 @@ export default ({ auth, factura }) => {
 
     const onSetAdminModal = (_id, action) => {
         setId(_id);
-        setAdminModal(true);
+        // setAdminModal(true);
         setAction(action);
+        onToggleModal(true);
+
     };
 
     const onConfirm = async ({ data }) => {
@@ -58,11 +60,10 @@ export default ({ auth, factura }) => {
         }
     };
 
-    const onTrash = async (data) => {
-        if (data) {
-            await axios.delete(`/api/v1/detalles/${id}`);
-            onReload();
-        }
+    const onTrash = async (id) => {
+        await axios.delete(`/api/v1/detalles/${id}`);
+        onReload();
+        
     };
 
     const onToggleModal = (isShown) => {
@@ -262,7 +263,7 @@ export default ({ auth, factura }) => {
                             data={list}
                             links={[]}
                             onEdit={(evt) => onSetAdminModal(evt, "edit")}
-                            onTrash={(evt) => onSetAdminModal(evt, "trash")}
+                            onTrash={(evt) => onTrash(evt)}
                             titles={titles}
                             actions={[
                                 factura.estado != "C" ? "edit" : "",
