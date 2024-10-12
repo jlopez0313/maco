@@ -344,7 +344,7 @@ class SoapController extends Controller
             <FACTURA>
             <ENC>                                           <!-- ENCABEZADO -->
                 <ENC_1>INVOIC</ENC_1>                                                       <!-- Tipo de Documento - Excel Simplificado Anexo - Estandar Simplificado - OK Constante -->
-                <ENC_2>901143311</ENC_2>                                                    <!-- NIT CUENTA DEMO 901143311 - OK Constante para Pruebas 901143311 --> 
+                <ENC_2>'.$emisor->documento.'</ENC_2>                                       <!-- NIT Emisor - OK - para Pruebas 901143311 --> 
                 <ENC_3>'.$adquiriente->documento.'</ENC_3>                                  <!-- NIT ADQUIRIENTE/CLIENTE FINAL - OK -->
                 <ENC_4>UBL 2.1</ENC_4>                                                      <!-- Constante - OK -->
                 <ENC_5>DIAN 2.1</ENC_5>                                                     <!-- Constante - OK -->
@@ -360,7 +360,7 @@ class SoapController extends Controller
             </ENC>
             <EMI>                                           <!-- EMISOR -->
                 <EMI_1>'. $emisor->tipo->codigo .'</EMI_1>                                  <!-- Tabla 20  Tipo de identificación - Tipos de Persona - Tablas 2.1 - OK -->
-                <EMI_2>901143311</EMI_2>                                                    <!-- NIT Emisor - RUT - OK Constante para Pruebas 901143311 --> 
+                <EMI_2>'.$emisor->documento.'</EMI_2>                                       <!-- NIT Emisor - RUT - OK - para Pruebas 901143311 --> 
                 <EMI_3>'. $emisor->tipo_doc->codigo .'</EMI_3>                              <!-- Tabla 3 - Tipos de documentos de identidad - Tablas 2.1 - OK -->
                 <EMI_6>'. $emisor->nombre .'</EMI_6>                                        <!-- Nombre Emisor - RUT - OK -->
                 <EMI_7>'. $emisor->comercio .'</EMI_7>                                      <!-- Nombre Comercial - RUT - OK -->
@@ -377,7 +377,7 @@ class SoapController extends Controller
                 </TAC>
                 <DFE>                                       <!-- INFORMACION FISCAL EMISOR -->
                     <DFE_1>'. $emisor->ciudad->codigo .'</DFE_1>                            <!-- Tabla 35 - Municipios - Código Municipio - Excel Simplificado Anexo - Tablas 2.1 - OK -->
-                    <DFE_2>'. $emisor->ciudad->departamento->codigo .'</DFE_2>                  <!-- Tabla 34 - Departamentos - Excel Simplificado Anexo - Tablas 2.1 - OK Constante -->
+                    <DFE_2>'. $emisor->ciudad->departamento->codigo .'</DFE_2>                  <!-- Tabla 34 - Departamentos - Excel Simplificado Anexo - Tablas 2.1 - OK -->
                     <DFE_3>CO</DFE_3>                                                       <!-- Tabla 1 - Códigos de países - Alfa2 - Excel Simplificado Anexo - Tablas 2.1 - OK Constante -->
                     <DFE_4>190003</DFE_4>                                                   <!-- Tabla 39 - Código Postal - Excel Simplificado Anexo - Tablas 2.1 - OK Constante Tabla 35 -->
                     <DFE_5>Colombia</DFE_5>                                                 <!-- Tabla 1 - Códigos de países - Nombre Común - Excel Simplificado Anexo - Tablas 2.1 - OK Constante -->
@@ -558,9 +558,9 @@ class SoapController extends Controller
                 $TIMs .= '<IMP>                                     <!-- IMPUESTOS -->
                         <IMP_1>'. $impuesto['IMP_1'] .'</IMP_1>                        <!-- Tabla 44 - Impuestos registrados en la Factura Electrónica - Tablas 2.1 - OK -->
                         <IMP_2>'. $impuesto['IMP_2'] .'</IMP_2>                                          <!-- Total Base -->
-                        <IMP_3>'. $impuesto['IMP_3'] .'</IMP_3>                                                      <!-- Tabla 13 - Monedas - Excel Simplificado Anexo - Tablas 2.1 - OK Constante -->
+                        <IMP_3>'. $impuesto['IMP_3'] .'</IMP_3>                                                      <!-- Tabla 13 - Monedas - Excel Simplificado Anexo - Tablas 2.1 - OK -->
                         <IMP_4>'. $impuesto['IMP_4'] .'</IMP_4>                                           <!-- Total impuestos -->
-                        <IMP_5>'. $impuesto['IMP_5'] .'</IMP_5>                                                      <!-- Tabla 13 - Monedas - Excel Simplificado Anexo - Tablas 2.1 - OK Constante -->
+                        <IMP_5>'. $impuesto['IMP_5'] .'</IMP_5>                                                      <!-- Tabla 13 - Monedas - Excel Simplificado Anexo - Tablas 2.1 - OK -->
                         <IMP_6>'. $impuesto['IMP_6'] .'</IMP_6>                        <!-- Tabla 32 - Tarifas por Impuesto - TARIFA - Tablas 2.1 - OK -->
                     </IMP>';
             }

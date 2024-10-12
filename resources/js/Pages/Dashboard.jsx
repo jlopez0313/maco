@@ -37,7 +37,7 @@ export default function Dashboard({ auth, created_at }) {
             <Head title="Inicio" />
 
             <div className="py-12">
-                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                <div className="max-w-6xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white overflow-auto shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900">Bienvenido!</div>
                     </div>

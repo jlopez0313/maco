@@ -22,9 +22,12 @@ class RecaudosController extends Controller
     public function index(Request $request)
     {
         $query = Facturas::with(
-            'cliente', 'detalles', 'recaudos'
+            'cliente', 'detalles.producto.impuestos.impuesto', 'recaudos', 'forma_pago'
         )
-        ->has('detalles');
+        ->has('detalles')
+        ->whereHas('forma_pago', function($q){
+            $q->where('id', '!=', 1);
+        });
         
         if( $request->q ) {
             $query->where('id', 'LIKE', '%' . $request->q . '%')
@@ -77,7 +80,7 @@ class RecaudosController extends Controller
     public function edit(string $id)
     {
         return Inertia::render('Recaudos/Edit', [
-            'factura' => Facturas::with('detalles.producto.inventario', 'detalles.producto.color', 'detalles.producto.medida', 'recaudos', 'cliente')
+            'factura' => Facturas::with('detalles.producto.impuestos.impuesto', 'detalles.producto.inventario', 'detalles.producto.color', 'detalles.producto.medida', 'recaudos', 'cliente')
                 ->find( $id )
         ]);
     }
@@ -105,7 +108,7 @@ class RecaudosController extends Controller
     public function pdf(string $id)
     {
 
-        $factura = Facturas::with('detalles.producto.inventario', 'detalles.producto.color', 'detalles.producto.medida', 'recaudos', 'cliente')
+        $factura = Facturas::with('detalles.producto.impuestos.impuesto', 'detalles.producto.inventario', 'detalles.producto.color', 'detalles.producto.medida', 'recaudos', 'cliente')
         ->find( $id );
 
         $data = [

@@ -22,6 +22,8 @@ class TenantsResource extends JsonResource
             'id' => $this->id,
             'domain' => $this->domain,
             'data' => $this->data,
+            'estado' => $this->estado,
+            'estado_label' => $this->estado_label,
             'created_at' => $this->created_at,
         ];
     }

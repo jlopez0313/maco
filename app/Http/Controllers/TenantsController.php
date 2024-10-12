@@ -21,6 +21,7 @@ class TenantsController extends Controller
             'tenants' => new TenantsCollection(
                 Tenant::paginate()
             ),
+            'estados' => config('constants.estados')
         ]);
     }
 

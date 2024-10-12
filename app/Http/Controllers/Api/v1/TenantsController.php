@@ -19,7 +19,10 @@ class TenantsController extends Controller
     {
         $data = $request->all();
         $name = str_replace(' ', '_', $data['tenant']);
-        $tenant = Tenant::create(['id' => $name ]);
+        
+        $tenant = Tenant::create(['id' => $name, 'estado' => 'A' ]);
+        $tenant->save();
+
         $tenant->domains()->create(['domain' => $name . '.' . env('APP_DOMAIN') ]);
 
         return new TenantsResource( $tenant );
@@ -38,7 +41,8 @@ class TenantsController extends Controller
      */
     public function update(Request $request, Tenant $tenant)
     {
-        $tenant->update( $request->all() );
+        $tenant->estado = $request->estado;
+        $tenant->save();
         return new TenantsResource( $tenant );
     }
 

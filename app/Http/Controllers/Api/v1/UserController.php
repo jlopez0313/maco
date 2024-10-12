@@ -11,14 +11,17 @@ class UserController extends Controller {
 
     public function getAdmin( Request $request )
     {
-        $user = User::where('roles_id', '1')->first();
+        $user = User::where('roles_id', '1')
+        ->where('id', $request->user_id)
+        ->first();
 
         if ($user && \Hash::check( $request->password, $user->password ) ) {
-
             return new UserResource($user);
 
+        } else if (!$user) {
+            return response()->json(['error' => 'El usuario no está permitido.'], 501);
         } else {
-            return response()->json(['error' => 'Invalid password'], 501);
+            return response()->json(['error' => 'El password no es valido'], 501);
         }
     }
 

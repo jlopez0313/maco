@@ -1,6 +1,36 @@
 import React from "react";
 
 export default ({ name, className, fill = "", ...props }) => {
+    if (name === "enable") {
+        return (
+            <svg
+                className={className}
+                xmlns="http://www.w3.org/2000/svg"
+                height="50"
+                width="50"
+                viewBox="0 0 512 512"
+            >
+                <polygon points="464.778,51.369 149.961,366.186 47.222,263.447 0,310.669 149.961,460.631 512,98.592 " />
+            </svg>
+        );
+    }
+    if (name === "disable") {
+        return (
+            <svg
+                className={className}
+                xmlns="http://www.w3.org/2000/svg"
+                height="50"
+                width="50"
+                viewBox="0 0 512 512"
+            >
+                <path
+                    xmlns="http://www.w3.org/2000/svg"
+                    d="M256,0C114.615,0,0,114.616,0,256s114.615,256,256,256s256-114.616,256-256S397.385,0,256,0z M66.783,256 c0-104.503,84.716-189.217,189.217-189.217c40.19,0,77.446,12.541,108.089,33.907L100.689,364.089 C79.323,333.446,66.783,296.19,66.783,256z M256,445.217c-40.19,0-77.446-12.541-108.089-33.907l263.399-263.399 c21.366,30.643,33.907,67.899,33.907,108.089C445.217,360.501,360.501,445.217,256,445.217z"
+                />
+            </svg>
+        );
+    }
+
     if (name === "user") {
         return (
             <svg

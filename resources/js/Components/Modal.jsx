@@ -56,7 +56,7 @@ export default function Modal({
                     <Dialog.Panel
                         className={`mb-6 bg-white rounded-lg overflow-hidden shadow-xl transform transition-all sm:w-full sm:mx-auto ${maxWidthClass}`}
                     >
-                        <Dialog.Title className="text-lg font-medium leading-6 text-gray-900 max-w-7xl mx-auto sm:px-6 lg:px-8 mt-6">
+                        <Dialog.Title className="text-lg font-medium leading-6 text-gray-900 max-w-6xl mx-auto sm:px-6 lg:px-8 mt-6">
                             {title}
                         </Dialog.Title>
                         {children}

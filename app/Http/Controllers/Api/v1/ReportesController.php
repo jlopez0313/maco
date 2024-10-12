@@ -74,7 +74,7 @@ class ReportesController extends Controller
         $data = $request->all();
         
         $query = Facturas::with(
-                'cliente', 'detalles', 'recaudos'
+                'cliente', 'detalles.producto.impuestos.impuesto', 'recaudos'
             )
             ->has('detalles')
             ->where('forma_pago_id', '2')
@@ -90,7 +90,7 @@ class ReportesController extends Controller
         $data = $request->all();
         
         $query = Facturas::with(
-                'cliente', 'detalles', 'recaudos'
+                'cliente', 'detalles.producto.impuestos.impuesto', 'recaudos'
             )
             ->has('detalles')
             ->where('forma_pago_id', '2')

@@ -4,6 +4,38 @@ export default ( {action, ...props} ) => {
     return (
         <>
         {
+            action === 'enable' && 
+                <a
+                    tabIndex="-1"
+                    {...props}                    
+                    className="px-4 focus:outline-none inline-block"
+                    role="button"
+                    title="Editar"
+                >
+                    <Icon
+                        name="enable"
+                        className="block w-6 h-6 text-gray-400 fill-current"
+                    />
+                </a>
+        }
+        
+        {
+            action === 'disable' && 
+                <a
+                    tabIndex="-1"
+                    {...props}                    
+                    className="px-4 focus:outline-none inline-block"
+                    role="button"
+                    title="Editar"
+                >
+                    <Icon
+                        name="disable"
+                        className="block w-6 h-6 text-gray-400 fill-current"
+                    />
+                </a>
+        }
+
+        {
             action === 'edit' && 
                 <a
                     tabIndex="-1"

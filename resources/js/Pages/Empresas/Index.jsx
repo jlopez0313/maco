@@ -16,7 +16,6 @@ export default ({
     estados_resoluciones,
     S_N,
     contact,
-    consecutivo,
 }) => {
     const [tab, setTab] = useState("general");
 
@@ -36,7 +35,7 @@ export default ({
             <Head title="Mi Empresa" />
 
             <div className="pb-12 pt-6">
-                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                <div className="max-w-6xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white overflow-auto shadow-sm sm:rounded-lg p-6 mt-6">
                         <div className="flex justify-around">
                             <div
@@ -105,9 +104,7 @@ export default ({
                     )}
 
                     {tab == "consecutivo" && (
-                        <Consecutivo
-                            consecutivo={consecutivo}
-                        />
+                        <Consecutivo />
                     )}
                 </div>
             </div>

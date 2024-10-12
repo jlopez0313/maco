@@ -13,7 +13,7 @@ import { calcularDigitoVerificacion } from "@/Helpers/Numbers";
 import { notify } from "@/Helpers/Notify";
 import TextSpan from "@/Components/Form/TextSpan";
 
-export default ({ consecutivo }) => {
+export default () => {
 
     const { data, setData, processing, errors, reset } = useForm({
         id: '',
@@ -40,8 +40,8 @@ export default ({ consecutivo }) => {
     };
 
     const onGetItem = async () => {
-        const { data: item } = consecutivo;
-        
+        const { data: {data: item } } = await axios.get(`/api/v1/consecutivos/first`);
+
         setData({
             id: item.id || "",
             consecutivo: item.consecutivo || "",

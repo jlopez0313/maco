@@ -11,8 +11,11 @@ export default ({
     titles = [],
     actions = [],
     onTrash,
+    onRow,
     onEdit,
     onSearch,
+    onDisable,
+    status,
     onSort = () => {},
     sortIcon = "desc",
 }) => {
@@ -70,7 +73,7 @@ export default ({
                                     <td className="border-t" key={key}>
                                         <a
                                             role="button"
-                                            onClick={() => onEdit(item.id)}
+                                            onClick={() => onRow(item.id)}
                                             className="flex items-center px-6 py-4 focus:text-indigo-700 focus:outline-none"
                                         >
                                             {item[key]}
@@ -114,6 +117,26 @@ export default ({
                                                 onClick={() =>
                                                     onSearch(item.id)
                                                 }
+                                            />
+                                        );
+                                    } else if (
+                                        action === "disable"
+                                    ) {
+                                        return (
+                                            <ActionsTable
+                                                key={key}
+                                                action={action}
+                                                onClick={() => onDisable(item.id)}
+                                            />
+                                        );
+                                    } else if (
+                                        action === "enable"
+                                    ) {
+                                        return (
+                                            <ActionsTable
+                                                key={key}
+                                                action={action}
+                                                onClick={() => onEnable(item.id)}
                                             />
                                         );
                                     }

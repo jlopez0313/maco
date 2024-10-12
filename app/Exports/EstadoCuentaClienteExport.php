@@ -18,10 +18,10 @@ class EstadoCuentaClienteExport implements FromView
     public function view(): View
     {
         $query = Facturas::with(
-            'cliente', 'detalles', 'recaudos'
+            'cliente', 'detalles.producto.impuestos.impuesto', 'recaudos'
         )
         ->has('detalles')
-        ->where('tipos_id', '1')
+        ->where('forma_pago_id', '2')
         ->where('clientes_id', $this->data['clientes_id'])
         ->whereBetween('created_at', [ $this->data['fecha_inicial'] . ' 00:00:00', $this->data['fecha_final'] . ' 23:59:59' ])
         ->get()

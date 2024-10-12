@@ -6,11 +6,13 @@ import TextInput from "@/Components/Form/TextInput";
 import { useForm } from "@inertiajs/react";
 import React, { useEffect } from "react";
 import axios from "axios";
+import Select from "@/Components/Form/Select";
 
-export const Form = ({ id, setIsOpen, onReload }) => {
+export const Form = ({ id, estados, setIsOpen, onReload }) => {
 
     const { data, setData, processing, errors, reset } = useForm({
         tenant: '',
+        estado: ''
     });
 
     const submit = async (e) => {
@@ -29,11 +31,14 @@ export const Form = ({ id, setIsOpen, onReload }) => {
     const onGetItem = async () => {
 
         const { data } = await axios.get(`/api/v1/tenants/${id}`);
-        const item = { ...data.data }
+        const item = { ...data }
+
+        console.log( item )
 
         setData(
-            {                
-                tenant: item.data,
+            {
+                ...data,
+                estado: item.estado
             }
         )
     }
@@ -44,25 +49,53 @@ export const Form = ({ id, setIsOpen, onReload }) => {
 
     return (
         <div className="pb-12 pt-6">
-            <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div className="max-w-6xl mx-auto sm:px-6 lg:px-8">
                 <form onSubmit={submit}>
-                    <div className="grid grid-cols-1 gap-4">
-                        <div>
-                            <InputLabel htmlFor="tenant" value="Tenant" />
+                    <div className="grid grid-cols-2 gap-4">
+                        {
+                            !id && 
+                            <div>
+                                <InputLabel htmlFor="tenant" value="Tenant" />
 
-                            <TextInput
-                                placeholder="Escriba aquí"
-                                id="tenant"
-                                type="text"
-                                name="tenant"
-                                value={data.tenant}
+                                <TextInput
+                                    placeholder="Escriba aquí"
+                                    id="tenant"
+                                    type="text"
+                                    name="tenant"
+                                    value={data.tenant}
+                                    className="mt-1 block w-full"
+                                    autoComplete="tenant"
+                                    isFocused={true}
+                                    onChange={(e) =>
+                                        setData("tenant", e.target.value)
+                                    }
+                                />
+
+                                <InputError
+                                    message={errors.tenant}
+                                    className="mt-2"
+                                />
+                            </div>
+                        }
+                        <div>
+                            <InputLabel htmlFor="status" value="Estado" />
+
+                            <Select
+                                id="status"
+                                name="status"
+                                value={data.estado}
                                 className="mt-1 block w-full"
-                                autoComplete="tenant"
                                 isFocused={true}
                                 onChange={(e) =>
-                                    setData("tenant", e.target.value)
+                                    setData("estado", e.target.value)
                                 }
-                            />
+                            >
+                                {
+                                    estados.map((item, idx) => {
+                                        return <option key={idx} value={item.key}>{item.valor}</option>
+                                    })
+                                }
+                            </Select>
 
                             <InputError
                                 message={errors.tenant}

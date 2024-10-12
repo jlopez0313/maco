@@ -125,7 +125,7 @@ export default ({ auth, q, inventario, impuestos, retenciones, contacts, colores
             <Head title="Inventario" />
 
             <div className="py-12">
-                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                <div className="max-w-6xl mx-auto sm:px-6 lg:px-8">
                     <div className="flex items-center justify-between mt-4 mb-6">
                         <div className="flex items-center">
                             <TextInput
@@ -168,6 +168,7 @@ export default ({ auth, q, inventario, impuestos, retenciones, contacts, colores
                         <Table
                             data={list}
                             links={links}
+                            onRow={(evt) => onSetAdminModal(evt, "edit")}
                             onEdit={(evt) => onSetAdminModal(evt, "edit")}
                             onTrash={(evt) => onSetAdminModal(evt, "trash")}
                             titles={titles}
@@ -178,6 +179,7 @@ export default ({ auth, q, inventario, impuestos, retenciones, contacts, colores
             </div>
 
             <AdminModal
+                auth={auth}
                 title={action}
                 show={adminModal}
                 setIsOpen={setAdminModal}

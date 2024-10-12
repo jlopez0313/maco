@@ -121,11 +121,11 @@ export default function Reportes({ auth }) {
             <Head title="Reporte de Artículos Vendidos" />
 
             <div className="py-12">
-                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 text-xs">
+                <div className="max-w-6xl mx-auto sm:px-6 lg:px-8 text-xs">
                     Fecha: { currentDate.toLocaleString() }
                 </div>
 
-                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 no-print">
+                <div className="max-w-6xl mx-auto sm:px-6 lg:px-8 no-print">
                     <div className="flex items-center justify-end mt-4 mb-4">
                         <SecondaryButton
                             className="ms-4"
@@ -136,7 +136,7 @@ export default function Reportes({ auth }) {
                     </div>
                 </div>
 
-                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                <div className="max-w-6xl mx-auto sm:px-6 lg:px-8">
                     <div className="flex items-center justify-between mt-4 mb-6 no-print">
                         <div className="w-full m-2">
                             <InputLabel
@@ -187,6 +187,7 @@ export default function Reportes({ auth }) {
                             data={list}
                             links={[]}
                             onEdit={() => {}}
+                            onRow={() => {}}
                             onTrash={() => {}}
                             titles={titles}
                             actions={[]}
@@ -195,7 +196,7 @@ export default function Reportes({ auth }) {
 
                     {
                         list.length ?
-                            <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 no-print">
+                            <div className="max-w-6xl mx-auto sm:px-6 lg:px-8 no-print">
                                 <div className="flex items-center justify-end mt-4 mb-4">
                                     <a
                                         className="border border-gray-300 rounded-md bg-white hover:bg-white-700 text-gray py-2 px-4 rounded text-xs uppercase shadow-sm font-semibold text-gray-700"

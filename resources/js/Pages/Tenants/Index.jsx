@@ -10,7 +10,7 @@ import { Form } from "./Form";
 import SecondaryButton from "@/Components/Buttons/SecondaryButton";
 import { AdminModal } from "@/Components/AdminModal";
 
-export default ({ auth, tenants }) => {
+export default ({ auth, tenants, estados }) => {
     const {
         data,
         meta: { links },
@@ -19,7 +19,8 @@ export default ({ auth, tenants }) => {
     const titles= [
         'Tenant',
         'Dominio',
-        'Fecha de Creación'
+        'Fecha de Creación',
+        'Estado',
     ]
 
     const [action, setAction] = useState( '' );
@@ -35,6 +36,7 @@ export default ({ auth, tenants }) => {
                 'tenant': item.id,
                 'domain': item.domain?.domain,
                 'fecha': item.created_at,
+                'status': item.estado_label,
                 
             }
         })
@@ -98,7 +100,7 @@ export default ({ auth, tenants }) => {
             <Head title="Tenants" />
 
             <div className="py-12">
-                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                <div className="max-w-6xl mx-auto sm:px-6 lg:px-8">
                     <div className="flex items-center justify-end mt-4 mb-4">
                         {/* 
                             <SecondaryButton
@@ -121,10 +123,11 @@ export default ({ auth, tenants }) => {
                         <Table 
                             data={list}
                             links={links}
-                            onEdit={ (evt) => {} }
                             onTrash={ (evt) => onSetAdminModal(evt, 'trash') }
+                            onEdit={ (evt) => onSetAdminModal(evt, 'edit') }
+                            onRow={(evt) => onSetAdminModal(evt, "edit")}
                             titles={titles}
-                            actions={['trash']}
+                            actions={['edit', 'trash']}
                         />
                     </div>
 
@@ -136,10 +139,11 @@ export default ({ auth, tenants }) => {
                     setIsOpen={onToggleModal}        
                     onReload={onReload}
                     id={id}
+                    estados={estados}
                 />
             </Modal>
 
-            <AdminModal title={ action } show={adminModal} setIsOpen={setAdminModal} onConfirm={onConfirm}></AdminModal>
+            <AdminModal auth={auth} title={ action } show={adminModal} setIsOpen={setAdminModal} onConfirm={onConfirm}></AdminModal>
 
         </TenantLayout>
     );

@@ -47,8 +47,6 @@ export const Form = ({ id, auth, factura, setIsOpen, onReload }) => {
             }
         )
 
-        console.log( 'data1', data, item );
-
         onSearch( item.producto?.referencia, false )
     }
 
@@ -105,7 +103,7 @@ export const Form = ({ id, auth, factura, setIsOpen, onReload }) => {
 
     return (
         <div className="pb-12 pt-6">
-            <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div className="max-w-6xl mx-auto sm:px-6 lg:px-8">
                 <form onSubmit={submit}>
                     <div className="grid grid-cols-2 gap-4">
                     </div>
@@ -141,7 +139,7 @@ export const Form = ({ id, auth, factura, setIsOpen, onReload }) => {
                         </div>
 
                         <div>
-                            <InputLabel htmlFor="producto" value="Producto" />
+                            <InputLabel htmlFor="producto" value="Inventario" />
 
                             <TextInput
                                 id="producto"
@@ -185,7 +183,7 @@ export const Form = ({ id, auth, factura, setIsOpen, onReload }) => {
                             />
                         </div>
 
-                        <div className="mb-10">
+                        <div className="mb-5">
                             <InputLabel htmlFor="origen" value="Origen" />
 
                             <TextInput
@@ -199,8 +197,8 @@ export const Form = ({ id, auth, factura, setIsOpen, onReload }) => {
                                 readOnly
                             />
                         </div>
-                        
-                        <div>
+
+                        <div className="mb-5">
                             <InputLabel htmlFor="cantidad" value="Cantidad Disponible" />
 
                             <TextInput
@@ -213,6 +211,14 @@ export const Form = ({ id, auth, factura, setIsOpen, onReload }) => {
                                 required
                                 readOnly
                             />
+                        </div>
+
+                        <div className="mb-1">
+                            <h2 className="text-lg font-medium leading-6 text-gray-900 max-w-6xl"> Datos de la Venta </h2>
+                        </div>
+
+                        <div className="mb-1">
+                            
                         </div>
 
                         <div>

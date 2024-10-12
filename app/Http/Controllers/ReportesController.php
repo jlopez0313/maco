@@ -198,10 +198,10 @@ class ReportesController extends Controller
     public function estado_cuenta_general_pdf(Request $request) 
     {
         $query = Facturas::with(
-                'cliente', 'detalles', 'recaudos'
+                'cliente', 'detalles.producto.impuestos.impuesto', 'recaudos'
             )
             ->has('detalles')
-            ->where('tipos_id', '1')
+            ->where('forma_pago_id', '2')
             ->whereBetween('created_at', [ $request['fecha_inicial'] . ' 00:00:00', $request['fecha_final'] . ' 23:59:59' ])
             ->get()
         ;
@@ -236,10 +236,10 @@ class ReportesController extends Controller
     public function estado_cuenta_cliente_pdf(Request $request) 
     {
         $query = Facturas::with(
-                'cliente', 'detalles', 'recaudos'
+                'cliente', 'detalles.producto.impuestos.impuesto', 'recaudos'
             )
             ->has('detalles')
-            ->where('tipos_id', '1')
+            ->where('forma_pago_id', '2')
             ->where('clientes_id', $request['clientes_id'])
             ->whereBetween('created_at', [ $request['fecha_inicial'] . ' 00:00:00', $request['fecha_final'] . ' 23:59:59' ])
             ->get()

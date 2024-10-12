@@ -8,7 +8,7 @@ import { useForm } from "@inertiajs/react";
 import React, { Suspense, useEffect, useState } from "react";
 import axios from "axios";
 import Icon from "@/Components/Icon";
-import ContactosEmpty from "@/Pages/Errors/Empresa/Contactos/Empty";
+import ContactosEmpty from "@/Pages/Errors/Clientes/Contactos/Empty";
 import { ReactSearchAutocomplete } from "react-search-autocomplete";
 
 export const Form = ({
@@ -174,7 +174,7 @@ export const Form = ({
     
     return (
         <div className="pb-12 pt-6">
-            <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div className="max-w-6xl mx-auto sm:px-6 lg:px-8">
                 <form onSubmit={submit}>
                     <div className="grid grid-cols-2 gap-4">
                         <div>
