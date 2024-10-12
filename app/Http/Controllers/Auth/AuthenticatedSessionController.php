@@ -19,7 +19,7 @@ class AuthenticatedSessionController extends Controller
      */
     public function create(): Response
     {
-        if ( tenant()->estado == 'I' ) {
+        if ( tenant() && tenant()->estado == 'I' ) {
             return Inertia::render('Errors/Empresa/Inactivo', [
             ]);
         }
