@@ -564,10 +564,10 @@ class SoapController extends Controller
             foreach( $impuestos as $key => $impuesto ) {
                 $TIMs .= '<IMP>                                     <!-- IMPUESTOS -->
                         <IMP_1>'. $impuesto['IMP_1'] .'</IMP_1>                        <!-- Tabla 44 - Impuestos registrados en la Factura Electrónica - Tablas 2.1 - OK -->
-                        <IMP_2>'. $impuesto['IMP_2'] .'</IMP_2>                                          <!-- Total Base -->
-                        <IMP_3>'. $impuesto['IMP_3'] .'</IMP_3>                                                      <!-- Tabla 13 - Monedas - Excel Simplificado Anexo - Tablas 2.1 - OK -->
-                        <IMP_4>'. $impuesto['IMP_4'] .'</IMP_4>                                           <!-- Total impuestos -->
-                        <IMP_5>'. $impuesto['IMP_5'] .'</IMP_5>                                                      <!-- Tabla 13 - Monedas - Excel Simplificado Anexo - Tablas 2.1 - OK -->
+                        <IMP_2>'. $impuesto['IMP_2'] .'</IMP_2>                        <!-- Total Base -->
+                        <IMP_3>'. $impuesto['IMP_3'] .'</IMP_3>                        <!-- Tabla 13 - Monedas - Excel Simplificado Anexo - Tablas 2.1 - OK -->
+                        <IMP_4>'. $impuesto['IMP_4'] .'</IMP_4>                        <!-- Total impuestos -->
+                        <IMP_5>'. $impuesto['IMP_5'] .'</IMP_5>                        <!-- Tabla 13 - Monedas - Excel Simplificado Anexo - Tablas 2.1 - OK -->
                         <IMP_6>'. $impuesto['IMP_6'] .'</IMP_6>                        <!-- Tabla 32 - Tarifas por Impuesto - TARIFA - Tablas 2.1 - OK -->
                     </IMP>';
             }
@@ -590,8 +590,6 @@ class SoapController extends Controller
                     '. $TIMs .'
                 </TIM>
             </FACTURA>';
-
-            // dd($xml);
 
             $credenciales = Credenciales::where('estado', 'A')->first();
 
@@ -625,6 +623,7 @@ class SoapController extends Controller
                     'factura No' => $emisor->resolucion->prefijo . ($consecutivo->consecutivo ?? 1)
                 ];
                 $result->xml = $xml;
+                $result->base64 = base64_encode($xml);
                 $result->errors = explode('"', $result->error);
             }
 
