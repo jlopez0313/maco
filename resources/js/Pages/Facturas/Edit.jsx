@@ -204,7 +204,7 @@ export default ({ auth, factura }) => {
 
                                     <TextInput
                                         type="text"
-                                        value={factura.cliente.nombre}
+                                        value={factura.cliente?.nombre}
                                         className="mt-1 block w-full"
                                         readOnly={true}
                                     />
