@@ -6,6 +6,7 @@ import Informacion from "./Informacion/Index";
 import Contacto from "./Contacto/Index";
 import Resoluciones from "./Resoluciones/Index";
 import Consecutivo from "./Consecutivo/Index";
+import Credenciales from "./Credenciales/Index";
 
 export default ({
     auth,
@@ -14,6 +15,7 @@ export default ({
     departamentos,
     responsabilidades,
     estados_resoluciones,
+    estados,
     S_N,
     contact,
 }) => {
@@ -65,6 +67,13 @@ export default ({
                             >
                                 Consecutivo de Factura
                             </div>
+
+                            <div
+                                className={`cursor-pointer items-center font-bold ${ tab == 'credenciales' ? 'underline' : ''}`}
+                                onClick={() => setTab("credenciales")}
+                            >
+                                Credenciales
+                            </div>
                         </div>
                     </div>
 
@@ -105,6 +114,13 @@ export default ({
 
                     {tab == "consecutivo" && (
                         <Consecutivo />
+                    )}
+
+                    {tab == "credenciales" && (
+                        <Credenciales
+                            auth={auth}
+                            estados={estados}
+                        />
                     )}
                 </div>
             </div>

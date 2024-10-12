@@ -25,7 +25,7 @@ export default ({ auth, q, inventario, impuestos, retenciones, contacts, colores
         "Referencia",
         "Unidad de Medida",
         "Color",
-        "Medida",
+        // "Medida",
         "Cantidad",
         "Precio Costo",
     ];
@@ -97,7 +97,7 @@ export default ({ auth, q, inventario, impuestos, retenciones, contacts, colores
                 id: item.id,
                 articulo: item.inventario?.articulo || "",
                 referenia: item.referencia,
-                unidad_medida: item.unidad_medida?.descripcion || "",
+                // unidad_medida: item.unidad_medida?.descripcion || "",
                 color: item.color?.color || "",
                 medida: item.medida?.medida || "",
                 cantidad: item.cantidad,

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Empresas;
 use App\Models\Clientes;
 use App\Models\Consecutivos;
+use App\Models\Credenciales;
 use App\Models\Facturas;
 use App\Models\Productos;
 use App\Models\Proveedores;
@@ -31,9 +32,11 @@ class SoapController extends Controller
 
             $client = new \SoapClient($wsdlUrl, $soapClientOptions);
 
+            $credenciales = Credenciales::where('estado', 'A')->first();
+
             $result = $client->__soapCall('GenerarNumeracion', [
-                'User' => 'MACO02062024',
-                'Pass' => '2a4d4a72f5aacf82e517cad6943fd3891157a52d8ed5a6fddedbbd31632035e8',
+                'User' => $credenciales->username,
+                'Pass' => $credenciales->password,
                 'Prefijo' => 'MACO',
                 'NumeroInicial' => 1,
                 'NumeroFinal' => 1000,
@@ -62,10 +65,12 @@ class SoapController extends Controller
             ];
 
             $client = new \SoapClient($wsdlUrl, $soapClientOptions);
+            
+            $credenciales = Credenciales::where('estado', 'A')->first();
 
             $result = $client->__soapCall('ConsultaNumeracion', [
-                'User' => 'MACO02062024',
-                'Pass' => '2a4d4a72f5aacf82e517cad6943fd3891157a52d8ed5a6fddedbbd31632035e8',
+                'User' => $credenciales->username,
+                'Pass' => $credenciales->password,
             ]);
 
             return $result;
@@ -91,9 +96,11 @@ class SoapController extends Controller
 
             $client = new \SoapClient($wsdlUrl, $soapClientOptions);
 
+            $credenciales = Credenciales::where('estado', 'A')->first();
+
             $result = $client->__soapCall('FtechAction.uploadInvoiceFile', [
-                'User' => 'MACO02062024',
-                'Pass' => '2a4d4a72f5aacf82e517cad6943fd3891157a52d8ed5a6fddedbbd31632035e8',
+                'User' => $credenciales->username,
+                'Pass' => $credenciales->password,
                 'Prefijo' => 'MACO',
                 'NumAutorizacion' => '1001',
                 'TipoDocumento' => 'INVOIC',
@@ -365,7 +372,7 @@ class SoapController extends Controller
                 <EMI_6>'. $emisor->nombre .'</EMI_6>                                        <!-- Nombre Emisor - RUT - OK -->
                 <EMI_7>'. $emisor->comercio .'</EMI_7>                                      <!-- Nombre Comercial - RUT - OK -->
                 <EMI_10>'. $emisor->direccion .'</EMI_10>                                   <!-- Dirección Comercial - OK -->
-                <EMI_11>'. $emisor->ciudad->departamento->codigo .'</EMI_11>                    <!-- Tabla 34 - Departamentos - Excel Simplificado Anexo - Tablas 2.1 - OK -->
+                <EMI_11>'. $emisor->ciudad->departamento->codigo .'</EMI_11>                <!-- Tabla 34 - Departamentos - Excel Simplificado Anexo - Tablas 2.1 - OK -->
                 <EMI_13>'. $emisor->ciudad->ciudad .'</EMI_13>                              <!-- Tabla 35 - Municipios - Nombre Municipio - Excel Simplificado Anexo - Tablas 2.1 - OK -->
                 <EMI_15>CO</EMI_15>                                                         <!-- Tabla 1 - Códigos de países - Alfa2 - Excel Simplificado Anexo - Tablas 2.1 - OK -->
                 <EMI_19>'. $emisor->ciudad->departamento->departamento .'</EMI_19>          <!-- Tabla 34 - Departamentos - Nombre - Excel Simplificado Anexo - Tablas 2.1 - OK -->
@@ -586,9 +593,11 @@ class SoapController extends Controller
 
             // dd($xml);
 
+            $credenciales = Credenciales::where('estado', 'A')->first();
+
             $result = $client->__soapCall('FtechAction.uploadInvoiceFile', [
-                'username' => 'MACO02062024',
-                'password' => '2a4d4a72f5aacf82e517cad6943fd3891157a52d8ed5a6fddedbbd31632035e8',
+                'username' => $credenciales->username,
+                'password' => $credenciales->password,
                 'xmlBase64' => base64_encode($xml),
             ]);
 
@@ -645,9 +654,11 @@ class SoapController extends Controller
 
             $client = new \SoapClient($wsdlUrl, $soapClientOptions);
 
+            $credenciales = Credenciales::where('estado', 'A')->first();
+
             $result = $client->__soapCall('FtechAction.documentStatusFile', [
-                'username' => 'MACO02062024',
-                'password' => '2a4d4a72f5aacf82e517cad6943fd3891157a52d8ed5a6fddedbbd31632035e8',
+                'username' => $credenciales->username, // 'MACO02062024',
+                'password' => $credenciales->password, // '2a4d4a72f5aacf82e517cad6943fd3891157a52d8ed5a6fddedbbd31632035e8',
                 'transaccionID' =>  $factura->transaccionID,
             ]);
 
@@ -683,9 +694,11 @@ class SoapController extends Controller
                 
                 $client = new \SoapClient($wsdlUrl, $soapClientOptions);
                 
+                $credenciales = Credenciales::where('estado', 'A')->first();
+
                 $result = $client->__soapCall('FtechAction.downloadPDFFile', [
-                    'username' => 'MACO02062024',
-                    'password' => '2a4d4a72f5aacf82e517cad6943fd3891157a52d8ed5a6fddedbbd31632035e8',
+                    'username' => $credenciales->username,
+                    'password' => $credenciales->password,
                     'prefijo' => $factura->prefijo,
                     'folio' => $factura->folio,
                 ]);
@@ -734,9 +747,11 @@ class SoapController extends Controller
                 
                 $client = new \SoapClient($wsdlUrl, $soapClientOptions);
                 
+                $credenciales = Credenciales::where('estado', 'A')->first();
+
                 $result = $client->__soapCall('FtechAction.getQRFile', [
-                    'username' => 'MACO02062024',
-                    'password' => '2a4d4a72f5aacf82e517cad6943fd3891157a52d8ed5a6fddedbbd31632035e8',
+                    'username' => $credenciales->username,
+                    'password' => $credenciales->password,
                     'prefijo' => $factura->prefijo,
                     'folio' => $factura->folio,
                 ]);

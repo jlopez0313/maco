@@ -43,6 +43,7 @@ class EmpresasController extends Controller
             ),
             'estados_resoluciones' => config('constants.facturas.resoluciones.estados'),
             'S_N' => config('constants.S_N'),
+            'estados' => config('constants.estados'),
         ]);
     }
 

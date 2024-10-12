@@ -52,6 +52,7 @@ Route::middleware([
     Route::apiResource('bancos', App\Http\Controllers\Api\v1\BancosController::class);
     Route::apiResource('colores', App\Http\Controllers\Api\v1\ColoresController::class);
     Route::apiResource('conceptos', App\Http\Controllers\Api\v1\ConceptosController::class);
+    Route::apiResource('credenciales', App\Http\Controllers\Api\v1\CredencialesController::class);
     Route::apiResource('impuestos', App\Http\Controllers\Api\v1\ImpuestosController::class);
 
     Route::prefix('clientes')->group(function () {

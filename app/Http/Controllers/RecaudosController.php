@@ -27,7 +27,8 @@ class RecaudosController extends Controller
         ->has('detalles')
         ->whereHas('forma_pago', function($q){
             $q->where('id', '!=', 1);
-        });
+        })
+        ->where('estado', 'C');
         
         if( $request->q ) {
             $query->where('id', 'LIKE', '%' . $request->q . '%')

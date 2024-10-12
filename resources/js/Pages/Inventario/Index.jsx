@@ -151,7 +151,7 @@ export default ({ auth, q, contacts, origenes, departamentos }) => {
                             onSearch={ (evt) => onSearch(evt) }
                             onTrash={ (evt) => onSetAdminModal(evt, 'trash') }
                             onEdit={ (evt) => onSetAdminModal(evt, 'edit') }
-                            onRow={(evt) => onSetAdminModal(evt, "search")}
+                            onRow={(evt) => onSearch(evt)}
                             titles={titles}
                             actions={["search", "edit", "trash"]}
                         />

@@ -50,7 +50,14 @@ export default function Dashboard({ auth, created_at }) {
                                 Por favor omita este mensaje si ya realizó su respectivo pago.<br /> <br />
 
                                 Fecha límite de pago: <b> { limitDate } </b> <br /> <br />
-                                Métodos de pago: <b> Bancolombia - Nequi - NU </b> <br /><br />
+                                Métodos de pago: <br />
+
+                                <b> Bancolombia: 20 511 124 710 </b> <br />
+                                <b> Nequi: 317 262 3919        </b> <br />
+                                <b> NU: 35 391 278         </b>
+
+                                <br />
+                                <br />
 
                                 ¡Gracias por confiar en nuestros servicios!
                             </div>
