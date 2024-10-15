@@ -35,7 +35,10 @@ export default ({ auth, q, contacts, departments, payments, medios_pago, cliente
         "Forma de Pago",
         "Medio de Pago",
         "Valor Total",
-        "Estado",
+        {
+            key: "id",
+            title: "Estado",
+        },,
     ];
 
     const [cookies, setCookie] = useCookies(["maco"]);

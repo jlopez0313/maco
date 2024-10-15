@@ -358,8 +358,8 @@ class SoapController extends Controller
                 <ENC_6>'. $emisor->resolucion->prefijo . ($consecutivo->consecutivo ?? 1) .'</ENC_6>                                              <!-- Prefijo y numero de factura - OK -->
                 <ENC_9>01</ENC_9>                                                           <!-- Tipo de Factura - Excel Simplificado Anexo - Estandar Simplificado - OK Constante -->
                 <ENC_10>COP</ENC_10>                                                        <!-- Tabla 13 - Monedas - Excel Simplificado Anexo - Tablas 2.1 - OK Constante -->
-                <ENC_11>2021-07-25T11:27:49</ENC_11>                                        <!-- Fecha y hora inicio del período facturado - OK -->
-                <ENC_12>2021-07-25T11:27:49</ENC_12>                                        <!-- Fecha y hora fin del período facturado - OK -->
+                <!-- <ENC_11>2021-07-25T11:27:49</ENC_11> -->                               <!-- Fecha y hora inicio del período facturado - OK -->
+                <!-- <ENC_12>2021-07-25T11:27:49</ENC_12> -->                               <!-- Fecha y hora fin del período facturado - OK -->
                 <ENC_15>'. count($factura->detalles) .'</ENC_15>                            <!-- Número de lineas en el detalle - OK Calculado -->
                 <ENC_16>2021-07-25</ENC_16>                                                 <!-- Fecha de Vencimiento de la factura - OK -->
                 <ENC_20>2</ENC_20>                                                          <!-- Tabla 28 - Ambiente Destino Del Documento - Excel Simplificado Anexo - Tablas 2.1 - OK Constante -->
@@ -469,7 +469,7 @@ class SoapController extends Controller
             <MEP>                                           <!-- MEDIOS DE PAGO -->
                 <MEP_1>'. $factura->medio_pago->codigo .'</MEP_1>                           <!-- Tabla 5 - Códigos Medios de pago - Código / Code - Tablas 2.1 - OK -->
                 <MEP_2>'. $factura->forma_pago->codigo .'</MEP_2>                           <!-- Tabla 26 - Formas de Pago - Código - Tablas 2.1 - OK -->
-                <MEP_3>' .$createdAt->format('Y-m-d\TH:i:s.000\Z'). '</MEP_3>               <!-- Fecha de Pago - OK CREATED AT -->
+                <MEP_3>' .$createdAt->format('Y-m-d'). '</MEP_3>                            <!-- Fecha de Pago - OK CREATED AT -->
             </MEP>';
             
             $sumITE_5 = 0;
