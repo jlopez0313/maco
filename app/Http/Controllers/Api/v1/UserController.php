@@ -11,7 +11,7 @@ class UserController extends Controller {
 
     public function getAdmin( Request $request )
     {
-        $user = User::where('roles_id', '1')
+        $user = User::whereIn('roles_id', ['1', '2'])
         ->where('id', $request->user_id)
         ->first();
 
