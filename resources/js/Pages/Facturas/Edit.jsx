@@ -86,8 +86,8 @@ export default ({ auth, factura }) => {
                 desea
             };
             await axios.post(`/api/v1/facturas/registrar/${factura.id}`, data);
-            onReload();
-    
+            onToggleModal(false);
+            
             router.visit("/remisiones/show/" + factura.id);
         } catch (e) {
             notify('error',e.response?.data?.errors.join(','))
