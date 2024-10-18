@@ -83,7 +83,7 @@ class SoapController extends Controller
     {
         try {
             // $wsdlUrl = 'https://webservice.facturatech.co/v2/BETA/WSV2DEMO.asmx?WSDL';
-            $wsdlUrl = 'https://ws.facturatech.co/v2/demo/index.php?wsdl';
+            $wsdlUrl = 'https://ws.facturatech.co/v2/pro/index.php?wsdl';
 
             $soapClientOptions = [
                 'encoding' => 'UTF-8',
@@ -117,7 +117,7 @@ class SoapController extends Controller
     {
         try {
             // $wsdlUrl = 'https://webservice.facturatech.co/v2/BETA/WSV2DEMO.asmx?WSDL';
-            $wsdlUrl = 'https://ws.facturatech.co/v2/demo/index.php?wsdl';
+            $wsdlUrl = 'https://ws.facturatech.co/v2/pro/index.php?wsdl';
 
             $soapClientOptions = [
                 'encoding' => 'UTF-8',
@@ -638,7 +638,7 @@ class SoapController extends Controller
     {
         try {
             // $wsdlUrl = 'https://webservice.facturatech.co/v2/BETA/WSV2DEMO.asmx?WSDL';
-            $wsdlUrl = 'https://ws.facturatech.co/v2/demo/index.php?wsdl';
+            $wsdlUrl = 'https://ws.facturatech.co/v2/pro/index.php?wsdl';
 
             $soapClientOptions = [
                 'encoding' => 'UTF-8',
@@ -678,7 +678,7 @@ class SoapController extends Controller
             if ( $status->code == '201') {
 
                 // $wsdlUrl = 'https://webservice.facturatech.co/v2/BETA/WSV2DEMO.asmx?WSDL';
-                $wsdlUrl = 'https://ws.facturatech.co/v2/demo/index.php?wsdl';
+                $wsdlUrl = 'https://ws.facturatech.co/v2/pro/index.php?wsdl';
     
                 $soapClientOptions = [
                     'encoding' => 'UTF-8',
@@ -731,7 +731,7 @@ class SoapController extends Controller
             if ( $status->code == '201') {
 
                 // $wsdlUrl = 'https://webservice.facturatech.co/v2/BETA/WSV2DEMO.asmx?WSDL';
-                $wsdlUrl = 'https://ws.facturatech.co/v2/demo/index.php?wsdl';
+                $wsdlUrl = 'https://ws.facturatech.co/v2/pro/index.php?wsdl';
     
                 $soapClientOptions = [
                     'encoding' => 'UTF-8',
