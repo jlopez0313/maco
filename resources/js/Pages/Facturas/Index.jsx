@@ -203,7 +203,7 @@ export default ({ auth, q, contacts, departments, payments, medios_pago, cliente
                         <div className="flex items-center">
                         
                         <SecondaryButton onClick={() => onToggleCierre(true)} className="me-4">
-                            Cierre de Caja
+                            Cuadre de Caja
                         </SecondaryButton>
                         
                         <PrimaryButton onClick={() => onToggleModal(true)}>
@@ -247,7 +247,7 @@ export default ({ auth, q, contacts, departments, payments, medios_pago, cliente
                 />
             </Modal>
 
-            <Modal show={showCierre} closeable={true} title="Cierre de Caja">
+            <Modal show={showCierre} closeable={true} title="Cuadre de Caja">
                 <Cierre
                     auth={auth}
                     setIsOpen={onToggleCierre}
