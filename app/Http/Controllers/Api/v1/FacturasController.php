@@ -103,7 +103,7 @@ class FacturasController extends Controller
         
         $data = Facturas::with('detalles.producto.impuestos.impuesto')
         ->whereDate('created_at', \Carbon\Carbon::today())
-        ->where('forma_pagos_id', 1)
+        ->where('forma_pago_id', 1)
         ->get();
 
         return FacturasResource::collection( $data );
