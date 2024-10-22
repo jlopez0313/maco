@@ -19,7 +19,11 @@ class TenantsController extends Controller
     {
         $data = $request->all();
         $name = str_replace(' ', '_', $data['tenant']);
+        
         $tenant = Tenant::create(['id' => $name ]);
+        $tenant->estado = 'A';
+        $tenant->save();
+
         $tenant->domains()->create(['domain' => $name . '.' . env('APP_DOMAIN') ]);
 
         return new TenantsResource( $tenant );

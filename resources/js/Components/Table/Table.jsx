@@ -13,6 +13,8 @@ export default ({
     onTrash,
     onEdit,
     onSearch,
+    onDisable,
+    status,
     onSort = () => {},
     sortIcon = "desc",
 }) => {
@@ -114,6 +116,26 @@ export default ({
                                                 onClick={() =>
                                                     onSearch(item.id)
                                                 }
+                                            />
+                                        );
+                                    } else if (
+                                        action === "disable"
+                                    ) {
+                                        return (
+                                            <ActionsTable
+                                                key={key}
+                                                action={action}
+                                                onClick={() => onDisable(item.id)}
+                                            />
+                                        );
+                                    } else if (
+                                        action === "enable"
+                                    ) {
+                                        return (
+                                            <ActionsTable
+                                                key={key}
+                                                action={action}
+                                                onClick={() => onEnable(item.id)}
                                             />
                                         );
                                     }

@@ -19,7 +19,8 @@ export default ({ auth, tenants }) => {
     const titles= [
         'Tenant',
         'Dominio',
-        'Fecha de Creación'
+        'Fecha de Creación',
+        'Estado',
     ]
 
     const [action, setAction] = useState( '' );
@@ -35,6 +36,7 @@ export default ({ auth, tenants }) => {
                 'tenant': item.id,
                 'domain': item.domain?.domain,
                 'fecha': item.created_at,
+                'status': item.estado_label,
                 
             }
         })
@@ -121,10 +123,10 @@ export default ({ auth, tenants }) => {
                         <Table 
                             data={list}
                             links={links}
-                            onEdit={ (evt) => {} }
                             onTrash={ (evt) => onSetAdminModal(evt, 'trash') }
+                            onEdit={ (evt) => onSetAdminModal(evt, 'edit') }
                             titles={titles}
-                            actions={['trash']}
+                            actions={['edit', 'trash']}
                         />
                     </div>
 

@@ -1,6 +1,17 @@
 <?php
 
 return [
+    'estados' => [
+        [
+            'key' => 'A',
+            'valor' => 'Activo',
+        ],
+
+        [
+            'key' => 'I',
+            'valor' => 'Inactivo',
+        ],  
+    ],
     'origenes' => [
         [
             'key' => 'N',

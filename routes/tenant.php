@@ -10,6 +10,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FacturasController;
 use App\Http\Controllers\GastosController;
 use App\Http\Controllers\ImpuestosController;
+use App\Http\Controllers\ImpresionController;
 use App\Http\Controllers\InventarioController;
 use App\Http\Controllers\MedidasController;
 use App\Http\Controllers\ProfileController;
@@ -67,6 +68,10 @@ Route::middleware([
         Route::get('/', function () {
             return Inertia::render('Parametros/Index');
         })->name('parametros');
+
+        Route::prefix('impresion')->group(function () {
+            Route::get('/', [ImpresionController::class, 'index'])->name('parametros.impresion');
+        });
 
         Route::prefix('usuarios')->group(function () {
             Route::get('/', [UserController::class, 'index'])->name('parametros.usuarios');

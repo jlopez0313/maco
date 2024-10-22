@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class TenantsCollection extends ResourceCollection
+class ImpresionesCollection extends ResourceCollection
 {
     /**
      * Transform the resource collection into an array.
@@ -19,7 +19,7 @@ class TenantsCollection extends ResourceCollection
         }
         
         return $this->collection->map->only(
-            'id', 'data', 'estado', 'estado_label', 'domain', 'created_at'
+            'id', 'forma', 'forma_label'
         );
     }
 }

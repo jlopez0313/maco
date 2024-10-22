@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class TenantsResource extends JsonResource
+class ImpresionesResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -20,11 +20,8 @@ class TenantsResource extends JsonResource
         
         return [
             'id' => $this->id,
-            'domain' => $this->domain,
-            'data' => $this->data,
-            'estado' => $this->estado,
-            'estado_label' => $this->estado_label,
-            'created_at' => $this->created_at,
+            'forma' => $this->forma,
+            'forma_label' => $this->forma_label,
         ];
     }
 }
