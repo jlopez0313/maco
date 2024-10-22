@@ -52,6 +52,8 @@ Route::middleware([
     Route::apiResource('bancos', App\Http\Controllers\Api\v1\BancosController::class);
     Route::apiResource('colores', App\Http\Controllers\Api\v1\ColoresController::class);
     Route::apiResource('conceptos', App\Http\Controllers\Api\v1\ConceptosController::class);
+    Route::apiResource('credenciales', App\Http\Controllers\Api\v1\CredencialesController::class);
+    Route::apiResource('impresiones', App\Http\Controllers\Api\v1\ImpresionesController::class);
     Route::apiResource('impuestos', App\Http\Controllers\Api\v1\ImpuestosController::class);
 
     Route::prefix('clientes')->group(function () {
@@ -83,8 +85,14 @@ Route::middleware([
     Route::apiResource('medios-pago', App\Http\Controllers\Api\v1\MediosPagoController::class);
     Route::apiResource('detalles', App\Http\Controllers\Api\v1\DetallesController::class);
     Route::apiResource('empresas', App\Http\Controllers\Api\v1\EmpresasController::class);
-    Route::apiResource('consecutivos', App\Http\Controllers\Api\v1\ConsecutivosController::class);
     Route::apiResource('recaudos', App\Http\Controllers\Api\v1\RecaudosController::class);
+
+    Route::prefix('consecutivos')->group(function () {
+        Route::get('/first', [App\Http\Controllers\Api\v1\ConsecutivosController::class, 'first']);
+    });
+    Route::apiResource('consecutivos', App\Http\Controllers\Api\v1\ConsecutivosController::class);
+
+    
     
     
     Route::prefix('contactos')->group(function () {

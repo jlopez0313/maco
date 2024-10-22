@@ -35,7 +35,10 @@ export default ({ auth, q, contacts, departments, payments, medios_pago, cliente
         "Forma de Pago",
         "Medio de Pago",
         "Valor Total",
-        "Estado",
+        {
+            key: "id",
+            title: "Estado",
+        },,
     ];
 
     const [cookies, setCookie] = useCookies(["maco"]);
@@ -175,7 +178,7 @@ export default ({ auth, q, contacts, departments, payments, medios_pago, cliente
             <Head title="Ventas" />
 
             <div className="py-12">
-                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                <div className="max-w-5xl mx-auto sm:px-6 lg:px-8">
                     <div className="flex items-center justify-between mt-4 mb-6">
                         <div className="flex items-center">
                             <TextInput
@@ -200,7 +203,7 @@ export default ({ auth, q, contacts, departments, payments, medios_pago, cliente
                         <div className="flex items-center">
                         
                         <SecondaryButton onClick={() => onToggleCierre(true)} className="me-4">
-                            Cierre de Caja
+                            Cuadre de Caja
                         </SecondaryButton>
                         
                         <PrimaryButton onClick={() => onToggleModal(true)}>
@@ -217,7 +220,8 @@ export default ({ auth, q, contacts, departments, payments, medios_pago, cliente
                             data={list}
                             links={links}
                             onSearch={(evt) => onSearch(evt)}
-                            onEdit={(evt) => onSetAdminModal(evt, "edit")}
+                            onEdit={(evt) => onEdit(evt)}
+                            onRow={(evt) => onEdit(evt)}
                             onTrash={(evt) => onSetAdminModal(evt, "trash")}
                             titles={titles}
                             actions={["search", "edit", "trash"]}
@@ -243,7 +247,7 @@ export default ({ auth, q, contacts, departments, payments, medios_pago, cliente
                 />
             </Modal>
 
-            <Modal show={showCierre} closeable={true} title="Cierre de Caja">
+            <Modal show={showCierre} closeable={true} title="Cuadre de Caja">
                 <Cierre
                     auth={auth}
                     setIsOpen={onToggleCierre}
@@ -251,6 +255,7 @@ export default ({ auth, q, contacts, departments, payments, medios_pago, cliente
             </Modal>
 
             <AdminModal
+                auth={auth}
                 title={action}
                 show={adminModal}
                 setIsOpen={setAdminModal}

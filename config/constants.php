@@ -1,6 +1,23 @@
 <?php
 
 return [
+    'impresiones' => [
+        [
+            'key' => 'CAR',
+            'valor' => 'Carta',
+        ],
+
+        [
+            'key' => 'P80',
+            'valor' => 'POS 80mm',
+        ],  
+/*
+        [
+            'key' => 'M',
+            'valor' => 'Mixto',
+        ],  
+*/
+    ],
     'estados' => [
         [
             'key' => 'A',

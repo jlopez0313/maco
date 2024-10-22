@@ -107,6 +107,7 @@ export default ({
                         data={list}
                         links={[]}
                         onEdit={(evt) => onSetAdminModal(evt, "edit")}
+                        onRow={(evt) => onSetAdminModal(evt, "edit")}
                         onTrash={(evt) => onSetAdminModal(evt, "trash")}
                         titles={titles}
                         actions={["edit", "trash"]}
@@ -128,6 +129,7 @@ export default ({
             </Modal>
 
             <AdminModal
+                auth={auth}
                 title={action}
                 show={adminModal}
                 setIsOpen={setAdminModal}

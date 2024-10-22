@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Empresas;
 use App\Models\Clientes;
 use App\Models\Consecutivos;
+use App\Models\Credenciales;
 use App\Models\Facturas;
 use App\Models\Productos;
 use App\Models\Proveedores;
@@ -31,9 +32,11 @@ class SoapController extends Controller
 
             $client = new \SoapClient($wsdlUrl, $soapClientOptions);
 
+            $credenciales = Credenciales::where('estado', 'A')->first();
+
             $result = $client->__soapCall('GenerarNumeracion', [
-                'User' => 'MACO02062024',
-                'Pass' => '2a4d4a72f5aacf82e517cad6943fd3891157a52d8ed5a6fddedbbd31632035e8',
+                'User' => $credenciales->username,
+                'Pass' => $credenciales->password,
                 'Prefijo' => 'MACO',
                 'NumeroInicial' => 1,
                 'NumeroFinal' => 1000,
@@ -62,10 +65,12 @@ class SoapController extends Controller
             ];
 
             $client = new \SoapClient($wsdlUrl, $soapClientOptions);
+            
+            $credenciales = Credenciales::where('estado', 'A')->first();
 
             $result = $client->__soapCall('ConsultaNumeracion', [
-                'User' => 'MACO02062024',
-                'Pass' => '2a4d4a72f5aacf82e517cad6943fd3891157a52d8ed5a6fddedbbd31632035e8',
+                'User' => $credenciales->username,
+                'Pass' => $credenciales->password,
             ]);
 
             return $result;
@@ -78,7 +83,7 @@ class SoapController extends Controller
     {
         try {
             // $wsdlUrl = 'https://webservice.facturatech.co/v2/BETA/WSV2DEMO.asmx?WSDL';
-            $wsdlUrl = 'https://ws.facturatech.co/v2/demo/index.php?wsdl';
+            $wsdlUrl = 'https://ws.facturatech.co/v2/pro/index.php?wsdl';
 
             $soapClientOptions = [
                 'encoding' => 'UTF-8',
@@ -91,9 +96,11 @@ class SoapController extends Controller
 
             $client = new \SoapClient($wsdlUrl, $soapClientOptions);
 
+            $credenciales = Credenciales::where('estado', 'A')->first();
+
             $result = $client->__soapCall('FtechAction.uploadInvoiceFile', [
-                'User' => 'MACO02062024',
-                'Pass' => '2a4d4a72f5aacf82e517cad6943fd3891157a52d8ed5a6fddedbbd31632035e8',
+                'User' => $credenciales->username,
+                'Pass' => $credenciales->password,
                 'Prefijo' => 'MACO',
                 'NumAutorizacion' => '1001',
                 'TipoDocumento' => 'INVOIC',
@@ -110,7 +117,7 @@ class SoapController extends Controller
     {
         try {
             // $wsdlUrl = 'https://webservice.facturatech.co/v2/BETA/WSV2DEMO.asmx?WSDL';
-            $wsdlUrl = 'https://ws.facturatech.co/v2/demo/index.php?wsdl';
+            $wsdlUrl = 'https://ws.facturatech.co/v2/pro/index.php?wsdl';
 
             $soapClientOptions = [
                 'encoding' => 'UTF-8',
@@ -344,15 +351,15 @@ class SoapController extends Controller
             <FACTURA>
             <ENC>                                           <!-- ENCABEZADO -->
                 <ENC_1>INVOIC</ENC_1>                                                       <!-- Tipo de Documento - Excel Simplificado Anexo - Estandar Simplificado - OK Constante -->
-                <ENC_2>901143311</ENC_2>                                                    <!-- NIT CUENTA DEMO 901143311 - OK Constante para Pruebas 901143311 --> 
+                <ENC_2>'.$emisor->documento.'</ENC_2>                                       <!-- NIT Emisor - OK - para Pruebas 901143311 --> 
                 <ENC_3>'.$adquiriente->documento.'</ENC_3>                                  <!-- NIT ADQUIRIENTE/CLIENTE FINAL - OK -->
                 <ENC_4>UBL 2.1</ENC_4>                                                      <!-- Constante - OK -->
                 <ENC_5>DIAN 2.1</ENC_5>                                                     <!-- Constante - OK -->
                 <ENC_6>'. $emisor->resolucion->prefijo . ($consecutivo->consecutivo ?? 1) .'</ENC_6>                                              <!-- Prefijo y numero de factura - OK -->
                 <ENC_9>01</ENC_9>                                                           <!-- Tipo de Factura - Excel Simplificado Anexo - Estandar Simplificado - OK Constante -->
                 <ENC_10>COP</ENC_10>                                                        <!-- Tabla 13 - Monedas - Excel Simplificado Anexo - Tablas 2.1 - OK Constante -->
-                <ENC_11>2021-07-25T11:27:49</ENC_11>                                        <!-- Fecha y hora inicio del período facturado - OK -->
-                <ENC_12>2021-07-25T11:27:49</ENC_12>                                        <!-- Fecha y hora fin del período facturado - OK -->
+                <!-- <ENC_11>2021-07-25T11:27:49</ENC_11> -->                               <!-- Fecha y hora inicio del período facturado - OK -->
+                <!-- <ENC_12>2021-07-25T11:27:49</ENC_12> -->                               <!-- Fecha y hora fin del período facturado - OK -->
                 <ENC_15>'. count($factura->detalles) .'</ENC_15>                            <!-- Número de lineas en el detalle - OK Calculado -->
                 <ENC_16>2021-07-25</ENC_16>                                                 <!-- Fecha de Vencimiento de la factura - OK -->
                 <ENC_20>2</ENC_20>                                                          <!-- Tabla 28 - Ambiente Destino Del Documento - Excel Simplificado Anexo - Tablas 2.1 - OK Constante -->
@@ -360,12 +367,12 @@ class SoapController extends Controller
             </ENC>
             <EMI>                                           <!-- EMISOR -->
                 <EMI_1>'. $emisor->tipo->codigo .'</EMI_1>                                  <!-- Tabla 20  Tipo de identificación - Tipos de Persona - Tablas 2.1 - OK -->
-                <EMI_2>901143311</EMI_2>                                                    <!-- NIT Emisor - RUT - OK Constante para Pruebas 901143311 --> 
+                <EMI_2>'.$emisor->documento.'</EMI_2>                                       <!-- NIT Emisor - RUT - OK - para Pruebas 901143311 --> 
                 <EMI_3>'. $emisor->tipo_doc->codigo .'</EMI_3>                              <!-- Tabla 3 - Tipos de documentos de identidad - Tablas 2.1 - OK -->
                 <EMI_6>'. $emisor->nombre .'</EMI_6>                                        <!-- Nombre Emisor - RUT - OK -->
                 <EMI_7>'. $emisor->comercio .'</EMI_7>                                      <!-- Nombre Comercial - RUT - OK -->
                 <EMI_10>'. $emisor->direccion .'</EMI_10>                                   <!-- Dirección Comercial - OK -->
-                <EMI_11>'. $emisor->ciudad->departamento->codigo .'</EMI_11>                    <!-- Tabla 34 - Departamentos - Excel Simplificado Anexo - Tablas 2.1 - OK -->
+                <EMI_11>'. $emisor->ciudad->departamento->codigo .'</EMI_11>                <!-- Tabla 34 - Departamentos - Excel Simplificado Anexo - Tablas 2.1 - OK -->
                 <EMI_13>'. $emisor->ciudad->ciudad .'</EMI_13>                              <!-- Tabla 35 - Municipios - Nombre Municipio - Excel Simplificado Anexo - Tablas 2.1 - OK -->
                 <EMI_15>CO</EMI_15>                                                         <!-- Tabla 1 - Códigos de países - Alfa2 - Excel Simplificado Anexo - Tablas 2.1 - OK -->
                 <EMI_19>'. $emisor->ciudad->departamento->departamento .'</EMI_19>          <!-- Tabla 34 - Departamentos - Nombre - Excel Simplificado Anexo - Tablas 2.1 - OK -->
@@ -377,7 +384,7 @@ class SoapController extends Controller
                 </TAC>
                 <DFE>                                       <!-- INFORMACION FISCAL EMISOR -->
                     <DFE_1>'. $emisor->ciudad->codigo .'</DFE_1>                            <!-- Tabla 35 - Municipios - Código Municipio - Excel Simplificado Anexo - Tablas 2.1 - OK -->
-                    <DFE_2>'. $emisor->ciudad->departamento->codigo .'</DFE_2>                  <!-- Tabla 34 - Departamentos - Excel Simplificado Anexo - Tablas 2.1 - OK Constante -->
+                    <DFE_2>'. $emisor->ciudad->departamento->codigo .'</DFE_2>                  <!-- Tabla 34 - Departamentos - Excel Simplificado Anexo - Tablas 2.1 - OK -->
                     <DFE_3>CO</DFE_3>                                                       <!-- Tabla 1 - Códigos de países - Alfa2 - Excel Simplificado Anexo - Tablas 2.1 - OK Constante -->
                     <DFE_4>190003</DFE_4>                                                   <!-- Tabla 39 - Código Postal - Excel Simplificado Anexo - Tablas 2.1 - OK Constante Tabla 35 -->
                     <DFE_5>Colombia</DFE_5>                                                 <!-- Tabla 1 - Códigos de países - Nombre Común - Excel Simplificado Anexo - Tablas 2.1 - OK Constante -->
@@ -462,7 +469,7 @@ class SoapController extends Controller
             <MEP>                                           <!-- MEDIOS DE PAGO -->
                 <MEP_1>'. $factura->medio_pago->codigo .'</MEP_1>                           <!-- Tabla 5 - Códigos Medios de pago - Código / Code - Tablas 2.1 - OK -->
                 <MEP_2>'. $factura->forma_pago->codigo .'</MEP_2>                           <!-- Tabla 26 - Formas de Pago - Código - Tablas 2.1 - OK -->
-                <MEP_3>' .$createdAt->format('Y-m-d\TH:i:s.000\Z'). '</MEP_3>               <!-- Fecha de Pago - OK CREATED AT -->
+                <MEP_3>' .$createdAt->format('Y-m-d'). '</MEP_3>                            <!-- Fecha de Pago - OK CREATED AT -->
             </MEP>';
             
             $sumITE_5 = 0;
@@ -557,10 +564,10 @@ class SoapController extends Controller
             foreach( $impuestos as $key => $impuesto ) {
                 $TIMs .= '<IMP>                                     <!-- IMPUESTOS -->
                         <IMP_1>'. $impuesto['IMP_1'] .'</IMP_1>                        <!-- Tabla 44 - Impuestos registrados en la Factura Electrónica - Tablas 2.1 - OK -->
-                        <IMP_2>'. $impuesto['IMP_2'] .'</IMP_2>                                          <!-- Total Base -->
-                        <IMP_3>'. $impuesto['IMP_3'] .'</IMP_3>                                                      <!-- Tabla 13 - Monedas - Excel Simplificado Anexo - Tablas 2.1 - OK Constante -->
-                        <IMP_4>'. $impuesto['IMP_4'] .'</IMP_4>                                           <!-- Total impuestos -->
-                        <IMP_5>'. $impuesto['IMP_5'] .'</IMP_5>                                                      <!-- Tabla 13 - Monedas - Excel Simplificado Anexo - Tablas 2.1 - OK Constante -->
+                        <IMP_2>'. $impuesto['IMP_2'] .'</IMP_2>                        <!-- Total Base -->
+                        <IMP_3>'. $impuesto['IMP_3'] .'</IMP_3>                        <!-- Tabla 13 - Monedas - Excel Simplificado Anexo - Tablas 2.1 - OK -->
+                        <IMP_4>'. $impuesto['IMP_4'] .'</IMP_4>                        <!-- Total impuestos -->
+                        <IMP_5>'. $impuesto['IMP_5'] .'</IMP_5>                        <!-- Tabla 13 - Monedas - Excel Simplificado Anexo - Tablas 2.1 - OK -->
                         <IMP_6>'. $impuesto['IMP_6'] .'</IMP_6>                        <!-- Tabla 32 - Tarifas por Impuesto - TARIFA - Tablas 2.1 - OK -->
                     </IMP>';
             }
@@ -584,11 +591,11 @@ class SoapController extends Controller
                 </TIM>
             </FACTURA>';
 
-            // dd($xml);
+            $credenciales = Credenciales::where('estado', 'A')->first();
 
             $result = $client->__soapCall('FtechAction.uploadInvoiceFile', [
-                'username' => 'MACO02062024',
-                'password' => '2a4d4a72f5aacf82e517cad6943fd3891157a52d8ed5a6fddedbbd31632035e8',
+                'username' => $credenciales->username,
+                'password' => $credenciales->password,
                 'xmlBase64' => base64_encode($xml),
             ]);
 
@@ -616,6 +623,7 @@ class SoapController extends Controller
                     'factura No' => $emisor->resolucion->prefijo . ($consecutivo->consecutivo ?? 1)
                 ];
                 $result->xml = $xml;
+                $result->base64 = base64_encode($xml);
                 $result->errors = explode('"', $result->error);
             }
 
@@ -630,7 +638,7 @@ class SoapController extends Controller
     {
         try {
             // $wsdlUrl = 'https://webservice.facturatech.co/v2/BETA/WSV2DEMO.asmx?WSDL';
-            $wsdlUrl = 'https://ws.facturatech.co/v2/demo/index.php?wsdl';
+            $wsdlUrl = 'https://ws.facturatech.co/v2/pro/index.php?wsdl';
 
             $soapClientOptions = [
                 'encoding' => 'UTF-8',
@@ -645,9 +653,11 @@ class SoapController extends Controller
 
             $client = new \SoapClient($wsdlUrl, $soapClientOptions);
 
+            $credenciales = Credenciales::where('estado', 'A')->first();
+
             $result = $client->__soapCall('FtechAction.documentStatusFile', [
-                'username' => 'MACO02062024',
-                'password' => '2a4d4a72f5aacf82e517cad6943fd3891157a52d8ed5a6fddedbbd31632035e8',
+                'username' => $credenciales->username, // 'MACO02062024',
+                'password' => $credenciales->password, // '2a4d4a72f5aacf82e517cad6943fd3891157a52d8ed5a6fddedbbd31632035e8',
                 'transaccionID' =>  $factura->transaccionID,
             ]);
 
@@ -668,7 +678,7 @@ class SoapController extends Controller
             if ( $status->code == '201') {
 
                 // $wsdlUrl = 'https://webservice.facturatech.co/v2/BETA/WSV2DEMO.asmx?WSDL';
-                $wsdlUrl = 'https://ws.facturatech.co/v2/demo/index.php?wsdl';
+                $wsdlUrl = 'https://ws.facturatech.co/v2/pro/index.php?wsdl';
     
                 $soapClientOptions = [
                     'encoding' => 'UTF-8',
@@ -683,9 +693,11 @@ class SoapController extends Controller
                 
                 $client = new \SoapClient($wsdlUrl, $soapClientOptions);
                 
+                $credenciales = Credenciales::where('estado', 'A')->first();
+
                 $result = $client->__soapCall('FtechAction.downloadPDFFile', [
-                    'username' => 'MACO02062024',
-                    'password' => '2a4d4a72f5aacf82e517cad6943fd3891157a52d8ed5a6fddedbbd31632035e8',
+                    'username' => $credenciales->username,
+                    'password' => $credenciales->password,
                     'prefijo' => $factura->prefijo,
                     'folio' => $factura->folio,
                 ]);
@@ -719,7 +731,7 @@ class SoapController extends Controller
             if ( $status->code == '201') {
 
                 // $wsdlUrl = 'https://webservice.facturatech.co/v2/BETA/WSV2DEMO.asmx?WSDL';
-                $wsdlUrl = 'https://ws.facturatech.co/v2/demo/index.php?wsdl';
+                $wsdlUrl = 'https://ws.facturatech.co/v2/pro/index.php?wsdl';
     
                 $soapClientOptions = [
                     'encoding' => 'UTF-8',
@@ -734,9 +746,11 @@ class SoapController extends Controller
                 
                 $client = new \SoapClient($wsdlUrl, $soapClientOptions);
                 
+                $credenciales = Credenciales::where('estado', 'A')->first();
+
                 $result = $client->__soapCall('FtechAction.getQRFile', [
-                    'username' => 'MACO02062024',
-                    'password' => '2a4d4a72f5aacf82e517cad6943fd3891157a52d8ed5a6fddedbbd31632035e8',
+                    'username' => $credenciales->username,
+                    'password' => $credenciales->password,
                     'prefijo' => $factura->prefijo,
                     'folio' => $factura->folio,
                 ]);

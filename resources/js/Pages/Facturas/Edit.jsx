@@ -86,8 +86,8 @@ export default ({ auth, factura }) => {
                 desea
             };
             await axios.post(`/api/v1/facturas/registrar/${factura.id}`, data);
-            onReload();
-    
+            onToggleModal(false);
+            
             router.visit("/remisiones/show/" + factura.id);
         } catch (e) {
             notify('error',e.response?.data?.errors.join(','))
@@ -96,9 +96,6 @@ export default ({ auth, factura }) => {
 
     const onSetList = () => {
         const _list = data.map((item) => {
-
-            console.log( item );
-
             let impuestos = 0;
 
             item.producto?.impuestos.forEach((impto) => {
@@ -187,7 +184,7 @@ export default ({ auth, factura }) => {
             <Head title="Ventas" />
 
             <div className="py-12">
-                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                <div className="max-w-6xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white overflow-auto shadow-sm sm:rounded-lg p-6">
                         <form>
                             <div className="grid grid-cols-2 gap-4">
@@ -207,7 +204,7 @@ export default ({ auth, factura }) => {
 
                                     <TextInput
                                         type="text"
-                                        value={factura.cliente.nombre}
+                                        value={factura.cliente?.nombre}
                                         className="mt-1 block w-full"
                                         readOnly={true}
                                     />
@@ -263,6 +260,7 @@ export default ({ auth, factura }) => {
                             data={list}
                             links={[]}
                             onEdit={(evt) => onSetAdminModal(evt, "edit")}
+                            onRow={(evt) => onSetAdminModal(evt, "edit")}
                             onTrash={(evt) => onTrash(evt)}
                             titles={titles}
                             actions={[
@@ -314,6 +312,7 @@ export default ({ auth, factura }) => {
             </Modal>
 
             <AdminModal
+                auth={auth}
                 title={action}
                 show={adminModal}
                 setIsOpen={setAdminModal}

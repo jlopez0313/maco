@@ -18,9 +18,8 @@ class ImpresionesController extends Controller
     {
         return Inertia::render('Parametros/Impresiones/Form', [
             'filters' => Peticion::all('search', 'trashed'),
-            'contacts' => new ImpresionesResource(
-                Impresiones::first()
-            ),
+            'id' => Impresiones::first()?->id,
+            'formas' => config('constants.impresiones')
         ]);
     }
 

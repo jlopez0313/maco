@@ -11,6 +11,7 @@ export default ({
     titles = [],
     actions = [],
     onTrash,
+    onRow,
     onEdit,
     onSearch,
     onDisable,
@@ -72,7 +73,7 @@ export default ({
                                     <td className="border-t" key={key}>
                                         <a
                                             role="button"
-                                            onClick={() => onEdit(item.id)}
+                                            onClick={() => onRow(item.id)}
                                             className="flex items-center px-6 py-4 focus:text-indigo-700 focus:outline-none"
                                         >
                                             {item[key]}

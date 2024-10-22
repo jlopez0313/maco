@@ -158,10 +158,10 @@ export default ({
 
             <form onSubmit={submit}>
                 <div className="py-12">
-                    <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                    <div className="max-w-6xl mx-auto sm:px-6 lg:px-8">
                         <div className="bg-white overflow-auto shadow-sm sm:rounded-lg">
                             <div className="pb-12 pt-6">
-                                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                                <div className="max-w-6xl mx-auto sm:px-6 lg:px-8">
                                     <h2 className="font-semibold text-xl text-gray-800 leading-tight">
                                         Información General
                                     </h2>
@@ -371,7 +371,7 @@ export default ({
 
                         <div className="mt-5 bg-white overflow-auto shadow-sm sm:rounded-lg">
                             <div className="pb-12 pt-6">
-                                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                                <div className="max-w-6xl mx-auto sm:px-6 lg:px-8">
                                     <h2 className="font-semibold text-xl text-gray-800 leading-tight">
                                     Impuestos Aplicados
                                     </h2>
@@ -381,12 +381,13 @@ export default ({
                                             data={tableList}
                                             links={[]}
                                             onTrash={onRemoveImpuesto}
+                                            onRow={() => {}}
                                             titles={titles}
                                             actions={["trash"]}
                                         />
                                     </div>
 
-                                    <div className="mt-5 grid grid-cols-1 gap-4">
+                                    <div className="mt-5 grid grid-cols-2 gap-4">
                                         <div>
                                             <InputLabel
                                                 htmlFor="medidas_id"
@@ -425,18 +426,6 @@ export default ({
                                                 className="mt-2"
                                             />
                                         </div>
-                                    </div>
-
-                                    <div className="flex items-center justify-end mt-4">
-                                        <SecondaryButton
-                                            type="button"
-                                            onClick={onAddImpuesto}
-                                        >
-                                            Agregar
-                                        </SecondaryButton>
-                                    </div>
-
-                                    <div className="mt-2 grid grid-cols-1 gap-4">
                                         <div>
                                             <InputLabel
                                                 htmlFor="medidas_id"
@@ -477,7 +466,17 @@ export default ({
                                         </div>
                                     </div>
 
-                                    <div className="flex items-center justify-end mt-4">
+                                    
+
+                                    <div className="mt-2 grid grid-cols-2 gap-4">
+                                        <div className="flex items-center justify-end mt-4">
+                                        <SecondaryButton
+                                            type="button"
+                                            onClick={onAddImpuesto}
+                                        >
+                                            Agregar
+                                        </SecondaryButton>
+                                    </div><div className="flex items-center justify-end mt-4">
                                         <SecondaryButton
                                             type="button"
                                             onClick={onAddRetencion}
@@ -485,6 +484,9 @@ export default ({
                                             Agregar
                                         </SecondaryButton>
                                     </div>
+                                    </div>
+
+                                    
 
                                     <TextInput
                                         placeholder="Escriba aquí"

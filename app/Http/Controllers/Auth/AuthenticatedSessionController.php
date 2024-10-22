@@ -19,6 +19,11 @@ class AuthenticatedSessionController extends Controller
      */
     public function create(): Response
     {
+        if ( tenant() && tenant()->estado == 'I' ) {
+            return Inertia::render('Errors/Empresa/Inactivo', [
+            ]);
+        }
+
         return Inertia::render('Auth/Login', [
             'canResetPassword' => Route::has('password.request'),
             'status' => session('status'),

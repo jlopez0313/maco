@@ -8,9 +8,10 @@ import { useForm } from "@inertiajs/react";
 import { useEffect, useState } from "react";
 import { notify } from "@/Helpers/Notify";
 
-export const AdminModal = ({ title, show, setIsOpen, onConfirm }) => {
+export const AdminModal = ({ auth, title, show, setIsOpen, onConfirm }) => {
 
     const { data, setData, processing, errors, reset } = useForm({
+        user_id: auth?.user?.id || 0,
         password: '',
     });
 
@@ -22,7 +23,8 @@ export const AdminModal = ({ title, show, setIsOpen, onConfirm }) => {
             onConfirm( await axios.post('/api/v1/usuarios/get-admin', data) );
             reset();
         } catch( error ) {
-            notify('error', error.error || 'Password Error. Try again.')
+            console.log( error.response.data.error )
+            notify('error', error?.response?.data?.error || 'Internal Error. Try again.')
         }
     };
 
@@ -49,7 +51,7 @@ export const AdminModal = ({ title, show, setIsOpen, onConfirm }) => {
     return (
         <Modal show={show} closeable={true} title={`${action} registro`}>
             <div className="pb-12 pt-6">
-                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                <div className="max-w-6xl mx-auto sm:px-6 lg:px-8">
                     <form onSubmit={submit}>
                         <div className="grid grid-cols-1 gap-4">
                             <div>

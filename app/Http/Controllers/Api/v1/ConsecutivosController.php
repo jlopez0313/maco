@@ -47,4 +47,12 @@ class ConsecutivosController extends Controller
         $consecutivo->delete();
         return new ConsecutivosResource( $consecutivo );
     }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function first()
+    {
+        return new ConsecutivosResource( Consecutivos::first() );
+    }
 }

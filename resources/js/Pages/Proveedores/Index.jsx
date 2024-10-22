@@ -129,7 +129,7 @@ export default ({
             <Head title="Proveedores" />
 
             <div className="py-12">
-                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                <div className="max-w-5xl mx-auto sm:px-6 lg:px-8">
                     <div className="flex items-center justify-between mt-4 mb-6">
                         <div className="flex items-center">
                             <TextInput
@@ -161,6 +161,7 @@ export default ({
                             data={list}
                             links={links}
                             onEdit={(evt) => onSetAdminModal(evt, "edit")}
+                            onRow={(evt) => onSetAdminModal(evt, "edit")}
                             onTrash={(evt) => onSetAdminModal(evt, "trash")}
                             titles={titles}
                             actions={["edit", "trash"]}
@@ -172,6 +173,7 @@ export default ({
             </div>
 
             <AdminModal
+                auth={auth}
                 title={action}
                 show={adminModal}
                 setIsOpen={setAdminModal}

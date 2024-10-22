@@ -56,6 +56,9 @@ export default ({ auth, q, contacts, origenes, departamentos }) => {
         if ( action == 'edit' ) {
             setAdminModal( false )
             onToggleModal( true )
+        } else if ( action == 'search' ) {
+            setAdminModal( false )
+            onSearch( true )
         } else {
             onTrash(data)
         }
@@ -88,7 +91,8 @@ export default ({ auth, q, contacts, origenes, departamentos }) => {
     };
 
     const onSearch = (id) => {
-        router.get( `inventario/show/${ id }` )
+        const idx = id ? Number(id) : Number(_id)
+        router.get( `inventario/show/${ idx }` )
     }
 
     const onEdit = (id) => {
@@ -111,7 +115,7 @@ export default ({ auth, q, contacts, origenes, departamentos }) => {
             <Head title="Inventario" />
 
             <div className="py-12">
-                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                <div className="max-w-6xl mx-auto sm:px-6 lg:px-8">
                     <div className="flex items-center justify-between mt-4 mb-6">
                         <div className="flex items-center">
                             <TextInput
@@ -147,6 +151,7 @@ export default ({ auth, q, contacts, origenes, departamentos }) => {
                             onSearch={ (evt) => onSearch(evt) }
                             onTrash={ (evt) => onSetAdminModal(evt, 'trash') }
                             onEdit={ (evt) => onSetAdminModal(evt, 'edit') }
+                            onRow={(evt) => onSearch(evt)}
                             titles={titles}
                             actions={["search", "edit", "trash"]}
                         />
@@ -167,7 +172,7 @@ export default ({ auth, q, contacts, origenes, departamentos }) => {
                 />
             </Modal>
 
-            <AdminModal title={ action } show={adminModal} setIsOpen={setAdminModal} onConfirm={onConfirm}></AdminModal>
+            <AdminModal auth={auth} title={ action } show={adminModal} setIsOpen={setAdminModal} onConfirm={onConfirm}></AdminModal>
 
         </AuthenticatedLayout>
     );

@@ -119,7 +119,7 @@ export default ({
             <Head title="Proveedores" />
 
             <div className="pb-12 pt-6">
-                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                <div className="max-w-6xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white overflow-auto shadow-sm sm:rounded-lg p-6 mt-6">
                         <h2 className="font-semibold text-xl text-gray-800 leading-tight pb-5">
                             Información General

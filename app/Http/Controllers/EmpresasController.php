@@ -9,8 +9,6 @@ use App\Http\Resources\EmpresasResource;
 use App\Http\Resources\TiposDocumentosCollection;
 use App\Http\Resources\DepartamentosCollection;
 use App\Http\Resources\ResponsabilidadesFiscalesCollection;
-use App\Http\Resources\ConsecutivosResource;
-use App\Models\Consecutivos;
 use App\Models\ResponsabilidadesFiscales;
 use App\Models\Resoluciones;
 use App\Models\Departamentos;
@@ -43,11 +41,9 @@ class EmpresasController extends Controller
             'responsabilidades' => new ResponsabilidadesFiscalesCollection(
                 ResponsabilidadesFiscales::orderBy('descripcion')->get()
             ),
-            'consecutivo' => new ConsecutivosResource(
-                consecutivos::first()
-            ),
             'estados_resoluciones' => config('constants.facturas.resoluciones.estados'),
             'S_N' => config('constants.S_N'),
+            'estados' => config('constants.estados'),
         ]);
     }
 

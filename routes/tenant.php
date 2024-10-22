@@ -10,7 +10,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FacturasController;
 use App\Http\Controllers\GastosController;
 use App\Http\Controllers\ImpuestosController;
-use App\Http\Controllers\ImpresionController;
+use App\Http\Controllers\ImpresionesController;
 use App\Http\Controllers\InventarioController;
 use App\Http\Controllers\MedidasController;
 use App\Http\Controllers\ProfileController;
@@ -70,7 +70,7 @@ Route::middleware([
         })->name('parametros');
 
         Route::prefix('impresion')->group(function () {
-            Route::get('/', [ImpresionController::class, 'index'])->name('parametros.impresion');
+            Route::get('/', [ImpresionesController::class, 'index'])->name('parametros.impresion');
         });
 
         Route::prefix('usuarios')->group(function () {
@@ -143,6 +143,7 @@ Route::middleware([
         Route::get('/show/{id}', [FacturasController::class, 'show'])->name('remisiones.show');
         Route::get('/edit/{id}', [FacturasController::class, 'edit'])->name('remisiones.edit');
         Route::get('/pdf/{id}', [FacturasController::class, 'pdf'])->name('remisiones.pdf');
+        Route::get('/cierre', [FacturasController::class, 'cierre'])->name('remisiones.cierre');
         Route::get('/qr/{id}', [FacturasController::class, 'qr'])->name('remisiones.qr');
     })->middleware(['auth', 'verified']);
 

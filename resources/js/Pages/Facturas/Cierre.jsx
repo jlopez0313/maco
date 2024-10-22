@@ -8,17 +8,14 @@ import React from "react";
 import { useState, useEffect } from "react";
 
 export const Cierre = ({ auth, setIsOpen }) => {
-
-    const [total, setTotal] = useState(0)
-
+    const [total, setTotal] = useState(0);
+    
     const onGetReporte = async () => {
         const {
             data: { data },
         } = await axios.post("/api/v1/facturas/cierre");
 
         const sum = data.map((item) => {
-            
-            
             item.detalles.forEach((_item) => {
                 let impuestos = 0;
 
@@ -37,7 +34,7 @@ export const Cierre = ({ auth, setIsOpen }) => {
 
                 _item.total_impuestos = impuestos;
             });
-            
+
             return (
                 item.detalles.reduce(
                     (sum, det) =>
@@ -49,13 +46,16 @@ export const Cierre = ({ auth, setIsOpen }) => {
             );
         });
 
-        if( sum.length ) {
-            const total = sum.reduce( (x, acum) => {
-                return x + acum
-            } )
-            setTotal( toCurrency(total) )
+        if (sum.length) {
+            const total = sum.reduce((x, acum) => {
+                return x + acum;
+            });
+            setTotal(toCurrency(total));
         }
+    };
 
+    const goToPDF = async () => {
+        window.location.href = "/remisiones/cierre";
     };
 
     useEffect(() => {
@@ -63,21 +63,35 @@ export const Cierre = ({ auth, setIsOpen }) => {
     }, []);
     return (
         <div className="pb-12 pt-6">
-            <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                
+            <div className="max-w-6xl mx-auto sm:px-6 lg:px-8">
                 <div className="grid grid-cols-1 gap-4">
                     <div>
                         <InputLabel htmlFor="documento" value="Fecha" />
-                        <TextSpan className="mt-1 block w-full" value={ new Date().toLocaleDateString()} />
+                        <TextSpan
+                            className="mt-1 block w-full"
+                            value={new Date().toLocaleDateString()}
+                        />
                     </div>
 
                     <div>
-                        <InputLabel htmlFor="documento" value="Total de Ventas del día" />
-                        <TextSpan className="mt-1 block w-full" value={ total } />
+                        <InputLabel
+                            htmlFor="documento"
+                            value="Total de Ventas a Contado del día"
+                        />
+                        <TextSpan className="mt-1 block w-full" value={total} />
                     </div>
                 </div>
 
                 <div className="flex items-center justify-end mt-4">
+                   
+                    <PrimaryButton
+                        type="button"
+                        className="me-3"
+                        onClick={() => goToPDF()}
+                    >
+                        Imprimir
+                    </PrimaryButton>
+
                     <SecondaryButton
                         type="button"
                         onClick={() => setIsOpen(false)}

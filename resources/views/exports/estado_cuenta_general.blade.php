@@ -30,10 +30,30 @@
 
 @php
     $valor = $invoices->map( function ($item) {
+
+            forEach($item->detalles as $_item) {
+                $impuestos = 0;
+
+                forEach( $_item->producto?->impuestos as $impto) {
+                    if ($impto->impuesto?->tipo_impuesto == "I") {
+                        if ($impto->impuesto->tipo_tarifa == "P") {
+                            $impuestos +=
+                                (($_item->precio_venta ?? 0) *
+                                    ($impto->impuesto->tarifa)) /
+                                100;
+                        } else if ($impto->impuesto->tipo_tarifa == "V") {
+                            $impuestos += ($impto->impuesto->tarifa);
+                        }
+                    }
+                }
+
+                $_item->total_impuestos = $impuestos;
+            }
+
             return (
                 $item->detalles->reduce (
                     function ($carry, $det) {
-                        return $carry + ( $det->precio_venta * $det->cantidad ) ;
+                        return $carry + ( $det->precio_venta * $det->cantidad ) +  ( $det->total_impuestos * $det->cantidad ) ;
                     }, 0
                 ) ?? 0
             );

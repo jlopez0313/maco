@@ -22,7 +22,7 @@ class CreateTenantsTable extends Migration
 
             $table->timestamps();
             $table->json('data')->nullable();
-            $table->char('status')->nullable();
+            $table->char('estado')->nullable();
         });
     }
 

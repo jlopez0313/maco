@@ -31,10 +31,10 @@ export default function Authenticated({ user, header, children }) {
                                 <Icon name='user' />
                                 <div className="">
                                     <div className="font-medium text-base text-gray-800">
-                                        {user.name}
+                                        {user?.name}
                                     </div>
                                     <div className="font-medium text-sm text-gray-500">
-                                        {user.email}
+                                        {user?.email}
                                     </div>
                                 </div>
                             </div>
@@ -217,10 +217,10 @@ export default function Authenticated({ user, header, children }) {
                         <Icon name='user' />
                         <div className="">
                             <div className="font-medium text-base text-gray-800">
-                                {user.name}
+                                {user?.name}
                             </div>
                             <div className="font-medium text-sm text-gray-500">
-                                {user.email}
+                                {user?.email}
                             </div>
                         </div>
                     </div>

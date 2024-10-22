@@ -118,7 +118,7 @@ export default ({ auth, contacts, impuestos_tarifas, impuestos_tipos }) => {
             <Head title="Impuestos" />
 
             <div className="py-12">
-                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                <div className="max-w-6xl mx-auto sm:px-6 lg:px-8">
                     <div className="flex items-center justify-end mt-4 mb-4">
                         <SecondaryButton
                             className="ms-4"
@@ -142,6 +142,7 @@ export default ({ auth, contacts, impuestos_tarifas, impuestos_tipos }) => {
                             data={list}
                             links={links}
                             onEdit={(evt) => onSetAdminModal(evt, "edit")}
+                            onRow={(evt) => onSetAdminModal(evt, "edit")}
                             onTrash={(evt) => onSetAdminModal(evt, "trash")}
                             titles={titles}
                             actions={["edit"]}
@@ -162,6 +163,7 @@ export default ({ auth, contacts, impuestos_tarifas, impuestos_tipos }) => {
             </Modal>
 
             <AdminModal
+                auth={auth}
                 title={action}
                 show={adminModal}
                 setIsOpen={setAdminModal}

@@ -12,6 +12,7 @@ use App\Models\MediosPago;
 use App\Models\Departamentos;
 use App\Models\Facturas;
 use App\Models\FormasPago;
+use App\Models\Impresiones;
 use App\Models\Resoluciones;
 use App\Models\Empresas;
 use Illuminate\Http\Request;
@@ -150,10 +151,17 @@ class FacturasController extends Controller
         $factura = Facturas::find($id);
 
         $data = [
+            'empresa' => Empresas::with('contacto', 'ciudad.departamento')->first(),
             'factura' => $factura,
         ];
 
-        $pdf = \PDF::loadView('factura', $data);
+        $impresion = Impresiones::first();
+
+        if ( !$impresion || $impresion->forma == 'CAR') {
+            $pdf = \PDF::loadView('factura', $data);
+        } else if ( $impresion->forma == 'P80' ) {
+            $pdf = \PDF::loadView('factura_pos_80', $data);
+        }
 
         return $pdf->download($factura->id.'.pdf');
     }
@@ -171,6 +179,26 @@ class FacturasController extends Controller
             echo \QrCode::size(700)->generate($resource->resourceData);
 
         }
+    }
 
+    public function cierre(Request $erquest) {
+        $data = Facturas::with('detalles.producto.impuestos.impuesto')
+        ->whereDate('created_at', \Carbon\Carbon::today())
+        ->where('forma_pago_id', 1)
+        ->get();
+
+        $data = [
+            'data' => $data,
+        ];
+
+        $impresion = Impresiones::first();
+
+        if ( !$impresion || $impresion->forma == 'CAR') {
+            $pdf = \PDF::loadView('cierre', $data);
+        } else if ( $impresion->forma == 'P80' ) {
+            $pdf = \PDF::loadView('cierre_pos_80', $data);
+        }
+
+        return $pdf->download('Cuadre_Caja.pdf');
     }
 }

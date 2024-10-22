@@ -27,7 +27,7 @@ class ResolucionesController extends Controller
         if ( !$consecutivo ) {
             $consecutivo = Consecutivos::create([ 'consecutivo' => $request->consecutivo_inicial ]);
         } else {
-            $consecutivo = Consecutivos::update([ 'consecutivo' => $request->consecutivo_inicial ]);
+            $consecutivo = Consecutivos::first()->update([ 'consecutivo' => $request->consecutivo_inicial ]);
         }
 
         return new ResolucionesResource($resolucione);

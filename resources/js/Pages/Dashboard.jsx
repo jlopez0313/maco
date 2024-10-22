@@ -37,7 +37,7 @@ export default function Dashboard({ auth, created_at }) {
             <Head title="Inicio" />
 
             <div className="py-12">
-                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                <div className="max-w-6xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white overflow-auto shadow-sm sm:rounded-lg">
                         <div className="p-6 text-gray-900">Bienvenido!</div>
                     </div>
@@ -50,7 +50,14 @@ export default function Dashboard({ auth, created_at }) {
                                 Por favor omita este mensaje si ya realizó su respectivo pago.<br /> <br />
 
                                 Fecha límite de pago: <b> { limitDate } </b> <br /> <br />
-                                Métodos de pago: <b> Bancolombia - Nequi - NU </b> <br /><br />
+                                Métodos de pago: <br />
+
+                                <b> Bancolombia: 20 511 124 710 </b> <br />
+                                <b> Nequi: 317 262 3919        </b> <br />
+                                <b> NU: 35 391 278         </b>
+
+                                <br />
+                                <br />
 
                                 ¡Gracias por confiar en nuestros servicios!
                             </div>

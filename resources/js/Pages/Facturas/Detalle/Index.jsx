@@ -65,7 +65,7 @@ export default ({ auth, factura }) => {
         }
     };
 
-    const onEdit = (data) => {
+    const onEdit = (id) => {
         router.get(`/remisiones/edit/${id}`);
     };
 
@@ -204,14 +204,14 @@ export default ({ auth, factura }) => {
             user={auth.user}
             header={
                 <h2 className="font-semibold text-xl text-gray-800 leading-tight">
-                    Detalle Órden de Compra
+                    Información de Venta
                 </h2>
             }
         >
-            <Head title="Detalle Órden de Compra" />
+            <Head title="Información de Venta" />
 
             <div className="py-12">
-                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                <div className="max-w-5xl mx-auto sm:px-6 lg:px-8">
                     <div className="flex items-center justify-end mt-4 mb-4 no-print">
                         <SecondaryButton
                             className="ms-4"
@@ -240,7 +240,7 @@ export default ({ auth, factura }) => {
 
                                     <TextInput
                                         type="text"
-                                        value={factura.cliente.nombre}
+                                        value={factura.cliente?.nombre || ''}
                                         className="mt-1 block w-full"
                                         readOnly={true}
                                     />
@@ -302,11 +302,12 @@ export default ({ auth, factura }) => {
                         </form>
                     </div>
 
-                    <div className="bg-white overflow-auto shadow-sm sm:rounded-lg">
+                    <div className="bg-white overflow-auto shadow-sm sm:rounded-lg mt-3">
                         <Table
                             data={list}
                             links={[]}
                             titles={titles}
+                            onRow={() => {}}
                             actions={[]}
                         />
                     </div>
@@ -345,7 +346,7 @@ export default ({ auth, factura }) => {
                                 <PrimaryButton
                                     className="ms-4 me-3"
                                     onClick={() =>
-                                        onSetAdminModal(factura.id, "edit")
+                                        onEdit(factura.id)
                                     }
                                 >
                                     Editar
@@ -365,6 +366,7 @@ export default ({ auth, factura }) => {
                 </div>
             </div>
             <AdminModal
+                auth={auth}
                 title={action}
                 show={adminModal}
                 setIsOpen={setAdminModal}
