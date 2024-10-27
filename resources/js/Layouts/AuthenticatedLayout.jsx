@@ -56,7 +56,7 @@ export default function Authenticated({ user, header, children }) {
                                     href={"/parametros"}
                                     active={route().current("parametros")}
                                 >
-                                    <img src='./img/config.svg'className={styles.icon} />
+                                    <img src='img/config.svg'className={styles.icon} />
                                     Configuración
                                 </NavLink>
                             </div>
@@ -68,7 +68,7 @@ export default function Authenticated({ user, header, children }) {
                                         href={"/empresas"}
                                         active={route().current("empresas")}
                                     >
-                                        <img src='./img/empresa.svg'className={styles.icon} />
+                                        <img src='img/empresa.svg'className={styles.icon} />
                                         Empresa
                                     </NavLink>
                                 </div>
@@ -80,7 +80,7 @@ export default function Authenticated({ user, header, children }) {
                                     href={"/clientes"}
                                     active={route().current("clientes")}
                                 >
-                                    <img src='./img/clientes.svg'className={styles.icon} />
+                                    <img src='img/clientes.svg'className={styles.icon} />
                                     Clientes
                                 </NavLink>
                             </div>
@@ -91,7 +91,7 @@ export default function Authenticated({ user, header, children }) {
                                     href={"/inventario"}
                                     active={route().current("inventario")}
                                 >
-                                    <img src='./img/inventario.svg'className={styles.icon} />
+                                    <img src='img/inventario.svg'className={styles.icon} />
                                     Inventario
                                 </NavLink>
                             </div>
@@ -102,7 +102,7 @@ export default function Authenticated({ user, header, children }) {
                                     href={"/remisiones"}
                                     active={route().current("remisiones")}
                                 >
-                                    <img src='./img/ventas.svg'className={styles.icon} />
+                                    <img src='img/ventas.svg'className={styles.icon} />
                                     Ventas
                                 </NavLink>
                                 <div className="hidden space-x-8 sm:-my-px sm:mt-4 sm:flex no-print">
@@ -122,7 +122,7 @@ export default function Authenticated({ user, header, children }) {
                                     href={"/gastos"}
                                     active={route().current("gastos")}
                                 >
-                                    <img src='./img/compras.svg'className={styles.icon} />
+                                    <img src='img/compras.svg'className={styles.icon} />
                                     Compras
                                 </NavLink>
                             </div>
@@ -143,7 +143,7 @@ export default function Authenticated({ user, header, children }) {
                                     href={"/recaudos"}
                                     active={route().current("recaudos")}
                                 >
-                                    <img src='./img/recaudos.svg'className={styles.icon} />
+                                    <img src='img/recaudos.svg'className={styles.icon} />
                                     Recaudos
                                 </NavLink>
                             </div>
@@ -154,7 +154,7 @@ export default function Authenticated({ user, header, children }) {
                                     href={"/proveedores"}
                                     active={route().current("proveedores")}
                                 >
-                                    <img src='./img/proveedores.svg'className={styles.icon} />
+                                    <img src='img/proveedores.svg'className={styles.icon} />
                                     Proveedores
                                 </NavLink>
                             </div>
@@ -165,7 +165,7 @@ export default function Authenticated({ user, header, children }) {
                                     href={"/reportes"}
                                     active={route().current("reportes")}
                                 >
-                                    <img src='./img/reportes.svg'className={styles.icon} />
+                                    <img src='img/reportes.svg'className={styles.icon} />
                                     Reportes
                                 </NavLink>
                             </div>
@@ -256,7 +256,7 @@ export default function Authenticated({ user, header, children }) {
                             href={"/parametros"}
                             active={route().current("parametros")}
                         >
-                            <img src='./img/config.svg'className={styles.icon} />
+                            <img src='img/config.svg'className={styles.icon} />
                             Configuración
                         </ResponsiveNavLink>
                         <ResponsiveNavLink
@@ -264,7 +264,7 @@ export default function Authenticated({ user, header, children }) {
                             href={"/clientes"}
                             active={route().current("clientes")}
                         >
-                            <img src='./img/clientes.svg'className={styles.icon} />
+                            <img src='img/clientes.svg'className={styles.icon} />
                             Clientes
                         </ResponsiveNavLink>
                         <ResponsiveNavLink
@@ -272,7 +272,7 @@ export default function Authenticated({ user, header, children }) {
                             href={"/inventario"}
                             active={route().current("inventario")}
                         >
-                            <img src='./img/inventario.svg'className={styles.icon} />
+                            <img src='img/inventario.svg'className={styles.icon} />
                             Inventario
                         </ResponsiveNavLink>
                         <ResponsiveNavLink
@@ -280,7 +280,7 @@ export default function Authenticated({ user, header, children }) {
                             href={"/remisiones"}
                             active={route().current("remisiones")}
                         >
-                            <img src='./img/ventas.svg'className={styles.icon} />
+                            <img src='img/ventas.svg'className={styles.icon} />
                             Ventas
                         </ResponsiveNavLink>
                         <ResponsiveNavLink
@@ -288,7 +288,7 @@ export default function Authenticated({ user, header, children }) {
                             href={"/gastos"}
                             active={route().current("gastos")}
                         >
-                            <img src='./img/compras.svg'className={styles.icon} />
+                            <img src='img/compras.svg'className={styles.icon} />
                             Compras
                         </ResponsiveNavLink>
                         <ResponsiveNavLink
@@ -296,7 +296,7 @@ export default function Authenticated({ user, header, children }) {
                             href={"/recaudos"}
                             active={route().current("recaudos")}
                         >
-                            <img src='./img/recaudos.svg'className={styles.icon} />
+                            <img src='img/recaudos.svg'className={styles.icon} />
                             Recaudos
                         </ResponsiveNavLink>
                         <ResponsiveNavLink
@@ -304,7 +304,7 @@ export default function Authenticated({ user, header, children }) {
                             href={"/proveedores"}
                             active={route().current("proveedores")}
                         >
-                            <img src='./img/proveedores.svg'className={styles.icon} />
+                            <img src='img/proveedores.svg'className={styles.icon} />
                             Proveedores
                         </ResponsiveNavLink>
                         <ResponsiveNavLink
@@ -312,7 +312,7 @@ export default function Authenticated({ user, header, children }) {
                             href={"/reportes"}
                             active={route().current("reportes")}
                         >
-                            <img src='./img/reportes.svg'className={styles.icon} />
+                            <img src='img/reportes.svg'className={styles.icon} />
                             Reportes
                         </ResponsiveNavLink>
 
