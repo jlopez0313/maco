@@ -7,6 +7,8 @@ use App\Http\Resources\FacturasCollection;
 use App\Http\Resources\FormasPagoCollection;
 use App\Http\Resources\MediosPagoCollection;
 use App\Http\Resources\ClientesCollection;
+use App\Http\Resources\ProductosCollection;
+use App\Models\Productos;
 use App\Models\Clientes;
 use App\Models\MediosPago;
 use App\Models\Departamentos;
@@ -65,7 +67,9 @@ class FacturasController extends Controller
         return Inertia::render('Facturas/Index', [
             'filters' => Peticion::all('search', 'trashed'),
             'contacts' => new FacturasCollection(
-                $query->paginate()->appends(request()->query())
+                $query->whereDate('created_at', \Carbon\Carbon::today())
+                ->paginate()
+                ->appends(request()->query())
             ),
             'clientes' => new ClientesCollection(
                 Clientes::orderBy('documento')->get()
@@ -129,6 +133,9 @@ class FacturasController extends Controller
                 'cliente'
             )
             ->find($id),
+            'referencias' => new ProductosCollection(
+                Productos::orderBy('referencia')->get()
+            ),
         ]);
     }
 
@@ -151,7 +158,7 @@ class FacturasController extends Controller
         $factura = Facturas::find($id);
 
         $data = [
-            'empresa' => Empresas::with('contacto', 'ciudad.departamento')->first(),
+            'empresa' => Empresas::with('contacto', 'tipo_doc', 'tipo', 'ciudad.departamento')->first(),
             'factura' => $factura,
         ];
 
@@ -187,7 +194,10 @@ class FacturasController extends Controller
         ->where('forma_pago_id', 1)
         ->get();
 
+        $empresa = Empresas::with('contacto', 'tipo_doc')->first();
+
         $data = [
+            'empresa' => $empresa,
             'data' => $data,
         ];
 

@@ -16,8 +16,17 @@ class EmpresasController extends Controller
     {
         $data = $request->except(['depto', 'tipo', 'ciudad']);
         $data['ciudad_id'] = $request->ciudad;
-        
-        $empresa = Empresas::create($data);
+
+        if ( $request->logo ) {
+            
+            $filename = $request->logo->store('files/logos');
+            $empresa->update( [...$data, 'logo' => $filename] );
+        } else {
+            $empresa = Empresas::create( $data );
+        }
+
+        $this->makeLink();
+
         return new EmpresasResource($empresa);
     }
 
@@ -37,7 +46,22 @@ class EmpresasController extends Controller
         $data = $request->except(['depto', 'tipo', 'ciudad']);
         $data['ciudad_id'] = $request->ciudad;
 
+        if ( $request->logo ) {
+            
+            if( $empresa->logo ) {
+                \Storage::delete( $empresa->logo );
+            }
+
+            $filename = $request->logo->store('files/logos');
+            $empresa->update( [...$data, 'logo' => $filename] );
+        } else {
+            $empresa->update( $data );
+        }
+
+        $this->makeLink();
+
         $empresa->update( $data );
+        
         return new EmpresasResource($empresa);
     }
 
@@ -48,5 +72,11 @@ class EmpresasController extends Controller
     {
         $empresa->delete();
         return new EmpresasResource($empresa);
+    }
+
+    public function makeLink() {
+        if  ( !is_link( 'tenant_' . tenant()->id ) ) {
+            symlink(storage_path() . '/app', 'tenant_' . tenant()->id);
+        }
     }
 }

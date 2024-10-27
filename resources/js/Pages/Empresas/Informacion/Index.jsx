@@ -21,8 +21,10 @@ export default ({
     responsabilidades,
     contact,
 }) => {
+
     const [ciudades, setCiudades] = useState([]);
     const [id, setId] = useState([]);
+    const [preview, setPreview] = useState([]);
 
     const { data, setData, processing, errors, reset } = useForm({
         updated_by: auth.user.id,
@@ -37,6 +39,7 @@ export default ({
         ciudad: "",
         direccion: "",
         responsabilidad_fiscal_id: "",
+        logo: "",
     });
 
     const { data: tipos } = tipoEmpresas;
@@ -50,11 +53,21 @@ export default ({
     const submit = async (e) => {
         e.preventDefault();
 
+        const formData = new FormData();
+        Object.keys( data ).forEach( key => {
+            formData.append( key, data[key] )
+        })
+
         try {
-            if (id) {
-                await axios.put(`/api/v1/empresas/${id}`, data);
+            if ( id ) {
+                formData.append( '_method', 'PUT' )
+                await axios.post(`/api/v1/empresas/${id}`, formData, {
+                    'Content-Type': 'multipart/form-data',
+                });
             } else {
-                await axios.post(`/api/v1/empresas`, data);
+                await axios.post(`/api/v1/empresas`, formData, {
+                    'Content-Type': 'multipart/form-data',
+                });
             }
 
             // notify('success', 'Datos de la Empresa registrados!')
@@ -88,6 +101,8 @@ export default ({
             ciudad: item.ciudad?.id || "",
             direccion: item.direccion || "",
             responsabilidad_fiscal_id: item.responsabilidad?.id || "",
+            logo: item.logo ? <img width={'40px'} src={item.logo} /> : '',
+
         });
     };
 
@@ -113,6 +128,18 @@ export default ({
     const onReload = () => {
         router.visit(window.location.pathname);
     };
+
+    const onAddLogo = async ( file ) => {
+        setData(
+            {                
+                ...data, 
+                logo: file,
+            }
+        )
+        
+        const preview = URL.createObjectURL( file )
+        setPreview(  { src: preview } )
+    }
 
     useEffect(() => {
         onGetItem();
@@ -411,6 +438,29 @@ export default ({
                                 message={errors.direccion}
                                 className="mt-2"
                             />
+                        </div>
+
+                        <div>
+                            <InputLabel htmlFor="logo" value="Logo" />
+
+                            <TextInput
+                                id="logo"
+                                type="file"
+                                name="logo"
+                                accept='image/*'
+                                className="mt-1 block w-full"
+                                autoComplete="logo"
+                                onChange={e => onAddLogo(e.target.files[0])}
+                            />
+
+                            <InputError
+                                message={errors.logo}
+                                className="mt-2"
+                            />
+                        </div>
+
+                        <div>
+                            <img className='media preview' src={preview.src} alt=''/>
                         </div>
                     </div>
                 </div>

@@ -54,6 +54,15 @@
         page-break-after: always;
     }
 
+    .empresa {
+        border-bottom: 1px dashed #000;
+    }
+
+    .empresa td {
+        font-size: 12px;
+        font-weight: bold;
+    }
+
     .cliente {
         font-size: 12px;
         margin-top: 20px;
@@ -71,6 +80,24 @@
 </style>
 <body>
     <img src="{{ public_path() . '/img/logo.svg' }}" width="250px" width="250px" />
+
+    <table class="empresa">
+        <tr>
+            <td style="width: 250px"> {{ $empresa->comercio }} </td>
+        </tr>
+        <tr>
+            <td style="width: 250px"> {{ $empresa->tipo_doc->tipo }} {{ $empresa->documento }} - {{ $empresa->dv }} </td>
+        </tr>
+        <tr>
+            <td style="width: 250px"> Régimen: {{ $empresa->tipo->tipo }} </td>
+        </tr>
+        <tr>
+            <td style="width: 250px"> {{ $empresa->direccion }}, {{ $empresa->ciudad->ciudad }} Colombia</td>
+        </tr>
+        <tr>
+            <td style="width: 250px"> Tel. {{ $empresa->contacto->celular }} </td>
+        </tr>
+    </table>
     
     <table class="cliente"> 
         <tr>
@@ -78,7 +105,7 @@
             <td style=""> {{ \Carbon\Carbon::today()->format('d/m/Y') }} </td>
         </tr>
         <tr>
-            <th style="width: 160px">Total de Ventas a Contado del día: </th>
+            <th style="width: 160px">Total de Ventas del día: </th>
             <td style=""> $ {{ number_format($total, 0, '.', ',') ?? 0}} </td>
         </tr>
     </table>

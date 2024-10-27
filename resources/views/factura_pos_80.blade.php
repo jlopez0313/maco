@@ -21,10 +21,13 @@
         page-break-after: always;
     }
 
+    .empresa {
+        border-bottom: 1px dashed #000;
+    }
+
     .empresa td {
         font-size: 12px;
         font-weight: bold;
-        text-align: center;
     }
 
     .header {
@@ -59,35 +62,34 @@
         text-align: right;
     }
 
+    .mensaje {
+        font-size: 12px;
+    }
+
     .footer { font-size: 11px; position: fixed; right: 0px; bottom: 10px; text-align: center;border-top: 1px solid black;}
     .footer .page:after { content: counter(page, decimal); }
     @page { margin: 20px 30px 40px 50px; }
 
 </style>
 <body>
-    <img src="{{ public_path() . '/img/logo.svg' }}" width="250px" width="250px" />
+    <img src="{{ public_path() . '/img/logo.svg' }}" width="125px" width="125px" />
+    <img src="{{ tenant()->id . '/' . $empresa->logo }}" width="125px" width="125px" />
 
     <table class="empresa">
         <tr>
-            <td style="width: 200px"> {{ $empresa->comercio }} </td>
+            <td style="width: 250px"> {{ $empresa->comercio }} </td>
         </tr>
         <tr>
-            <td style="width: 200px"> {{ $empresa->documento }} - {{ $empresa->dv }} </td>
+            <td style="width: 250px"> {{ $empresa->tipo_doc->tipo }} {{ $empresa->documento }} - {{ $empresa->dv }} </td>
         </tr>
         <tr>
-            <td style="width: 200px"> {{ $empresa->contacto->correo }} </td>
+            <td style="width: 250px"> Régimen: {{ $empresa->tipo->tipo }} </td>
         </tr>
         <tr>
-            <td style="width: 200px"> {{ $empresa->contacto->celular }} </td>
+            <td style="width: 250px"> {{ $empresa->direccion }}, {{ $empresa->ciudad->ciudad }} Colombia</td>
         </tr>
         <tr>
-            <td style="width: 200px"> {{ $empresa->direccion }} </td>
-        </tr>
-        <tr>
-            <td style="width: 200px"> {{ $empresa->ciudad->ciudad }} </td>
-        </tr>
-        <tr>
-            <td style="width: 200px"> {{ $empresa->ciudad->departamento->departamento }} </td>
+            <td style="width: 250px"> Tel. {{ $empresa->contacto->celular }} </td>
         </tr>
     </table>
 
@@ -109,8 +111,12 @@
      
     <table class="cliente">
         <tr>
-            <th style="width: 120px">Tipo de Venta: </th>
+            <th style="width: 120px">Forma de Pago: </th>
             <td style="width: 265px"> {{ $factura->forma_pago->descripcion }} </td>
+        </tr>
+        <tr>
+            <th style="width: 120px">Medio de Pago: </th>
+            <td style="width: 265px"> {{ $factura->tipo->descripcion }} </td>
         </tr>
         <tr>
             <th style="width: 120px">Dirección: </th>
@@ -137,12 +143,12 @@
     <table class="detalle" cellpadding="3" cellspacing="0">
         <tr class="font-12">
             <th style="width: 140px">Referencia</th>
-            <th style="width: 50px">Cantidad</th>
-            <th style="width: 60px">Valor Unitario</th>
+            <th style="width: 50px">Cant.</th>
+            <th style="width: 60px">Precio</th>
         </tr>
         <tr class="font-12">
             <th style="width: 140px"></th>
-            <th style="width: 50px">Impuestos Unit.</th>
+            <th style="width: 50px">Imp.</th>
             <th style="width: 60px">Total</th>
         </tr>
         
@@ -186,6 +192,11 @@
         </tr>
 
     </table>
+
+    <span class="mensaje">
+        Gracias por confiar en nosotros, <br /> 
+        ¡Tu satisfacción es nuestra prioridad!
+    </span>
 
     <div class="footer">
         <p class="page">Pág. </p>

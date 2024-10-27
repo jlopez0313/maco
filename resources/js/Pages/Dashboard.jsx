@@ -14,7 +14,7 @@ export default function Dashboard({ auth, created_at }) {
         
         const now = new Date();
         
-        if (limit.getDate() - now.getDate() <= 7) {
+        if (limit.getDate() - now.getDate() >= 0 && limit.getDate() - now.getDate() <= 7) {
             setMessage(true);
             setLimitDate( `${limit.getDate()}/${String(now.getMonth() + 1).padStart(2, '0')}/${now.getFullYear()}` )
         }

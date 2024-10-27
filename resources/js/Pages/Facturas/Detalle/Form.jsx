@@ -8,9 +8,13 @@ import { useForm } from "@inertiajs/react";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Icon from "@/Components/Icon";
+import { ReactSearchAutocomplete } from "react-search-autocomplete";
 
-export const Form = ({ id, auth, factura, setIsOpen, onReload }) => {
+export const Form = ({ id, auth, factura, referencias, setIsOpen, onReload }) => {
 
+    const { data: referenciasLst} = referencias;
+
+    
     const { data, setData, processing, errors, reset } = useForm({
         facturas_id: factura.id, 
         referencia: '',
@@ -20,6 +24,7 @@ export const Form = ({ id, auth, factura, setIsOpen, onReload }) => {
     });
 
     const [producto, setProducto] = useState({});
+    const [listaReferencias, setReferencias] = useState([]);
 
     const submit = async (e) => {
         e.preventDefault();
@@ -82,9 +87,11 @@ export const Form = ({ id, auth, factura, setIsOpen, onReload }) => {
                 )
             } else {
                 reset()
+                setProducto({})
             }
         } else {
             reset()
+            setProducto({})
         }
     }
 
@@ -94,12 +101,55 @@ export const Form = ({ id, auth, factura, setIsOpen, onReload }) => {
         } else {
             setData("cantidad", e.target.value);
         }
-
     }
+
+    const handleOnSearch = (string, results) => {
+        // onSearch will have as the first callback parameter
+        // the string searched and for the second the results.
+        console.log(string, results);
+        
+        if(!string || !results.length) {
+            reset()
+            setProducto({})
+        }
+    };
+
+    const handleOnHover = (result) => {
+        // the item hovered
+        // console.log(result);
+    };
+
+    const handleOnSelect = (item) => {
+        // the item selected
+        setData("referencia", item.name);
+        onSearch(item.name)
+    };
+
+    const handleOnFocus = () => {
+        // console.log("Focused");
+    };
+
+    const formatResult = (item) => {
+        return (
+            <>
+                <span style={{ display: "block", textAlign: "left" }}>
+                    {item.name}
+                </span>
+            </>
+        );
+    };
+
+    useEffect(() => {
+        setReferencias( referenciasLst.map( x => { return { id: x.id, name: x.referencia.toString()} } ) )
+    }, [referenciasLst]);
 
     useEffect( () => {
         id && onGetItem();
     }, [])
+
+    useEffect( () => {
+        console.log( data )
+    }, [data])
 
     return (
         <div className="pb-12 pt-6">
@@ -112,24 +162,39 @@ export const Form = ({ id, auth, factura, setIsOpen, onReload }) => {
                             <InputLabel htmlFor="referencia" value="Referencia" />
 
                             <div className="grid grid-cols-12 gap-4">
-                                <TextInput
-                                    placeholder="Escriba aquí"
-                                    id="referencia"
-                                    type="text"
-                                    name="referencia"
-                                    value={data.referencia}
-                                    className="mt-1 block w-full col-start-1 col-span-10"
-                                    autoComplete="referencia"
-                                    onChange={(e) =>
-                                        setData("referencia", e.target.value)
-                                    }
-                                    onBlur={(e) => onSearch(e.target.value)}
-                                />
-                                
-                                <Icon
-                                    name="search"
-                                    className="self-center col-start-11 col-span-2 block w-6 h-6 "
-                                />
+                            <div
+                                    style={{ width: 290, marginTop: "0.25rem" }}
+                                >
+                                    <ReactSearchAutocomplete
+                                        placeholder="Escriba aquí"
+                                        showNoResultsText="Sin registros"
+                                        styling={{
+                                            height: "42px",
+                                            border: "1px solid rgb(209, 213, 219)",
+                                            borderRadius: "0.375rem",
+                                            //   backgroundColor: "white",
+                                            boxShadow: "0px",
+                                            //   hoverBackgroundColor: "#eee",
+                                            color: "#000",
+                                            fontSize: "15px",
+                                            fontFamily: "Figtree",
+                                            //   iconColor: "grey",
+                                            //   lineColor: "rgb(232, 234, 237)",
+                                            //   placeholderColor: "grey",
+                                            clearIconMargin: "3px 10px 0 0",
+                                            searchIconMargin: "0 0 0 10px",
+                                            // };
+                                        }}
+                                        items={listaReferencias}
+                                        fuseOptions={{minMatchCharLength: 1}}
+                                        onSearch={handleOnSearch}
+                                        onHover={handleOnHover}
+                                        onSelect={handleOnSelect}
+                                        onFocus={handleOnFocus}
+                                        autoFocus
+                                        formatResult={formatResult}
+                                    />
+                                </div>
                             </div>
 
                             <InputError

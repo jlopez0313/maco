@@ -24,6 +24,8 @@ class TenantsController extends Controller
         $tenant->save();
 
         $tenant->domains()->create(['domain' => $name . '.' . env('APP_DOMAIN') ]);
+        
+        \Artisan::call('tenant:link', ['tenantId' => $tenant->id]);
 
         return new TenantsResource( $tenant );
     }

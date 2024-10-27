@@ -50,6 +50,8 @@ export default ({ auth, q, contacts, departments, payments, medios_pago, cliente
     const [list, setList] = useState([]);
     const [show, setShow] = useState(false);
     const [showCierre, setShowCierre] = useState(false);
+    const [total, setTotal] = useState(0);
+    const [fel, setFel] = useState(0);
 
     const onSetList = () => {
         const sum = data.map((item) => {
@@ -84,11 +86,17 @@ export default ({ auth, q, contacts, departments, payments, medios_pago, cliente
             );
         });
         
+        let _sum = 0;
+        let sumFel = 0;
+
         const _list = data.map((item, idx) => {
+            _sum += item.forma_pago?.id == 1 && item.estado == 'C' ? (sum[idx] || 0) : 0;
+            sumFel += item.forma_pago?.id == 1 && item.estado == 'C' && item.prefijo ? (sum[idx] || 0) : 0;
+
             return {
                 id: item.id,
                 fecha: item.created_at,
-                codigo: item.id,
+                codigo: item.prefijo ? 'FEL ' + item.folio : item.id,
                 cliente: item.cliente?.nombre || "",
                 payment: item.forma_pago?.descripcion || "",
                 medio_pago: item.medio_pago?.descripcion || "",
@@ -98,6 +106,8 @@ export default ({ auth, q, contacts, departments, payments, medios_pago, cliente
             };
         });
 
+        setFel(sumFel);
+        setTotal(_sum);
         setList(_list);
     };
 
@@ -201,6 +211,8 @@ export default ({ auth, q, contacts, departments, payments, medios_pago, cliente
                         </div>
 
                         <div className="flex items-center">
+
+                        <span className="font-bold mt-5 mx-5 mb-5 flex bg-white px-3 py-2"> Facturación Electrónica: { toCurrency(fel)}  </span>
                         
                         <SecondaryButton onClick={() => onToggleCierre(true)} className="me-4">
                             Cuadre de Caja
@@ -229,6 +241,8 @@ export default ({ auth, q, contacts, departments, payments, medios_pago, cliente
                     </div>
 
                     <Pagination links={links} />
+
+                    <span className="font-bold mt-10 flex"> Total Ventas Contado: {toCurrency(total)}  </span>
                 </div>
             </div>
 

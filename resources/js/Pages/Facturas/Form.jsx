@@ -59,13 +59,7 @@ export const Form = ({
     };
 
     const onGetItem = async () => {
-        const { data } = await axios.get(`/api/v1/inventarios/${id}`);
-        const item = { ...data.data };
-
-        setData({
-            articulo: item.articulo,
-            origen: item.origen,
-        });
+        
     };
 
     const onCheckDoc = (doc) => {
@@ -77,10 +71,13 @@ export const Form = ({
     };
 
     const onSearchCliente = async () => {
+        console.log( clientesLst, data.documento )
+
         if (data.documento) {
             setLazyComponent(null);
 
             const cliente = clientesLst.find( x => x.documento == data.documento);
+
 
             if (cliente) {
                 await onGetCities(cliente.ciudad?.departamento?.id);
@@ -94,8 +91,8 @@ export const Form = ({
                     direccion: cliente.direccion || "",
                     celular: cliente.celular || "",
                     correo: cliente.correo || "",
-                    forma_pago_id: cliente?.forma_pago?.id || "",
-                    medio_pago_id: cliente?.medio_pago?.id || "",
+                    forma_pago_id: cliente?.forma_pago?.id || 1,
+                    medio_pago_id: cliente?.medio_pago?.id || 9,
                 });
 
                 if (!cliente.contacto) {
@@ -133,6 +130,10 @@ export const Form = ({
         // onSearch will have as the first callback parameter
         // the string searched and for the second the results.
         console.log(string, results);
+        
+        if(!string || !results.length) {
+            reset()
+        }
     };
 
     const handleOnHover = (result) => {

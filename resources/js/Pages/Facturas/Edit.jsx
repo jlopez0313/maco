@@ -16,9 +16,11 @@ import { AdminModal } from "@/Components/AdminModal";
 import SecondaryButton from "@/Components/Buttons/SecondaryButton";
 import { toCurrency } from "@/Helpers/Numbers";
 import Select from "@/Components/Form/Select";
+import Radio from "@/Components/Form/Radio";
+
 import { notify } from "@/Helpers/Notify";
 
-export default ({ auth, factura }) => {
+export default ({ auth, factura, referencias }) => {
     const data = factura.detalles;
 
     const titles = [
@@ -270,21 +272,24 @@ export default ({ auth, factura }) => {
                         />
                     </div>
 
+                    <div className="flex items-center justify-end mt-10 mb-4 no-print">
+                        <InputLabel
+                            htmlFor="desea_factura"
+                            value="Deseo Facturar Electrónicamente"
+                            className="!font-bold"
+                        />
+
+                        <Radio className="ms-3" name="desea_factura" value="S"  onChange={ (e) => { setDesea(e.target.value) }}/>
+                    </div>
+
                     <div className="flex items-center justify-end mt-4 mb-4 no-print">
                         <InputLabel
                             htmlFor="desea_factura"
-                            value="Desea Factura Electrónica?"
+                            value="Deseo Facturar Internamente"
+                            className="!font-bold"
                         />
 
-                        <Select
-                            id="desea_factura"
-                            name="desea_factura"
-                            className="mt-1 block w-full"
-                            onChange={ (e) => { setDesea(e.target.value) }}
-                        >
-                            <option value="S"> SI </option>
-                            <option value="N"> NO </option>
-                        </Select>
+                        <Radio className="ms-3" name="desea_factura" value="N"  onChange={ (e) => { setDesea(e.target.value) }}/>
                     </div>
 
                     <div className="flex items-center justify-end mt-4 mb-4">
@@ -305,6 +310,7 @@ export default ({ auth, factura }) => {
                 <Form
                     auth={auth}
                     factura={factura}
+                    referencias={referencias}
                     setIsOpen={onToggleModal}
                     onReload={onReload}
                     id={id}

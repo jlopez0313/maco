@@ -27,6 +27,7 @@ export default function Reportes({ auth }) {
 
     const [list, setList] = useState([]);
     const [ currentDate, setCurrentDate ] = useState( new Date() );
+    const [total, setTotal] = useState(0);
     
     const onSearch = async() => {
         const {data: {data: lista}} = await axios.post(`/api/v1/reportes/ventas`, data);
@@ -63,7 +64,10 @@ export default function Reportes({ auth }) {
             );
         });
 
+        let _sum = 0;
         const _list = lista.map((item, idx) => {
+            _sum += item.forma_pago?.id == 1 && item.estado == 'C' ? (sum[idx] || 0) : 0;
+
             return {
                 codigo: item.id,
                 fecha: item.created_at,
@@ -73,6 +77,7 @@ export default function Reportes({ auth }) {
             };
         });
 
+        setTotal(_sum);
         setList(_list);
     };
 
@@ -165,6 +170,9 @@ export default function Reportes({ auth }) {
                             titles={titles}
                             actions={[]}
                         />
+                        
+                        <span className="font-bold mt-10 ms-5 mb-5 flex"> Total Ventas Contado: {toCurrency(total)}  </span>
+
                     </div>
 
                     {

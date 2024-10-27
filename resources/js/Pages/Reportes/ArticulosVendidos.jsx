@@ -29,6 +29,7 @@ export default function Reportes({ auth }) {
 
     const [list, setList] = useState([]);
     const [ currentDate, setCurrentDate ] = useState( new Date() );
+    const [total, setTotal] = useState(0);
 
     const onSearch = async () => {
         const {
@@ -62,6 +63,7 @@ export default function Reportes({ auth }) {
 
         });
 
+        let _sum = 0;
 
         lista.forEach((item) => {
 
@@ -82,6 +84,14 @@ export default function Reportes({ auth }) {
 
             
             item.detalles?.forEach((det, idx) => {
+
+                const total = 
+                    sum[idx] * det.cantidad +
+                        (det.precio_venta || 0) * det.cantidad
+                
+                _sum += total;
+
+
                 _list.push({
                     fecha: item.created_at,
                     referencia: det.producto?.referencia || "",
@@ -90,14 +100,12 @@ export default function Reportes({ auth }) {
                     precio: toCurrency(det.precio_venta || 0),
                     impuestos: toCurrency(sum[idx]),
                     total_impuestos: toCurrency(sum[idx] * det.cantidad),
-                    total: toCurrency(
-                        sum[idx] * det.cantidad +
-                            (det.precio_venta || 0) * det.cantidad
-                    ),
+                    total: toCurrency(total),
                 });
             });
         });
 
+        setTotal(_sum);
         setList(_list);
     };
 
@@ -192,6 +200,8 @@ export default function Reportes({ auth }) {
                             titles={titles}
                             actions={[]}
                         />
+
+                        <span className="font-bold mt-10 ms-5 mb-5 flex"> Total Ventas: {toCurrency(total)}  </span>
                     </div>
 
                     {
