@@ -24,6 +24,7 @@ class EmpresasController extends Controller
      */
     public function index()
     {
+
         return Inertia::render('Empresas/Index', [
             'filters' => Peticion::all('search', 'trashed'),
             'contact' => new EmpresasResource(
@@ -44,7 +45,7 @@ class EmpresasController extends Controller
             'estados_resoluciones' => config('constants.facturas.resoluciones.estados'),
             'S_N' => config('constants.S_N'),
             'estados' => config('constants.estados'),
-            'tenant_id' => tenant()->id
+            'tenant_id' => 'tenant_' . tenant()->id
         ]);
     }
 

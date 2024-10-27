@@ -31,6 +31,7 @@ class EmpresasCollection extends ResourceCollection
             'tipo',
             'responsabilidad',
             'contacto',
+            'logo',
         );
     }
 }

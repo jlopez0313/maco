@@ -10,6 +10,7 @@ import Credenciales from "./Credenciales/Index";
 
 export default ({
     auth,
+    tenant_id,
     tipoDocumentos,
     tipoEmpresas,
     departamentos,
@@ -80,6 +81,7 @@ export default ({
                     {tab == "general" && (
                         <Informacion
                             auth={auth}
+                            tenant_id={tenant_id}
                             tipoDocumentos={tipoDocumentos}
                             tipoEmpresas={tipoEmpresas}
                             departamentos={departamentos}

@@ -105,6 +105,8 @@ export default ({
             logo: item.logo || '',
         });
 
+        console.log( tenant_id )
+
         setPreview( { src: tenant_id + '/' +  item.logo } )
     };
 

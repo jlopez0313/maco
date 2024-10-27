@@ -30,6 +30,7 @@ class EmpresasResource extends JsonResource
             'matricula' => $this->matricula,
             'direccion' => $this->direccion,
             'contacto' => $this->contacto,
+            'logo' => $this->logo,
             'tipo' => $this->tipo,
         ];
     }
