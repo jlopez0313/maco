@@ -15,6 +15,7 @@ import TextSpan from "@/Components/Form/TextSpan";
 
 export default ({
     auth,
+    tenant_id,
     tipoDocumentos,
     tipoEmpresas,
     departamentos,
@@ -101,9 +102,10 @@ export default ({
             ciudad: item.ciudad?.id || "",
             direccion: item.direccion || "",
             responsabilidad_fiscal_id: item.responsabilidad?.id || "",
-            logo: item.logo ? <img width={'40px'} src={item.logo} /> : '',
-
+            logo: item.logo || '',
         });
+
+        setPreview( { src: tenant_id + '/' +  item.logo } )
     };
 
     const onGetCities = async (deptoID) => {
