@@ -53,7 +53,8 @@ class EmpresasController extends Controller
             }
 
             $filename = $request->logo->store('files/logos');
-            $empresa->update( [...$data, 'logo' => $filename] );
+            $url = Storage::url($filename);
+            $empresa->update( [...$data, 'logo' => $url] );
         } else {
             $empresa->update( $data );
         }
