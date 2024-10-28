@@ -79,7 +79,7 @@
 </style>
 <body>
     <img src="{{ asset('img/logo.svg') }}" width="125px" width="125px" />
-    <img src="{{ asset( '../../' . tenant()->id . '/' . $empresa->logo ) }}" width="125px" width="125px" alt='' />
+    <img src="{{ asset( '../../tenant_' . tenant()->id . '/' . $empresa->logo ) }}" width="125px" width="125px" alt='' />
 
     <table class="empresa">
         <tr>
