@@ -53,16 +53,13 @@ class EmpresasController extends Controller
             }
 
             $filename = $request->logo->store('files/logos');
-            $url = \Storage::url($filename);
-            $empresa->update( [...$data, 'logo' => $url] );
+            $empresa->update( [...$data, 'logo' => $filename] );
         } else {
             $empresa->update( $data );
         }
 
         $this->makeLink();
 
-        $empresa->update( $data );
-        
         return new EmpresasResource($empresa);
     }
 
@@ -77,7 +74,7 @@ class EmpresasController extends Controller
 
     public function makeLink() {
         if  ( !is_link( 'tenant_' . tenant()->id ) ) {
-            symlink(storage_path() . '/app', 'tenant_' . tenant()->id);
+            // symlink(storage_path() . '/app', 'tenant_' . tenant()->id);
         }
     }
 }
