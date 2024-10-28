@@ -15,6 +15,7 @@ import TextInput from "@/Components/Form/TextInput";
 import SecondaryButton from "@/Components/Buttons/SecondaryButton";
 import { toCurrency } from "@/Helpers/Numbers";
 import { goToQR } from "@/Helpers/Modals";
+import { forcePrint } from "@/Helpers/Print";
 
 export default ({ auth, factura }) => {
     const [show, setShow] = useState(false);
@@ -106,7 +107,9 @@ export default ({ auth, factura }) => {
     };
 
     const goToPDF = () => {
-        window.location.href = "/recaudos/pdf/" + factura.id;
+        // window.location.href = "/recaudos/pdf/" + factura.id;
+
+        forcePrint("/recaudos/pdf/" + factura.id);
     };
 
     useEffect(() => {

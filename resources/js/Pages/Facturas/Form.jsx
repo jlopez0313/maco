@@ -71,8 +71,6 @@ export const Form = ({
     };
 
     const onSearchCliente = async () => {
-        console.log( clientesLst, data.documento )
-
         if (data.documento) {
             setLazyComponent(null);
 

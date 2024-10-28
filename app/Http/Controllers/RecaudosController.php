@@ -115,9 +115,12 @@ class RecaudosController extends Controller
         $data = [
             'factura' => $factura
         ];
-
+        
+        $pdf = view('recaudo', $data);
+        return $pdf;
+/*
         $pdf = \PDF::loadView('recaudo', $data);
-    
         return $pdf->download($factura->id . '.pdf');
+*/
     }
 }

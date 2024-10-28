@@ -55,7 +55,8 @@ export const Cierre = ({ auth, setIsOpen }) => {
     };
 
     const goToPDF = async () => {
-        window.location.href = "/remisiones/cierre";
+        // window.location.href = "/remisiones/cierre";
+        forcePrint( "/remisiones/cierre" )
     };
 
     useEffect(() => {

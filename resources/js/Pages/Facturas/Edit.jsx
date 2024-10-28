@@ -272,22 +272,22 @@ export default ({ auth, factura, referencias }) => {
                         />
                     </div>
 
-                    <div className="flex items-center justify-end mt-10 mb-4 no-print">
-                        <InputLabel
+                    <div className="flex items-center justify-end mt-20 mb-4 no-print">
+                        <label
                             htmlFor="desea_factura"
-                            value="Deseo Facturar Electrónicamente"
-                            className="!font-bold"
-                        />
+                            className="block font-medium text-xl text-gray-700 !font-bold"
+                        > Deseo Gravar Facturar Electrónicamente </label>
 
                         <Radio className="ms-3" name="desea_factura" value="S"  onChange={ (e) => { setDesea(e.target.value) }}/>
                     </div>
 
                     <div className="flex items-center justify-end mt-4 mb-4 no-print">
-                        <InputLabel
+                        <label
                             htmlFor="desea_factura"
-                            value="Deseo Facturar Internamente"
-                            className="!font-bold"
-                        />
+                            className="block font-medium text-xl text-gray-700 !font-bold"
+                        >
+                            Deseo Facturar Internamente
+                        </label>
 
                         <Radio className="ms-3" name="desea_factura" value="N"  onChange={ (e) => { setDesea(e.target.value) }}/>
                     </div>

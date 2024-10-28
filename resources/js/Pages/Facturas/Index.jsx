@@ -17,7 +17,15 @@ import { useCookies } from "react-cookie";
 import SecondaryButton from "@/Components/Buttons/SecondaryButton";
 import { Cierre } from "./Cierre";
 
-export default ({ auth, q, contacts, departments, payments, medios_pago, clientes }) => {
+export default ({
+    auth,
+    q,
+    contacts,
+    departments,
+    payments,
+    medios_pago,
+    clientes,
+}) => {
     const { data: departamentos } = departments;
 
     const {
@@ -38,7 +46,8 @@ export default ({ auth, q, contacts, departments, payments, medios_pago, cliente
         {
             key: "id",
             title: "Estado",
-        },,
+        },
+        ,
     ];
 
     const [cookies, setCookie] = useCookies(["maco"]);
@@ -55,7 +64,6 @@ export default ({ auth, q, contacts, departments, payments, medios_pago, cliente
 
     const onSetList = () => {
         const sum = data.map((item) => {
-                        
             item.detalles.forEach((_item) => {
                 let impuestos = 0;
 
@@ -74,7 +82,7 @@ export default ({ auth, q, contacts, departments, payments, medios_pago, cliente
 
                 _item.total_impuestos = impuestos;
             });
-            
+
             return (
                 item.detalles.reduce(
                     (sum, det) =>
@@ -85,18 +93,24 @@ export default ({ auth, q, contacts, departments, payments, medios_pago, cliente
                 ) || 0
             );
         });
-        
+
         let _sum = 0;
         let sumFel = 0;
 
         const _list = data.map((item, idx) => {
-            _sum += item.forma_pago?.id == 1 && item.estado == 'C' ? (sum[idx] || 0) : 0;
-            sumFel += item.forma_pago?.id == 1 && item.estado == 'C' && item.prefijo ? (sum[idx] || 0) : 0;
+            _sum +=
+                item.forma_pago?.id == 1 && item.estado == "C"
+                    ? sum[idx] || 0
+                    : 0;
+            sumFel +=
+                item.forma_pago?.id == 1 && item.estado == "C" && item.prefijo
+                    ? sum[idx] || 0
+                    : 0;
 
             return {
                 id: item.id,
                 fecha: item.created_at,
-                codigo: item.prefijo ? 'FEL ' + item.folio : item.id,
+                codigo: item.prefijo ? "FEL " + item.folio : item.id,
                 cliente: item.cliente?.nombre || "",
                 payment: item.forma_pago?.descripcion || "",
                 medio_pago: item.medio_pago?.descripcion || "",
@@ -157,11 +171,11 @@ export default ({ auth, q, contacts, departments, payments, medios_pago, cliente
     };
 
     const onEdit = (id) => {
-        router.get(`remisiones/edit/${id}`);
+        router.get(`/remisiones/edit/${id}`);
     };
 
     const onSearch = (id) => {
-        router.get(`remisiones/show/${id}`);
+        router.get(`/remisiones/show/${id}`);
     };
 
     const onSort = (field) => {
@@ -172,8 +186,15 @@ export default ({ auth, q, contacts, departments, payments, medios_pago, cliente
         router.visit(window.location.pathname);
     };
 
+    const onCheckRoute = ( ) => {
+        if( window.location.pathname == '/remisiones/vender' ) {
+            onToggleModal(true)
+        }
+    }
+
     useEffect(() => {
         onSetList();
+        onCheckRoute()
     }, []);
 
     return (
@@ -211,18 +232,22 @@ export default ({ auth, q, contacts, departments, payments, medios_pago, cliente
                         </div>
 
                         <div className="flex items-center">
+                            <span className="font-bold mt-5 mx-5 mb-5 flex bg-white px-3 py-2">
+                                {" "}
+                                Facturación Electrónica: {toCurrency(fel)}{" "}
+                            </span>
 
-                        <span className="font-bold mt-5 mx-5 mb-5 flex bg-white px-3 py-2"> Facturación Electrónica: { toCurrency(fel)}  </span>
-                        
-                        <SecondaryButton onClick={() => onToggleCierre(true)} className="me-4">
-                            Cuadre de Caja
-                        </SecondaryButton>
-                        
-                        <PrimaryButton onClick={() => onToggleModal(true)}>
-                            Agregar
-                        </PrimaryButton>
+                            <SecondaryButton
+                                onClick={() => onToggleCierre(true)}
+                                className="me-4"
+                            >
+                                Cuadre de Caja
+                            </SecondaryButton>
+
+                            <PrimaryButton onClick={() => onToggleModal(true)}>
+                                Agregar
+                            </PrimaryButton>
                         </div>
-
                     </div>
 
                     <div className="bg-white overflow-auto shadow-sm sm:rounded-lg">
@@ -242,7 +267,10 @@ export default ({ auth, q, contacts, departments, payments, medios_pago, cliente
 
                     <Pagination links={links} />
 
-                    <span className="font-bold mt-10 flex"> Total Ventas Contado: {toCurrency(total)}  </span>
+                    <span className="font-bold mt-10 flex">
+                        {" "}
+                        Total Ventas Contado: {toCurrency(total)}{" "}
+                    </span>
                 </div>
             </div>
 
@@ -262,10 +290,7 @@ export default ({ auth, q, contacts, departments, payments, medios_pago, cliente
             </Modal>
 
             <Modal show={showCierre} closeable={true} title="Cuadre de Caja">
-                <Cierre
-                    auth={auth}
-                    setIsOpen={onToggleCierre}
-                />
+                <Cierre auth={auth} setIsOpen={onToggleCierre} />
             </Modal>
 
             <AdminModal

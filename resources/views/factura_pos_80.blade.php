@@ -4,6 +4,11 @@
     $impuestos = 0;
 @endphp
 
+<script>
+    window.onload = function() {
+        window.print();
+    };
+</script>
 
 <style>
     @font-face {
@@ -63,6 +68,7 @@
     }
 
     .mensaje {
+        text-align: center;
         font-size: 12px;
     }
 
@@ -72,8 +78,8 @@
 
 </style>
 <body>
-    <img src="{{ public_path() . '/img/logo.svg' }}" width="125px" width="125px" />
-    <img src="{{ tenant()->id . '/' . $empresa->logo }}" width="125px" width="125px" />
+    <img src="{{ asset('img/logo.svg') }}" width="125px" width="125px" />
+    <img src="{{ asset( '../../' . tenant()->id . '/' . $empresa->logo ) }}" width="125px" width="125px" alt='' />
 
     <table class="empresa">
         <tr>
@@ -116,7 +122,7 @@
         </tr>
         <tr>
             <th style="width: 120px">Medio de Pago: </th>
-            <td style="width: 265px"> {{ $factura->tipo->descripcion }} </td>
+            <td style="width: 265px"> {{ $factura->medio_pago->descripcion }} </td>
         </tr>
         <tr>
             <th style="width: 120px">Dirección: </th>
@@ -193,13 +199,9 @@
 
     </table>
 
-    <span class="mensaje">
+    <div class="mensaje">
         Gracias por confiar en nosotros, <br /> 
         ¡Tu satisfacción es nuestra prioridad!
-    </span>
-
-    <div class="footer">
-        <p class="page">Pág. </p>
-    </div> 
+    </div>
 
 </body>

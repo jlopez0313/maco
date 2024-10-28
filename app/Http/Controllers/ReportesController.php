@@ -56,9 +56,12 @@ class ReportesController extends Controller
             'invoices' => $query
         ];
 
+        $pdf = view('exports.inventario', $data);
+        return $pdf;
+/*
         $pdf = \PDF::loadView('exports.inventario', $data);
-    
         return $pdf->download('inventario.pdf');
+*/
     }
 
     public function inventario_qr(Request $request) {
@@ -86,9 +89,12 @@ class ReportesController extends Controller
             'invoices' => $query
         ];
 
+        $pdf = view('exports.existencia_articulo', $data);
+        return $pdf;
+/*
         $pdf = \PDF::loadView('exports.existencia_articulo', $data);
-    
         return $pdf->download('existencia_articulo.pdf');
+*/
     }
 
     public function existencia_articulo_qr(Request $request) {
@@ -116,9 +122,12 @@ class ReportesController extends Controller
             'invoices' => $query
         ];
 
+        $pdf = view('exports.articulos_vendidos', $data);
+        return $pdf;
+/*
         $pdf = \PDF::loadView('exports.articulos_vendidos', $data);
-    
         return $pdf->download('articulos_vendidos.pdf');
+*/
     }
 
     public function articulos_vendidos_qr(Request $request) {
@@ -146,9 +155,14 @@ class ReportesController extends Controller
             'invoices' => $query
         ];
 
+        
+        $pdf = view('exports.ventas', $data);
+        return $pdf;
+
+/*
         $pdf = \PDF::loadView('exports.ventas', $data);
-    
         return $pdf->download('ventas.pdf');
+*/        
     }
 
     public function ventas_qr(Request $request) {
@@ -176,9 +190,14 @@ class ReportesController extends Controller
             'invoices' => $query
         ];
 
+
+        $pdf = view('exports.gastos', $data);
+        return $pdf;
+
+/*
         $pdf = \PDF::loadView('exports.gastos', $data);
-    
         return $pdf->download('gastos.pdf');
+*/
     }
 
     public function gastos_qr(Request $request) {
@@ -210,9 +229,14 @@ class ReportesController extends Controller
             'invoices' => $query
         ];
 
+        
+        $pdf = view('exports.estado_cuenta_general', $data);
+        return $pdf;
+        
+/*
         $pdf = \PDF::loadView('exports.estado_cuenta_general', $data);
-    
         return $pdf->download('estado_cuenta_general.pdf');
+*/
     }
 
     public function estado_cuenta_general_qr(Request $request) {
@@ -249,9 +273,14 @@ class ReportesController extends Controller
             'invoices' => $query
         ];
 
+        
+        $pdf = view('exports.estado_cuenta_cliente', $data);
+        return $pdf;
+        
+/*
         $pdf = \PDF::loadView('exports.estado_cuenta_cliente', $data);
-    
         return $pdf->download('estado_cuenta_cliente.pdf');
+*/
     }
 
     public function estado_cuenta_cliente_qr(Request $request) {
@@ -301,9 +330,14 @@ class ReportesController extends Controller
             'gastos' => $this->onSetGastos( Gastos::get() ),
         ];
 
-        $pdf = \PDF::loadView('exports.utilidad', $data);
     
+        $pdf = view('exports.estado_cuenta_cliente', $data);
+        return $pdf;
+
+/*
+        $pdf = \PDF::loadView('exports.utilidad', $data);
         return $pdf->download('utilidad.pdf');
+*/
     }
 
     public function utilidad_qr(Request $request) {

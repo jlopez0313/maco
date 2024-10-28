@@ -38,6 +38,12 @@
 @endphp
 
 
+<script>
+    window.onload = function() {
+        window.print();
+    };
+</script>
+
 <style>
     @font-face {
         font-family: "source_sans_proregular";           
@@ -79,7 +85,7 @@
 
 </style>
 <body>
-    <img src="{{ public_path() . '/img/logo.svg' }}" width="250px" width="250px" />
+    <img src="{{ asset('img/logo.svg') }}" width="250px" width="250px" />
 
     <table class="empresa">
         <tr>

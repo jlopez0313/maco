@@ -140,6 +140,7 @@ Route::middleware([
 
     Route::prefix('remisiones')->group(function () {
         Route::get('/', [FacturasController::class, 'index'])->name('remisiones');
+        Route::get('/vender', [FacturasController::class, 'index'])->name('remisiones.vender');
         Route::get('/show/{id}', [FacturasController::class, 'show'])->name('remisiones.show');
         Route::get('/edit/{id}', [FacturasController::class, 'edit'])->name('remisiones.edit');
         Route::get('/pdf/{id}', [FacturasController::class, 'pdf'])->name('remisiones.pdf');

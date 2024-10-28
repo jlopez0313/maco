@@ -165,12 +165,22 @@ class FacturasController extends Controller
         $impresion = Impresiones::first();
 
         if ( !$impresion || $impresion->forma == 'CAR') {
+            $pdf = view('factura', $data);
+        } else if ( $impresion->forma == 'P80' ) {
+            $pdf = view('factura_pos_80', $data);
+        }
+
+        return $pdf;
+
+        /*
+        if ( !$impresion || $impresion->forma == 'CAR') {
             $pdf = \PDF::loadView('factura', $data);
         } else if ( $impresion->forma == 'P80' ) {
             $pdf = \PDF::loadView('factura_pos_80', $data);
         }
 
         return $pdf->download($factura->id.'.pdf');
+        */
     }
 
     public function qr(string $id)
@@ -204,11 +214,21 @@ class FacturasController extends Controller
         $impresion = Impresiones::first();
 
         if ( !$impresion || $impresion->forma == 'CAR') {
+            $pdf = view('cierre', $data);
+        } else if ( $impresion->forma == 'P80' ) {
+            $pdf = view('cierre_pos_80', $data);
+        }
+
+        return $pdf;
+      
+/*  
+        if ( !$impresion || $impresion->forma == 'CAR') {
             $pdf = \PDF::loadView('cierre', $data);
         } else if ( $impresion->forma == 'P80' ) {
             $pdf = \PDF::loadView('cierre_pos_80', $data);
         }
-
+        
         return $pdf->download('Cuadre_Caja.pdf');
+*/
     }
 }

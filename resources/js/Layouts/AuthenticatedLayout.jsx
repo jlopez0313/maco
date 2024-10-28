@@ -99,7 +99,7 @@ export default function Authenticated({ user, header, children }) {
                             <div className="hidden space-x-8 sm:-my-px sm:mt-4 sm:flex flex-col no-print">
                                 <NavLink
                                     className="!font-bold"
-                                    href={"/remisiones"}
+                                    href={"/remisiones/vender"}
                                     active={route().current("remisiones")}
                                 >
                                     <img src='/img/ventas.svg'className={styles.icon} />

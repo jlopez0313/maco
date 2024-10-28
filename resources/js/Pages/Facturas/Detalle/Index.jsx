@@ -19,6 +19,7 @@ import { goToQR } from "@/Helpers/Modals";
 import Select from "@/Components/Form/Select";
 import InputError from "@/Components/Form/InputError";
 import { notify } from "@/Helpers/Notify";
+import { forcePrint } from "@/Helpers/Print";
 
 export default ({ auth, factura }) => {
     const data = factura.detalles;
@@ -168,7 +169,9 @@ export default ({ auth, factura }) => {
 
     const goToPDF = async () => {
         if (!factura.transaccionID) {
-            window.location.href = "/remisiones/pdf/" + factura.id;
+            // window.location.href = '/remisiones/pdf/'+ factura.id;
+            forcePrint( '/remisiones/pdf/'+ factura.id )
+
         } else {
             try {
                 const resp = await axios.get(`/api/v1/soap/download/${factura.id}`);
