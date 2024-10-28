@@ -74,7 +74,7 @@ class EmpresasController extends Controller
 
     public function makeLink() {
         if  ( !is_link( 'tenant_' . tenant()->id ) ) {
-            // symlink(storage_path() . '/app', 'tenant_' . tenant()->id);
+            symlink(storage_path() . '/app', 'tenant_' . tenant()->id);
         }
     }
 }
