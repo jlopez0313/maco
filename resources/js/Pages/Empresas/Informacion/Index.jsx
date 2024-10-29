@@ -102,10 +102,8 @@ export default ({
             ciudad: item.ciudad?.id || "",
             direccion: item.direccion || "",
             responsabilidad_fiscal_id: item.responsabilidad?.id || "",
-            logo: item.logo || '',
+            // logo: item.logo || '',
         });
-
-        console.log( tenant_id )
 
         setPreview( { src: tenant_id + '/' +  item.logo } )
     };
