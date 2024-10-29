@@ -43,14 +43,13 @@ export default ({ auth, factura, referencias }) => {
     const [list, setList] = useState([]);
     const [sum, setSum] = useState(0);
     const [imptos, setImptos] = useState(0);
-    const [desea, setDesea] = useState('');
+    const [desea, setDesea] = useState("");
 
     const onSetAdminModal = (_id, action) => {
         setId(_id);
         // setAdminModal(true);
         setAction(action);
         onToggleModal(true);
-
     };
 
     const onConfirm = async ({ data }) => {
@@ -65,7 +64,6 @@ export default ({ auth, factura, referencias }) => {
     const onTrash = async (id) => {
         await axios.delete(`/api/v1/detalles/${id}`);
         onReload();
-        
     };
 
     const onToggleModal = (isShown) => {
@@ -85,14 +83,14 @@ export default ({ auth, factura, referencias }) => {
         try {
             const data = {
                 updated_by: auth.user.id,
-                desea
+                desea,
             };
             await axios.post(`/api/v1/facturas/registrar/${factura.id}`, data);
             onToggleModal(false);
-            
+
             router.visit("/remisiones/show/" + factura.id);
         } catch (e) {
-            notify('error',e.response?.data?.errors.join(','))
+            notify("error", e.response?.data?.errors.join(","));
         }
     };
 
@@ -162,7 +160,6 @@ export default ({ auth, factura, referencias }) => {
         });
 
         setImptos(impuestos);
-
     };
 
     const onBack = () => {
@@ -272,24 +269,45 @@ export default ({ auth, factura, referencias }) => {
                         />
                     </div>
 
-                    <div className="flex items-center justify-end mt-20 mb-4 no-print">
-                        <label
-                            htmlFor="desea_factura"
-                            className="block font-medium text-xl text-gray-700 !font-bold"
-                        > Deseo Gravar Facturar Electrónicamente </label>
+                    <div className="bg-white mt-10 overflow-auto shadow-sm sm:rounded-lg p-6">
+                        <div className="flex items-center mb-4 no-print">
+                            <Radio
+                                className="me-3"
+                                name="desea_factura"
+                                id="factura_electronica"
+                                value="S"
+                                onChange={(e) => {
+                                    setDesea(e.target.value);
+                                }}
+                            />
 
-                        <Radio className="ms-3" name="desea_factura" value="S"  onChange={ (e) => { setDesea(e.target.value) }}/>
-                    </div>
+                            <label
+                                htmlFor="factura_electronica"
+                                className="block font-medium text-xl text-gray-700 !font-bold cursor-pointer"
+                            >
+                                {" "}
+                                Deseo Gravar Facturar Electrónicamente{" "}
+                            </label>
+                        </div>
 
-                    <div className="flex items-center justify-end mt-4 mb-4 no-print">
-                        <label
-                            htmlFor="desea_factura"
-                            className="block font-medium text-xl text-gray-700 !font-bold"
-                        >
-                            Deseo Facturar Internamente
-                        </label>
-
-                        <Radio className="ms-3" name="desea_factura" value="N"  onChange={ (e) => { setDesea(e.target.value) }}/>
+                        <div className="flex items-center mt-4 no-print">
+                            <Radio
+                                className="me-3"
+                                name="desea_factura"
+                                id="factura_interna"
+                                value="N"
+                                onChange={(e) => {
+                                    setDesea(e.target.value);
+                                }}
+                            />
+                            
+                            <label
+                                htmlFor="factura_interna"
+                                className="block font-medium text-xl text-gray-700 !font-bold cursor-pointer"
+                            >
+                                Deseo Facturar Internamente
+                            </label>
+                        </div>
                     </div>
 
                     <div className="flex items-center justify-end mt-4 mb-4">
@@ -299,7 +317,7 @@ export default ({ auth, factura, referencias }) => {
                                 onClick={() => onRegistrar(true)}
                                 disabled={!list.length}
                             >
-                                Registrar
+                                Registrar y Finalizar
                             </PrimaryButton>
                         )}
                     </div>
