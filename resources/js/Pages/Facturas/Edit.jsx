@@ -270,9 +270,13 @@ export default ({ auth, factura, referencias }) => {
                     </div>
 
                     <div className="bg-white mt-10 overflow-auto shadow-sm sm:rounded-lg p-6">
+                        <h2 className="font-semibold mb-8 text-xl text-gray-800 leading-tight">
+                            Registrar Factura
+                        </h2>
+
                         <div className="flex items-center mb-4 no-print">
                             <Radio
-                                className="me-3"
+                                className="me-3 w-4 h-4 transform border-2 scale-150"
                                 name="desea_factura"
                                 id="factura_electronica"
                                 value="S"
@@ -292,7 +296,7 @@ export default ({ auth, factura, referencias }) => {
 
                         <div className="flex items-center mt-4 no-print">
                             <Radio
-                                className="me-3"
+                                className="me-3 w-4 h-4 transform border-2 scale-150"
                                 name="desea_factura"
                                 id="factura_interna"
                                 value="N"
@@ -300,7 +304,7 @@ export default ({ auth, factura, referencias }) => {
                                     setDesea(e.target.value);
                                 }}
                             />
-                            
+
                             <label
                                 htmlFor="factura_interna"
                                 className="block font-medium text-xl text-gray-700 !font-bold cursor-pointer"
