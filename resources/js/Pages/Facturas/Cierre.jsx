@@ -3,6 +3,7 @@ import SecondaryButton from "@/Components/Buttons/SecondaryButton";
 import InputLabel from "@/Components/Form/InputLabel";
 import TextSpan from "@/Components/Form/TextSpan";
 import { toCurrency } from "@/Helpers/Numbers";
+import { forcePrint } from "@/Helpers/Print";
 import axios from "axios";
 import React from "react";
 import { useState, useEffect } from "react";
