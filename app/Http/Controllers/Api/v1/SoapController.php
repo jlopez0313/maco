@@ -413,6 +413,8 @@ class SoapController extends Controller
                 <ADQ_3>'. $adquiriente->tipo_doc->codigo .'</ADQ_3>                         <!-- Tabla 3 - Tipos de documentos de identidad - OK -->
                 <ADQ_6>'. $adquiriente->nombre .'</ADQ_6>                                   <!-- Nombre del Cliente - RUT - OK -->
                 <ADQ_7>'. $adquiriente->comercio .'</ADQ_7>                                 <!-- Nombre comercial del Cliente - RUT - OK -->
+                <ADQ_8>'. $adquiriente->nombre .'</ADQ_8>                                   <!-- Nombre del Cliente - RUT - OK -->
+                <ADQ_9>'. $adquiriente->nombre .'</ADQ_9>                                   <!-- Nombre del Cliente - RUT - OK -->
                 <ADQ_10>'. $adquiriente->direccion .'</ADQ_10>                              <!-- dirección - OK -->
                 <ADQ_11>'. $adquiriente->ciudad->departamento->codigo .'</ADQ_11>               <!-- Tabla 34 - Departamentos - codigo - Excel Simplificado Anexo - Tablas 2.1 - OK -->
                 <ADQ_13>'. $adquiriente->ciudad->ciudad .'</ADQ_13>                         <!-- Tabla 35 - Municipios - Nombre Municipio - Excel Simplificado Anexo - Tablas 2.1 - OK -->
