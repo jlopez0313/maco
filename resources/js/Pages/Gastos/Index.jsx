@@ -13,21 +13,31 @@ import { Form } from "./Form";
 import { AdminModal } from "@/Components/AdminModal";
 import { toCurrency } from "@/Helpers/Numbers";
 import TextInput from "@/Components/Form/TextInput";
+import { useCookies } from "react-cookie";
 
-export default ({ auth, q, contacts, clientes, conceptos, origenes }) => {
+export default ({ auth, q, contacts, proveedores, payments, medios_pago }) => {
     const {
         data,
         meta: { links },
     } = contacts;
 
     const titles = [
-        "Fecha",
-        "Recibo",
-        "Cliente",
-        "Origen",
-        "Concepto",
-        "Valor",
+        "Fecha de Creación",
+        {
+            key: "id",
+            title: "Codigo",
+        },
+        "Proveedor",
+        "Forma de Pago",
+        "Medio de Pago",
+        "Valor Total",
+        {
+            key: "id",
+            title: "Estado",
+        }
     ];
+
+    const [cookies, setCookie] = useCookies(["maco"]);
 
     const [search, setSearch] = useState(q);
     const [action, setAction] = useState("");
@@ -37,15 +47,61 @@ export default ({ auth, q, contacts, clientes, conceptos, origenes }) => {
     const [show, setShow] = useState(false);
 
     const onSetList = () => {
-        const _list = data.map((item) => {
+
+        const sum = data.map((item) => {
+            item.detalles.forEach((_item) => {
+                let retenciones = 0;
+
+                _item.producto?.impuestos.forEach((impto) => {
+                    if (impto.impuesto?.tipo_impuesto == "R") {
+                        if (impto.impuesto.tipo_tarifa == "P") {
+                            retenciones +=
+                                ((_item.precio_venta || 0) *
+                                    Number(impto.impuesto.tarifa)) /
+                                100;
+                        } else if (impto.impuesto.tipo_tarifa == "V") {
+                            retenciones += Number(impto.impuesto.tarifa);
+                        }
+                    }
+                });
+
+                _item.total_retenciones = retenciones;
+            });
+
+            return (
+                item.detalles.reduce(
+                    (sum, det) =>
+                        sum +
+                        det.precio_venta * det.cantidad +
+                        det.total_retenciones * det.cantidad,
+                    0
+                ) || 0
+            );
+        });
+
+        let _sum = 0;
+        let sumFel = 0;
+        
+        const _list = data.map((item, idx) => {
+            _sum +=
+                item.forma_pago?.id == 1 && item.estado == "C"
+                    ? sum[idx] || 0
+                    : 0;
+            sumFel +=
+                item.forma_pago?.id == 1 && item.estado == "C" && item.prefijo
+                    ? sum[idx] || 0
+                    : 0;
+
             return {
                 id: item.id,
                 fecha: item.created_at,
-                recibo: item.id,
-                cliente: item.cliente?.nombre || "",
-                origen: item.origen_label,
-                concepto: item.concepto?.concepto || "",
-                valor: toCurrency(item.valor || 0),
+                codigo: item.prefijo ? "FEL " + item.folio : item.id,
+                proveedor: item.proveedor?.nombre || "",
+                payment: item.forma_pago?.descripcion || "",
+                medio_pago: item.medio_pago?.descripcion || "",
+                valor_total: toCurrency(sum[idx] || 0),
+                estado_label: item.estado_label || "",
+                estado: item.estado || "",
             };
         });
 
@@ -61,7 +117,7 @@ export default ({ auth, q, contacts, clientes, conceptos, origenes }) => {
     const onConfirm = async ({ data }) => {
         if (action == "edit") {
             setAdminModal(false);
-            onToggleModal(true);
+            onEdit(id);
         } else {
             onTrash(data);
         }
@@ -86,14 +142,33 @@ export default ({ auth, q, contacts, clientes, conceptos, origenes }) => {
         router.visit(window.location.pathname);
     };
 
+    const onEdit = (id) => {
+        router.get(`/gastos/edit/${id}`);
+    };
+
     const onSearch = () => {
         onToggleModal(false);
 
         router.visit(window.location.pathname + "?q=" + search);
     };
 
+    const onSort = (field) => {
+        const sort = cookies.icon == "asc" ? "desc" : "asc";
+        setCookie("sort", field, { path: window.location.pathname });
+        setCookie("icon", sort, { path: window.location.pathname });
+
+        router.visit(window.location.pathname);
+    };
+
+    const onCheckRoute = ( ) => {
+        if( window.location.pathname == '/gastos/comprar' ) {
+            onToggleModal(true)
+        }
+    }
+
     useEffect(() => {
         onSetList();
+        onCheckRoute()
     }, []);
 
     return (
@@ -101,11 +176,11 @@ export default ({ auth, q, contacts, clientes, conceptos, origenes }) => {
             user={auth.user}
             header={
                 <h2 className="font-semibold text-xl text-gray-800 leading-tight">
-                    Gastos
+                    Compras
                 </h2>
             }
         >
-            <Head title="Gastos" />
+            <Head title="Compras" />
 
             <div className="py-12">
                 <div className="max-w-6xl mx-auto sm:px-6 lg:px-8">
@@ -140,6 +215,8 @@ export default ({ auth, q, contacts, clientes, conceptos, origenes }) => {
 
                     <div className="bg-white overflow-auto shadow-sm sm:rounded-lg">
                         <Table
+                            sortIcon={cookies.icon || "down"}
+                            onSort={onSort}
                             data={list}
                             links={links}
                             onEdit={(evt) => onSetAdminModal(evt, "edit")}
@@ -153,14 +230,14 @@ export default ({ auth, q, contacts, clientes, conceptos, origenes }) => {
                     <Pagination links={links} />
                 </div>
             </div>
-            <Modal show={show} closeable={true} title="Crear Gastos">
+            <Modal show={show} closeable={true} title="Registrar Compra">
                 <Form
                     auth={auth}
-                    clientes={clientes}
-                    conceptos={conceptos}
-                    origenes={origenes}
+                    proveedores={proveedores}
+                    payments={payments}
+                    medios_pago={medios_pago}
                     setIsOpen={onToggleModal}
-                    onReload={onReload}
+                    onEdit={onEdit}
                     id={id}
                 />
             </Modal>

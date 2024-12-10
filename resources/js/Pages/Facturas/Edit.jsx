@@ -290,7 +290,7 @@ export default ({ auth, factura, referencias }) => {
                                 className="block font-medium text-xl text-gray-700 !font-bold cursor-pointer"
                             >
                                 {" "}
-                                Deseo Gravar Facturar Electrónicamente{" "}
+                                Deseo Gravar Factura Electrónicamente{" "}
                             </label>
                         </div>
 

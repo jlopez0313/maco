@@ -23,11 +23,11 @@ class ResolucionesController extends Controller
 
         $resolucione = Resoluciones::create($request->all());
 
-        $consecutivo = Consecutivos::first();
+        $consecutivo = Consecutivos::where('from', 'f')->first();
         if ( !$consecutivo ) {
-            $consecutivo = Consecutivos::create([ 'consecutivo' => $request->consecutivo_inicial ]);
+            $consecutivo = Consecutivos::create([ 'consecutivo' => $request->consecutivo_inicial, 'from' => 'f' ]);
         } else {
-            $consecutivo = Consecutivos::first()->update([ 'consecutivo' => $request->consecutivo_inicial ]);
+            $consecutivo->update([ 'consecutivo' => $request->consecutivo_inicial ]);
         }
 
         return new ResolucionesResource($resolucione);

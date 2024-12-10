@@ -8,6 +8,7 @@ import { Head, router } from "@inertiajs/react";
 import styles from "./Errors.module.css";
 import ContactosEmpty from "./Empresa/Contactos/Empty";
 import ResolucionEmpty from "./Empresa/Resolucion/Empty";
+import AutorizacionEmpty from "./Empresa/Autorizacion/Empty";
 
 export default ({ auth, error, ...props }) => {
     
@@ -15,6 +16,8 @@ export default ({ auth, error, ...props }) => {
         switch (error) {
             case "Resolucion/Empty":
                 return <ResolucionEmpty {...props} />;
+            case "Autorizacion/Empty":
+                return <AutorizacionEmpty {...props} />;
             case "Contactos/Empty":
                 return <ContactosEmpty {...props} />;
             default:

@@ -21,7 +21,8 @@ import InputError from "@/Components/Form/InputError";
 import { notify } from "@/Helpers/Notify";
 import { forcePrint } from "@/Helpers/Print";
 
-// Pantalla de remisiones/show/{id}
+
+// Pantalla de gastos/show/{id}
 
 export default ({ auth, factura }) => {
     const data = factura.detalles;
@@ -63,13 +64,13 @@ export default ({ auth, factura }) => {
 
     const onTrash = async (data) => {
         if (data) {
-            await axios.delete(`/api/v1/facturas/${id}`);
+            await axios.delete(`/api/v1/gastos/${id}`);
             onBack();
         }
     };
 
     const onEdit = (id) => {
-        router.get(`/remisiones/edit/${id}`);
+        router.get(`/gastos/edit/${id}`);
     };
 
     const onToggleModal = (isShown) => {
@@ -87,17 +88,17 @@ export default ({ auth, factura }) => {
 
     const onSetList = () => {
         const _list = data.map((item) => {
-            let impuestos = 0;
+            let retenciones = 0;
 
             item.producto?.impuestos.forEach((impto) => {
-                if (impto.impuesto.tipo_impuesto == "I") {
+                if (impto.impuesto.tipo_impuesto == "R") {
                     if (impto.impuesto.tipo_tarifa == "P") {
-                        impuestos +=
+                        retenciones +=
                             ((item.precio_venta || 0) *
                                 Number(impto.impuesto.tarifa)) /
                             100;
                     } else if (impto.impuesto.tipo_tarifa == "V") {
-                        impuestos += Number(impto.impuesto.tarifa);
+                        retenciones += Number(impto.impuesto.tarifa);
                     }
                 }
             });
@@ -110,10 +111,10 @@ export default ({ auth, factura }) => {
                 medida: item.producto?.medida?.medida || "",
                 cantidad: item.cantidad,
                 precio: toCurrency(item.precio_venta || 0),
-                impuestos: toCurrency(impuestos),
-                total_impuestos: toCurrency(impuestos * item.cantidad),
+                retenciones: toCurrency(retenciones),
+                total_retenciones: toCurrency(retenciones * item.cantidad),
                 total: toCurrency(
-                    impuestos * item.cantidad +
+                    retenciones * item.cantidad +
                         (item.precio_venta || 0) * item.cantidad
                 ),
             };
@@ -134,7 +135,7 @@ export default ({ auth, factura }) => {
 
         data.forEach((item) => {
             item.producto?.impuestos.forEach((impto) => {
-                if (impto.impuesto.tipo_impuesto == "I") {
+                if (impto.impuesto.tipo_impuesto == "R") {
                     if (impto.impuesto.tipo_tarifa == "P") {
                         impuestos +=
                             (((item.precio_venta || 0) *
@@ -153,12 +154,12 @@ export default ({ auth, factura }) => {
     };
 
     const onBack = () => {
-        router.visit("/remisiones");
+        router.visit("/gastos");
     };
 
     const onSOAP = async () => {
         try {
-            await axios.get(`/api/v1/soap/upload/${factura.id}`);
+            await axios.get(`/api/v1/documento_soporte/upload/${factura.id}`);
         } catch (ex) {
             console.log(ex);
         }
@@ -172,11 +173,11 @@ export default ({ auth, factura }) => {
     const goToPDF = async () => {
         if (!factura.transaccionID) {
             // window.location.href = '/remisiones/pdf/'+ factura.id;
-            forcePrint( '/remisiones/pdf/'+ factura.id )
+            forcePrint( '/gastos/pdf/'+ factura.id )
 
         } else {
             try {
-                const resp = await axios.get(`/api/v1/soap/download/${factura.id}`);
+                const resp = await axios.get(`/api/v1/documento_soporte/download/${factura.id}`);
                 if ( resp.code == 404 ) {
                     throw new Error(resp.error)
                 }
@@ -209,11 +210,11 @@ export default ({ auth, factura }) => {
             user={auth.user}
             header={
                 <h2 className="font-semibold text-xl text-gray-800 leading-tight">
-                    Información de Venta
+                    Información de Compra
                 </h2>
             }
         >
-            <Head title="Información de Venta" />
+            <Head title="Información de Compra" />
 
             <div className="py-12">
                 <div className="max-w-5xl mx-auto sm:px-6 lg:px-8">
@@ -241,11 +242,11 @@ export default ({ auth, factura }) => {
                                 </div>
 
                                 <div>
-                                    <InputLabel value="Cliente" />
+                                    <InputLabel value="Proveedor" />
 
                                     <TextInput
                                         type="text"
-                                        value={factura.cliente?.nombre || ''}
+                                        value={factura.proveedor?.nombre || ''}
                                         className="mt-1 block w-full"
                                         readOnly={true}
                                     />
@@ -340,7 +341,7 @@ export default ({ auth, factura }) => {
                                 <SecondaryButton
                                     className="ms-4"
                                     onClick={() =>
-                                        goToQR("/remisiones/qr/" + factura.id)
+                                        goToQR("/gastos/qr/" + factura.id)
                                     }
                                 >
                                     QR

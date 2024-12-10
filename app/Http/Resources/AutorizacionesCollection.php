@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
-class ConsecutivosCollection extends ResourceCollection
+class Autorizaciones extends ResourceCollection
 {
     /**
      * Transform the resource collection into an array.
@@ -19,7 +19,16 @@ class ConsecutivosCollection extends ResourceCollection
         }
         
         return $this->collection->map->only(
-            'id', 'consecutivo', 'from'
+            'id',
+            'empresa',
+            'autorizacion',
+            'prefijo',
+            'consecutivo_inicial',
+            'consecutivo_final',
+            'fecha_inicial',
+            'fecha_final',
+            'estado',
+            'estado_label',
         );
     }
 }

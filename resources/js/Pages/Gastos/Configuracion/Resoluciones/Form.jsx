@@ -13,7 +13,7 @@ export default ({ id, empresasId, estados, auth, setIsOpen, onReload }) => {
 
     const { data, setData, processing, errors, reset } = useForm({
         updated_by: auth.user.id,
-        resolucion: '',
+        autorizacion: '',
         prefijo: '',
         fecha_inicial: '',
         fecha_final: '',
@@ -28,9 +28,9 @@ export default ({ id, empresasId, estados, auth, setIsOpen, onReload }) => {
 
         try {
             if ( id ) {
-                await axios.put(`/api/v1/resoluciones/${id}`, data);
+                await axios.put(`/api/v1/autorizaciones/${id}`, data);
             } else {
-                await axios.post(`/api/v1/resoluciones`, data);
+                await axios.post(`/api/v1/autorizaciones`, data);
             }
         } catch (e) {
             console.error( e );
@@ -41,13 +41,13 @@ export default ({ id, empresasId, estados, auth, setIsOpen, onReload }) => {
 
     const onGetItem = async () => {
 
-        const { data } = await axios.get(`/api/v1/resoluciones/${id}`);
+        const { data } = await axios.get(`/api/v1/autorizaciones/${id}`);
         const item = { ...data.data }
-
+        
         setData(
             {
                 updated_by: auth.user.id,
-                resolucion: item.resolucion,
+                autorizacion: item.autorizacion,
                 prefijo: item.prefijo,
                 fecha_inicial: item.fecha_inicial,
                 fecha_final: item.fecha_final,
@@ -60,7 +60,7 @@ export default ({ id, empresasId, estados, auth, setIsOpen, onReload }) => {
     }
 
     const onGetConsecutivo = async () => {
-        const { data: info } = await axios.get(`/api/v1/resoluciones/consecutivo/${empresasId}`);
+        const { data: info } = await axios.get(`/api/v1/autorizaciones/consecutivo/${empresasId}`);
         const item = { ...info.data }
 
         setData(
@@ -73,7 +73,7 @@ export default ({ id, empresasId, estados, auth, setIsOpen, onReload }) => {
 
     useEffect( () => {
         id && onGetItem();
-        onGetConsecutivo();
+        !id && onGetConsecutivo();
     }, [])
 
     return (
@@ -82,23 +82,23 @@ export default ({ id, empresasId, estados, auth, setIsOpen, onReload }) => {
                 <form onSubmit={submit}>
                     <div className="grid grid-cols-2 gap-4">
                         <div>
-                            <InputLabel htmlFor="resolucion" value="Resolución" />
+                            <InputLabel htmlFor="autorizacion" value="Resolución" />
 
                             <TextInput
                                placeholder="Escriba aquí"
-                                id="resolucion"
+                                id="autorizacion"
                                 type="text"
                                 name="nombre"
-                                value={data.resolucion}
+                                value={data.autorizacion}
                                 className="mt-1 block w-full"
                                 autoComplete="resolucion"
                                 onChange={(e) =>
-                                    setData("resolucion", e.target.value)
+                                    setData("autorizacion", e.target.value)
                                 }
                             />
 
                             <InputError
-                                message={errors.resolucion}
+                                message={errors.autorizacion}
                                 className="mt-2"
                             />
                         </div>

@@ -45,4 +45,12 @@ class Empresas extends Model
     public function resolucion() {
         return $this->hasOne(Resoluciones::class, 'empresas_id')->where('estado', 'A');
     }
+
+    public function autorizaciones() {
+        return $this->hasMany(Autorizaciones::class, 'empresas_id');
+    }
+
+    public function autorizacion() {
+        return $this->hasOne(Autorizaciones::class, 'empresas_id')->where('estado', 'A');
+    }
 }

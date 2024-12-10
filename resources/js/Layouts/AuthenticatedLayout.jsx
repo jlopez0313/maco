@@ -88,6 +88,17 @@ export default function Authenticated({ user, header, children }) {
                             <div className="hidden space-x-8 sm:-my-px sm:mt-4 sm:flex no-print">
                                 <NavLink
                                     className="!font-bold"
+                                    href={"/proveedores"}
+                                    active={route().current("proveedores")}
+                                >
+                                    <img src='/img/proveedores.svg'className={styles.icon} />
+                                    Proveedores
+                                </NavLink>
+                            </div>
+
+                            <div className="hidden space-x-8 sm:-my-px sm:mt-4 sm:flex no-print">
+                                <NavLink
+                                    className="!font-bold"
                                     href={"/inventario"}
                                     active={route().current("inventario")}
                                 >
@@ -99,13 +110,49 @@ export default function Authenticated({ user, header, children }) {
                             <div className="hidden space-x-8 sm:-my-px sm:mt-4 sm:flex flex-col no-print">
                                 <NavLink
                                     className="!font-bold"
+                                    href={"/gastos/comprar"}
+                                    active={route().current("gastos")}
+                                >
+                                    <img src='/img/compras.svg'className={styles.icon} />
+                                    Compras
+                                </NavLink>
+                                <div className="hidden sm:-my-px sm:mt-2 sm:flex flex-col no-print">
+                                    <NavLink
+                                        className="!font-bold"
+                                        href={"/gastos/configuracion"}
+                                        active={route().current("remisiones")}
+                                    >
+                                        Configuración
+                                    </NavLink>
+                                    
+                                    <NavLink
+                                        className="!font-bold"
+                                        href={"/gastos"}
+                                        active={route().current("gastos")}
+                                    >
+                                        Registro de Compras
+                                    </NavLink>
+                                </div>
+                            </div>
+
+                            <div className="hidden space-x-8 sm:-my-px sm:mt-4 sm:flex flex-col no-print">
+                                <NavLink
+                                    className="!font-bold"
                                     href={"/remisiones/vender"}
                                     active={route().current("remisiones")}
                                 >
                                     <img src='/img/ventas.svg'className={styles.icon} />
                                     Ventas
                                 </NavLink>
-                                <div className="hidden space-x-8 sm:-my-px sm:mt-4 sm:flex no-print">
+                                <div className="hidden sm:-my-px sm:mt-2 sm:flex flex-col no-print">
+                                    <NavLink
+                                        className="!font-bold"
+                                        href={"/remisiones/configuracion"}
+                                        active={route().current("remisiones")}
+                                    >
+                                        Configuración
+                                    </NavLink>
+                                    
                                     <NavLink
                                         className="!font-bold"
                                         href={"/remisiones"}
@@ -114,17 +161,6 @@ export default function Authenticated({ user, header, children }) {
                                         Registro de Ventas
                                     </NavLink>
                                 </div>
-                            </div>
-
-                            <div className="hidden space-x-8 sm:-my-px sm:mt-4 sm:flex no-print">
-                                <NavLink
-                                    className="!font-bold"
-                                    href={"/gastos"}
-                                    active={route().current("gastos")}
-                                >
-                                    <img src='/img/compras.svg'className={styles.icon} />
-                                    Compras
-                                </NavLink>
                             </div>
 
                             {/*
@@ -145,17 +181,6 @@ export default function Authenticated({ user, header, children }) {
                                 >
                                     <img src='/img/recaudos.svg'className={styles.icon} />
                                     Recaudos
-                                </NavLink>
-                            </div>
-
-                            <div className="hidden space-x-8 sm:-my-px sm:mt-4 sm:flex no-print">
-                                <NavLink
-                                    className="!font-bold"
-                                    href={"/proveedores"}
-                                    active={route().current("proveedores")}
-                                >
-                                    <img src='/img/proveedores.svg'className={styles.icon} />
-                                    Proveedores
                                 </NavLink>
                             </div>
 
@@ -269,19 +294,19 @@ export default function Authenticated({ user, header, children }) {
                         </ResponsiveNavLink>
                         <ResponsiveNavLink
                             className="!font-bold"
+                            href={"/proveedores"}
+                            active={route().current("proveedores")}
+                        >
+                            <img src='/img/proveedores.svg'className={styles.icon} />
+                            Proveedores
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            className="!font-bold"
                             href={"/inventario"}
                             active={route().current("inventario")}
                         >
                             <img src='/img/inventario.svg'className={styles.icon} />
                             Inventario
-                        </ResponsiveNavLink>
-                        <ResponsiveNavLink
-                            className="!font-bold"
-                            href={"/remisiones"}
-                            active={route().current("remisiones")}
-                        >
-                            <img src='/img/ventas.svg'className={styles.icon} />
-                            Ventas
                         </ResponsiveNavLink>
                         <ResponsiveNavLink
                             className="!font-bold"
@@ -293,19 +318,19 @@ export default function Authenticated({ user, header, children }) {
                         </ResponsiveNavLink>
                         <ResponsiveNavLink
                             className="!font-bold"
+                            href={"/remisiones"}
+                            active={route().current("remisiones")}
+                        >
+                            <img src='/img/ventas.svg'className={styles.icon} />
+                            Ventas
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            className="!font-bold"
                             href={"/recaudos"}
                             active={route().current("recaudos")}
                         >
                             <img src='/img/recaudos.svg'className={styles.icon} />
                             Recaudos
-                        </ResponsiveNavLink>
-                        <ResponsiveNavLink
-                            className="!font-bold"
-                            href={"/proveedores"}
-                            active={route().current("proveedores")}
-                        >
-                            <img src='/img/proveedores.svg'className={styles.icon} />
-                            Proveedores
                         </ResponsiveNavLink>
                         <ResponsiveNavLink
                             className="!font-bold"

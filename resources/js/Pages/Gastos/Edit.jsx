@@ -9,26 +9,24 @@ import Pagination from "@/Components/Table/Pagination";
 import Table from "@/Components/Table/Table";
 import PrimaryButton from "@/Components/Buttons/PrimaryButton";
 import Modal from "@/Components/Modal";
-import { Form } from "./Form";
+import { Form } from "./Detalle/Form";
 import InputLabel from "@/Components/Form/InputLabel";
 import TextInput from "@/Components/Form/TextInput";
 import { AdminModal } from "@/Components/AdminModal";
 import SecondaryButton from "@/Components/Buttons/SecondaryButton";
 import { toCurrency } from "@/Helpers/Numbers";
-import { goToQR } from "@/Helpers/Modals";
 import Select from "@/Components/Form/Select";
-import InputError from "@/Components/Form/InputError";
+import Radio from "@/Components/Form/Radio";
+
 import { notify } from "@/Helpers/Notify";
-import { forcePrint } from "@/Helpers/Print";
 
-// Pantalla de remisiones/show/{id}
-
-export default ({ auth, factura }) => {
+export default ({ auth, factura, referencias }) => {
     const data = factura.detalles;
 
     const titles = [
         "Artículo",
         "Referencia",
+        "Unidad de Medida",
         "Color",
         "Medida",
         "Cantidad",
@@ -38,7 +36,6 @@ export default ({ auth, factura }) => {
         "Total",
     ];
 
-    const [fel, setFel] = useState("N");
     const [action, setAction] = useState("");
     const [adminModal, setAdminModal] = useState(false);
     const [id, setId] = useState(null);
@@ -46,30 +43,27 @@ export default ({ auth, factura }) => {
     const [list, setList] = useState([]);
     const [sum, setSum] = useState(0);
     const [imptos, setImptos] = useState(0);
+    const [desea, setDesea] = useState("");
 
     const onSetAdminModal = (_id, action) => {
         setId(_id);
-        setAdminModal(true);
+        // setAdminModal(true);
         setAction(action);
+        onToggleModal(true);
     };
 
     const onConfirm = async ({ data }) => {
         if (action == "edit") {
-            onEdit(data);
+            setAdminModal(false);
+            onToggleModal(true);
         } else {
             onTrash(data);
         }
     };
 
-    const onTrash = async (data) => {
-        if (data) {
-            await axios.delete(`/api/v1/facturas/${id}`);
-            onBack();
-        }
-    };
-
-    const onEdit = (id) => {
-        router.get(`/remisiones/edit/${id}`);
+    const onTrash = async (id) => {
+        await axios.delete(`/api/v1/detalles/${id}`);
+        onReload();
     };
 
     const onToggleModal = (isShown) => {
@@ -85,12 +79,27 @@ export default ({ auth, factura }) => {
         router.visit(window.location.pathname);
     };
 
+    const onRegistrar = async () => {
+        try {
+            const data = {
+                updated_by: auth.user.id,
+                desea,
+            };
+            await axios.post(`/api/v1/gastos/registrar/${factura.id}`, data);
+            onToggleModal(false);
+
+            router.visit("/gastos/show/" + factura.id);
+        } catch (e) {
+            notify("error", e.response?.data?.errors.join(","));
+        }
+    };
+
     const onSetList = () => {
         const _list = data.map((item) => {
             let impuestos = 0;
 
             item.producto?.impuestos.forEach((impto) => {
-                if (impto.impuesto.tipo_impuesto == "I") {
+                if (impto.impuesto.tipo_impuesto == "R") {
                     if (impto.impuesto.tipo_tarifa == "P") {
                         impuestos +=
                             ((item.precio_venta || 0) *
@@ -106,10 +115,11 @@ export default ({ auth, factura }) => {
                 id: item.id,
                 articulo: item.producto?.inventario?.articulo || "",
                 referenia: item.producto?.referencia || "",
+                unidad_medida: item.producto?.unidad_medida?.descripcion || "",
                 color: item.producto?.color?.color || "",
                 medida: item.producto?.medida?.medida || "",
                 cantidad: item.cantidad,
-                precio: toCurrency(item.precio_venta || 0),
+                precio: toCurrency(item.precio_venta),
                 impuestos: toCurrency(impuestos),
                 total_impuestos: toCurrency(impuestos * item.cantidad),
                 total: toCurrency(
@@ -134,7 +144,7 @@ export default ({ auth, factura }) => {
 
         data.forEach((item) => {
             item.producto?.impuestos.forEach((impto) => {
-                if (impto.impuesto.tipo_impuesto == "I") {
+                if (impto.impuesto.tipo_impuesto == "R") {
                     if (impto.impuesto.tipo_tarifa == "P") {
                         impuestos +=
                             (((item.precio_venta || 0) *
@@ -153,50 +163,7 @@ export default ({ auth, factura }) => {
     };
 
     const onBack = () => {
-        router.visit("/remisiones");
-    };
-
-    const onSOAP = async () => {
-        try {
-            await axios.get(`/api/v1/soap/upload/${factura.id}`);
-        } catch (ex) {
-            console.log(ex);
-        }
-    };
-
-    const onPrint = async () => {
-        // window.print();
-        await axios.get(`/api/v1/soap/status/${factura.id}`);
-    };
-
-    const goToPDF = async () => {
-        if (!factura.transaccionID) {
-            // window.location.href = '/remisiones/pdf/'+ factura.id;
-            forcePrint( '/remisiones/pdf/'+ factura.id )
-
-        } else {
-            try {
-                const resp = await axios.get(`/api/v1/soap/download/${factura.id}`);
-                if ( resp.code == 404 ) {
-                    throw new Error(resp.error)
-                }
-                
-                const anchor = document.createElement("a");
-                anchor.href = "/" + factura.prefijo + factura.folio + ".pdf";
-                anchor.target = "_blank";
-                anchor.click();
-
-            } catch( e ) {
-                console.error( e );
-                notify('error', e)
-            }
-        }
-        // window.location.href = "/remisiones/pdf/" + factura.id;
-    };
-
-    const onSetFel = (e) => {
-        console.log(e.target.value);
-        setFel(e.target.value);
+        router.visit("/gastos");
     };
 
     useEffect(() => {
@@ -209,23 +176,14 @@ export default ({ auth, factura }) => {
             user={auth.user}
             header={
                 <h2 className="font-semibold text-xl text-gray-800 leading-tight">
-                    Información de Venta
+                    Editar Compra
                 </h2>
             }
         >
-            <Head title="Información de Venta" />
+            <Head title="Compras" />
 
             <div className="py-12">
-                <div className="max-w-5xl mx-auto sm:px-6 lg:px-8">
-                    <div className="flex items-center justify-end mt-4 mb-4 no-print">
-                        <SecondaryButton
-                            className="ms-4"
-                            onClick={() => onBack()}
-                        >
-                            Atras
-                        </SecondaryButton>
-                    </div>
-
+                <div className="max-w-6xl mx-auto sm:px-6 lg:px-8">
                     <div className="bg-white overflow-auto shadow-sm sm:rounded-lg p-6">
                         <form>
                             <div className="grid grid-cols-2 gap-4">
@@ -241,11 +199,11 @@ export default ({ auth, factura }) => {
                                 </div>
 
                                 <div>
-                                    <InputLabel value="Cliente" />
+                                    <InputLabel value="Proveedor" />
 
                                     <TextInput
                                         type="text"
-                                        value={factura.cliente?.nombre || ''}
+                                        value={factura.proveedor?.nombre}
                                         className="mt-1 block w-full"
                                         readOnly={true}
                                     />
@@ -257,34 +215,6 @@ export default ({ auth, factura }) => {
                                     <TextInput
                                         type="text"
                                         value={factura.created_at}
-                                        className="mt-1 block w-full"
-                                        readOnly={true}
-                                    />
-                                </div>
-
-                                <div>
-                                    <InputLabel
-                                        htmlFor="ciudad"
-                                        value="SubTotal"
-                                    />
-
-                                    <TextInput
-                                        type="text"
-                                        value={toCurrency(sum)}
-                                        className="mt-1 block w-full"
-                                        readOnly={true}
-                                    />
-                                </div>
-
-                                <div>
-                                    <InputLabel
-                                        htmlFor="ciudad"
-                                        value="Impuestos"
-                                    />
-
-                                    <TextInput
-                                        type="text"
-                                        value={toCurrency(imptos)}
                                         className="mt-1 block w-full"
                                         readOnly={true}
                                     />
@@ -307,69 +237,108 @@ export default ({ auth, factura }) => {
                         </form>
                     </div>
 
-                    <div className="bg-white overflow-auto shadow-sm sm:rounded-lg mt-3">
+                    <div className="flex items-center justify-end mt-4 mb-4">
+                        <SecondaryButton
+                            className="ms-4"
+                            onClick={() => onBack()}
+                        >
+                            Atras
+                        </SecondaryButton>
+                        {factura.estado != "C" && (
+                            <PrimaryButton
+                                className="ms-4"
+                                onClick={() => onToggleModal(true)}
+                            >
+                                Agregar
+                            </PrimaryButton>
+                        )}
+                    </div>
+
+                    <div className="bg-white overflow-auto shadow-sm sm:rounded-lg">
                         <Table
                             data={list}
                             links={[]}
+                            onEdit={(evt) => onSetAdminModal(evt, "edit")}
+                            onRow={(evt) => onSetAdminModal(evt, "edit")}
+                            onTrash={(evt) => onTrash(evt)}
                             titles={titles}
-                            onRow={() => {}}
-                            actions={[]}
+                            actions={[
+                                factura.estado != "C" ? "edit" : "",
+                                factura.estado != "C" ? "trash" : "",
+                            ]}
                         />
                     </div>
 
-                    <div className="flex items-center justify-end mt-4 mb-4 no-print">
-                        {factura.estado == "C" ? (
-                            <>
-                                {/* 
-                                <SecondaryButton className="ms-4" onClick={onSOAP}>
-                                    SOAP
-                                </SecondaryButton>
+                    <div className="bg-white mt-10 overflow-auto shadow-sm sm:rounded-lg p-6">
+                        <h2 className="font-semibold mb-8 text-xl text-gray-800 leading-tight">
+                            Registrar Compra
+                        </h2>
 
-                                <SecondaryButton className="ms-4" onClick={onPrint}>
-                                    Estado
-                                </SecondaryButton>
-    */}
+                        <div className="flex items-center mb-4 no-print">
+                            <Radio
+                                className="me-3 w-4 h-4 transform border-2 scale-150"
+                                name="desea_factura"
+                                id="factura_electronica"
+                                value="S"
+                                onChange={(e) => {
+                                    setDesea(e.target.value);
+                                }}
+                            />
 
-                                <PrimaryButton
-                                    className="ms-4 me-3"
-                                    onClick={goToPDF}
-                                >
-                                    PDF
-                                </PrimaryButton>
+                            <label
+                                htmlFor="factura_electronica"
+                                className="block font-medium text-xl text-gray-700 !font-bold cursor-pointer"
+                            >
+                                {" "}
+                                Deseo Gravar Compra Electrónicamente{" "}
+                            </label>
+                        </div>
 
-                                <SecondaryButton
-                                    className="ms-4"
-                                    onClick={() =>
-                                        goToQR("/remisiones/qr/" + factura.id)
-                                    }
-                                >
-                                    QR
-                                </SecondaryButton>
-                            </>
-                        ) : (
-                            <>
-                                <PrimaryButton
-                                    className="ms-4 me-3"
-                                    onClick={() =>
-                                        onEdit(factura.id)
-                                    }
-                                >
-                                    Editar
-                                </PrimaryButton>
+                        <div className="flex items-center mt-4 no-print">
+                            <Radio
+                                className="me-3 w-4 h-4 transform border-2 scale-150"
+                                name="desea_factura"
+                                id="factura_interna"
+                                value="N"
+                                onChange={(e) => {
+                                    setDesea(e.target.value);
+                                }}
+                            />
 
-                                <SecondaryButton
-                                    className="ms-4"
-                                    onClick={() =>
-                                        onSetAdminModal(factura.id, "trash")
-                                    }
-                                >
-                                    Eliminar
-                                </SecondaryButton>
-                            </>
+                            <label
+                                htmlFor="factura_interna"
+                                className="block font-medium text-xl text-gray-700 !font-bold cursor-pointer"
+                            >
+                                Deseo Registrar Internamente
+                            </label>
+                        </div>
+                    </div>
+
+                    <div className="flex items-center justify-end mt-4 mb-4">
+                        {factura.estado != "C" && desea && (
+                            <PrimaryButton
+                                className="ms-4"
+                                onClick={() => onRegistrar(true)}
+                                disabled={!list.length}
+                            >
+                                Registrar y Finalizar
+                            </PrimaryButton>
                         )}
                     </div>
                 </div>
             </div>
+
+            <Modal show={show} closeable={true} title="Agregar Producto">
+                <Form
+                    auth={auth}
+                    factura={factura}
+                    referencias={referencias}
+                    setIsOpen={onToggleModal}
+                    onReload={onReload}
+                    id={id}
+                />
+            </Modal>
+
             <AdminModal
                 auth={auth}
                 title={action}

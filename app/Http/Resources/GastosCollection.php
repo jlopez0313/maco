@@ -19,7 +19,20 @@ class GastosCollection extends ResourceCollection
         }
         
         return $this->collection->map->only(
-            'id', 'cliente', 'concepto', 'valor', 'origen', 'origen_label', 'created_at'
+            'id',
+            'transaccionID',
+            'prefijo',
+            'folio',
+            'proveedor',
+            'forma_pago',
+            'medio_pago',
+            'valor',
+            'created_at',
+            'detalles',
+            'recaudos',
+            'cobros',
+            'estado',
+            'estado_label'
         );
     }
 }

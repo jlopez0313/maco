@@ -146,7 +146,19 @@ Route::middleware([
         Route::get('/pdf/{id}', [FacturasController::class, 'pdf'])->name('remisiones.pdf');
         Route::get('/cierre', [FacturasController::class, 'cierre'])->name('remisiones.cierre');
         Route::get('/qr/{id}', [FacturasController::class, 'qr'])->name('remisiones.qr');
+        Route::get('/configuracion', [FacturasController::class, 'configuracion'])->name('remisiones.configuracion');
     })->middleware(['auth', 'verified']);
+
+    Route::prefix('/gastos')->group(function () {
+        Route::get('/', [GastosController::class, 'index'])->name('gastos');
+        Route::get('/comprar', [GastosController::class, 'index'])->name('remisiones.comprar');
+        Route::get('/show/{id}', [GastosController::class, 'show'])->name('gastos.show');
+        Route::get('/edit/{id}', [GastosController::class, 'edit'])->name('gastos.edit');
+        Route::get('/pdf/{id}', [FacturasController::class, 'pdf'])->name('remisiones.pdf');
+        Route::get('/qr/{id}', [FacturasController::class, 'qr'])->name('remisiones.qr');
+        Route::get('/configuracion', [GastosController::class, 'configuracion'])->name('gastos.configuracion');
+    })->middleware(['auth', 'verified']);
+    
 
     Route::prefix('inventario')->group(function () {
         Route::get('/', [InventarioController::class, 'index'])->name('inventario');
@@ -155,9 +167,6 @@ Route::middleware([
         Route::get('modify/{inventario}/{id}', [InventarioController::class, 'modify'])->name('inventario.modify');
     })->middleware(['auth', 'verified'])->name('inventario');
 
-    Route::prefix('/gastos')->group(function () {
-        Route::get('/', [GastosController::class, 'index'])->name('gastos');
-    })->middleware(['auth', 'verified']);
 
     Route::get('/creditos', function () {
         return Inertia::render('Creditos');

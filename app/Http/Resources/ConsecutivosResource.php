@@ -21,6 +21,7 @@ class ConsecutivosResource extends JsonResource
         return [
             'id' => $this->id,
             'consecutivo' => $this->consecutivo,
+            'from' => $this->from,
         ];
     }
 }

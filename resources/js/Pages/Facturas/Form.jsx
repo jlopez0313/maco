@@ -97,9 +97,11 @@ export const Form = ({
                     setLazyComponent("Contactos/Empty");
                 }
             } else {
+                setLazyComponent("");
                 reset();
             }
         } else {
+            setLazyComponent("");
             reset();
         }
     };

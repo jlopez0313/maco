@@ -17,14 +17,21 @@ return new class extends Migration
             $table->unsignedBigInteger('updated_by');
             $table->foreign('updated_by')->references('id')->on('users');
 
-            $table->unsignedBigInteger('clientes_id');
-            $table->foreign('clientes_id')->references('id')->on('clientes');
+            $table->unsignedBigInteger('proveedores_id');
+            $table->foreign('proveedores_id')->references('id')->on('proveedores');
 
-            $table->unsignedBigInteger('conceptos_id');
-            $table->foreign('conceptos_id')->references('id')->on('conceptos');
+            $table->unsignedBigInteger('medio_pago_id');
+            $table->foreign('medio_pago_id')->references('id')->on('medios_pagos');
+
+            $table->unsignedBigInteger('forma_pago_id');
+            $table->foreign('forma_pago_id')->references('id')->on('formas_pagos');
             
             $table->bigInteger('valor');
-            $table->char('origen', 1);
+            
+            $table->char('estado', 1);
+            $table->string('prefijo')->nullable();
+            $table->integer('folio')->nullable();
+            $table->string('transaccionID')->nullable();
 
             $table->timestamps();
             $table->softDeletes();

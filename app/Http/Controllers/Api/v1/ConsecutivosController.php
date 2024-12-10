@@ -51,8 +51,8 @@ class ConsecutivosController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function first()
+    public function first($from)
     {
-        return new ConsecutivosResource( Consecutivos::first() );
+        return new ConsecutivosResource( Consecutivos::where('from', $from)->first() );
     }
 }

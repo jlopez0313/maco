@@ -5,6 +5,8 @@ import { router } from "@inertiajs/react";
 
 export default ({ auth, id }) => {
 
+    {{ auth }}
+
     const [adminModal, setAdminModal] = useState(false);
 
     const onSetAdminModal = () => {
@@ -17,7 +19,7 @@ export default ({ auth, id }) => {
     };
 
     const onEdit = (id) => {
-        router.get(`/clientes/edit/${id}`);
+        router.get(`/proveedores/edit/${id}`);
     };
 
     return (
@@ -26,7 +28,7 @@ export default ({ auth, id }) => {
                 {" "}
                 Ooops....{" "}
             </h2>
-            No encontramos un contacto <b>principal</b> para el Cliente.
+            No encontramos un contacto <b>principal</b> para el Proveedor.
             <br />
             Por favor registra uno &nbsp;
             <span

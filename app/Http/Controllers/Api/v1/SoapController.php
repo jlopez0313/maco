@@ -15,6 +15,22 @@ use App\Models\Proveedores;
 
 class SoapController extends Controller
 {
+    protected $wsdlUrl;
+    protected $soapClientOptions;
+
+    public function __construct() {
+        $this->wsdlUrl = 'https://ws.facturatech.co/v2/pro/index.php?wsdl';
+        
+        $this->soapClientOptions = [
+            'encoding' => 'UTF-8',
+            'soap_version' => 'SOAP_1_2',
+            'trace' => 1,
+            'exceptions' => 1,
+            'connection_timeout' => 100,
+            'soap.wsdl_cache_enabled' => '0',
+        ];
+    }
+    
     public function generarNumeracion()
     {
         try {
@@ -83,18 +99,8 @@ class SoapController extends Controller
     {
         try {
             // $wsdlUrl = 'https://webservice.facturatech.co/v2/BETA/WSV2DEMO.asmx?WSDL';
-            $wsdlUrl = 'https://ws.facturatech.co/v2/pro/index.php?wsdl';
 
-            $soapClientOptions = [
-                'encoding' => 'UTF-8',
-                'soap_version' => 'SOAP_1_2',
-                'trace' => 1,
-                'exceptions' => 1,
-                'connection_timeout' => 100,
-                'soap.wsdl_cache_enabled' => '0',
-            ];
-
-            $client = new \SoapClient($wsdlUrl, $soapClientOptions);
+            $client = new \SoapClient($this->wsdlUrl, $this->soapClientOptions);
 
             $credenciales = Credenciales::where('estado', 'A')->first();
 
@@ -117,18 +123,8 @@ class SoapController extends Controller
     {
         try {
             // $wsdlUrl = 'https://webservice.facturatech.co/v2/BETA/WSV2DEMO.asmx?WSDL';
-            $wsdlUrl = 'https://ws.facturatech.co/v2/pro/index.php?wsdl';
-
-            $soapClientOptions = [
-                'encoding' => 'UTF-8',
-                'soap_version' => 'SOAP_1_2',
-                'trace' => 1,
-                'exceptions' => 1,
-                'connection_timeout' => 100,
-                'soap.wsdl_cache_enabled' => '0',
-            ];
-
-            $client = new \SoapClient($wsdlUrl, $soapClientOptions);
+            
+            $client = new \SoapClient($this->wsdlUrl, $this->soapClientOptions);
     
     /*
                 $xml = '<?xml version="1.0" encoding="UTF-8"?> <!-- FACTURA DE EXPORTACION V1.9 -->
@@ -337,7 +333,7 @@ class SoapController extends Controller
             $factura = Facturas::with('detalles.producto.unidad_medida', 'detalles.producto.medida', 'detalles.producto.impuestos')->find($id);
             $createdAt = \Carbon\Carbon::parse($factura->created_at);
             
-            $consecutivo = Consecutivos::first();
+            $consecutivo = Consecutivos::where('from', 'f')->first();
 
             $emisor = Empresas::with('tipo', 'responsabilidad', 'tipo_doc', 'ciudad.departamento', 'contacto', 'resolucion')
             ->first();
@@ -606,7 +602,8 @@ class SoapController extends Controller
                     [
                         'id' => $consecutivo->id ?? null
                     ], [
-                        'consecutivo' => ($consecutivo->consecutivo ?? 1) + 1
+                        'consecutivo' => ($consecutivo->consecutivo ?? 1) + 1,
+                        'from' => 'c',
                     ]
                 );
 
@@ -640,20 +637,10 @@ class SoapController extends Controller
     {
         try {
             // $wsdlUrl = 'https://webservice.facturatech.co/v2/BETA/WSV2DEMO.asmx?WSDL';
-            $wsdlUrl = 'https://ws.facturatech.co/v2/pro/index.php?wsdl';
-
-            $soapClientOptions = [
-                'encoding' => 'UTF-8',
-                'soap_version' => 'SOAP_1_2',
-                'trace' => 1,
-                'exceptions' => 1,
-                'connection_timeout' => 100,
-                'soap.wsdl_cache_enabled' => '0',
-            ];
-
+            
             $factura = Facturas::find($id);
 
-            $client = new \SoapClient($wsdlUrl, $soapClientOptions);
+            $client = new \SoapClient($this->wsdlUrl, $this->soapClientOptions);
 
             $credenciales = Credenciales::where('estado', 'A')->first();
 
@@ -680,20 +667,10 @@ class SoapController extends Controller
             if ( $status->code == '201') {
 
                 // $wsdlUrl = 'https://webservice.facturatech.co/v2/BETA/WSV2DEMO.asmx?WSDL';
-                $wsdlUrl = 'https://ws.facturatech.co/v2/pro/index.php?wsdl';
-    
-                $soapClientOptions = [
-                    'encoding' => 'UTF-8',
-                    'soap_version' => 'SOAP_1_2',
-                    'trace' => 1,
-                    'exceptions' => 1,
-                    'connection_timeout' => 1000,
-                    'soap.wsdl_cache_enabled' => '0',
-                ];
-    
+                
                 $factura = Facturas::find($id);
                 
-                $client = new \SoapClient($wsdlUrl, $soapClientOptions);
+                $client = new \SoapClient($this->wsdlUrl, $this->soapClientOptions);
                 
                 $credenciales = Credenciales::where('estado', 'A')->first();
 

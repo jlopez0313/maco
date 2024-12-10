@@ -18,12 +18,20 @@ class Gastos extends Model
         'created_at' => 'datetime:Y-m-d H:i A',
     ];
     
-    public function concepto() {
-        return $this->hasOne(Conceptos::class, 'id', 'conceptos_id');
+    public function detalles() {
+        return $this->hasMany(Detalles::class, 'gastos_id');
     }
 
-    public function cliente() {
-        return $this->hasOne(Clientes::class, 'id', 'clientes_id');
+    public function proveedor() {
+        return $this->hasOne(Proveedores::class, 'id', 'proveedores_id');
+    }
+
+    public function forma_pago() {
+        return $this->hasOne(FormasPago::class, 'id', 'forma_pago_id');
+    }
+
+    public function medio_pago() {
+        return $this->hasOne(MediosPago::class, 'id', 'medio_pago_id');
     }
 
     public function getCreatedAtAttribute( $date ) {
@@ -34,13 +42,17 @@ class Gastos extends Model
         return $date->format('Y-m-d H:i:s');
     }
 
-    public function getOrigenLabelAttribute( ) {
-        $lista = config('constants.origenes');
-        $origenObj = \Arr::first($lista, function($val, $key) {
-            return $val['key'] == $this->origen;
-        });
+    public function getEstadoLabelAttribute() {
+
+        // if ( isset($this->attributes['estado']) && $this->attributes['estado'] ) {
+            $lista = config('constants.facturas.estados');
+            $origenObj = \Arr::first($lista, function($val, $key) {
+                return $val['key'] == $this->estado;
+            });
+            
+            return $origenObj['valor'] ?? 'N/A';
+        // }
         
-        return $origenObj['valor'] ?? 'N/A';
     }
 
 }

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\v1\SoapController;
+use App\Http\Controllers\Api\v1\DocumentoSoporteController;
 use App\Http\Controllers\Api\v1\TenantsController;
 use App\Http\Controllers\Api\v1\UserController;
 use Illuminate\Http\Request;
@@ -67,7 +68,13 @@ Route::middleware([
     });
     Route::apiResource('facturas', App\Http\Controllers\Api\v1\FacturasController::class);
 
+    Route::prefix('gastos')->group(function () {
+        Route::post('registrar/{id}', [App\Http\Controllers\Api\v1\GastosController::class, 'registrar']);
+        Route::post('cierre', [App\Http\Controllers\Api\v1\GastosController::class, 'cierre']);
+    });
     Route::apiResource('gastos', App\Http\Controllers\Api\v1\GastosController::class);
+
+
     Route::apiResource('inventarios', App\Http\Controllers\Api\v1\InventariosController::class);
     Route::apiResource('medidas', App\Http\Controllers\Api\v1\MedidasController::class);
     Route::apiResource('proveedores', App\Http\Controllers\Api\v1\ProveedoresController::class);
@@ -88,19 +95,25 @@ Route::middleware([
     Route::apiResource('recaudos', App\Http\Controllers\Api\v1\RecaudosController::class);
 
     Route::prefix('consecutivos')->group(function () {
-        Route::get('/first', [App\Http\Controllers\Api\v1\ConsecutivosController::class, 'first']);
+        Route::get('/first/{from}', [App\Http\Controllers\Api\v1\ConsecutivosController::class, 'first']);
     });
     Route::apiResource('consecutivos', App\Http\Controllers\Api\v1\ConsecutivosController::class);
 
-    
-    
-    
+           
     Route::prefix('contactos')->group(function () {
         Route::get('empresa/{empresa}', [App\Http\Controllers\Api\v1\ContactosController::class, 'byEmpresa']);
         Route::get('cliente/{cliente}', [App\Http\Controllers\Api\v1\ContactosController::class, 'byCliente']);
         Route::get('proveedor/{proveedor}', [App\Http\Controllers\Api\v1\ContactosController::class, 'byProveedor']);
     });
     Route::apiResource('contactos', App\Http\Controllers\Api\v1\ContactosController::class);
+
+    
+    Route::prefix('autorizaciones')->group(function () {
+        Route::get('empresa/{empresa}', [App\Http\Controllers\Api\v1\AutorizacionesController::class, 'byEmpresa']);
+        Route::get('consecutivo/{empresa}', [App\Http\Controllers\Api\v1\AutorizacionesController::class, 'consecutivo']);
+    });
+    Route::apiResource('autorizaciones', App\Http\Controllers\Api\v1\AutorizacionesController::class);
+
 
     Route::prefix('resoluciones')->group(function () {
         Route::get('empresa/{empresa}', [App\Http\Controllers\Api\v1\ResolucionesController::class, 'byEmpresa']);
@@ -143,6 +156,18 @@ Route::middleware([
         Route::get('upload/{id}', [SoapController::class, 'upload']);
         Route::get('status/{id}', [SoapController::class, 'status']);
         Route::get('download/{id}', [SoapController::class, 'download']);
+        // Route::get('upload', [SoapController::class, 'upload']);
+        // Route::get('upload', [SoapController::class, 'upload']);
+    });
+
+    
+    Route::prefix('documento_soporte')->group(function () {
+        Route::get('generarNumeracion', [DocumentoSoporteController::class, 'generarNumeracion']);
+        Route::get('consultaNumeracion', [DocumentoSoporteController::class, 'consultaNumeracion']);
+        Route::get('actualizarNumTipoDocumento', [DocumentoSoporteController::class, 'actualizarNumTipoDocumento']);
+        Route::get('upload/{id}', [DocumentoSoporteController::class, 'upload']);
+        Route::get('status/{id}', [DocumentoSoporteController::class, 'status']);
+        Route::get('download/{id}', [DocumentoSoporteController::class, 'download']);
         // Route::get('upload', [SoapController::class, 'upload']);
         // Route::get('upload', [SoapController::class, 'upload']);
     });

@@ -8,6 +8,12 @@ use App\Http\Resources\FormasPagoCollection;
 use App\Http\Resources\MediosPagoCollection;
 use App\Http\Resources\ClientesCollection;
 use App\Http\Resources\ProductosCollection;
+use App\Http\Resources\TiposClientesCollection;
+use App\Http\Resources\TiposDocumentosCollection;
+use App\Http\Resources\ResponsabilidadesFiscalesCollection;
+use App\Http\Resources\EmpresasResource;
+
+use App\Models\ResponsabilidadesFiscales;
 use App\Models\Productos;
 use App\Models\Clientes;
 use App\Models\MediosPago;
@@ -17,6 +23,10 @@ use App\Models\FormasPago;
 use App\Models\Impresiones;
 use App\Models\Resoluciones;
 use App\Models\Empresas;
+
+use App\Models\TiposDocumentos;
+use App\Models\TiposClientes;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Request as Peticion;
 use Inertia\Inertia;
@@ -230,5 +240,31 @@ class FacturasController extends Controller
         
         return $pdf->download('Cuadre_Caja.pdf');
 */
+    }
+
+
+    public function configuracion() {
+        return Inertia::render('Facturas/Configuracion/Index', [
+            'filters' => Peticion::all('search', 'trashed'),
+            'contact' => new EmpresasResource(
+                Empresas::with('tipo_doc', 'tipo', 'ciudad.departamento')->first()
+            ),
+            'tipoEmpresas' => new TiposClientesCollection(
+                TiposClientes::orderBy('tipo')->get()
+            ),
+            'tipoDocumentos' => new TiposDocumentosCollection(
+                TiposDocumentos::orderBy('tipo')->get()
+            ),
+            'departamentos' => new DepartamentosCollection(
+                Departamentos::orderBy('departamento')->get()
+            ),
+            'responsabilidades' => new ResponsabilidadesFiscalesCollection(
+                ResponsabilidadesFiscales::orderBy('descripcion')->get()
+            ),
+            'estados_resoluciones' => config('constants.facturas.resoluciones.estados'),
+            'S_N' => config('constants.S_N'),
+            'estados' => config('constants.estados'),
+            'tenant_id' => 'tenant_' . tenant()->id
+        ]);
     }
 }

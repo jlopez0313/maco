@@ -294,7 +294,7 @@ export default ({
                                 <div>
                                     <InputLabel
                                         htmlFor="tipo"
-                                        value="Tipo de Cliente"
+                                        value="Tipo de Proveedor"
                                     />
 
                                     <Select

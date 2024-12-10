@@ -4,8 +4,6 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head } from "@inertiajs/react";
 import Informacion from "./Informacion/Index";
 import Contacto from "./Contacto/Index";
-import Resoluciones from "./Resoluciones/Index";
-import Consecutivo from "./Consecutivo/Index";
 import Credenciales from "./Credenciales/Index";
 
 export default ({
@@ -54,21 +52,7 @@ export default ({
                             >
                                 Contáctos
                             </div>
-
-                            <div
-                                className={`cursor-pointer items-center font-bold ${ tab == 'resoluciones' ? 'underline' : ''}`}
-                                onClick={() => setTab("resoluciones")}
-                            >
-                                Resoluciones de Facturación
-                            </div>
-
-                            <div
-                                className={`cursor-pointer items-center font-bold ${ tab == 'consecutivo' ? 'underline' : ''}`}
-                                onClick={() => setTab("consecutivo")}
-                            >
-                                Consecutivo de Factura
-                            </div>
-
+                            
                             <div
                                 className={`cursor-pointer items-center font-bold ${ tab == 'credenciales' ? 'underline' : ''}`}
                                 onClick={() => setTab("credenciales")}
@@ -100,22 +84,6 @@ export default ({
                             contact={contact}
                             S_N={S_N}
                         />
-                    )}
-
-                    {tab == "resoluciones" && (
-                        <Resoluciones
-                            auth={auth}
-                            tipoDocumentos={tipoDocumentos}
-                            tipoEmpresas={tipoEmpresas}
-                            departamentos={departamentos}
-                            responsabilidades={responsabilidades}
-                            contact={contact}
-                            estados={estados_resoluciones}
-                        />
-                    )}
-
-                    {tab == "consecutivo" && (
-                        <Consecutivo />
                     )}
 
                     {tab == "credenciales" && (

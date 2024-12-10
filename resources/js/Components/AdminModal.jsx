@@ -52,7 +52,7 @@ export const AdminModal = ({ auth, title, show, setIsOpen, onConfirm }) => {
         <Modal show={show} closeable={true} title={`${action} registro`}>
             <div className="pb-12 pt-6">
                 <div className="max-w-6xl mx-auto sm:px-6 lg:px-8">
-                    <form onSubmit={submit}>
+                    <form>
                         <div className="grid grid-cols-1 gap-4">
                             <div>
                                 <InputLabel htmlFor="tipo" value="Admin Password" />
@@ -81,6 +81,7 @@ placeholder="Escriba aquí"
                             <PrimaryButton
                                 className="ms-4 mx-4"
                                 disabled={processing}
+                                onClick={submit}
                             >
                                 
                                 Continuar

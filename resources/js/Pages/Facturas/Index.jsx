@@ -21,13 +21,11 @@ export default ({
     auth,
     q,
     contacts,
-    departments,
     payments,
     medios_pago,
     clientes,
 }) => {
-    const { data: departamentos } = departments;
-
+    
     const {
         data,
         meta: { links },
@@ -46,8 +44,7 @@ export default ({
         {
             key: "id",
             title: "Estado",
-        },
-        ,
+        }
     ];
 
     const [cookies, setCookie] = useCookies(["maco"]);
@@ -277,9 +274,6 @@ export default ({
             <Modal show={show} closeable={true} title="Registrar Venta">
                 <Form
                     auth={auth}
-                    departamentos={departamentos}
-                    medidas={[]}
-                    origenes={[]}
                     payments={payments}
                     clientes={clientes}
                     medios_pago={medios_pago}
