@@ -17,9 +17,9 @@ class EmpresasController extends Controller
         $data = $request->except(['depto', 'tipo', 'ciudad']);
         $data['ciudad_id'] = $request->ciudad;
 
-        if ( $request->logo ) {
-            
+        if ( $request->id ) {
             $filename = $request->logo->store('files/logos');
+            $empresa = Empresas::find( $id );
             $empresa->update( [...$data, 'logo' => $filename] );
         } else {
             $empresa = Empresas::create( $data );

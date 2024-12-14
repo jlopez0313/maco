@@ -8,10 +8,9 @@ export default ({ auth }) => {
                 {" "}
                 Ooops....{" "}
             </h2>
-            No encontramos un contacto <b>principal</b> para la Empresa{" "}
-            <b>Activa</b>.
+            No encontramos información <b>principal</b> de la Empresa{" "}
             <br />
-            Por favor registra uno &nbsp;
+            Por favor registrala &nbsp;
             <NavLink
                 className="!font-bold !text-md !bg-blue-300 rounded"
                 href={"/empresas"}

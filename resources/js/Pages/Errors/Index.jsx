@@ -6,6 +6,7 @@ import Icon from "@/Components/Icon";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, router } from "@inertiajs/react";
 import styles from "./Errors.module.css";
+import EmpresaEmpty from "./Empresa/Empty";
 import ContactosEmpty from "./Empresa/Contactos/Empty";
 import ResolucionEmpty from "./Empresa/Resolucion/Empty";
 import AutorizacionEmpty from "./Empresa/Autorizacion/Empty";
@@ -14,6 +15,8 @@ export default ({ auth, error, ...props }) => {
     
     const loadErrorPage = () => {
         switch (error) {
+            case "Empresa/Empty":
+                return <EmpresaEmpty {...props} />;
             case "Resolucion/Empty":
                 return <ResolucionEmpty {...props} />;
             case "Autorizacion/Empty":

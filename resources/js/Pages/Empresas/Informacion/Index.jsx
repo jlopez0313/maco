@@ -28,6 +28,7 @@ export default ({
     const [preview, setPreview] = useState([]);
 
     const { data, setData, processing, errors, reset } = useForm({
+        id: "",
         updated_by: auth.user.id,
         tipo_doc_id: "",
         documento: "",
@@ -91,6 +92,7 @@ export default ({
         setData({
             ...data,
             updated_by: auth.user.id,
+            id: item.id || 0,
             tipo_doc_id: item.tipo_doc?.id || "",
             documento: item.documento || "",
             dv: item.dv || "",

@@ -244,6 +244,16 @@ class FacturasController extends Controller
 
 
     public function configuracion() {
+
+        $empresa = Empresas::first();
+
+        if ( !$empresa->id ) {
+            return Inertia::render('Errors/Index', [
+                'error' => 'Empresa/Empty'
+            ]);
+        }
+
+
         return Inertia::render('Facturas/Configuracion/Index', [
             'filters' => Peticion::all('search', 'trashed'),
             'contact' => new EmpresasResource(
