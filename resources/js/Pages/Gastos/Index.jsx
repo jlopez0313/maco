@@ -118,10 +118,16 @@ export default ({ auth, q, contacts, proveedores, payments, medios_pago }) => {
         if (action == "edit") {
             setAdminModal(false);
             onEdit(id);
+        } else if (action == "search") {
+            onShow(data)
         } else {
             onTrash(data);
         }
     };
+
+    const onShow = ( id ) => {
+        router.visit("/gastos/show/" + id);
+    }
 
     const onTrash = async (data) => {
         if (data) {
@@ -219,11 +225,12 @@ export default ({ auth, q, contacts, proveedores, payments, medios_pago }) => {
                             onSort={onSort}
                             data={list}
                             links={links}
+                            onSearch={(evt) => onShow(evt)}
                             onEdit={(evt) => onSetAdminModal(evt, "edit")}
-                            onRow={(evt) => onSetAdminModal(evt, "edit")}
+                            onRow={(evt) => onSetAdminModal(evt, "search")}
                             onTrash={(evt) => onSetAdminModal(evt, "trash")}
                             titles={titles}
-                            actions={["edit", "trash"]}
+                            actions={["search", "edit", "trash"]}
                         />
                     </div>
 
