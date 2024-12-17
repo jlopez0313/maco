@@ -46,7 +46,11 @@ export const AdminModal = ({ auth, title, show, setIsOpen, onConfirm }) => {
 
     useEffect( () => {
         onSetAction()
-    })
+    }, [])
+
+    useEffect(() => {
+        auth && setData({...data, user_id: auth.user?.id || 0})
+    }, [auth])
 
     return (
         <Modal show={show} closeable={true} title={`${action} registro`}>

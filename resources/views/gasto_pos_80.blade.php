@@ -59,6 +59,11 @@
         font-size: 11px;
     }
 
+    .detalle th {
+        text-align: left;
+        margin-left: 10px;    
+    }
+
     .total {
         margin-top: 20px;
         font-size: 11px;

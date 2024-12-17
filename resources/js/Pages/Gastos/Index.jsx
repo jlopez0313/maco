@@ -119,7 +119,7 @@ export default ({ auth, q, contacts, proveedores, payments, medios_pago }) => {
             setAdminModal(false);
             onEdit(id);
         } else if (action == "search") {
-            onShow(data)
+            onShow(id)
         } else {
             onTrash(data);
         }
@@ -227,7 +227,7 @@ export default ({ auth, q, contacts, proveedores, payments, medios_pago }) => {
                             links={links}
                             onSearch={(evt) => onShow(evt)}
                             onEdit={(evt) => onSetAdminModal(evt, "edit")}
-                            onRow={(evt) => onSetAdminModal(evt, "search")}
+                            onRow={(evt) => onShow(evt)}
                             onTrash={(evt) => onSetAdminModal(evt, "trash")}
                             titles={titles}
                             actions={["search", "edit", "trash"]}

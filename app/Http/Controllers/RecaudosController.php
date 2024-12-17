@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Request as Peticion;
 use App\Http\Resources\FacturasCollection;
 use App\Http\Resources\RecaudosCollection;
+use App\Models\Impresiones;
+use App\Models\Empresas;
 use App\Models\Facturas;
 use App\Models\Detalles;
 use App\Models\Recaudos;
@@ -109,14 +111,29 @@ class RecaudosController extends Controller
     public function pdf(string $id)
     {
 
-        $factura = Facturas::with('detalles.producto.impuestos.impuesto', 'detalles.producto.inventario', 'detalles.producto.color', 'detalles.producto.medida', 'recaudos', 'cliente')
+        $factura = Facturas::with(
+            'detalles.producto.impuestos.impuesto',
+            'detalles.producto.inventario',
+            'detalles.producto.color',
+            'detalles.producto.medida',
+            'recaudos',
+            'cliente'
+        )
         ->find( $id );
 
         $data = [
-            'factura' => $factura
+            'factura' => $factura,
+            'empresa' => Empresas::first(),
         ];
-        
-        $pdf = view('recaudo', $data);
+
+        $impresion = Impresiones::first();
+
+        if ( !$impresion || $impresion->forma == 'CAR') {
+            $pdf = view('recaudo', $data);
+        } else if ( $impresion->forma == 'P80' ) {
+            $pdf = view('recaudo_pos_80', $data);
+        }
+
         return $pdf;
 /*
         $pdf = \PDF::loadView('recaudo', $data);

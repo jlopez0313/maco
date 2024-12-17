@@ -1,6 +1,4 @@
 @php
-    $break = 0;
-
     forEach( $factura->detalles as $_item) {
         $impuestos = 0;
 
@@ -65,6 +63,11 @@
         margin-top: 20px;
         font-size: 11px;
     }
+    
+    .detalle th {
+        text-align: left;
+        margin-left: 10px;    
+    }
 
     .total {
         margin-top: 20px;
@@ -74,99 +77,105 @@
         text-align: right;
     }
 
+    .mensaje {
+        text-align: center;
+        font-size: 12px;
+    }
+
     .footer { font-size: 11px; position: fixed; right: 0px; bottom: 10px; text-align: center;border-top: 1px solid black;}
     .footer .page:after { content: counter(page, decimal); }
     @page { margin: 20px 30px 40px 50px; }
 
 </style>
 <body>
-    <table class="header"> 
+    <img src="{{ asset('img/logo.svg') }}" width="125px" width="125px" />
+    <img src="{{ asset( '../../tenant_' . tenant()->id . '/' . $empresa->logo ) }}" width="125px" width="125px" alt='' />
+
+    <table class="header">
         <tr>
-            <td style="width: 400px">
-                <img src="{{ asset( '../../tenant_' . tenant()->id . '/' . $empresa->logo ) }}" width="300px" width="300px" />
-            </td>
-            <table class="header">
-                <tr>
-                    <th style="width: 120px">Fecha: </th>
-                    <td style=""> {{ \Carbon\Carbon::parse($factura->created_at)->format('Y-m-d') }} </td>
-                </tr>
-                <tr>
-                    <th style="width: 120px">Hora: </th>
-                    <td style=""> {{ \Carbon\Carbon::parse($factura->created_at)->format('H:i a') }} </td>
-                </tr>
-                <tr>
-                    <th style="width: 120px">No. Factura: </th>
-                    <td style=""> {{ $factura->id }} </td>
-                </tr>
-            </table>
+            <th style="width: 120px">Fecha: </th>
+            <td style=""> {{ \Carbon\Carbon::parse($factura->created_at)->format('Y-m-d') }} </td>
+        </tr>
+        <tr>
+            <th style="width: 120px">Hora: </th>
+            <td style=""> {{ \Carbon\Carbon::parse($factura->created_at)->format('H:i a') }} </td>
+        </tr>
+        <tr>
+            <th style="width: 120px">No. Factura: </th>
+            <td style=""> {{ $factura->id }} </td>
         </tr>
     </table>
-
+     
     <table class="cliente">
         <tr>
-            <th style="">Tipo de Venta: </th>
+            <th style="width: 120px">Tipo de Venta: </th>
             <td style="width: 265px"> {{ $factura->forma_pago->tipo }} </td>
-            <th style="">Dirección: </th>
+        </tr>
+        <tr>
+            <th style="width: 120px">Dirección: </th>
             <td style="width: 265px"> {{ $factura->cliente->direccion }} </td>
         </tr>
         <tr>
-            <th>Documento: </th>
-            <td> {{ $factura->cliente->documento }} </td>
-            <th>Teléfono: </th>
-            <td> {{ $factura->cliente->celular }} </td>
+            <th style="width: 120px">Documento: </th>
+            <td style=""> {{ $factura->cliente->documento }} </td>
         </tr>
         <tr>
-            <th>Nombre: </th>
-            <td> {{ $factura->cliente->nombre }} </td>
-            <th>Correo: </th>
-            <td> {{ $factura->cliente->correo }} </td>
+            <th style="width: 120px">Teléfono: </th>
+            <td style=""> {{ $factura->cliente->celular }} </td>
+        </tr>
+        <tr>
+            <th style="width: 120px">Nombre: </th>
+            <td style=""> {{ $factura->cliente->nombre }} </td>
+        </tr>
+        <tr>
+            <th style="width: 120px">Correo: </th>
+            <td style=""> {{ $factura->cliente->correo }} </td>
         </tr>
         <tr>
             <th>Valor Total: </th>
             <td> {{ number_format($sum, 0, ',', '.') }} </td>
+        </tr>
+        <tr>
             <th>Saldo: </th>
             <td> {{ number_format($sum - $saldo, 0, ',', '.') }} </td>
         </tr>
     </table>
 
-    <table border="1" class="detalle"  cellpadding="3" cellspacing="0">
+    <table class="detalle"  cellpadding="3" cellspacing="0">
         <tr class="font-12">
-            <th style="width: 150px">Código</th>
-            <th style="width: 150px">Valor</th>
-            <th style="width: 210px">Descripción</th>
-            <th style="width: 150px">Fecha</th>
+            <th style="width: 60px">Código</th>
+            <th style="width: 95px">Fecha</th>
+            <th style="width: 95px">Valor</th>
+        </tr>
+        <tr class="font-12">
+            <th colspan="3">Descripción</th>
         </tr>
         
         @foreach ($factura->recaudos as $index => $item)
             <tr>
-                <td style="width: 150px">{{ $item->id ?? '' }}</td>
-                <td style="width: 150px">{{ number_format($item->valor, 0, ',', '.') }}</td>
-                <td style="width: 210px">{{ $item->descripcion ?? '' }}</td>
-                <td style="width: 150px">{{ $item->created_at ?? '' }}</td>
+                <td style="width: 60px">{{ $item->id ?? '' }}</td>
+                <td style="width: 95px">{{ $item->created_at ?? '' }}</td>
+                <td style="width: 95px">{{ number_format($item->valor, 0, ',', '.') }}</td>
             </tr>
-            
-            @if( $index == 25 || $break == 50 )
-                </table>
-                    <div class="page-break"></div>
-                <table border="1" class="detalle"  cellpadding="3" cellspacing="0">
-                @php
-                    $break = 0;
-                @endphp
-            @endif
-            
-            @php
-                $break ++;
-            @endphp
+            <tr class="font-12">
+                <td colspan="3">{{ $item->descripcion ?? '' }}</td>
+            </tr>
 
         @endforeach
+        
+    </table>
+
+    <table class="total" cellpadding="3" cellspacing="0">
         <tr>
-            <th style="width: 150px"> Total: </th>
-            <td colspan="3"> {{ number_format($saldo, 0, ',', '.') }} </td>
+            <th style="width: 115px"> </th>
+            <th style="width: 50px"> Total: </th>
+            <td style="width: 80px"> {{ number_format($saldo, 0, ',', '.') }} </td>
         </tr>
     </table>
 
-    <div class="footer">
-        <p class="page">Pág. </p>
-    </div> 
+    <div class="mensaje">
+        Gracias por confiar en nosotros, <br /> 
+        ¡Tu satisfacción es nuestra prioridad!
+    </div>
 
 </body>

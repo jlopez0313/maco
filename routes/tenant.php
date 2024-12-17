@@ -154,8 +154,8 @@ Route::middleware([
         Route::get('/comprar', [GastosController::class, 'index'])->name('remisiones.comprar');
         Route::get('/show/{id}', [GastosController::class, 'show'])->name('gastos.show');
         Route::get('/edit/{id}', [GastosController::class, 'edit'])->name('gastos.edit');
-        Route::get('/pdf/{id}', [FacturasController::class, 'pdf'])->name('remisiones.pdf');
-        Route::get('/qr/{id}', [FacturasController::class, 'qr'])->name('remisiones.qr');
+        Route::get('/pdf/{id}', [GastosController::class, 'pdf'])->name('remisiones.pdf');
+        Route::get('/qr/{id}', [GastosController::class, 'qr'])->name('remisiones.qr');
         Route::get('/configuracion', [GastosController::class, 'configuracion'])->name('gastos.configuracion');
     })->middleware(['auth', 'verified']);
     

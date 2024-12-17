@@ -225,10 +225,11 @@ export default ({ auth, factura }) => {
                     </div>
 
                     <div className="flex items-center justify-end mt-4 mb-4 no-print">
+                    {/*
                         <SecondaryButton className="ms-4" onClick={onPrint}>
                             Imprimir
                         </SecondaryButton>
-
+                    */}
                         <PrimaryButton className="ms-4 me-3" onClick={goToPDF}>
                             PDF
                         </PrimaryButton>
