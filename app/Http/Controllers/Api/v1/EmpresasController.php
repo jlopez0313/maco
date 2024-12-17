@@ -14,13 +14,18 @@ class EmpresasController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->except(['depto', 'tipo', 'ciudad']);
+        $data = $request->except(['logo', 'depto', 'tipo', 'ciudad']);
         $data['ciudad_id'] = $request->ciudad;
 
-        if ( $request->id ) {
-            $filename = $request->logo->store('files/logos');
+        if ( $request->id) {
             $empresa = Empresas::find( $id );
-            $empresa->update( [...$data, 'logo' => $filename] );
+
+            if ( $request->logo ) {
+                $filename = $request->logo->store('files/logos');
+                $empresa->update( [...$data, 'logo' => $filename] );
+            } else {
+                $empresa->update( [...$data] );
+            }
         } else {
             $empresa = Empresas::create( $data );
         }
@@ -43,11 +48,11 @@ class EmpresasController extends Controller
      */
     public function update(Request $request, Empresas $empresa)
     {
-        $data = $request->except(['depto', 'tipo', 'ciudad']);
+        $data = $request->except(['logo', 'depto', 'tipo', 'ciudad']);
         $data['ciudad_id'] = $request->ciudad;
 
         if ( $request->logo ) {
-            
+
             if( $empresa->logo ) {
                 \Storage::delete( $empresa->logo );
             }
