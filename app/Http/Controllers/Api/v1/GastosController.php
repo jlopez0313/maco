@@ -9,6 +9,7 @@ use App\Http\Resources\GastosResource;
 use App\Models\Productos;
 use App\Models\Proveedores;
 use App\Models\Gastos;
+
 use Inertia\Inertia;
 
 

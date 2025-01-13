@@ -8,6 +8,7 @@ use App\Models\Clientes;
 use App\Models\Consecutivos;
 use App\Models\Credenciales;
 use App\Models\Facturas;
+use App\Models\Gastos;
 use App\Models\Productos;
 use App\Models\Proveedores;
 // use SoapClient;
@@ -19,7 +20,7 @@ class DocumentoSoporteController extends Controller
     protected $soapClientOptions;
 
     public function __construct() {
-        $this->wsdlUrl = 'https://ws.facturatech.co/v2/pro/index.php?wsdl';
+        $this->wsdlUrl = 'https://ws-dse.facturatech.co/v1/demo/?wsdl';
 
         $this->soapClientOptions = [
             'encoding' => 'UTF-8',
@@ -458,7 +459,7 @@ class DocumentoSoporteController extends Controller
 
             $credenciales = Credenciales::where('estado', 'A')->first();
 
-            $result = $client->__soapCall('FtechAction.uploadInvoiceFile', [
+            $result = $client->__soapCall('uploadDocument', [
                 'username' => $credenciales->username,
                 'password' => $credenciales->password,
                 'xmlBase64' => base64_encode($xml),
@@ -510,7 +511,7 @@ class DocumentoSoporteController extends Controller
 
             $credenciales = Credenciales::where('estado', 'A')->first();
 
-            $result = $client->__soapCall('FtechAction.documentStatusFile', [
+            $result = $client->__soapCall('documentStatus', [
                 'username' => $credenciales->username, // 'MACO02062024',
                 'password' => $credenciales->password, // '2a4d4a72f5aacf82e517cad6943fd3891157a52d8ed5a6fddedbbd31632035e8',
                 'transaccionID' =>  $gasto->transaccionID,
@@ -540,11 +541,11 @@ class DocumentoSoporteController extends Controller
                 
                 $credenciales = Credenciales::where('estado', 'A')->first();
 
-                $result = $client->__soapCall('FtechAction.downloadPDFFile', [
+                $result = $client->__soapCall('downloadPDF', [
                     'username' => $credenciales->username,
                     'password' => $credenciales->password,
                     'prefijo' => $gasto->prefijo,
-                    'folio' => $gasto->folio,
+                    'number' => $gasto->folio,
                 ]);
     
                 // Decode pdf content
@@ -566,7 +567,7 @@ class DocumentoSoporteController extends Controller
         }
     }
 
-
+    // NO APLICA
     function qr( $id ) {
         try {
 

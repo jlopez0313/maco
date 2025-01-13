@@ -19,7 +19,8 @@ class SoapController extends Controller
     protected $soapClientOptions;
 
     public function __construct() {
-        $this->wsdlUrl = 'https://ws.facturatech.co/v2/pro/index.php?wsdl';
+        // $this->wsdlUrl = 'https://ws.facturatech.co/v2/pro/index.php?wsdl'; // PROD
+        $this->wsdlUrl = 'https://ws.facturatech.co/v2/demo/index.php?wsdl'; // TEST
         
         $this->soapClientOptions = [
             'encoding' => 'UTF-8',

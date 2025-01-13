@@ -201,15 +201,18 @@ class GastosController extends Controller
     {
         $factura = Gastos::find($id);
 
-        if ( !$factura->transaccionID ) { 
-            echo \QrCode::size(700)->generate(url('/gastos/pdf/'.$id));
-        } else {
-            $soap = new DocumentoSoporteController();
-            $resource = $soap->qr( $id );
+        echo \QrCode::size(700)->generate(url('/gastos/pdf/'.$id));
 
-            echo \QrCode::size(700)->generate($resource->resourceData);
+        /*
+            if ( !$factura->transaccionID ) { 
+            } else {
+                $soap = new DocumentoSoporteController();
+                $resource = $soap->qr( $id );
 
-        }
+                echo \QrCode::size(700)->generate($resource->resourceData);
+
+            }
+        */
     }
 
     
