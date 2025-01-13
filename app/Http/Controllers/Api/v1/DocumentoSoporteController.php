@@ -20,7 +20,8 @@ class DocumentoSoporteController extends Controller
     protected $soapClientOptions;
 
     public function __construct() {
-        $this->wsdlUrl = 'https://ws-dse.facturatech.co/v1/demo/?wsdl';
+        // $this->wsdlUrl = 'https://ws-dse.facturatech.co/v1/demo/?wsdl'; // PROD
+        // $this->wsdlUrl = 'https://ws-dse.facturatech.co/v1/demo/?wsdl'; // TEST
 
         $this->soapClientOptions = [
             'encoding' => 'UTF-8',
