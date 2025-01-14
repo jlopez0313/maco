@@ -23,6 +23,8 @@ class ImpuestosSeeder extends Seeder
             ['id' =>8, 'codigo' =>'04', 'concepto' => 'INC Tarifa general', 'tarifa' => '8.00', 'tipo_tarifa' => 'P', 'tipo_impuesto' => 'I'],
             ['id' =>9, 'codigo' =>'04', 'concepto' => 'INC Tarifa especial', 'tarifa' => '16.00', 'tipo_tarifa' => 'P', 'tipo_impuesto' => 'I'],
             ['id' =>10, 'codigo' =>'ZZ', 'concepto' => 'No Aplica', 'tarifa' => '0.00', 'tipo_tarifa' => 'P', 'tipo_impuesto' => 'I'],
+            ['id' =>11, 'codigo' =>'01', 'concepto' => 'IVA Exento', 'tarifa' => '0.00', 'tipo_tarifa' => 'P', 'tipo_impuesto' => 'R'],
+            ['id' =>12, 'codigo' =>'01', 'concepto' => 'IVA Tarifa general', 'tarifa' => '19.00', 'tipo_tarifa' => 'P', 'tipo_impuesto' => 'R'],
         ]);
     }
 }
