@@ -96,11 +96,7 @@ export const Form = ({ id, auth, factura, referencias, setIsOpen, onReload }) =>
     }
 
     const onCheckCantidad = (e) => {
-        if (e.target.value > producto.cantidad)  {
-            alert('cantidad no disponible')
-        } else {
-            setData("cantidad", e.target.value);
-        }
+        setData("cantidad", e.target.value);
     }
 
     const handleOnSearch = (string, results) => {

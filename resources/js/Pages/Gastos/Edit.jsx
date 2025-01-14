@@ -90,7 +90,7 @@ export default ({ auth, factura, referencias }) => {
 
             router.visit("/gastos/show/" + factura.id);
         } catch (e) {
-            notify("error", e.response?.data?.errors.join(","));
+            notify("error", e.response?.data?.errors.join("\n"));
         }
     };
 

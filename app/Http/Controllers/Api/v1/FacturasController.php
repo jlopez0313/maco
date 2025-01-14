@@ -86,6 +86,8 @@ class FacturasController extends Controller
 
                 if ( isset( $result->errors ) ) {
                     return response([ 'data' => $result, 'errors' => $result->errors ], 500);
+                } else if ( $result->getMessage() ) {
+                    return response([ 'data' => $result, 'errors' => $result->getMessage() ], 500);
                 }
             }
 

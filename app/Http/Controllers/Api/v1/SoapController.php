@@ -622,10 +622,11 @@ class SoapController extends Controller
                     'factura' => $factura,
                     'factura No' => $emisor->resolucion->prefijo . ($consecutivo->consecutivo ?? 1)
                 ];
-                $result->xml = $xml;
-                $result->base64 = base64_encode($xml);
                 $result->errors = explode('"', $result->error);
             }
+
+            $result->xml = $xml;
+            $result->base64 = base64_encode($xml);
 
             return $result;
         } catch (\Exception $ex) {

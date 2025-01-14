@@ -21,7 +21,7 @@ class DocumentoSoporteController extends Controller
 
     public function __construct() {
         // $this->wsdlUrl = 'https://ws-dse.facturatech.co/v1/demo/?wsdl'; // PROD
-        // $this->wsdlUrl = 'https://ws-dse.facturatech.co/v1/demo/?wsdl'; // TEST
+        $this->wsdlUrl = 'https://ws-dse.facturatech.co/v1/demo/?wsdl'; // TEST
 
         $this->soapClientOptions = [
             'encoding' => 'UTF-8',
@@ -265,87 +265,22 @@ class DocumentoSoporteController extends Controller
 
             $consecutivo = Consecutivos::first();
 
-            $adquiriente = Empresas::with('tipo', 'responsabilidad', 'tipo_doc', 'ciudad.departamento', 'contacto', 'resolucion')
+            $adquiriente = Empresas::with('tipo', 'responsabilidad', 'tipo_doc', 'ciudad.departamento', 'contacto', 'autorizacion')
             ->first();
 
-            $proveedor = Clientes::with('tipo', 'responsabilidad', 'tipo_doc', 'ciudad.departamento', 'contacto')
-            ->find($gasto->clientes_id);
+            $proveedor = Proveedores::with('tipo', 'responsabilidad', 'tipo_doc', 'ciudad.departamento', 'contacto')
+            ->find($gasto->proveedores_id);
 
             // return [$emisor, $adquiriente, $consecutivo, $emisor->resolucion->prefijo . ($consecutivo->consecutivo ?? 1)];
 
             $fechaHoy = \Carbon\Carbon::now();
 
-            $xml = '<?xml version="1.0" encoding="UTF-8"?> <!-- FACTURA DE EXPORTACION V1.9 -->
-            <DOCUMENTO_SOPORTE>
-            <ENC>                                           <!-- ENCABEZADO -->
-                <ENC_1>DS</ENC_1>                                                           <!-- Tipo de Documento - Excel Simplificado Anexo - Estandar Simplificado - OK Constante -->
-                <ENC_2>'.$adquiriente->documento.'</ENC_2>                                       <!-- NIT Emisor - OK - para Pruebas 901143311 --> 
-                <ENC_4>UBL 2.1</ENC_4>                                                      <!-- Constante - OK -->
-                <ENC_5>DIAN 2.1</ENC_5>                                                     <!-- Constante - OK -->
-                
-                <ENC_6>'. $adquiriente->autorizacion->prefijo . ($consecutivo->consecutivo ?? 1) .'</ENC_6>                                              <!-- Prefijo y numero de factura - OK -->
-                
-                <ENC_7>'.$fechaHoy->format('Y-m-d').'</ENC_7>                               <!-- Fecha Hoy -->
-                <ENC_8>'.$fechaHoy->format('H:i:s').'</ENC_8>                               <!-- Hora Hoy -->
-                <ENC_9>95</ENC_9>                                                           <!-- Tipo de Factura - Excel Simplificado Anexo - Estandar Simplificado - OK Constante -->
-                <ENC_10>COP</ENC_10>                                                        <!-- Tabla 13 - Monedas - Excel Simplificado Anexo - Tablas 2.1 - OK Constante -->
-                <ENC_15>'. count($gasto->detalles) .'</ENC_15>                            <!-- Número de lineas en el detalle - OK Calculado -->
-                <ENC_20>2</ENC_20>                                                          <!-- Tabla 28 - Ambiente Destino Del Documento - Excel Simplificado Anexo - Tablas 2.1 - OK Constante -->
-                <ENC_21>11</ENC_21>                                                         <!-- Tabla 38 - Tipo de operación - Tablas 2.1 - OK Constante -->
-            </ENC>
-            <PRO>
-                <PRO_1>1</PRO_1>
-                <PRO_2>564897012</PRO_2>
-                <PRO_3>50</PRO_3>
-                <PRO_6>Addison Olson</PRO_6>
-                <PRO_10>325 Elsie Drive</PRO_10>
-                <PRO_13>Notificaci&#xF3;n</PRO_13>
-                <PRO_15>US</PRO_15>
-                <PRO_19>West Virginia</PRO_19>
-                <PRO_21>United States</PRO_21>
-                <PRO_22>4</PRO_22>
-                <TAC>
-                    <TAC_1>R-99-PN</TAC_1>
-                </TAC>
-                <GTE>
-                    <GTE_1>01</GTE_1>
-                    <GTE_2>IVA</GTE_2>
-                </GTE>
-            </PRO>
-            <ADQ>                                           <!-- ADQUIRIENTE -->
-                <ADQ_1>'. $adquiriente->tipo->codigo .'</ADQ_1>                             <!-- Tabla 20 Tipo de identificación - Tipos de Persona - codigo de cliente - OK -->
-                <ADQ_2>'. $adquiriente->documento .'</ADQ_2>                                <!-- Numero de Documento de cliente - OK -->
-                <ADQ_3>'. $adquiriente->tipo_doc->codigo .'</ADQ_3>                         <!-- Tabla 3 - Tipos de documentos de identidad - OK -->
-                <ADQ_6>'. $adquiriente->nombre .'</ADQ_6>                                   <!-- Nombre del Cliente - RUT - OK -->
-                <ADQ_22>'. $adquiriente->dv .'</ADQ_22>                                     <!-- DV Cliente - RUT - OK -->
-                <TCR>                                   <!-- INFORMACION TRIBUTARIA ADQUIRIENTE -->
-                    <TCR_1>'. $adquiriente->responsabilidad->codigo .'</TCR_1>              <!-- Tabla 36 Responsabilidades Fiscales - Excel Simplificado Anexo - Tablas 2.1 - OK -->
-                </TCR>
-                <GTA>                                       <!-- GRUPO DETALLES TRIBUTARIOS ADQUIRIENTE -->
-                    <GTA_1>1</GTA_1>                                                        <!-- Tabla 11 - código - Impuestos registrados en la Factura Electrónica - OK -->
-                    <GTA_2>IVA</GTA_2>                                                      <!-- Tabla 11 - nombre - Impuestos registrados en la Factura Electrónica - OK -->
-                </GTA>
-            </ADQ>
-            
-            <!-- TIPO DE CAMBIO - OPCIONAL -->
-            <DRF>                                           <!-- RESOLUCIÓN DIAN -->
-                <DRF_1>'. $adquiriente->autorizacion->resolucion .'</DRF_1>                        <!-- Número de Resolución DIAN - OK -->
-                <DRF_2>'. $adquiriente->autorizacion->fecha_inicial .'</DRF_2>                     <!-- Fecha inicial Resolución - OK -->
-                <DRF_3>'. $adquiriente->autorizacion->fecha_final .'</DRF_3>                       <!-- Fecha final Resolución - OK -->
-                <DRF_4>'. $adquiriente->autorizacion->prefijo .'</DRF_4>                           <!-- Prefijo Resolución - OK -->
-                <DRF_5>'. $adquiriente->autorizacion->consecutivo_inicial .'</DRF_5>               <!-- Consecutivo Inicial - OK -->
-                <DRF_6>'. $adquiriente->autorizacion->consecutivo_final .'</DRF_6>                 <!-- Consecutivo Final - OK -->
-            </DRF>
-            <MEP>                                           <!-- MEDIOS DE PAGO -->
-                <MEP_1>'. $gasto->medio_pago->codigo .'</MEP_1>                           <!-- Tabla 5 - Códigos Medios de pago - Código / Code - Tablas 2.1 - OK -->
-                <MEP_2>'. $gasto->forma_pago->codigo .'</MEP_2>                           <!-- Tabla 26 - Formas de Pago - Código - Tablas 2.1 - OK -->
-                <MEP_3>' .$createdAt->format('Y-m-d'). '</MEP_3>                            <!-- Fecha de Pago - OK CREATED AT -->
-            </MEP>';
-            
+
             $sumITE_5 = 0;
             $sumTOT_5  = 0;
             $totalTIMs = 0;
             $impuestos = [];
+            $xmlITE = '';
             
             foreach($gasto->detalles as $key => $detalle) {
                 
@@ -396,7 +331,7 @@ class DocumentoSoporteController extends Controller
                     }
                 }
                 
-                $xml .= '
+                $xmlITE .= '
                     <ITE>                                   <!-- ITEMS DEL DOCUMENTO - ITERATIVO - OK Calculado -->
                         <ITE_1>' .($key + 1). '</ITE_1>                                     <!-- Número de Línea -->
                         <ITE_3>' .($detalle->cantidad). '</ITE_3>                           <!-- Cantidad total -->
@@ -413,7 +348,7 @@ class DocumentoSoporteController extends Controller
                             <IAE_2>999</IAE_2>                      <!-- Tabla 31 - Productos - Código - Tablas 2.1 -->
                         </IAE>';
                     
-                    $xml .='
+                    $xmlITE .='
                         <TII>                              <!-- TOTAL IMPUESTOS - OK Calculado -->
                             <TII_1>'. $sumTIIs .'</TII_1>                                   <!-- Cantidad total -->
                             <TII_2>COP</TII_2>                                              <!-- Tabla 13 - Monedas - Excel Simplificado Anexo - Tablas 2.1 - OK Constante -->
@@ -425,7 +360,6 @@ class DocumentoSoporteController extends Controller
 
                     $sumTOT_5 += ($detalle->precio_venta * $detalle->cantidad) ;// + $totalTIMs;
             }
-
 
             $TIMs = '';
             foreach( $impuestos as $key => $impuesto ) {
@@ -439,24 +373,94 @@ class DocumentoSoporteController extends Controller
                     </IMP>';
             }
 
-            $xml .= '
-                <TOT>                                       <!-- TOTALES -->
-                    <TOT_1>'. $sumITE_5 .'</TOT_1>                                          <!-- Total Bruto -->
-                    <TOT_2>COP</TOT_2>                                                      <!-- Tabla 13 - Monedas - Excel Simplificado Anexo - Tablas 2.1 - OK Constante -->
-                    <TOT_3>'. $sumITE_5 .'</TOT_3>                                          <!-- Total Base -->
-                    <TOT_4>COP</TOT_4>                                                      <!-- Tabla 13 - Monedas - Excel Simplificado Anexo - Tablas 2.1 - OK Constante -->
-                    <TOT_5>'. ($sumTOT_5 + $totalTIMs) .'</TOT_5>                                          <!--Gran Total -->
-                    <TOT_6>COP</TOT_6>                                                      <!-- Tabla 13 - Monedas - Excel Simplificado Anexo - Tablas 2.1 - OK Constante -->
-                    <TOT_7>'. ($sumTOT_5 + $totalTIMs) .'</TOT_7>                                          <!-- Total Brutos + impuestos -->
-                    <TOT_8>COP</TOT_8>                                                      <!-- Tabla 13 - Monedas - Excel Simplificado Anexo - Tablas 2.1 - OK Constante -->
-                </TOT>
-                <TIM>                                       <!-- TOTAL IMPUESTOS -->
-                    <TIM_1>false</TIM_1>                                                    <!-- Es Impuesto Retenido? - OK -->
-                    <TIM_2>'. $totalTIMs .'</TIM_2>                                         <!-- Total impuestos -->
-                    <TIM_3>COP</TIM_3>                                                      <!-- Tabla 13 - Monedas - Excel Simplificado Anexo - Tablas 2.1 - OK Constante -->
-                    '. $TIMs .'
-                </TIM>
-            </DOCUMENTO_SOPORTE>';
+            $xml = '<?xml version="1.0" encoding="UTF-8"?> <!-- FACTURA DE EXPORTACION V1.9 -->
+            <DOCUMENTO_SOPORTE>
+            <ENC>                                           <!-- ENCABEZADO -->
+                <ENC_1>DS</ENC_1>                                                           <!-- Tipo de Documento - Excel Simplificado Anexo - Estandar Simplificado - OK Constante -->
+                <ENC_2>'.$adquiriente->documento.'</ENC_2>                                       <!-- NIT Emisor - OK - para Pruebas 901143311 --> 
+                <ENC_4>UBL 2.1</ENC_4>                                                      <!-- Constante - OK -->
+                <ENC_5>DIAN 2.1</ENC_5>                                                     <!-- Constante - OK -->
+                
+                <ENC_6>'. $adquiriente->autorizacion->prefijo . ($consecutivo->consecutivo ?? 1) .'</ENC_6>                                              <!-- Prefijo y numero de factura - OK -->
+                
+                <ENC_7>'.$fechaHoy->format('Y-m-d').'</ENC_7>                               <!-- Fecha Hoy -->
+                <ENC_8>'.$fechaHoy->format('H:i:s').'</ENC_8>                               <!-- Hora Hoy -->
+                <ENC_9>05</ENC_9>                                                           <!-- Tipo de Factura - Excel Simplificado Anexo - Estandar Simplificado - OK Constante -->
+                <ENC_10>COP</ENC_10>                                                        <!-- Tabla 13 - Monedas - Excel Simplificado Anexo - Tablas 2.1 - OK Constante -->
+                <ENC_15>'. count($gasto->detalles) .'</ENC_15>                            <!-- Número de lineas en el detalle - OK Calculado -->
+                <ENC_20>2</ENC_20>                                                          <!-- Tabla 28 - Ambiente Destino Del Documento - Excel Simplificado Anexo - Tablas 2.1 - OK Constante -->
+                <ENC_21>10</ENC_21>                                                         <!-- Tabla 38 - Tipo de operación - Tablas 2.1 - OK Constante -->
+            </ENC>
+            <PRO>                                           <!-- PROVEEDOR -->
+                <PRO_1>'. $proveedor->tipo->codigo .'</PRO_1>                               <!-- Tabla 20 Tipo de identificación - Tipos de Persona - codigo de cliente - OK -->
+                <PRO_2>'. $proveedor->documento .'</PRO_2>                                  <!-- Numero de Documento de cliente - OK -->
+                <PRO_3>'. $proveedor->tipo_doc->codigo .'</PRO_3>                           <!-- Tabla 3 - Tipos de documentos de identidad - OK -->
+                <PRO_6>'. $proveedor->nombre .'</PRO_6>                                     <!-- Nombre del Cliente - RUT - OK -->
+                <PRO_10>'. $proveedor->direccion .'</PRO_10>                                <!-- dirección - OK -->                
+                <PRO_11>'. $proveedor->ciudad->departamento->codigo .'</PRO_11>             <!-- Tabla 34 - Departamentos - codigo - Excel Simplificado Anexo - Tablas 2.1 - OK -->
+                <PRO_13>'. $proveedor->ciudad->ciudad .'</PRO_13>                           <!-- Tabla 35 - Municipios - Nombre Municipio - Excel Simplificado Anexo - Tablas 2.1 - OK -->                
+                <PRO_14>190003</PRO_14>                                                     <!-- Tabla 39 - Código Postal - Excel Simplificado Anexo - Tablas 2.1 - OK Constante -->
+                <PRO_15>CO</PRO_15>                                                         <!-- Tabla 1 - Códigos de países - Alfa2 - Excel Simplificado Anexo - Tablas 2.1 - OK Constante -->
+                <PRO_19>'. $proveedor->ciudad->departamento->departamento .'</PRO_19>       <!-- Tabla 34 - Departamentos - nombre - Excel Simplificado Anexo - Tablas 2.1 - OK -->            
+                <PRO_21>Colombia</PRO_21>                                                   <!-- Tabla 1 - Códigos de países - Nombre Común - Excel Simplificado Anexo - Tablas 2.1 - OK Cosntante -->            
+                <PRO_22>'. $proveedor->dv .'</PRO_22>                                       <!-- DV Cliente - RUT - OK -->
+                <PRO_23>'. $proveedor->ciudad->codigo .'</PRO_23>                           <!-- Tabla 35 - Municipios - Código Municipio - Excel Simplificado Anexo - Tablas 2.1 - OK --> 
+                <TAC>                                       <!-- INFORMACION TRIBUTARIA ADQUIRIENTE -->
+                    <TAC_1>'. $proveedor->responsabilidad->codigo .'</TAC_1>                <!-- Tabla 36 Responsabilidades Fiscales - Excel Simplificado Anexo - Tablas 2.1 - OK -->
+                </TAC>
+                <GTE>                                       <!-- GRUPO DETALLES TRIBUTARIOS ADQUIRIENTE -->
+                    <GTE_1>01</GTE_1>                                                       <!-- Tabla 11 - código - Impuestos registrados en la Factura Electrónica - OK -->
+                    <GTE_2>IVA</GTE_2>                                                      <!-- Tabla 11 - nombre - Impuestos registrados en la Factura Electrónica - OK -->
+                </GTE>
+            </PRO>
+            <ADQ>                                           <!-- ADQUIRIENTE -->
+                <ADQ_1>'. $adquiriente->tipo->codigo .'</ADQ_1>                             <!-- Tabla 20 Tipo de identificación - Tipos de Persona - codigo de cliente - OK -->
+                <ADQ_2>'. $adquiriente->documento .'</ADQ_2>                                <!-- Numero de Documento de cliente - OK -->
+                <ADQ_3>'. $adquiriente->tipo_doc->codigo .'</ADQ_3>                         <!-- Tabla 3 - Tipos de documentos de identidad - OK -->
+                <ADQ_6>'. $adquiriente->nombre .'</ADQ_6>                                   <!-- Nombre del Cliente - RUT - OK -->
+                <ADQ_22>'. $adquiriente->dv .'</ADQ_22>                                     <!-- DV Cliente - RUT - OK -->
+                <TCR>                                   <!-- INFORMACION TRIBUTARIA ADQUIRIENTE -->
+                    <TCR_1>'. $adquiriente->responsabilidad->codigo .'</TCR_1>              <!-- Tabla 36 Responsabilidades Fiscales - Excel Simplificado Anexo - Tablas 2.1 - OK -->
+                </TCR>
+                <GTA>                                       <!-- GRUPO DETALLES TRIBUTARIOS ADQUIRIENTE -->
+                    <GTA_1>01</GTA_1>                                                       <!-- Tabla 11 - código - Impuestos registrados en la Factura Electrónica - OK -->
+                    <GTA_2>IVA</GTA_2>                                                      <!-- Tabla 11 - nombre - Impuestos registrados en la Factura Electrónica - OK -->
+                </GTA>
+            </ADQ>
+            <TOT>                                       <!-- TOTALES -->
+                <TOT_1>'. $sumITE_5 .'</TOT_1>                                              <!-- Total Bruto -->
+                <TOT_2>COP</TOT_2>                                                          <!-- Tabla 13 - Monedas - Excel Simplificado Anexo - Tablas 2.1 - OK Constante -->
+                <TOT_3>'. $sumITE_5 .'</TOT_3>                                              <!-- Total Base -->
+                <TOT_4>COP</TOT_4>                                                          <!-- Tabla 13 - Monedas - Excel Simplificado Anexo - Tablas 2.1 - OK Constante -->
+                <TOT_5>'. ($sumTOT_5 + $totalTIMs) .'</TOT_5>                                          <!--Gran Total -->
+                <TOT_6>COP</TOT_6>                                                          <!-- Tabla 13 - Monedas - Excel Simplificado Anexo - Tablas 2.1 - OK Constante -->
+                <TOT_7>'. ($sumTOT_5 + $totalTIMs) .'</TOT_7>                                          <!-- Total Brutos + impuestos -->
+                <TOT_8>COP</TOT_8>                                                          <!-- Tabla 13 - Monedas - Excel Simplificado Anexo - Tablas 2.1 - OK Constante -->
+            </TOT>
+            <TIM>                                       <!-- TOTAL IMPUESTOS -->
+                <TIM_1>false</TIM_1>                                                        <!-- Es Impuesto Retenido? - OK -->
+                <TIM_2>'. $totalTIMs .'</TIM_2>                                             <!-- Total impuestos -->
+                <TIM_3>COP</TIM_3>                                                          <!-- Tabla 13 - Monedas - Excel Simplificado Anexo - Tablas 2.1 - OK Constante -->
+                '. $TIMs .'
+            </TIM>
+            <!-- TIPO DE CAMBIO - OPCIONAL -->
+            <DRF>                                           <!-- RESOLUCIÓN DIAN -->
+                <DRF_1>'. $adquiriente->autorizacion->autorizacion .'</DRF_1>                      <!-- Número de Resolución DIAN - OK -->
+                <DRF_2>'. $adquiriente->autorizacion->fecha_inicial .'</DRF_2>                     <!-- Fecha inicial Resolución - OK -->
+                <DRF_3>'. $adquiriente->autorizacion->fecha_final .'</DRF_3>                       <!-- Fecha final Resolución - OK -->
+                <DRF_4>'. $adquiriente->autorizacion->prefijo .'</DRF_4>                           <!-- Prefijo Resolución - OK -->
+                <DRF_5>'. $adquiriente->autorizacion->consecutivo_inicial .'</DRF_5>               <!-- Consecutivo Inicial - OK -->
+                <DRF_6>'. $adquiriente->autorizacion->consecutivo_final .'</DRF_6>                 <!-- Consecutivo Final - OK -->
+            </DRF>
+            <MEP>                                           <!-- MEDIOS DE PAGO -->
+                <MEP_1>'. $gasto->medio_pago->codigo .'</MEP_1>                           <!-- Tabla 5 - Códigos Medios de pago - Código / Code - Tablas 2.1 - OK -->
+                <MEP_2>'. $gasto->forma_pago->codigo .'</MEP_2>                           <!-- Tabla 26 - Formas de Pago - Código - Tablas 2.1 - OK -->
+                <MEP_3>' .$createdAt->format('Y-m-d'). '</MEP_3>                            <!-- Fecha de Pago - OK CREATED AT -->
+            </MEP>';
+            
+
+            $xml .= $xmlITE;
+            $xml .= '</DOCUMENTO_SOPORTE>';
 
             $credenciales = Credenciales::where('estado', 'A')->first();
 
@@ -465,6 +469,8 @@ class DocumentoSoporteController extends Controller
                 'password' => $credenciales->password,
                 'xmlBase64' => base64_encode($xml),
             ]);
+
+            // return $result;
 
             if ( $result->code == '201') {
                 Consecutivos::updateOrCreate(
@@ -477,7 +483,7 @@ class DocumentoSoporteController extends Controller
                 );
 
                 $gasto->folio = $consecutivo->consecutivo ?? 1;
-                $gasto->prefijo = $emisor->resolucion->prefijo;
+                $gasto->prefijo = $adquiriente->autorizacion->prefijo;
                 $gasto->transaccionID = $result->transaccionID;
                 $gasto->estado = 'C';
                 $gasto->save();
@@ -487,12 +493,13 @@ class DocumentoSoporteController extends Controller
                     'adquiriente' => $adquiriente,
                     'consecutivo' => $consecutivo,
                     'factura compra' => $gasto,
-                    'factura No' => $emisor->resolucion->prefijo . ($consecutivo->consecutivo ?? 1)
+                    'factura No' => $adquiriente->autorizacion->prefijo . ($consecutivo->consecutivo ?? 1)
                 ];
-                $result->xml = $xml;
-                $result->base64 = base64_encode($xml);
-                $result->errors = explode('"', $result->error);
+                $result->errors = explode('.', $result->message);
             }
+
+            $result->xml = $xml;
+            $result->base64 = base64_encode($xml);
 
             return $result;
         } catch (\Exception $ex) {
