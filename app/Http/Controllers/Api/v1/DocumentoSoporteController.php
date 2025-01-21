@@ -477,7 +477,7 @@ class DocumentoSoporteController extends Controller
 
             // return $result;
 
-            if ( $result->code == '201') {
+            if ( $result->code == '200') {
                 Consecutivos::updateOrCreate(
                     [
                         'id' => $consecutivo->id ?? null
