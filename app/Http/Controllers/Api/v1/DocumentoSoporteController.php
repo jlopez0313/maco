@@ -346,7 +346,12 @@ class DocumentoSoporteController extends Controller
                         <IAE>                              <!-- IDENTIFICACION DEL ARTICULO -->
                             <IAE_1>10</IAE_1>                       <!-- Tabla 31 - Productos - Código - Tablas 2.1 -->
                             <IAE_2>999</IAE_2>                      <!-- Tabla 31 - Productos - Código - Tablas 2.1 -->
-                        </IAE>';
+                        </IAE>
+                        <IBS>
+                            <IBS_1>' .\Carbon\Carbon::now()->format('y-m-d'). '</IBS_1>     <!-- Tabla 41 - Versión del Formato: Indicar versión del documento. -->
+                            <IBS_2>1</IBS_2>
+                            <IBS_3>Por operación</IBS_3>
+                        </IBS>';
                     
                     $xmlITE .='
                         <TII>                              <!-- TOTAL IMPUESTOS - OK Calculado -->
@@ -452,7 +457,7 @@ class DocumentoSoporteController extends Controller
                 <DRF_5>'. $adquiriente->autorizacion->consecutivo_inicial .'</DRF_5>               <!-- Consecutivo Inicial - OK -->
                 <DRF_6>'. $adquiriente->autorizacion->consecutivo_final .'</DRF_6>                 <!-- Consecutivo Final - OK -->
             </DRF>
-            <MEP>                                           <!-- MEDIOS DE PAGO -->
+            <MEP>                                          <!-- MEDIOS DE PAGO -->
                 <MEP_1>'. $gasto->medio_pago->codigo .'</MEP_1>                           <!-- Tabla 5 - Códigos Medios de pago - Código / Code - Tablas 2.1 - OK -->
                 <MEP_2>'. $gasto->forma_pago->codigo .'</MEP_2>                           <!-- Tabla 26 - Formas de Pago - Código - Tablas 2.1 - OK -->
                 <MEP_3>' .$createdAt->format('Y-m-d'). '</MEP_3>                            <!-- Fecha de Pago - OK CREATED AT -->
