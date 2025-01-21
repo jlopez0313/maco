@@ -42,12 +42,17 @@ class GastosController extends Controller
      */
     public function index(Request $request)
     {
-        $resolucion = Autorizaciones::where('estado', 'A')->first();
+        $autorizacion = Autorizaciones::where('estado', 'A')->first();
+        $permiso = Autorizaciones::where('estado', 'A')->first();
         $empresa = Empresas::with('contacto')->first();
 
-        if ( !$resolucion ) {
+        if ( !$autorizacion ) {
             return Inertia::render('Errors/Index', [
-                'error' => 'Resolucion/Empty'
+                'error' => 'Autorizacion/Empty'
+            ]);
+        } else if ( !$permiso ) {
+            return Inertia::render('Errors/Index', [
+                'error' => 'Permiso/Empty'
             ]);
         } else if ( !$empresa->contacto ) {
             return Inertia::render('Errors/Index', [
@@ -225,7 +230,7 @@ class GastosController extends Controller
             ]);
         }
 
-        return Inertia::render('Gastos/Configuracion/Index', [
+        return Inertia::render('Gastos/Configuracion/DIAN/Index', [
             'filters' => Peticion::all('search', 'trashed'),
             'contact' => new EmpresasResource(
                 Empresas::with('tipo_doc', 'tipo', 'ciudad.departamento')->first()
@@ -243,6 +248,39 @@ class GastosController extends Controller
                 ResponsabilidadesFiscales::orderBy('descripcion')->get()
             ),
             'estados_autorizaciones' => config('constants.facturas.autorizaciones.estados'),
+            'S_N' => config('constants.S_N'),
+            'estados' => config('constants.estados'),
+            'tenant_id' => 'tenant_' . tenant()->id
+        ]);
+    }
+
+    public function permisos() {
+        $empresa = Empresas::first();
+
+        if ( !$empresa->id ) {
+            return Inertia::render('Errors/Index', [
+                'error' => 'Empresa/Empty'
+            ]);
+        }
+
+        return Inertia::render('Gastos/Configuracion/Notas/Index', [
+            'filters' => Peticion::all('search', 'trashed'),
+            'contact' => new EmpresasResource(
+                Empresas::with('tipo_doc', 'tipo', 'ciudad.departamento')->first()
+            ),
+            'tipoEmpresas' => new TiposClientesCollection(
+                TiposClientes::orderBy('tipo')->get()
+            ),
+            'tipoDocumentos' => new TiposDocumentosCollection(
+                TiposDocumentos::orderBy('tipo')->get()
+            ),
+            'departamentos' => new DepartamentosCollection(
+                Departamentos::orderBy('departamento')->get()
+            ),
+            'responsabilidades' => new ResponsabilidadesFiscalesCollection(
+                ResponsabilidadesFiscales::orderBy('descripcion')->get()
+            ),
+            'estados_autorizaciones' => config('constants.facturas.permisos.estados'),
             'S_N' => config('constants.S_N'),
             'estados' => config('constants.estados'),
             'tenant_id' => 'tenant_' . tenant()->id

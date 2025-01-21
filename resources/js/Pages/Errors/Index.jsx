@@ -10,6 +10,7 @@ import EmpresaEmpty from "./Empresa/Empty";
 import ContactosEmpty from "./Empresa/Contactos/Empty";
 import ResolucionEmpty from "./Empresa/Resolucion/Empty";
 import AutorizacionEmpty from "./Empresa/Autorizacion/Empty";
+import PermisoEmpty from "./Empresa/Permiso/Empty";
 
 export default ({ auth, error, ...props }) => {
     
@@ -21,6 +22,8 @@ export default ({ auth, error, ...props }) => {
                 return <ResolucionEmpty {...props} />;
             case "Autorizacion/Empty":
                 return <AutorizacionEmpty {...props} />;
+            case "Permiso/Empty":
+                return <PermisoEmpty {...props} />;
             case "Contactos/Empty":
                 return <ContactosEmpty {...props} />;
             default:

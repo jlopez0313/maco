@@ -18,7 +18,7 @@ export default () => {
     const { data, setData, processing, errors, reset } = useForm({
         id: '',
         consecutivo: '',
-        from: 'c'
+        from: 'p'
     });
 
     const submit = async (e) => {
@@ -41,12 +41,12 @@ export default () => {
     };
 
     const onGetItem = async () => {
-        const { data: {data: item } } = await axios.get(`/api/v1/consecutivos/first/c`);
+        const { data: {data: item } } = await axios.get(`/api/v1/consecutivos/first/p`);
 
         setData({
             id: item.id || "",
             consecutivo: item.consecutivo || "",
-            from: item.from || "c",
+            from: item.from || "p",
         });
     };
 

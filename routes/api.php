@@ -114,6 +114,13 @@ Route::middleware([
     });
     Route::apiResource('autorizaciones', App\Http\Controllers\Api\v1\AutorizacionesController::class);
 
+    
+    Route::prefix('permisos')->group(function () {
+        Route::get('empresa/{empresa}', [App\Http\Controllers\Api\v1\PermisosController::class, 'byEmpresa']);
+        Route::get('consecutivo/{empresa}', [App\Http\Controllers\Api\v1\PermisosController::class, 'consecutivo']);
+    });
+    Route::apiResource('permisos', App\Http\Controllers\Api\v1\PermisosController::class);
+
 
     Route::prefix('resoluciones')->group(function () {
         Route::get('empresa/{empresa}', [App\Http\Controllers\Api\v1\ResolucionesController::class, 'byEmpresa']);

@@ -348,7 +348,7 @@ class DocumentoSoporteController extends Controller
                             <IAE_2>999</IAE_2>                      <!-- Tabla 31 - Productos - Código - Tablas 2.1 -->
                         </IAE>
                         <IBS>
-                            <IBS_1>' .\Carbon\Carbon::now()->format('y-m-d'). '</IBS_1>     <!-- Tabla 41 - Versión del Formato: Indicar versión del documento. -->
+                            <IBS_1>' .\Carbon\Carbon::now()->format('Y-m-d'). '</IBS_1>     <!-- Tabla 41 - Versión del Formato: Indicar versión del documento. -->
                             <IBS_2>1</IBS_2>
                             <IBS_3>Por operación</IBS_3>
                         </IBS>';

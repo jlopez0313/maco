@@ -65,6 +65,19 @@ return [
                 ],  
             ],
         ],
+        'permisos' => [
+          'estados' => [
+                [
+                    'key' => 'A',
+                    'valor' => 'Activo',
+                ],
+        
+                [
+                    'key' => 'I',
+                    'valor' => 'Inactivo',
+                ],  
+            ],
+        ],
         'resoluciones' => [
           'estados' => [
                 [

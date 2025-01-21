@@ -157,6 +157,7 @@ Route::middleware([
         Route::get('/pdf/{id}', [GastosController::class, 'pdf'])->name('remisiones.pdf');
         Route::get('/qr/{id}', [GastosController::class, 'qr'])->name('remisiones.qr');
         Route::get('/configuracion', [GastosController::class, 'configuracion'])->name('gastos.configuracion');
+        Route::get('/permisos', [GastosController::class, 'permisos'])->name('remisiones.permisos');
     })->middleware(['auth', 'verified']);
     
 

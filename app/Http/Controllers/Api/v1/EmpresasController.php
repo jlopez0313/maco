@@ -78,6 +78,10 @@ class EmpresasController extends Controller
     }
 
     public function makeLink() {
+        if  ( !is_dir(storage_path() ) ) {
+            mkdir( storage_path() . '/app', 0777, true );
+        }
+
         if  ( !is_link( 'tenant_' . tenant()->id ) ) {
             symlink(storage_path() . '/app', 'tenant_' . tenant()->id);
         }

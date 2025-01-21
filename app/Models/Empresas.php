@@ -53,4 +53,12 @@ class Empresas extends Model
     public function autorizacion() {
         return $this->hasOne(Autorizaciones::class, 'empresas_id')->where('estado', 'A');
     }
+
+    public function permisos() {
+        return $this->hasMany(Permisos::class, 'empresas_id');
+    }
+
+    public function permiso() {
+        return $this->hasOne(Permisos::class, 'empresas_id')->where('estado', 'A');
+    }
 }

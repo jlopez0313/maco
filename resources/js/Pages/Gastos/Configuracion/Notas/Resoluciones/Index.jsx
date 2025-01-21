@@ -35,7 +35,7 @@ export default ({
 
     const onSetList = async () => {
 
-        const { data: autorizaciones } = await axios.get(`/api/v1/autorizaciones/empresa/${empresasId}`);
+        const { data: autorizaciones } = await axios.get(`/api/v1/permisos/empresa/${empresasId}`);
         const lista = [ ...autorizaciones.data ]
         
         const _list = lista.map((item, idx) => {

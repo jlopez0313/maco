@@ -122,7 +122,15 @@ export default function Authenticated({ user, header, children }) {
                                         href={"/gastos/configuracion"}
                                         active={window.location.pathname == "/gastos/configuracion" }
                                     >
-                                        Configuración
+                                        Configuración DIAN
+                                    </NavLink>
+
+                                    <NavLink
+                                        className="!font-bold"
+                                        href={"/gastos/permisos"}
+                                        active={window.location.pathname == "/gastos/permisos" }
+                                    >
+                                        Configuración Interna
                                     </NavLink>
                                     
                                     <NavLink
